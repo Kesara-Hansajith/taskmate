@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 //imported pages
 import 'package:taskmate/authentication/splash_screen.dart';
 import 'package:taskmate/authentication/log_in.dart';
+import 'package:taskmate/authentication/take_action.dart';
 
 void main() {
   runApp(
@@ -20,7 +21,7 @@ class Taskmate extends StatelessWidget {
       theme: ThemeData(fontFamily: "Poppins"),
       home: SafeArea(
         //Add the relevant class below
-        child: Login(),
+        child: TakeAction(),
       ),
     );
   }

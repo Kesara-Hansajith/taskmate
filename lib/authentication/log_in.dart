@@ -5,7 +5,6 @@ import 'package:taskmate/components/heading_button.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/components/forgot_password_hlink.dart';
 import 'package:taskmate/components/external_auth_button.dart';
-import 'package:taskmate/components/heading_text.dart';
 
 class Login extends StatelessWidget {
   const Login({super.key});
@@ -27,7 +26,11 @@ class Login extends StatelessWidget {
             // ),
             const Padding(
               padding: EdgeInsets.symmetric(vertical: 8.0),
-              child: HeadingText('Welcome Back!'),
+              child: Text(
+                'Welcome Back!',
+                textAlign: TextAlign.center,
+                style: kHeadingTextStyle,
+              ),
             ),
             AuthTextField("Email", false, null),
             AuthTextField("Password", true, Icons.lock),
