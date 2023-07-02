@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:taskmate/constants.dart';
 
 class AuthTextField extends StatefulWidget {
-  String? title;
+  final String? title;
   bool obscure = false;
   IconData? suffIcon;
 
@@ -17,8 +17,8 @@ class _AuthTextFieldState extends State<AuthTextField> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 28.0),
-      padding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 16.0),
+      margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 28.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       decoration: BoxDecoration(
         color: kBrilliantWhite,
         borderRadius: BorderRadius.circular(20.0),
