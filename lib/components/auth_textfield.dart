@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:taskmate/constants.dart';
 
 class AuthTextField extends StatefulWidget {
-  String? title;
+  final String? title;
   bool obscure = false;
   IconData? suffIcon;
 
