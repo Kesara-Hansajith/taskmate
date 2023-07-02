@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:taskmate/authentication/splash_screen.dart';
 import 'package:taskmate/authentication/log_in.dart';
 import 'package:taskmate/authentication/take_action.dart';
+import 'package:taskmate/authentication/sign_up.dart';
 
 void main() {
   runApp(
@@ -19,9 +20,9 @@ class Taskmate extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: "Poppins"),
-      home: SafeArea(
+      home: const SafeArea(
         //Add the relevant class below
-        child: TakeAction(),
+        child: SignUp(),
       ),
     );
   }

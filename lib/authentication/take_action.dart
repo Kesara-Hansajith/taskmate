@@ -11,9 +11,10 @@ class TakeAction extends StatelessWidget {
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
     final double screenWidth = screenSize.width;
-    final double screenHeight = screenSize.height;
+    //final double screenHeight = screenSize.height;
 
     return Scaffold(
+      backgroundColor: kAshWhiteColor,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[

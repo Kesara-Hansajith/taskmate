@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-
 import 'package:taskmate/components/auth_textfield.dart';
 import 'package:taskmate/components/heading_button.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/components/forgot_password_hlink.dart';
 import 'package:taskmate/components/external_auth_button.dart';
+import 'package:taskmate/components/bottom_sub_text.dart';
 
 class Login extends StatelessWidget {
   const Login({super.key});
@@ -13,7 +13,7 @@ class Login extends StatelessWidget {
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
     final double screenWidth = screenSize.width;
-    final double screenHeight = screenSize.height;
+    // final double screenHeight = screenSize.height;
 
     return Scaffold(
       backgroundColor: kAshWhiteColor,
@@ -21,9 +21,9 @@ class Login extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            // const Image(
-            //   image: AssetImage("images/TaskMateLogo_Light.png"),
-            // ),
+            const Image(
+              image: AssetImage("images/TaskMateLogo_Light.png"),
+            ),
             const Padding(
               padding: EdgeInsets.symmetric(vertical: 8.0),
               child: Text(
@@ -42,11 +42,12 @@ class Login extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   Center(
-                      child: Container(
-                    height: 3.0,
-                    width: screenWidth / 4,
-                    color: kLightBlueColor,
-                  )),
+                    child: Container(
+                      height: 3.0,
+                      width: screenWidth / 4,
+                      color: kLightBlueColor,
+                    ),
+                  ),
                   const Text(
                     'Or continue with',
                     style: TextStyle(
@@ -54,11 +55,12 @@ class Login extends StatelessWidget {
                     ),
                   ),
                   Center(
-                      child: Container(
-                    height: 3.0,
-                    width: screenWidth / 4,
-                    color: kLightBlueColor,
-                  )),
+                    child: Container(
+                      height: 3.0,
+                      width: screenWidth / 4,
+                      color: kLightBlueColor,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -72,18 +74,12 @@ class Login extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: const <Widget>[
-                Text(
-                  'Create a',
-                  style: TextStyle(fontSize: 14.0),
-                ),
+                BottomSubText('Create a'),
                 ForgotPasswordHLink(
                   'TaskMate',
                   kAmberColor,
                 ),
-                Text(
-                  'Account',
-                  style: TextStyle(fontSize: 14.0),
-                ),
+                BottomSubText('Account'),
               ],
             ),
           ],
