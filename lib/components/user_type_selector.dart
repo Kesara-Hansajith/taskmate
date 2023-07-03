@@ -35,7 +35,7 @@ class UserTypeSelector extends StatelessWidget {
             ),
           ),
           Container(
-            margin: const EdgeInsets.all(8.0),
+            margin: const EdgeInsets.all(3.0),
             padding: const EdgeInsets.symmetric(
               vertical: 32.0,
             ),

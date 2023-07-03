@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:taskmate/constants.dart';
 
 class ForgotPasswordHLink extends StatelessWidget {
-  const ForgotPasswordHLink(this.title,this.color,{
+  const ForgotPasswordHLink(
+    this.title,
+    this.color, {
     super.key,
   });
 
