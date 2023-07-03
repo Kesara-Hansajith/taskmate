@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:taskmate/components/log_in_hlink.dart';
 import 'package:taskmate/constants.dart';
-import 'package:taskmate/components/user_type_selector.dart';
 import 'package:taskmate/components/bottom_sub_text.dart';
 
-class TakeAction extends StatelessWidget {
+class TakeAction extends StatefulWidget {
   const TakeAction({super.key});
+
+  @override
+  State<TakeAction> createState() => _TakeActionState();
+}
+
+class _TakeActionState extends State<TakeAction> {
+  bool isWork = true;
+  bool isHire = false;
 
   @override
   Widget build(BuildContext context) {
@@ -54,8 +61,64 @@ class TakeAction extends StatelessWidget {
                                 style: kHeadingTextStyle,
                               ),
                             ),
-                            UserTypeSelector('I want to work',
-                                screenWidth: screenWidth),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  isWork = true;
+                                  isHire = false;
+                                });
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(horizontal: 32.0),
+                                width: screenWidth,
+                                decoration: BoxDecoration(
+                                  color: isWork
+                                      ? kOceanBlueColor
+                                      : kLowOpacityLightBlueColor,
+                                  border: Border.all(color: kOceanBlueColor),
+                                  borderRadius: BorderRadius.circular(12.0),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 32.0),
+                                      child: Text(
+                                        'I want to work',
+                                        style: TextStyle(
+                                          fontSize: 15.0,
+                                          fontWeight: FontWeight.bold,
+                                          color: isWork
+                                              ? kAshWhiteColor
+                                              : kDeepBlueColor,
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: const EdgeInsets.all(4.0),
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 30.0,
+                                      ),
+                                      width: screenWidth / 4,
+                                      decoration: BoxDecoration(
+                                        color: isWork
+                                            ? const Color(0xFF1d58f5)
+                                            : kLightBlueColor,
+                                        borderRadius:
+                                            BorderRadius.circular(12.0),
+                                      ),
+                                      child: Icon(
+                                        Icons.arrow_forward,
+                                        color: isWork
+                                            ? kAshWhiteColor
+                                            : kDeepBlueColor,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
                             const Padding(
                               padding: EdgeInsets.symmetric(vertical: 10.0),
                               child: Text(
@@ -66,8 +129,64 @@ class TakeAction extends StatelessWidget {
                                     fontWeight: FontWeight.bold),
                               ),
                             ),
-                            UserTypeSelector('I want to hire',
-                                screenWidth: screenWidth),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  isWork = false;
+                                  isHire = true;
+                                });
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(horizontal: 32.0),
+                                width: screenWidth,
+                                decoration: BoxDecoration(
+                                  color: isHire
+                                      ? kOceanBlueColor
+                                      : kLowOpacityLightBlueColor,
+                                  border: Border.all(color: kOceanBlueColor),
+                                  borderRadius: BorderRadius.circular(12.0),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 32.0),
+                                      child: Text(
+                                        'I want to hire',
+                                        style: TextStyle(
+                                          fontSize: 15.0,
+                                          fontWeight: FontWeight.bold,
+                                          color: isHire
+                                              ? kAshWhiteColor
+                                              : kDeepBlueColor,
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: const EdgeInsets.all(4.0),
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 30.0,
+                                      ),
+                                      width: screenWidth / 4,
+                                      decoration: BoxDecoration(
+                                        color: isHire
+                                            ? const Color(0xFF1d58f5)
+                                            : kLightBlueColor,
+                                        borderRadius:
+                                            BorderRadius.circular(12.0),
+                                      ),
+                                      child: Icon(
+                                        Icons.arrow_forward,
+                                        color: isHire
+                                            ? kAshWhiteColor
+                                            : kDeepBlueColor,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: const <Widget>[
