@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:taskmate/components/log_in_hlink.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/components/user_type_selector.dart';
 import 'package:taskmate/components/bottom_sub_text.dart';
-
 
 class TakeAction extends StatelessWidget {
   const TakeAction({super.key});
@@ -15,48 +15,77 @@ class TakeAction extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: kAshWhiteColor,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 8.0),
-            child: Text(
-              'Take Action & Open Your Account',
-              textAlign: TextAlign.center,
-              style: kHeadingTextStyle,
+      body: Container(
+        decoration: const BoxDecoration(color: kDeepBlueColor),
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              flex: 2,
+              child: Image.asset('images/TaskMateLogo_Light.png'),
             ),
-          ),
-          UserTypeSelector('I want to work', screenWidth: screenWidth),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 16.0),
-            child: Text(
-              'Or',
-              style: TextStyle(
-                  color: kDarkGreyColor,
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold),
-            ),
-          ),
-          UserTypeSelector('I want to hire', screenWidth: screenWidth),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const BottomSubText("Already registered?"),
-              TextButton(
-                onPressed: () {},
-                child: const Text(
-                  'Log In',
-                  style: TextStyle(
-                    color: kAmberColor,
+            Expanded(
+              flex: 3,
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('images/noise_image.png'),
+                        repeat: ImageRepeat.repeat,
+                      ),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20.0),
+                        topRight: Radius.circular(20.0),
+                      ),
+                    ),
+                    child: ListView(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            const Padding(
+                              padding: EdgeInsets.symmetric(
+                                vertical: 20.0,
+                                horizontal: 8.0,
+                              ),
+                              child: Text(
+                                'Take Action & Open Your Account',
+                                textAlign: TextAlign.center,
+                                style: kHeadingTextStyle,
+                              ),
+                            ),
+                            UserTypeSelector('I want to work',
+                                screenWidth: screenWidth),
+                            const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 10.0),
+                              child: Text(
+                                'Or',
+                                style: TextStyle(
+                                    color: kDarkGreyColor,
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            UserTypeSelector('I want to hire',
+                                screenWidth: screenWidth),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const <Widget>[
+                                BottomSubText("Already registered?"),
+                                LogInHLink('Log In'),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
+                ],
               ),
-            ],
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }
 }
-
-

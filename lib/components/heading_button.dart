@@ -14,7 +14,7 @@ class HeadingButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 28.0),
+      margin: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 28.0),
       width: screenWidth,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
