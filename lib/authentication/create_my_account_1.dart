@@ -14,13 +14,16 @@ class CreateMyAccount1 extends StatefulWidget {
 }
 
 class _CreateMyAccount1State extends State<CreateMyAccount1> {
+  bool condition1 = false;
+  bool condition2 = false;
+  bool condition3 = false;
+
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
     final double screenWidth = screenSize.width;
     //final double screenHeight = screenSize.height;
 
-    bool isChecked = false;
 
     return Scaffold(
       body: Container(
@@ -50,12 +53,13 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: ListTile(
                     leading: Checkbox(
-                      value: isChecked,
+                      value: condition1,
                       onChanged: (bool? value) {
                         setState(() {
-                          isChecked = value!;
+                          condition1 = value!;
                         });
                       },
+                      activeColor: kDeepBlueColor,
                     ),
                     title: const Text(
                         'I have read and agree to TaskMate’s Term of Service and Privacy Policy.'),
@@ -65,12 +69,13 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: ListTile(
                     leading: Checkbox(
-                      value: isChecked,
+                      value: condition2,
                       onChanged: (bool? value) {
                         setState(() {
-                          isChecked = value!;
+                          condition2 = value!;
                         });
                       },
+                      activeColor: kDeepBlueColor,
                     ),
                     title: const Text(
                         'We reserve the right to terminate or suspend your account at any time for violating our policies.'),
@@ -80,12 +85,13 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: ListTile(
                     leading: Checkbox(
-                      value: isChecked,
+                      value: condition3,
                       onChanged: (bool? value) {
                         setState(() {
-                          isChecked = value!;
+                          condition3 = value!;
                         });
                       },
+                      activeColor: kDeepBlueColor,
                     ),
                     title: const Text(
                         'I agree to receive helpful emails to find rewarding works and job leads.'),
