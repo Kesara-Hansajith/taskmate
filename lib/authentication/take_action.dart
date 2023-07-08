@@ -94,11 +94,11 @@ class _TakeActionState extends State<TakeAction> {
                                   ),
                                   child: Row(
                                     mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
                                       Padding(
                                         padding:
-                                        const EdgeInsets.only(left: 32.0),
+                                            const EdgeInsets.only(left: 32.0),
                                         child: Text(
                                           'I want to work',
                                           style: TextStyle(
@@ -121,7 +121,7 @@ class _TakeActionState extends State<TakeAction> {
                                               ? const Color(0xFF1d58f5)
                                               : kLightBlueColor,
                                           borderRadius:
-                                          BorderRadius.circular(12.0),
+                                              BorderRadius.circular(12.0),
                                         ),
                                         child: Icon(
                                           Icons.arrow_forward,
@@ -164,11 +164,11 @@ class _TakeActionState extends State<TakeAction> {
                                   ),
                                   child: Row(
                                     mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
                                       Padding(
                                         padding:
-                                        const EdgeInsets.only(left: 32.0),
+                                            const EdgeInsets.only(left: 32.0),
                                         child: Text(
                                           'I want to hire',
                                           style: TextStyle(
@@ -191,7 +191,7 @@ class _TakeActionState extends State<TakeAction> {
                                               ? const Color(0xFF1d58f5)
                                               : kLightBlueColor,
                                           borderRadius:
-                                          BorderRadius.circular(12.0),
+                                              BorderRadius.circular(12.0),
                                         ),
                                         child: Icon(
                                           Icons.arrow_forward,
@@ -205,7 +205,8 @@ class _TakeActionState extends State<TakeAction> {
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8.0),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[

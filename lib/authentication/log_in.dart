@@ -82,15 +82,15 @@ class _LoginState extends State<Login> {
                               Container(
                                 margin: const EdgeInsets.symmetric(
                                     vertical: 8.0, horizontal: 28.0),
-                                padding:
-                                const EdgeInsets.symmetric(horizontal: 16.0),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0),
                                 decoration: BoxDecoration(
                                   color: kBrilliantWhite,
                                   borderRadius: BorderRadius.circular(20.0),
                                 ),
                                 child:
-                                //Email Textfield
-                                TextField(
+                                    //Email Textfield
+                                    TextField(
                                   controller: emailController,
                                   obscureText: false,
                                   decoration: const InputDecoration(
@@ -103,15 +103,15 @@ class _LoginState extends State<Login> {
                               Container(
                                 margin: const EdgeInsets.symmetric(
                                     vertical: 8.0, horizontal: 28.0),
-                                padding:
-                                const EdgeInsets.symmetric(horizontal: 16.0),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0),
                                 decoration: BoxDecoration(
                                   color: kBrilliantWhite,
                                   borderRadius: BorderRadius.circular(20.0),
                                 ),
                                 child:
-                                //Password Textfield
-                                TextField(
+                                    //Password Textfield
+                                    TextField(
                                   controller: passwordController,
                                   obscureText: obsecureController,
                                   decoration: InputDecoration(
@@ -164,10 +164,10 @@ class _LoginState extends State<Login> {
                               ),
                               Padding(
                                 padding:
-                                const EdgeInsets.symmetric(vertical: 16.0),
+                                    const EdgeInsets.symmetric(vertical: 16.0),
                                 child: Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceEvenly,
+                                      MainAxisAlignment.spaceEvenly,
                                   children: <Widget>[
                                     Center(
                                       child: Container(
@@ -193,12 +193,13 @@ class _LoginState extends State<Login> {
                                 ),
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: <Widget>[
                                   //"Google" Signup Button
                                   Padding(
-                                    padding:
-                                    const EdgeInsets.symmetric(vertical: 8.0),
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 8.0),
                                     child: ElevatedButton(
                                       style: ElevatedButton.styleFrom(
                                         padding: const EdgeInsets.symmetric(
@@ -206,15 +207,15 @@ class _LoginState extends State<Login> {
                                         backgroundColor: kLightBlueColor,
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
-                                          BorderRadius.circular(16.0),
+                                              BorderRadius.circular(16.0),
                                         ),
                                       ),
                                       onPressed: () {},
                                       child: Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                            MainAxisAlignment.center,
                                         crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                            CrossAxisAlignment.center,
                                         children: <Widget>[
                                           Image.asset(
                                             'icons/google.png',
@@ -236,8 +237,8 @@ class _LoginState extends State<Login> {
                                   ),
                                   //"Facebook" Signup Button
                                   Padding(
-                                    padding:
-                                    const EdgeInsets.symmetric(vertical: 8.0),
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 8.0),
                                     child: ElevatedButton(
                                       style: ElevatedButton.styleFrom(
                                         padding: const EdgeInsets.symmetric(
@@ -245,15 +246,15 @@ class _LoginState extends State<Login> {
                                         backgroundColor: kLightBlueColor,
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
-                                          BorderRadius.circular(16.0),
+                                              BorderRadius.circular(16.0),
                                         ),
                                       ),
                                       onPressed: () {},
                                       child: Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                            MainAxisAlignment.center,
                                         crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                            CrossAxisAlignment.center,
                                         children: <Widget>[
                                           Image.asset(
                                             'icons/facebook.png',
