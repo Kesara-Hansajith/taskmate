@@ -30,9 +30,8 @@ class Taskmate extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: "Poppins"),
-      home: SafeArea(
-        //Add the relevant class below
-        child: Login(),
+      home: const SafeArea(
+        child: SplashScreen(),
       ),
     );
   }
