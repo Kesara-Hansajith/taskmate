@@ -8,7 +8,7 @@ class HeadingButton extends StatelessWidget {
     required this.screenWidth,
   });
 
-  final double screenWidth;
+  final double? screenWidth;
   final String? title;
 
   @override
