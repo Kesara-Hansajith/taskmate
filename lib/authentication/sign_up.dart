@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:taskmate/components/log_in_hlink.dart';
+import 'package:taskmate/authentication/log_in.dart';
+
 import 'package:taskmate/constants.dart';
-import 'package:taskmate/components/external_auth_button.dart';
 import 'package:taskmate/components/bottom_sub_text.dart';
+import 'package:taskmate/authentication/create_my_account_1.dart';
 
 class SignUp extends StatelessWidget {
   const SignUp({super.key});
@@ -19,119 +20,239 @@ class SignUp extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Expanded(
-              flex: 2,
+              flex: 3,
               child: Image.asset('images/TaskMateLogo_Light.png'),
             ),
             Expanded(
-              flex: 3,
+              flex: 5,
               child: Stack(
                 children: <Widget>[
                   Container(
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('images/noise_image.png'),
-                        repeat: ImageRepeat.repeat,
-                      ),
-                      borderRadius: BorderRadius.only(
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.4),
+                      borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(20.0),
                         topRight: Radius.circular(20.0),
                       ),
                     ),
-                    child: ListView(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            const Padding(
-                              padding: EdgeInsets.symmetric(
-                                vertical: 20.0,
-                                horizontal: 16.0,
-                              ),
-                              child: Text(
-                                'Sign up & Find Your Next Gig',
-                                textAlign: TextAlign.center,
-                                style: kHeadingTextStyle,
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 20.0, horizontal: 24.0),
-                              child: ElevatedButton(
-                                onPressed: () {},
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: kDeepBlueColor,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20.0),
-                                  ),
+                  ),
+                  Positioned(
+                    top: 10,
+                    bottom: 0,
+                    child: Container(
+                      width: screenWidth,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('images/noise_image.png'),
+                          repeat: ImageRepeat.repeat,
+                        ),
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20.0),
+                          topRight: Radius.circular(20.0),
+                        ),
+                      ),
+                      child: ListView(
+                        children: <Widget>[
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              //"Sign up & Find your next Gig" text goes here
+                              const Padding(
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 8.0,
+                                  horizontal: 16.0,
                                 ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: const <Widget>[
-                                      Icon(
-                                        Icons.person_add,
-                                        color: kBrilliantWhite,
-                                      ),
-                                      Text(
-                                        'Continue with Email or Mobile',
-                                        style: TextStyle(
-                                            color: kBrilliantWhite, fontSize: 15.0),
-                                      ),
-                                    ],
-                                  ),
+                                child: Text(
+                                  'Sign up & Find Your Next Gig',
+                                  textAlign: TextAlign.center,
+                                  style: kHeadingTextStyle,
                                 ),
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 32.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              //"Continue with Mobile or Email button goes here"
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 20.0, horizontal: 28.0),
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const CreateMyAccount1(),
+                                      ),
+                                    );
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: kDeepBlueColor,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    //Button icon and Text goes here
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: const <Widget>[
+                                        Icon(
+                                          Icons.person_add,
+                                          color: kBrilliantWhite,
+                                        ),
+                                        Text(
+                                          'Continue with Email or Mobile',
+                                          style: TextStyle(
+                                              color: kBrilliantWhite,
+                                              fontSize: 15.0),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              //Separator goes here
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 32.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: <Widget>[
+                                    Center(
+                                      child: Container(
+                                        height: 3.0,
+                                        width: screenWidth / 4,
+                                        color: kLightBlueColor,
+                                      ),
+                                    ),
+                                    const Text(
+                                      'Or continue with',
+                                      style: TextStyle(
+                                        fontSize: 13.0,
+                                      ),
+                                    ),
+                                    Center(
+                                      child: Container(
+                                        height: 3.0,
+                                        width: screenWidth / 4,
+                                        color: kLightBlueColor,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              //Third Party Auth buttons goes here
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: <Widget>[
-                                  Center(
-                                    child: Container(
-                                      height: 3.0,
-                                      width: screenWidth / 4,
-                                      color: kLightBlueColor,
+                                  //"Google" Signup Button
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 8.0),
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 12.0, horizontal: 24.0),
+                                        backgroundColor: kLightBlueColor,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(16.0),
+                                        ),
+                                      ),
+                                      onPressed: () {},
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: <Widget>[
+                                          Image.asset(
+                                            'icons/google.png',
+                                            width: 25.0,
+                                          ),
+                                          const SizedBox(
+                                            width: 8.0,
+                                          ),
+                                          const Text(
+                                            'Google',
+                                            style: TextStyle(
+                                                color: kDeepBlueColor,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15.0),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                  const Text(
-                                    'Or continue with',
-                                    style: TextStyle(
-                                      fontSize: 13.0,
-                                    ),
-                                  ),
-                                  Center(
-                                    child: Container(
-                                      height: 3.0,
-                                      width: screenWidth / 4,
-                                      color: kLightBlueColor,
+                                  //"Facebook" Signup Button
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 8.0),
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 12.0, horizontal: 24.0),
+                                        backgroundColor: kLightBlueColor,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(16.0),
+                                        ),
+                                      ),
+                                      onPressed: () {},
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: <Widget>[
+                                          Image.asset(
+                                            'icons/facebook.png',
+                                            width: 25.0,
+                                          ),
+                                          const SizedBox(
+                                            width: 8.0,
+                                          ),
+                                          const Text(
+                                            'Facebook',
+                                            style: TextStyle(
+                                                color: kDeepBlueColor,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15.0),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ],
                               ),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: const <Widget>[
-                                ExternalAuthButton('icons/google.png', 'Google'),
-                                ExternalAuthButton(
-                                    'icons/facebook.png', 'Facebook'),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const <Widget>[
-                                BottomSubText('Already registered?'),
-                                LogInHLink('Log In'),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
+                              //Bottom most row of the screen
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  const BottomSubText('Already registered?'),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                          builder: (context) => const Login(),
+                                        ),
+                                      );
+                                    },
+                                    child: const Text(
+                                      'Log In',
+                                      style: TextStyle(
+                                        color: kAmberColor,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
+                  )
                 ],
               ),
             ),
