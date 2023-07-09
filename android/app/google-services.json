@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "681609208614",
+    "project_id": "taskmate-8ab5f",
+    "storage_bucket": "taskmate-8ab5f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:681609208614:android:27758562f8f0c0dd3dd7e7",
+        "android_client_info": {
+          "package_name": "com.taskmateapp.taskmate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "681609208614-0s7fd4oakqlcd1v22te4kfjqgip284qo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrikKfirMjNKmy4KPM2OrLLIajlyyrY7w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "681609208614-0s7fd4oakqlcd1v22te4kfjqgip284qo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
