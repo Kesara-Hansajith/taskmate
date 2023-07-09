@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:taskmate/authentication/sign_up.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
+import 'package:taskmate/authentication/sign_up.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/components/bottom_sub_text.dart';
+import 'package:taskmate/home_page.dart';
+import 'package:taskmate/components/snackbar.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
+
   @override
   State<Login> createState() => _LoginState();
 }
 
 class _LoginState extends State<Login> {
+  final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
@@ -20,6 +26,77 @@ class _LoginState extends State<Login> {
     setState(() {
       obsecureController = !obsecureController;
     });
+  }
+
+//Method for Google Authentication
+  Future<UserCredential> signInWithGoogle() async {
+    // Trigger the authentication flow
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
+
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    // Once signed in, return the UserCredential
+    return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
+
+//Method for Sign in with email and password
+  void signInWithEmailAndPassword(String email, String password) async {
+    try {
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      // Sign-in successful, handle the user object or navigate to the next screen.
+
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => const HomePage(),
+        ),
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'invalid-mail'){
+        emailController.clear();
+        passwordController.clear();
+        //Visit the snackbar class for further details
+        ScaffoldMessenger.of(context).showSnackBar(
+          CustomSnackBar('Enter a valid email address'),
+        );
+      }
+      else if (e.code == 'user-not-found') {
+        emailController.clear();
+        passwordController.clear();
+        //Visit the snackbar class for further details
+        ScaffoldMessenger.of(context).showSnackBar(
+          CustomSnackBar('Incorrect Email and Password'),
+        );
+
+      } else if (e.code == 'wrong-password') {
+        passwordController.clear();
+        //Visit the snackbar class for further details
+        ScaffoldMessenger.of(context).showSnackBar(
+          CustomSnackBar('Incorrect Password'),
+        );
+      }
+      // Handle other exceptions as needed.
+    }
+  }
+
+  //Disposing controllers for preventing memory leaks and unusual behaviours
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 
   @override
@@ -72,67 +149,80 @@ class _LoginState extends State<Login> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
                               const Padding(
-                                padding: EdgeInsets.symmetric(vertical: 8.0),
+                                padding: EdgeInsets.symmetric(vertical: 16.0),
                                 child: Text(
                                   'Welcome Back!',
                                   style: kHeadingTextStyle,
                                 ),
                               ),
-                              //Email Textfield
-                              Container(
-                                margin: const EdgeInsets.symmetric(
-                                    vertical: 8.0, horizontal: 28.0),
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16.0),
-                                decoration: BoxDecoration(
-                                  color: kBrilliantWhite,
-                                  borderRadius: BorderRadius.circular(20.0),
-                                ),
-                                child:
+                              Form(
+                                key: _formKey,
+                                child: Column(
+                                  children: <Widget>[
                                     //Email Textfield
-                                    TextField(
-                                  controller: emailController,
-                                  obscureText: false,
-                                  decoration: const InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: 'Email',
-                                  ),
+                                    Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 8.0, horizontal: 28.0),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 16.0),
+                                      decoration: BoxDecoration(
+                                        color: kBrilliantWhite,
+                                        borderRadius:
+                                            BorderRadius.circular(20.0),
+                                      ),
+                                      child:
+                                          //Email Textfield
+                                          TextFormField(
+                                        controller: emailController,
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Please enter a valid Email Address';
+                                          }
+                                          return null; // Return null for valid input
+                                        },
+                                        obscureText: false,
+                                        decoration: const InputDecoration(
+                                          border: InputBorder.none,
+                                          hintText: 'Email',
+                                        ),
+                                      ),
+                                    ),
+                                    //Password Textfield
+                                    Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 8.0, horizontal: 28.0),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 16.0),
+                                      decoration: BoxDecoration(
+                                        color: kBrilliantWhite,
+                                        borderRadius:
+                                            BorderRadius.circular(20.0),
+                                      ),
+                                      child: TextFormField(
+                                        controller: passwordController,
+                                        obscureText: obsecureController,
+                                        decoration: InputDecoration(
+                                          border: InputBorder.none,
+                                          hintText: 'Password',
+                                          suffixIcon: IconButton(
+                                            icon: obsecureController
+                                                ? const Icon(Icons.lock)
+                                                : const Icon(Icons.lock_open),
+                                            color: kJetBlack,
+                                            onPressed: () {
+                                              setObsecure();
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              //Password Textfield
+                              //"Log In" Button goes here
                               Container(
                                 margin: const EdgeInsets.symmetric(
                                     vertical: 8.0, horizontal: 28.0),
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16.0),
-                                decoration: BoxDecoration(
-                                  color: kBrilliantWhite,
-                                  borderRadius: BorderRadius.circular(20.0),
-                                ),
-                                child:
-                                    //Password Textfield
-                                    TextField(
-                                  controller: passwordController,
-                                  obscureText: obsecureController,
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: 'Password',
-                                    suffixIcon: IconButton(
-                                      icon: obsecureController
-                                          ? const Icon(Icons.lock)
-                                          : const Icon(Icons.lock_open),
-                                      color: kJetBlack,
-                                      onPressed: () {
-                                        setObsecure();
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              //"Log In Button goes here"
-                              Container(
-                                margin: const EdgeInsets.symmetric(
-                                    vertical: 16.0, horizontal: 28.0),
                                 width: screenWidth,
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
@@ -141,8 +231,15 @@ class _LoginState extends State<Login> {
                                       borderRadius: BorderRadius.circular(20.0),
                                     ),
                                   ),
-                                  onPressed: () {},
-                                  //TODO: Implement Login action with firebase
+                                  onPressed: () {
+                                    if (_formKey.currentState!.validate()) {
+                                      // Form is valid, proceed with submission or other actions
+                                      signInWithEmailAndPassword(
+                                        emailController.text.trim(),
+                                        passwordController.text.trim(),
+                                      );
+                                    }
+                                  },
                                   child: const Padding(
                                     padding: EdgeInsets.all(16.0),
                                     child: Text(
@@ -164,7 +261,7 @@ class _LoginState extends State<Login> {
                               ),
                               Padding(
                                 padding:
-                                    const EdgeInsets.symmetric(vertical: 16.0),
+                                    const EdgeInsets.symmetric(vertical: 12.0),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
@@ -210,7 +307,9 @@ class _LoginState extends State<Login> {
                                               BorderRadius.circular(16.0),
                                         ),
                                       ),
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        signInWithGoogle();
+                                      },
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
