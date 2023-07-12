@@ -149,7 +149,7 @@ class _LoginState extends State<Login> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
                               const Padding(
-                                padding: EdgeInsets.symmetric(vertical: 16.0),
+                                padding: EdgeInsets.symmetric(vertical: 8.0),
                                 child: Text(
                                   'Welcome Back!',
                                   style: kHeadingTextStyle,
@@ -175,7 +175,7 @@ class _LoginState extends State<Login> {
                                           TextFormField(
                                         controller: emailController,
                                         validator: (value) {
-                                          if (value == null || value.isEmpty) {
+                                          if (value == null || value.isEmpty||!value.contains('@')) {
                                             return 'Please enter a valid Email Address';
                                           }
                                           return null; // Return null for valid input
@@ -200,6 +200,12 @@ class _LoginState extends State<Login> {
                                       ),
                                       child: TextFormField(
                                         controller: passwordController,
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Please enter the Password';
+                                          }
+                                          return null; // Return null for valid input
+                                        },
                                         obscureText: obsecureController,
                                         decoration: InputDecoration(
                                           border: InputBorder.none,

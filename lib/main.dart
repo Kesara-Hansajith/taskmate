@@ -9,6 +9,7 @@ import 'package:taskmate/authentication/take_action.dart';
 import 'package:taskmate/authentication/sign_up.dart';
 import 'package:taskmate/authentication/create_my_account_1.dart';
 import 'package:taskmate/authentication/get_started.dart';
+import 'package:taskmate/authentication/verify_email.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,7 +31,7 @@ class Taskmate extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: "Poppins"),
       home: const SafeArea(
-        child: Login(),
+        child: VerifyEmail(),
       ),
     );
   }
