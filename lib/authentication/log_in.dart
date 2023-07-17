@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:taskmate/authentication/sign_up.dart';
+import 'package:taskmate/authentication/take_action.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/components/bottom_sub_text.dart';
 import 'package:taskmate/home_page.dart';
 import 'package:taskmate/components/snackbar.dart';
+import 'package:taskmate/main.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -56,6 +60,16 @@ class _LoginState extends State<Login> {
         password: password,
       );
 
+      Fluttertoast.showToast(
+        msg: "Successfully logged in",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+
       // Sign-in successful, handle the user object or navigate to the next screen.
 
       Navigator.of(context).push(
@@ -64,22 +78,20 @@ class _LoginState extends State<Login> {
         ),
       );
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'invalid-mail'){
+      if (e.code == 'invalid-mail') {
         emailController.clear();
         passwordController.clear();
         //Visit the snackbar class for further details
         ScaffoldMessenger.of(context).showSnackBar(
           CustomSnackBar('Enter a valid email address'),
         );
-      }
-      else if (e.code == 'user-not-found') {
+      } else if (e.code == 'user-not-found') {
         emailController.clear();
         passwordController.clear();
         //Visit the snackbar class for further details
         ScaffoldMessenger.of(context).showSnackBar(
           CustomSnackBar('Incorrect Email and Password'),
         );
-
       } else if (e.code == 'wrong-password') {
         passwordController.clear();
         //Visit the snackbar class for further details
@@ -175,7 +187,9 @@ class _LoginState extends State<Login> {
                                           TextFormField(
                                         controller: emailController,
                                         validator: (value) {
-                                          if (value == null || value.isEmpty||!value.contains('@')) {
+                                          if (value == null ||
+                                              value.isEmpty ||
+                                              !value.contains('@')) {
                                             return 'Please enter a valid Email Address';
                                           }
                                           return null; // Return null for valid input
@@ -354,7 +368,9 @@ class _LoginState extends State<Login> {
                                               BorderRadius.circular(16.0),
                                         ),
                                       ),
-                                      onPressed: () {},
+                                      onPressed: ()  {
+
+                                      },
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
@@ -389,7 +405,8 @@ class _LoginState extends State<Login> {
                                     onPressed: () {
                                       Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
-                                          builder: (context) => const SignUp(),
+                                          builder: (context) =>
+                                              const TakeAction(),
                                         ),
                                       );
                                     },
