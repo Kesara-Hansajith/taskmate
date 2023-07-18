@@ -1,18 +1,65 @@
 import 'package:flutter/material.dart';
 import 'package:taskmate/constants.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class Jobs extends StatefulWidget {
-  const Jobs({super.key});
+  const Jobs({Key? key}) : super(key: key);
 
   @override
   State<Jobs> createState() => _JobsState();
 }
 
 class _JobsState extends State<Jobs> {
+  DocumentReference userDocRef = FirebaseFirestore.instance
+      .collection('projects')
+      .doc('Ir2eSotltvVySfqs5DdX');
+
+  String? title = 'Fetching User Data...';
+  String? client = 'Fetching User Data...';
+  String? postedOn = 'Fetching User Data...';
+  String? price = 'Fetching User Data...';
+  String? duration = 'Fetching User Data...';
+
+  @override
+  void initState() {
+    super.initState();
+    initializeFirebase();
+  }
+
+  Future<void> initializeFirebase() async {
+    await Firebase.initializeApp();
+    getProject();
+  }
+
+  Future<void> getProject() async {
+    try {
+      DocumentSnapshot documentSnapshot = await userDocRef.get();
+      if (documentSnapshot.exists) {
+        Map<String, dynamic>? data =
+            documentSnapshot.data() as Map<String, dynamic>?;
+
+        if (data != null) {
+          title = data['title'];
+          client = data['client_name'];
+          postedOn = data['posted_on'];
+          price = data['price'];
+          duration = data['duration'];
+        } else {
+          print('Data is null');
+        }
+      } else {
+        print('Document does not exist');
+      }
+    } catch (e) {
+      print('Error retrieving user: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
-    final double screenHeight = MediaQuery.of(context).size.height;
+    //final double screenHeight = MediaQuery.of(context).size.height;
 
     return DefaultTabController(
       initialIndex: 0,
@@ -52,13 +99,13 @@ class _JobsState extends State<Jobs> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        'Best Match Job',
+                        '$title',
                         style: TextStyle(fontSize: 22),
                       ),
                       Row(
                         children: <Widget>[
                           const Text('Posted by : '),
-                          const Text('GoviKamburugamuwa'),
+                          Text('$client'),
                         ],
                       ),
                       //Post Date goes here
@@ -70,6 +117,7 @@ class _JobsState extends State<Jobs> {
                           children: <Widget>[
                             const Icon(Icons.schedule),
                             const Text('  Posted on : '),
+                            Text('$postedOn'),
                           ],
                         ),
                       ),
@@ -82,6 +130,7 @@ class _JobsState extends State<Jobs> {
                           children: <Widget>[
                             Icon(Icons.attach_money),
                             Text('  Price : '),
+                            Text('$price'),
                           ],
                         ),
                       ),
@@ -94,6 +143,7 @@ class _JobsState extends State<Jobs> {
                           children: <Widget>[
                             const Icon(Icons.timelapse),
                             const Text('  Duration : '),
+                            Text('$duration'),
                           ],
                         ),
                       ),
