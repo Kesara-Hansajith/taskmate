@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:taskmate/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:taskmate/job_details.dart';
 
 class Jobs extends StatefulWidget {
   const Jobs({Key? key}) : super(key: key);
@@ -13,7 +14,7 @@ class Jobs extends StatefulWidget {
 class _JobsState extends State<Jobs> {
   DocumentReference userDocRef = FirebaseFirestore.instance
       .collection('projects')
-      .doc('Ir2eSotltvVySfqs5DdX');
+      .doc('fb8WKaZvaz016nnLOjDy');
 
   String? title = 'Fetching User Data...';
   String? client = 'Fetching User Data...';
@@ -238,10 +239,16 @@ class _JobsState extends State<Jobs> {
                       ),
                       //See Job Details button goes here
                       Container(
-                        margin: EdgeInsets.all(8.0),
+                        margin: const EdgeInsets.all(8.0),
                         width: screenWidth,
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => const JobDetails(),
+                              ),
+                            );
+                          },
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all<Color>(
                                 kDeepBlueColor),

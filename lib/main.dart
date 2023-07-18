@@ -11,6 +11,8 @@ import 'package:taskmate/authentication/create_my_account_1.dart';
 import 'package:taskmate/authentication/get_started.dart';
 import 'package:taskmate/authentication/verify_email.dart';
 import 'package:taskmate/jobs.dart';
+import 'package:taskmate/job_details.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
