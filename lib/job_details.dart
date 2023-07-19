@@ -14,10 +14,10 @@ class JobDetails extends StatefulWidget {
 class _JobDetailsState extends State<JobDetails> {
   DocumentReference userDocRef = FirebaseFirestore.instance
       .collection('projects')
-      .doc('fb8WKaZvaz016nnLOjDy');
+      .doc('NMNSqWkiXMsEWXjxuLyy');
 
   String? title = 'Fetching User Data...';
-  String? client = 'Fetching User Data...';
+  String? username = 'Fetching User Data...';
   String? postedOn = 'Fetching User Data...';
   String? price = 'Fetching User Data...';
   String? duration = 'Fetching User Data...';
@@ -25,8 +25,8 @@ class _JobDetailsState extends State<JobDetails> {
 
   @override
   void initState() {
-    super.initState();
     initializeFirebase();
+    super.initState();
   }
 
   Future<void> initializeFirebase() async {
@@ -42,14 +42,16 @@ class _JobDetailsState extends State<JobDetails> {
             documentSnapshot.data() as Map<String, dynamic>?;
 
         if (data != null) {
-          title = data['title'];
-          client = data['client_name'];
-          postedOn = data['posted_on'];
-          price = data['price'];
-          duration = data['duration'];
-          description = data['description'];
-        } else {}
-      } else {}
+          setState(() {
+            title = data['title'];
+            username = data['username'];
+            postedOn = data['posted_on'];
+            price = data['price'].toString();
+            duration = data['duration'];
+            description = data['description'];
+          });
+        }
+      }
     } catch (e) {}
   }
 
@@ -103,7 +105,7 @@ class _JobDetailsState extends State<JobDetails> {
                     'Job Offered by',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-                  Text('$client'),
+                  Text('$username'),
                 ],
               ),
             ),
