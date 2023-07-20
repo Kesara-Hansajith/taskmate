@@ -14,18 +14,17 @@ class Jobs extends StatefulWidget {
 class _JobsState extends State<Jobs> {
   DocumentReference userDocRef = FirebaseFirestore.instance
       .collection('projects')
-      .doc('fb8WKaZvaz016nnLOjDy');
+      .doc('q8hn2GdtWkORz2PFK7fm');
 
   String? title = 'Fetching User Data...';
-  String? client = 'Fetching User Data...';
-  String? postedOn = 'Fetching User Data...';
+  String? username = 'Fetching User Data...';
   String? price = 'Fetching User Data...';
   String? duration = 'Fetching User Data...';
 
   @override
   void initState() {
-    super.initState();
     initializeFirebase();
+    super.initState();
   }
 
   Future<void> initializeFirebase() async {
@@ -41,20 +40,16 @@ class _JobsState extends State<Jobs> {
             documentSnapshot.data() as Map<String, dynamic>?;
 
         if (data != null) {
-          title = data['title'];
-          client = data['client_name'];
-          postedOn = data['posted_on'];
-          price = data['price'];
-          duration = data['duration'];
-        } else {
-          print('Data is null');
+          setState(() {
+            title = data['title'];
+            username = data['username'];
+            //postedOn = data['posted_on'];
+            price = data['price'].toString();
+            duration = data['duration'].toString();
+          });
         }
-      } else {
-        print('Document does not exist');
       }
-    } catch (e) {
-      print('Error retrieving user: $e');
-    }
+    } catch (e) {}
   }
 
   @override
@@ -86,91 +81,79 @@ class _JobsState extends State<Jobs> {
             //Best Match Jobs goes here
             ListView(
               children: <Widget>[
-                Container(
-                  margin: const EdgeInsets.symmetric(
-                      vertical: 16.0, horizontal: 8.0),
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 16.0, horizontal: 8.0),
-                  width: screenWidth,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.0),
-                    border: Border.all(color: kOceanBlueColor, width: 3.0),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        '$title',
-                        style: TextStyle(fontSize: 22),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const JobDetails(),
                       ),
-                      Row(
-                        children: <Widget>[
-                          const Text('Posted by : '),
-                          Text('$client'),
-                        ],
-                      ),
-                      //Post Date goes here
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 4.0, horizontal: 16.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
+                    );
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(
+                        vertical: 16.0, horizontal: 8.0),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 16.0, horizontal: 8.0),
+                    width: screenWidth,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8.0),
+                      border: Border.all(color: kOceanBlueColor, width: 3.0),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          '$title',
+                          style: const TextStyle(fontSize: 22),
+                        ),
+                        Row(
                           children: <Widget>[
-                            const Icon(Icons.schedule),
-                            const Text('  Posted on : '),
-                            Text('$postedOn'),
+                            const Text('Posted by : '),
+                            Text('$username'),
                           ],
                         ),
-                      ),
-                      //Price goes here
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 4.0, horizontal: 16.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Icon(Icons.attach_money),
-                            Text('  Price : '),
-                            Text('$price'),
-                          ],
-                        ),
-                      ),
-                      //Duration goes here
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 4.0, horizontal: 16.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            const Icon(Icons.timelapse),
-                            const Text('  Duration : '),
-                            Text('$duration'),
-                          ],
-                        ),
-                      ),
-                      //See Job Details button goes here
-                      Container(
-                        margin: EdgeInsets.all(8.0),
-                        width: screenWidth,
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                                kDeepBlueColor),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const <Widget>[
-                                Text('See Job Details'),
-                                Icon(Icons.navigate_next)
-                              ],
-                            ),
+                        //Post Date goes here
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 4.0, horizontal: 16.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: const <Widget>[
+                              Icon(Icons.schedule),
+                              Text('  Posted on : '),
+                              // Text('$postedOn'),
+                            ],
                           ),
                         ),
-                      ),
-                    ],
+                        //Price goes here
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 4.0, horizontal: 16.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              const Icon(Icons.attach_money),
+                              const Text('  Price : '),
+                              Text('$price'),
+                            ],
+                          ),
+                        ),
+                        //Duration goes here
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 4.0, horizontal: 16.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              const Icon(Icons.timelapse),
+                              const Text('  Duration : '),
+                              Text('$duration'),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -191,14 +174,14 @@ class _JobsState extends State<Jobs> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(
+                      const Text(
                         'Most Recent Job',
                         style: TextStyle(fontSize: 22),
                       ),
                       Row(
-                        children: <Widget>[
-                          const Text('Posted by : '),
-                          const Text('GoviKamburugamuwa'),
+                        children: const <Widget>[
+                          Text('Posted by : '),
+                          Text('GoviKamburugamuwa'),
                         ],
                       ),
                       //Post Date goes here
@@ -207,9 +190,9 @@ class _JobsState extends State<Jobs> {
                             vertical: 4.0, horizontal: 16.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            const Icon(Icons.schedule),
-                            const Text('  Posted on : '),
+                          children: const <Widget>[
+                            Icon(Icons.schedule),
+                            Text('  Posted on : '),
                           ],
                         ),
                       ),
@@ -219,7 +202,7 @@ class _JobsState extends State<Jobs> {
                             vertical: 4.0, horizontal: 16.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
+                          children: const <Widget>[
                             Icon(Icons.attach_money),
                             Text('  Price : '),
                           ],
@@ -231,38 +214,10 @@ class _JobsState extends State<Jobs> {
                             vertical: 4.0, horizontal: 16.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            const Icon(Icons.timelapse),
-                            const Text('  Duration : '),
+                          children: const <Widget>[
+                            Icon(Icons.timelapse),
+                            Text('  Duration : '),
                           ],
-                        ),
-                      ),
-                      //See Job Details button goes here
-                      Container(
-                        margin: const EdgeInsets.all(8.0),
-                        width: screenWidth,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => const JobDetails(),
-                              ),
-                            );
-                          },
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                                kDeepBlueColor),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const <Widget>[
-                                Text('See Job Details'),
-                                Icon(Icons.navigate_next)
-                              ],
-                            ),
-                          ),
                         ),
                       ),
                     ],
