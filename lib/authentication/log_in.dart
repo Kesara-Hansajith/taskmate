@@ -3,6 +3,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:taskmate/authentication/sign_up.dart';
+import 'package:taskmate/components/maintenance_page.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/components/bottom_sub_text.dart';
 import 'package:taskmate/home_page.dart';
@@ -354,7 +355,11 @@ class _LoginState extends State<Login> {
                                               BorderRadius.circular(16.0),
                                         ),
                                       ),
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        showDialog(context: context, builder: (context){
+                                          return const MaintenancePage();
+                                        });
+                                      },
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
