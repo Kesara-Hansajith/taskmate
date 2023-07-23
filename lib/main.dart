@@ -13,7 +13,6 @@ import 'package:taskmate/authentication/verify_email.dart';
 import 'package:taskmate/jobs.dart';
 import 'package:taskmate/job_details.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -34,9 +33,7 @@ class Taskmate extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: "Poppins"),
       home: const SafeArea(
-
         child: Jobs(),
-
       ),
     );
   }
