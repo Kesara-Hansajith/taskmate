@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:taskmate/authentication/create_my_account_1.dart';
 import 'package:taskmate/authentication/log_in.dart';
+import 'package:taskmate/authentication/sign_up.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/components/bottom_sub_text.dart';
 
@@ -79,6 +81,12 @@ class _TakeActionState extends State<TakeAction> {
                                   setState(() {
                                     isWork = true;
                                     isHire = false;
+                                    Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                        const CreateMyAccount1(),
+                                      ),
+                                    );
                                   });
                                 },
                                 child: Container(
@@ -150,6 +158,12 @@ class _TakeActionState extends State<TakeAction> {
                                     isWork = false;
                                     isHire = true;
                                   });
+                                  Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                      const CreateMyAccount1(),
+                                    ),
+                                  );
                                 },
                                 child: Container(
                                   margin: const EdgeInsets.symmetric(
