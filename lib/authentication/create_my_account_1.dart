@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:taskmate/authentication/log_in.dart';
+import 'package:taskmate/authentication/verify_email.dart';
 import 'package:taskmate/components/bottom_sub_text.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/components/email_phone_toggle_switch.dart';
@@ -208,7 +209,8 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
                     onPressed: () async {
                       final String enteredEmail = email.text.trim();
                       final String enteredPassword = password.text.trim();
-                      final String confirmPassword = confirmPasswordController.text.trim();
+                      final String confirmPassword =
+                          confirmPasswordController.text.trim();
                       try {
                         if (enteredPassword == confirmPassword) {
                           await FirebaseAuth.instance
@@ -226,13 +228,17 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
                             textColor: Colors.white,
                             fontSize: 24.0,
                           );
-                        }
-                        else if (enteredPassword != confirmPassword) {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => VerifyEmail(),
+                            ),
+                          );
+                        } else if (enteredPassword != confirmPassword) {
                           // Show a snackbar if passwords don't match
                           ScaffoldMessenger.of(context).showSnackBar(
                             CustomSnackBar('Password does not match'),
                           );
-                          }
+                        }
                       } on FirebaseAuthException catch (e) {
                         if (e.code == 'weak-password') {
                           // The password provided is too weak
@@ -244,7 +250,8 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
                           ScaffoldMessenger.of(context).showSnackBar(
                             CustomSnackBar('Email already in use'),
                           );
-                        } else if (enteredPassword.isEmpty || enteredEmail.isEmpty) {
+                        } else if (enteredPassword.isEmpty ||
+                            enteredEmail.isEmpty) {
                           // Show a snackbar if fields are empty
                           ScaffoldMessenger.of(context).showSnackBar(
                             CustomSnackBar('Empty Email or Password'),
