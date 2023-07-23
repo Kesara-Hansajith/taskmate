@@ -1,8 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:taskmate/authentication/log_in.dart';
 import 'package:taskmate/components/bottom_sub_text.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/components/email_phone_toggle_switch.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:taskmate/components/snackbar.dart';
 
 class CreateMyAccount1 extends StatefulWidget {
   const CreateMyAccount1({super.key});
@@ -18,6 +22,15 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
 
   bool obsecureController0 = true;
   bool obsecureController1 = true;
+  final email = TextEditingController();
+  final password = TextEditingController();
+  final confirmPasswordController = TextEditingController();
+
+  void dispose() {
+    email.dispose();
+    password.dispose();
+    super.dispose();
+  }
 
   void setObsecure0() {
     setState(() {
@@ -68,7 +81,8 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
                     color: kBrilliantWhite,
                     borderRadius: BorderRadius.circular(20.0),
                   ),
-                  child: const TextField(
+                  child: TextField(
+                    controller: email,
                     obscureText: false,
                     decoration: InputDecoration(
                       border: InputBorder.none,
@@ -86,6 +100,7 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
                     borderRadius: BorderRadius.circular(20.0),
                   ),
                   child: TextField(
+                    controller: password,
                     obscureText: obsecureController0,
                     decoration: InputDecoration(
                       border: InputBorder.none,
@@ -113,6 +128,7 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
                     borderRadius: BorderRadius.circular(20.0),
                   ),
                   child: TextField(
+                    controller: confirmPasswordController,
                     obscureText: obsecureController1,
                     decoration: InputDecoration(
                       border: InputBorder.none,
@@ -189,7 +205,53 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () async {
+                      final String enteredEmail = email.text.trim();
+                      final String enteredPassword = password.text.trim();
+                      final String confirmPassword = confirmPasswordController.text.trim();
+                      try {
+                        if (enteredPassword == confirmPassword) {
+                          await FirebaseAuth.instance
+                              .createUserWithEmailAndPassword(
+                            email: enteredEmail,
+                            password: enteredPassword,
+                          );
+                          // Account creation successful
+                          Fluttertoast.showToast(
+                            msg: "Account was successfully created",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 2,
+                            backgroundColor: Colors.blue,
+                            textColor: Colors.white,
+                            fontSize: 24.0,
+                          );
+                        }
+                        else if (enteredPassword != confirmPassword) {
+                          // Show a snackbar if passwords don't match
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            CustomSnackBar('Password does not match'),
+                          );
+                          }
+                      } on FirebaseAuthException catch (e) {
+                        if (e.code == 'weak-password') {
+                          // The password provided is too weak
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            CustomSnackBar('Weak password'),
+                          );
+                        } else if (e.code == 'email-already-in-use') {
+                          // The account already exists for that email
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            CustomSnackBar('Email already in use'),
+                          );
+                        } else if (enteredPassword.isEmpty || enteredEmail.isEmpty) {
+                          // Show a snackbar if fields are empty
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            CustomSnackBar('Empty Email or Password'),
+                          );
+                        }
+                      }
+                    },
                     child: const Padding(
                       padding: EdgeInsets.all(16.0),
                       child: Text(

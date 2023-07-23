@@ -14,7 +14,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "681609208614-0s7fd4oakqlcd1v22te4kfjqgip284qo.apps.googleusercontent.com",
+          "client_id": "681609208614-6l2nlp833qq56igd881mtfssvu1m8e0o.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -29,6 +29,13 @@
             {
               "client_id": "681609208614-0s7fd4oakqlcd1v22te4kfjqgip284qo.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "681609208614-9f6miom5v6leeed7peq4u1k7asapiulv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.taskmateapp.taskmate"
+              }
             }
           ]
         }
