@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:taskmate/authentication/forget_password.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
 import 'package:taskmate/authentication/sign_up.dart';
 import 'package:taskmate/components/maintenance_page.dart';
@@ -69,7 +70,6 @@ class _LoginState extends State<Login> {
 //Method for Sign in with email and password
   void signInWithEmailAndPassword(String email, String password) async {
     try {
-
       // Sign-in successful, handle the user object or navigate to the next screen.
 
       Navigator.of(context).pushReplacement(
@@ -270,8 +270,14 @@ class _LoginState extends State<Login> {
                                 ),
                               ),
                               TextButton(
-                                //TODO: Implement Forgot Password Section
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ForgetPassword(),
+                                    ),
+                                  );
+                                },
                                 child: const Text(
                                   'Forgot your Password',
                                   style: TextStyle(
