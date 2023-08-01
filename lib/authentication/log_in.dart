@@ -70,6 +70,10 @@ class _LoginState extends State<Login> {
 //Method for Sign in with email and password
   void signInWithEmailAndPassword(String email, String password) async {
     try {
+      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text,
+      );
       // Sign-in successful, handle the user object or navigate to the next screen.
 
       Navigator.of(context).pushReplacement(
@@ -117,328 +121,335 @@ class _LoginState extends State<Login> {
     final double screenWidth = screenSize.width;
     // final double screenHeight = screenSize.height;
 
-    return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(color: kDeepBlueColor),
-        child: Column(
-          children: <Widget>[
-            Expanded(
-              flex: 2,
-              child: Image.asset('images/TaskMateLogo_Light.png'),
+    return SafeArea(
+      child: Scaffold(
+        body: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.fill,
+              image: AssetImage('images/background/login.webp'),
             ),
-            Expanded(
-              flex: 5,
-              child: Stack(
-                children: <Widget>[
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.4),
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(45.0),
-                        topRight: Radius.circular(45.0),
+          ),
+          child: Column(
+            children: <Widget>[
+              Expanded(
+                flex: 2,
+                child: Image.asset('images/taskmate_logo_light.webp'),
+              ),
+              Expanded(
+                flex: 5,
+                child: Stack(
+                  children: <Widget>[
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.4),
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(45.0),
+                          topRight: Radius.circular(45.0),
+                        ),
                       ),
                     ),
-                  ),
-                  Positioned(
-                    top: 12,
-                    bottom: 0,
-                    child: Container(
-                      width: screenWidth,
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('images/noise_image.png'),
-                          repeat: ImageRepeat.repeat,
+                    Positioned(
+                      top: 12,
+                      bottom: 0,
+                      child: Container(
+                        width: screenWidth,
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage('images/noise_image.webp'),
+                            repeat: ImageRepeat.repeat,
+                          ),
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20.0),
+                            topRight: Radius.circular(20.0),
+                          ),
                         ),
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20.0),
-                          topRight: Radius.circular(20.0),
-                        ),
-                      ),
-                      child: ListView(
-                        children: <Widget>[
-                          Column(
-                            mainAxisSize: MainAxisSize.max,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              const Padding(
-                                padding: EdgeInsets.symmetric(vertical: 8.0),
-                                child: Text(
-                                  'Welcome Back!',
-                                  style: kHeadingTextStyle,
+                        child: ListView(
+                          children: <Widget>[
+                            Column(
+                              mainAxisSize: MainAxisSize.max,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 8.0),
+                                  child: Text(
+                                    'Welcome Back!',
+                                    style: kHeadingTextStyle,
+                                  ),
                                 ),
-                              ),
-                              Form(
-                                key: _formKey,
-                                child: Column(
-                                  children: <Widget>[
-                                    //Email Textfield
-                                    Container(
-                                      margin: const EdgeInsets.symmetric(
-                                          vertical: 8.0, horizontal: 28.0),
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 16.0),
-                                      decoration: BoxDecoration(
-                                        color: kBrilliantWhite,
-                                        borderRadius:
-                                            BorderRadius.circular(20.0),
-                                      ),
-                                      child:
-                                          //Email Textfield
-                                          TextFormField(
-                                        controller: emailController,
-                                        validator: (value) {
-                                          if (value == null ||
-                                              value.isEmpty ||
-                                              !value.contains('@')) {
-                                            return 'Please enter a valid Email Address';
-                                          }
-                                          return null; // Return null for valid input
-                                        },
-                                        obscureText: false,
-                                        decoration: const InputDecoration(
-                                          border: InputBorder.none,
-                                          hintText: 'Email',
+                                Form(
+                                  key: _formKey,
+                                  child: Column(
+                                    children: <Widget>[
+                                      //Email Textfield
+                                      Container(
+                                        margin: const EdgeInsets.symmetric(
+                                            vertical: 8.0, horizontal: 28.0),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 16.0),
+                                        decoration: BoxDecoration(
+                                          color: kBrilliantWhite,
+                                          borderRadius:
+                                              BorderRadius.circular(20.0),
                                         ),
-                                      ),
-                                    ),
-                                    //Password Textfield
-                                    Container(
-                                      margin: const EdgeInsets.symmetric(
-                                          vertical: 8.0, horizontal: 28.0),
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 16.0),
-                                      decoration: BoxDecoration(
-                                        color: kBrilliantWhite,
-                                        borderRadius:
-                                            BorderRadius.circular(20.0),
-                                      ),
-                                      child: TextFormField(
-                                        controller: passwordController,
-                                        validator: (value) {
-                                          if (value == null || value.isEmpty) {
-                                            return 'Please enter the Password';
-                                          }
-                                          return null; // Return null for valid input
-                                        },
-                                        obscureText: obsecureController,
-                                        decoration: InputDecoration(
-                                          border: InputBorder.none,
-                                          hintText: 'Password',
-                                          suffixIcon: IconButton(
-                                            icon: obsecureController
-                                                ? const Icon(Icons.lock)
-                                                : const Icon(Icons.lock_open),
-                                            color: kJetBlack,
-                                            onPressed: () {
-                                              setObsecure();
-                                            },
+                                        child:
+                                            //Email Textfield
+                                            TextFormField(
+                                          controller: emailController,
+                                          validator: (value) {
+                                            if (value == null ||
+                                                value.isEmpty ||
+                                                !value.contains('@')) {
+                                              return 'Please enter a valid Email Address';
+                                            }
+                                            return null; // Return null for valid input
+                                          },
+                                          obscureText: false,
+                                          decoration: const InputDecoration(
+                                            border: InputBorder.none,
+                                            hintText: 'Email',
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                      //Password Textfield
+                                      Container(
+                                        margin: const EdgeInsets.symmetric(
+                                            vertical: 8.0, horizontal: 28.0),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 16.0),
+                                        decoration: BoxDecoration(
+                                          color: kBrilliantWhite,
+                                          borderRadius:
+                                              BorderRadius.circular(20.0),
+                                        ),
+                                        child: TextFormField(
+                                          controller: passwordController,
+                                          validator: (value) {
+                                            if (value == null || value.isEmpty) {
+                                              return 'Please enter the Password';
+                                            }
+                                            return null; // Return null for valid input
+                                          },
+                                          obscureText: obsecureController,
+                                          decoration: InputDecoration(
+                                            border: InputBorder.none,
+                                            hintText: 'Password',
+                                            suffixIcon: IconButton(
+                                              icon: obsecureController
+                                                  ? const Icon(Icons.lock)
+                                                  : const Icon(Icons.lock_open),
+                                              color: kJetBlack,
+                                              onPressed: () {
+                                                setObsecure();
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              //"Log In" Button goes here
-                              Container(
-                                margin: const EdgeInsets.symmetric(
-                                    vertical: 8.0, horizontal: 28.0),
-                                width: screenWidth,
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: kDeepBlueColor,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20.0),
+                                //"Log In" Button goes here
+                                Container(
+                                  margin: const EdgeInsets.symmetric(
+                                      vertical: 8.0, horizontal: 28.0),
+                                  width: screenWidth,
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: kDeepBlueColor,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20.0),
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      if (_formKey.currentState!.validate()) {
+                                        // Form is valid, proceed with submission or other actions
+                                        signInWithEmailAndPassword(
+                                          emailController.text.trim(),
+                                          passwordController.text.trim(),
+                                        );
+                                      }
+                                    },
+                                    child: const Padding(
+                                      padding: EdgeInsets.all(16.0),
+                                      child: Text(
+                                        'Log In',
+                                        style: TextStyle(fontSize: 15.0),
+                                      ),
                                     ),
                                   ),
+                                ),
+                                TextButton(
                                   onPressed: () {
-                                    if (_formKey.currentState!.validate()) {
-                                      // Form is valid, proceed with submission or other actions
-                                      signInWithEmailAndPassword(
-                                        emailController.text.trim(),
-                                        passwordController.text.trim(),
-                                      );
-                                    }
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const ForgetPassword(),
+                                      ),
+                                    );
                                   },
-                                  child: const Padding(
-                                    padding: EdgeInsets.all(16.0),
-                                    child: Text(
-                                      'Log In',
-                                      style: TextStyle(fontSize: 15.0),
+                                  child: const Text(
+                                    'Forgot your Password',
+                                    style: TextStyle(
+                                      color: kDarkGreyColor,
                                     ),
                                   ),
                                 ),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const ForgetPassword(),
-                                    ),
-                                  );
-                                },
-                                child: const Text(
-                                  'Forgot your Password',
-                                  style: TextStyle(
-                                    color: kDarkGreyColor,
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 12.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: <Widget>[
+                                      Center(
+                                        child: Container(
+                                          height: 3.0,
+                                          width: screenWidth / 4,
+                                          color: kLightBlueColor,
+                                        ),
+                                      ),
+                                      const Text(
+                                        'Or continue with',
+                                        style: TextStyle(
+                                          fontSize: 13.0,
+                                        ),
+                                      ),
+                                      Center(
+                                        child: Container(
+                                          height: 3.0,
+                                          width: screenWidth / 4,
+                                          color: kLightBlueColor,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 12.0),
-                                child: Row(
+                                Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
                                   children: <Widget>[
-                                    Center(
-                                      child: Container(
-                                        height: 3.0,
-                                        width: screenWidth / 4,
-                                        color: kLightBlueColor,
+                                    //"Google" Signup Button
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 8.0),
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 12.0, horizontal: 24.0),
+                                          backgroundColor: kLightBlueColor,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(16.0),
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          handleSignIn(context);
+                                        },
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: <Widget>[
+                                            Image.asset(
+                                              'icons/google.png',
+                                              width: 25.0,
+                                            ),
+                                            const SizedBox(
+                                              width: 8.0,
+                                            ),
+                                            const Text(
+                                              'Google',
+                                              style: TextStyle(
+                                                  color: kDeepBlueColor,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 15.0),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                    const Text(
-                                      'Or continue with',
-                                      style: TextStyle(
-                                        fontSize: 13.0,
-                                      ),
-                                    ),
-                                    Center(
-                                      child: Container(
-                                        height: 3.0,
-                                        width: screenWidth / 4,
-                                        color: kLightBlueColor,
+                                    //"Facebook" Signup Button
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 8.0),
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 12.0, horizontal: 24.0),
+                                          backgroundColor: kLightBlueColor,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(16.0),
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return const MaintenancePage();
+                                              });
+                                        },
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: <Widget>[
+                                            Image.asset(
+                                              'icons/facebook.png',
+                                              width: 25.0,
+                                            ),
+                                            const SizedBox(
+                                              width: 8.0,
+                                            ),
+                                            const Text(
+                                              'Facebook',
+                                              style: TextStyle(
+                                                  color: kDeepBlueColor,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 15.0),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ],
                                 ),
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: <Widget>[
-                                  //"Google" Signup Button
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 8.0),
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 12.0, horizontal: 24.0),
-                                        backgroundColor: kLightBlueColor,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(16.0),
-                                        ),
-                                      ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    const BottomSubText('Create a'),
+                                    TextButton(
                                       onPressed: () {
-                                        handleSignIn(context);
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) => const SignUp(),
+                                          ),
+                                        );
                                       },
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: <Widget>[
-                                          Image.asset(
-                                            'icons/google.png',
-                                            width: 25.0,
-                                          ),
-                                          const SizedBox(
-                                            width: 8.0,
-                                          ),
-                                          const Text(
-                                            'Google',
-                                            style: TextStyle(
-                                                color: kDeepBlueColor,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 15.0),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  //"Facebook" Signup Button
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 8.0),
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 12.0, horizontal: 24.0),
-                                        backgroundColor: kLightBlueColor,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(16.0),
+                                      child: const Text(
+                                        'TaskMate',
+                                        style: TextStyle(
+                                          color: kAmberColor,
                                         ),
                                       ),
-                                      onPressed: () {
-                                        showDialog(
-                                            context: context,
-                                            builder: (context) {
-                                              return const MaintenancePage();
-                                            });
-                                      },
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: <Widget>[
-                                          Image.asset(
-                                            'icons/facebook.png',
-                                            width: 25.0,
-                                          ),
-                                          const SizedBox(
-                                            width: 8.0,
-                                          ),
-                                          const Text(
-                                            'Facebook',
-                                            style: TextStyle(
-                                                color: kDeepBlueColor,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 15.0),
-                                          ),
-                                        ],
-                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  const BottomSubText('Create a'),
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) => const SignUp(),
-                                        ),
-                                      );
-                                    },
-                                    child: const Text(
-                                      'TaskMate',
-                                      style: TextStyle(
-                                        color: kAmberColor,
-                                      ),
-                                    ),
-                                  ),
-                                  const BottomSubText('Account'),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
+                                    const BottomSubText('Account'),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -14,15 +14,20 @@ class GetStarted extends StatelessWidget {
 
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(color: kDeepBlueColor),
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            fit: BoxFit.fill,
+            image: AssetImage('images/background/get_started.webp'),
+          ),
+        ),
         child: Column(
           children: <Widget>[
             Expanded(
               flex: 3,
-              child: Image.asset('images/TaskMateLogo_Light.png'),
+              child: Image.asset('images/taskmate_logo_light.webp'),
             ),
             Expanded(
-              flex: 5,
+              flex: 6,
               child: Stack(
                 children: <Widget>[
                   Container(
@@ -41,7 +46,7 @@ class GetStarted extends StatelessWidget {
                       width: screenWidth,
                       decoration: const BoxDecoration(
                         image: DecorationImage(
-                          image: AssetImage('images/noise_image.png'),
+                          image: AssetImage('images/noise_image.webp'),
                           repeat: ImageRepeat.repeat,
                         ),
                         borderRadius: BorderRadius.only(
@@ -53,13 +58,15 @@ class GetStarted extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
                           //GIF will goes here
-                          const Image(
-                            image: AssetImage('gifs/rocket_man.gif'),
+                          const Expanded(
+                            child: Image(
+                              image: AssetImage('images/rocket_man.webp'),
+                            ),
                           ),
                           //"Get Started" will goes here
                           Container(
                             margin: const EdgeInsets.symmetric(
-                                vertical: 16.0, horizontal: 28.0),
+                                vertical: 4.0, horizontal: 28.0),
                             width: screenWidth,
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
@@ -107,6 +114,9 @@ class GetStarted extends StatelessWidget {
                                 ),
                               ),
                             ],
+                          ),
+                          const SizedBox(
+                            height: 50.0,
                           ),
                         ],
                       ),
