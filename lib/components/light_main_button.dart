@@ -18,7 +18,7 @@ class LightMainButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: screenWidth,
-      margin: const EdgeInsets.symmetric(horizontal: 28.0, vertical: 12.0),
+      margin: const EdgeInsets.symmetric(horizontal: 28.0, vertical: 8.0),
       child: ElevatedButton(
         onPressed: process,
         style: ElevatedButton.styleFrom(

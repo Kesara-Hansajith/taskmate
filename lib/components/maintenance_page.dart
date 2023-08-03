@@ -7,14 +7,24 @@ class MaintenancePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text(
-        'We\'re making this feature much better!',
-        textAlign: TextAlign.center,
+
+      title: const Image(
+        image: AssetImage('images/gear.webp'),
       ),
-      content: const Image(
-        width: 150,
-        height: 150,
-        image: AssetImage('gifs/maintenance.gif'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: const <Widget>[
+          Text(
+            'We’re ',
+            style: kSubHeadingTextStyle,
+            textAlign: TextAlign.center,
+          ),
+          Text(
+            'Under Maintenance',
+            style: kSubHeadingTextStyle,
+            textAlign: TextAlign.center,
+          )
+        ],
       ),
       actions: [
         ElevatedButton(
@@ -30,7 +40,7 @@ class MaintenancePage extends StatelessWidget {
             backgroundColor: MaterialStateProperty.all(kDeepBlueColor),
           ),
           child: const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24.0,vertical: 12.0),
+            padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
             child: Text('Okay'),
           ),
         ),
