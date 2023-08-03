@@ -13,5 +13,15 @@ const kDarkGreyColor = Color(0xFF4B4646);
 const kBrilliantWhite = Color(0xFFFFFFFF);
 const kJetBlack = Color(0xFF000000);
 
+//TextStyles for Text Patterns
 const kHeadingTextStyle = TextStyle(
-    color: kDeepBlueColor, fontSize: 30.0, fontWeight: FontWeight.bold);
+    color: kDeepBlueColor, fontSize: 32.0, fontWeight: FontWeight.bold);
+
+const kSubHeadingTextStyle = TextStyle(
+    color: kDeepBlueColor, fontSize: 25.0, fontWeight: FontWeight.bold);
+
+const kTextStyle = TextStyle(
+    color: kDarkGreyColor, fontSize: 13.0,);
+
+const kMainButtonTextStyle = TextStyle(
+    color: kBrilliantWhite, fontSize: 16.0,);
