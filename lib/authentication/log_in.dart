@@ -4,12 +4,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:taskmate/authentication/forget_password.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
 import 'package:taskmate/authentication/sign_up.dart';
-import 'package:taskmate/components/maintenance_page.dart';
+import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/components/bottom_sub_text.dart';
 // import 'package:taskmate/home_page.dart';
 import 'package:taskmate/components/snackbar.dart';
 import 'package:taskmate/jobs.dart';
+import 'package:taskmate/components/maintenance_page.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -30,6 +31,31 @@ class _LoginState extends State<Login> {
       obsecureController = !obsecureController;
     });
   }
+
+  // void _showCustomDialog(BuildContext context) {
+  // showDialog(
+  //   context: context,
+  //   builder: (BuildContext context) {
+  //     return CustomAlertDialog(
+  //       child: Column(
+  //         mainAxisSize: MainAxisSize.min,
+  //         children: [
+  //           // Add your alert dialog content here
+  //           Text('Your Alert Title',style: kTextStyle,),
+  //           SizedBox(height: 10),
+  //           Text('Your Alert Message'),
+  //           SizedBox(height: 20),
+  //           ElevatedButton(
+  //             onPressed: () => Navigator.of(context).pop(),
+  //             child: Text('Close'),
+  //           ),
+  //         ],
+  //       ),
+  //     );
+  //   },
+  // );
+
+  // }
 
 //Method for Google Authentication
   Future<UserCredential> signInWithGoogle() async {
@@ -70,10 +96,6 @@ class _LoginState extends State<Login> {
 //Method for Sign in with email and password
   void signInWithEmailAndPassword(String email, String password) async {
     try {
-      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: emailController.text,
-          password: passwordController.text,
-      );
       // Sign-in successful, handle the user object or navigate to the next screen.
 
       Navigator.of(context).pushReplacement(
@@ -225,7 +247,8 @@ class _LoginState extends State<Login> {
                                         child: TextFormField(
                                           controller: passwordController,
                                           validator: (value) {
-                                            if (value == null || value.isEmpty) {
+                                            if (value == null ||
+                                                value.isEmpty) {
                                               return 'Please enter the Password';
                                             }
                                             return null; // Return null for valid input
@@ -258,7 +281,8 @@ class _LoginState extends State<Login> {
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: kDeepBlueColor,
                                       shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(20.0),
+                                        borderRadius:
+                                            BorderRadius.circular(20.0),
                                       ),
                                     ),
                                     onPressed: () {
@@ -296,8 +320,8 @@ class _LoginState extends State<Login> {
                                   ),
                                 ),
                                 Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 12.0),
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 12.0),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
@@ -386,10 +410,45 @@ class _LoginState extends State<Login> {
                                         ),
                                         onPressed: () {
                                           showDialog(
-                                              context: context,
-                                              builder: (context) {
-                                                return const MaintenancePage();
-                                              });
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return MaintenancePage(
+                                                [
+                                                  const Image(
+                                                    image: AssetImage(
+                                                        'images/gear.webp'),
+                                                  ),
+                                                  Text(
+                                                    'We’re',
+                                                    style: kSubHeadingTextStyle
+                                                        .copyWith(height: 0.5),
+                                                  ),
+                                                  const Text(
+                                                    'Under Maintenance',
+                                                    style: kSubHeadingTextStyle,
+                                                  ),
+                                                  const Padding(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 8.0),
+                                                    child: Text(
+                                                      'Please check back soon just putting little touch up on some pretty updates.',
+                                                      style: kTextStyle,
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                    ),
+                                                  ),
+                                                  DarkMainButton(
+                                                      title: 'Close',
+                                                      process: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      screenWidth: screenWidth)
+                                                ],
+                                              );
+                                            },
+                                          );
                                         },
                                         child: Row(
                                           mainAxisAlignment:
@@ -425,7 +484,8 @@ class _LoginState extends State<Login> {
                                       onPressed: () {
                                         Navigator.of(context).push(
                                           MaterialPageRoute(
-                                            builder: (context) => const SignUp(),
+                                            builder: (context) =>
+                                                const SignUp(),
                                           ),
                                         );
                                       },

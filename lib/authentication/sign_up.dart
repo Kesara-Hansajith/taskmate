@@ -7,10 +7,33 @@ import 'package:taskmate/constants.dart';
 import 'package:taskmate/components/bottom_sub_text.dart';
 import 'package:taskmate/authentication/create_my_account_1.dart';
 
-import '../components/maintenance_page.dart';
 
 class SignUp extends StatelessWidget {
   const SignUp({super.key});
+
+  // void _showCustomDialog(BuildContext context) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return CustomAlertDialog(
+  //         child: Column(
+  //           mainAxisSize: MainAxisSize.min,
+  //           children: [
+  //             // Add your alert dialog content here
+  //             Text('Your Alert Title'),
+  //             SizedBox(height: 10),
+  //             Text('Your Alert Message'),
+  //             SizedBox(height: 20),
+  //             ElevatedButton(
+  //               onPressed: () => Navigator.of(context).pop(),
+  //               child: Text('Close'),
+  //             ),
+  //           ],
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 
   //Method for Google Authentication
   Future<UserCredential> signInWithGoogle() async {
@@ -234,11 +257,7 @@ class SignUp extends StatelessWidget {
                                           ),
                                         ),
                                         onPressed: () {
-                                          showDialog(
-                                              context: context,
-                                              builder: (context) {
-                                                return const MaintenancePage();
-                                              });
+
                                         },
                                         child: Row(
                                           mainAxisAlignment:
