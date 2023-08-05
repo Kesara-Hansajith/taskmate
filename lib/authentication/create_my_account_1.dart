@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:taskmate/authentication/log_in.dart';
 import 'package:taskmate/authentication/verify_email.dart';
@@ -27,6 +26,7 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
   final password = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
+  @override
   void dispose() {
     email.dispose();
     password.dispose();
@@ -43,6 +43,30 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
     setState(() {
       obsecureController1 = !obsecureController1;
     });
+  }
+
+  void _navigateToVerifyEmail() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const VerifyEmail(),
+      ),
+    );
+  }
+
+  Future<void> sendVerificationLink(String email) async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+
+      if (user != null && !user.emailVerified) {
+        await user.sendEmailVerification();
+
+        _navigateToVerifyEmail();
+      } else {
+        print('No user or user is already verified.');
+      }
+    } catch (e) {
+      print('Error sending verification link: $e');
+    }
   }
 
   @override
@@ -86,7 +110,7 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
                     child: TextField(
                       controller: email,
                       obscureText: false,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Email',
                       ),
@@ -219,7 +243,8 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
                               email: enteredEmail,
                               password: enteredPassword,
                             );
-                            // Account creation successful
+                            sendVerificationLink(email.text);
+
                             Fluttertoast.showToast(
                               msg: "Account was successfully created",
                               toastLength: Toast.LENGTH_SHORT,
@@ -228,11 +253,8 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
                               backgroundColor: Colors.blue,
                               textColor: Colors.white,
                               fontSize: 24.0,
-                            );
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => VerifyEmail(),
-                              ),
+
+                              // Account creation successful
                             );
                           } else if (enteredPassword != confirmPassword) {
                             // Show a snackbar if passwords don't match

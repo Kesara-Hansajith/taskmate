@@ -123,7 +123,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
           decoration: const BoxDecoration(
             image: DecorationImage(
               repeat: ImageRepeat.repeat,
-              image: AssetImage('images/noise_image.png'),
+              image: AssetImage('images/noise_image.webp'),
             ),
           ),
           child: Column(
