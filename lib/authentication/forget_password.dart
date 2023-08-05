@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:taskmate/authentication/log_in.dart';
 
 import 'package:taskmate/constants.dart';
-import '../components/snackbar.dart';
+import 'package:taskmate/components/maintenance_page.dart';
+import 'package:taskmate/components/snackbar.dart';
 import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/components/light_main_button.dart';
+import 'package:external_app_launcher/external_app_launcher.dart';
 
 class ForgetPassword extends StatefulWidget {
   const ForgetPassword({super.key});
@@ -24,19 +26,67 @@ class _ForgetPasswordState extends State<ForgetPassword> {
     super.dispose();
   }
 
+  //Alert message Method
+  void _alertDialog() {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) {
+        return MaintenancePage(
+          [
+            Image.asset('images/magnifier.webp'),
+            const Text(
+              'Check Your Email!',
+              style: kSubHeadingTextStyle,
+              textAlign: TextAlign.center,
+            ),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 4.0),
+              child: Text(
+                'We’ve sent a password reset link to Inbox',
+                style: kTextStyle,
+                textAlign: TextAlign.center,
+              ),
+            ),
+            DarkMainButton(
+                title: 'Check Inbox',
+                process: ()  async {
+                   await LaunchApp.openApp(
+                      androidPackageName: 'com.google.android.gm',
+                      openStore: false,);
+                },
+                screenWidth: MediaQuery.of(context).size.width),
+            const Padding(
+              padding: EdgeInsets.all(4.0),
+              child: Text(
+                'After resetting the password you can now login to Taskmate with your new password',
+                style: kTextStyle,
+                textAlign: TextAlign.center,
+              ),
+            ),
+            LightMainButton(
+                title: 'Login Now',
+                process: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const Login(),
+                    ),
+                  );
+                },
+                screenWidth: MediaQuery.of(context).size.width)
+          ],
+        );
+      },
+    );
+  }
+
+//Forget password Method
   Future forgetPassword() async {
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(
         email: _forgetPasswordController.text.trim(),
       );
-      showDialog(
-        context: context,
-        builder: (context) {
-          return const AlertDialog(
-            content: Text('Reset Link was successfully sent!'),
-          );
-        },
-      );
+      _alertDialog();
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-email') {
         _forgetPasswordController.clear();
@@ -79,8 +129,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
           child: Column(
             children: <Widget>[
               const Padding(
-                padding:
-                    EdgeInsets.symmetric(vertical: 24.0, horizontal: 8.0),
+                padding: EdgeInsets.symmetric(vertical: 24.0, horizontal: 8.0),
                 child: Text(
                   'Forgot Password',
                   textAlign: TextAlign.center,
@@ -109,8 +158,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                       child: Container(
                         margin: const EdgeInsets.symmetric(
                             vertical: 8.0, horizontal: 28.0),
-                        padding:
-                            const EdgeInsets.symmetric(horizontal: 16.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         decoration: BoxDecoration(
                           color: kBrilliantWhite,
                           borderRadius: BorderRadius.circular(20.0),

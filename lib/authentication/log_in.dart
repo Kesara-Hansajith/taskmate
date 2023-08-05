@@ -32,31 +32,6 @@ class _LoginState extends State<Login> {
     });
   }
 
-  // void _showCustomDialog(BuildContext context) {
-  // showDialog(
-  //   context: context,
-  //   builder: (BuildContext context) {
-  //     return CustomAlertDialog(
-  //       child: Column(
-  //         mainAxisSize: MainAxisSize.min,
-  //         children: [
-  //           // Add your alert dialog content here
-  //           Text('Your Alert Title',style: kTextStyle,),
-  //           SizedBox(height: 10),
-  //           Text('Your Alert Message'),
-  //           SizedBox(height: 20),
-  //           ElevatedButton(
-  //             onPressed: () => Navigator.of(context).pop(),
-  //             child: Text('Close'),
-  //           ),
-  //         ],
-  //       ),
-  //     );
-  //   },
-  // );
-
-  // }
-
 //Method for Google Authentication
   Future<UserCredential> signInWithGoogle() async {
     // Trigger the authentication flow

@@ -41,12 +41,12 @@ class _VerifyEmailState extends State<VerifyEmail> {
           ),
           child: Column(
             children: <Widget>[
-              const Padding(
+              Padding(
                 padding: EdgeInsets.symmetric(vertical: 24.0, horizontal: 8.0),
                 child: Text(
                   'Verify Your Email Address',
                   textAlign: TextAlign.center,
-                  style: kHeadingTextStyle,
+                  style: kHeadingTextStyle.copyWith(height: 1.2),
                 ),
               ),
               const Expanded(
@@ -82,7 +82,6 @@ class _VerifyEmailState extends State<VerifyEmail> {
                   ],
                 ),
               ),
-
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: 8.0),
                 child: Text(
@@ -92,10 +91,10 @@ class _VerifyEmailState extends State<VerifyEmail> {
                 ),
               ),
               LightMainButton(
-                  title: 'Resend',
-                  process: () {},
-                  screenWidth: screenWidth),
-              const SizedBox(height: 30.0,),
+                  title: 'Resend', process: () {}, screenWidth: screenWidth),
+              const SizedBox(
+                height: 30.0,
+              ),
             ],
           ),
         ),

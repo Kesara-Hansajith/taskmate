@@ -4,8 +4,8 @@ import 'package:taskmate/constants.dart';
 
 class LightMainButton extends StatelessWidget {
   const LightMainButton({
-    this.title,
-    this.process,
+    required this.title,
+    required this.process,
     super.key,
     required this.screenWidth,
   });
