@@ -25,12 +25,17 @@ class _TakeActionState extends State<TakeAction> {
     return Scaffold(
       backgroundColor: kAshWhiteColor,
       body: Container(
-        decoration: const BoxDecoration(color: kDeepBlueColor),
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            fit: BoxFit.fill,
+            image: AssetImage('images/background/take_action_1.webp'),
+          ),
+        ),
         child: Column(
           children: <Widget>[
             Expanded(
               flex: 3,
-              child: Image.asset('images/TaskMateLogo_Light.png'),
+              child: Image.asset('images/taskmate_logo_light.webp'),
             ),
             Expanded(
               flex: 5,
@@ -52,7 +57,7 @@ class _TakeActionState extends State<TakeAction> {
                       width: screenWidth,
                       decoration: const BoxDecoration(
                         image: DecorationImage(
-                          image: AssetImage('images/noise_image.png'),
+                          image: AssetImage('images/noise_image.webp'),
                           repeat: ImageRepeat.repeat,
                         ),
                         borderRadius: BorderRadius.only(
@@ -81,10 +86,10 @@ class _TakeActionState extends State<TakeAction> {
                                   setState(() {
                                     isWork = true;
                                     isHire = false;
-                                    Navigator.of(context).pushReplacement(
+                                    Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                        const CreateMyAccount1(),
+                                            const CreateMyAccount1(),
                                       ),
                                     );
                                   });
@@ -161,7 +166,7 @@ class _TakeActionState extends State<TakeAction> {
                                   Navigator.of(context).pushReplacement(
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                      const CreateMyAccount1(),
+                                          const CreateMyAccount1(),
                                     ),
                                   );
                                 },
