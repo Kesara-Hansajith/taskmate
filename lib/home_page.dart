@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:taskmate/authentication/log_in.dart';
-import 'package:taskmate/components/bottom_sub_text.dart';
 import 'package:taskmate/constants.dart';
-import 'package:taskmate/components/email_phone_toggle_switch.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key});
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +13,7 @@ class HomePage extends StatelessWidget {
         actions: [
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              primary: kDeepBlueColor,
+              backgroundColor: kDeepBlueColor,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(40.0),
               ),
@@ -27,7 +22,6 @@ class HomePage extends StatelessWidget {
               // Google Sign Out
               final GoogleSignIn googleSignIn = GoogleSignIn();
               await googleSignIn.signOut();
-              print('Signed out from Google');
 
               // Additional code if needed
             },
@@ -46,8 +40,8 @@ class HomePage extends StatelessWidget {
           Align(
             alignment: Alignment.topRight,
             child: Column(
-              children: [
-                const SizedBox(
+              children: const [
+                SizedBox(
                   height: 16,
                 ), // Add some spacing between the elements
                 // Other widgets you want to display in the AppBar can be added here
@@ -57,7 +51,7 @@ class HomePage extends StatelessWidget {
           Align(
             alignment: Alignment.topCenter,
             child: Column(
-              children: [
+              children: const [
                 Text(
                   'Submit Proposal',
                   style: TextStyle(

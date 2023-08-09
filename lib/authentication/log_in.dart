@@ -7,7 +7,6 @@ import 'package:taskmate/authentication/sign_up.dart';
 import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/components/bottom_sub_text.dart';
-// import 'package:taskmate/home_page.dart';
 import 'package:taskmate/components/snackbar.dart';
 import 'package:taskmate/jobs.dart';
 import 'package:taskmate/components/maintenance_page.dart';
@@ -37,17 +36,14 @@ class _LoginState extends State<Login> {
     // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
-    // Obtain the auth details from the request
     final GoogleSignInAuthentication? googleAuth =
         await googleUser?.authentication;
 
-    // Create a new credential
     final credential = GoogleAuthProvider.credential(
       accessToken: googleAuth?.accessToken,
       idToken: googleAuth?.idToken,
     );
 
-    // Once signed in, return the UserCredential
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
@@ -55,22 +51,19 @@ class _LoginState extends State<Login> {
     UserCredential user = await signInWithGoogle();
 
     if (user != null) {
-      // Navigate to the desired route after successful sign-in
-      // Replace '/home' with your desired route
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) => const Jobs(),
         ),
       );
-    } else {
-      // Handle the case when Google Sign-In is cancelled or fails
-      // You might show an error message or take appropriate action
-    }
+    } else {}
   }
 
 //Method for Sign in with email and password
   void signInWithEmailAndPassword(String email, String password) async {
     try {
+      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailController.text, password: passwordController.text);
       // Sign-in successful, handle the user object or navigate to the next screen.
 
       Navigator.of(context).pushReplacement(
@@ -100,7 +93,6 @@ class _LoginState extends State<Login> {
           CustomSnackBar('Incorrect Password'),
         );
       }
-      // Handle other exceptions as needed.
     }
   }
 
