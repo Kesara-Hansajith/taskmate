@@ -16,9 +16,8 @@ class CreateMyAccount1 extends StatefulWidget {
 }
 
 class _CreateMyAccount1State extends State<CreateMyAccount1> {
-  bool condition1 = false;
-  bool condition2 = false;
-  bool condition3 = false;
+  bool isChecked1 = false;
+  bool isChecked2 = false;
 
   bool obsecureController0 = true;
   bool obsecureController1 = true;
@@ -31,6 +30,63 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
     email.dispose();
     password.dispose();
     super.dispose();
+  }
+
+  void createMyAccount() async {
+    final String enteredEmail = email.text.trim();
+    final String enteredPassword = password.text.trim();
+    final String confirmPassword = confirmPasswordController.text.trim();
+    try {
+      if (enteredPassword == confirmPassword) {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: enteredEmail,
+          password: enteredPassword,
+        );
+        sendVerificationLink(email.text);
+
+        Fluttertoast.showToast(
+          msg: "Account was successfully created",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 2,
+          backgroundColor: Colors.blue,
+          textColor: Colors.white,
+          fontSize: 24.0,
+
+          // Account creation successful
+        );
+      } else if (enteredPassword != confirmPassword) {
+        // Show a snackbar if passwords don't match
+        ScaffoldMessenger.of(context).showSnackBar(
+          CustomSnackBar('Password does not match'),
+        );
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        // The password provided is too weak
+        ScaffoldMessenger.of(context).showSnackBar(
+          CustomSnackBar('Weak password'),
+        );
+      } else if (e.code == 'email-already-in-use') {
+        // The account already exists for that email
+        ScaffoldMessenger.of(context).showSnackBar(
+          CustomSnackBar('Email already in use'),
+        );
+      } else if (enteredPassword.isEmpty || enteredEmail.isEmpty) {
+        // Show a snackbar if fields are empty
+        ScaffoldMessenger.of(context).showSnackBar(
+          CustomSnackBar('Empty Email or Password'),
+        );
+      }
+    }
+  }
+
+  bool isCreateAccountButtonActive() {
+    if (isChecked1 == true && isChecked2 == true) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   void setObsecure0() {
@@ -59,9 +115,8 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
 
       if (user != null && !user.emailVerified) {
         await user.sendEmailVerification();
-
         _navigateToVerifyEmail();
-      } else {}
+      }
     } catch (e) {}
   }
 
@@ -96,7 +151,7 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
                         style: kHeadingTextStyle,
                       ),
                     ),
-                    EmailPhoneToggle(),
+                    const EmailPhoneToggle(),
                     //"Email" Textfield
                     Container(
                       margin: const EdgeInsets.symmetric(
@@ -171,37 +226,82 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
                         ),
                       ),
                     ),
-
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
                       child: ListTile(
                         leading: Checkbox(
-                          value: condition1,
+                          value: isChecked1,
                           onChanged: (bool? value) {
                             setState(() {
-                              condition1 = value!;
+                              isChecked1 = value!;
                             });
                           },
                           activeColor: kDeepBlueColor,
                         ),
-                        title: const Text(
-                            'I have read and agree to TaskMate’s Term of Service and Privacy Policy.'),
+                        title: RichText(
+                          text: TextSpan(
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: 'I have read and agree to TaskMate’s',
+                                style: kTextStyle.copyWith(
+                                  fontFamily: 'Poppins',
+                                  fontSize: 15,
+                                ),
+                              ),
+                              TextSpan(
+                                text: ' Term of Service ',
+                                style: kTextStyle.copyWith(
+                                  color: kDeepBlueColor,
+                                  fontFamily: 'Poppins',
+                                  fontSize: 15,
+                                ),
+                              ),
+                              TextSpan(
+                                text: 'and ',
+                                style: kTextStyle.copyWith(
+                                  fontFamily: 'Poppins',
+                                  fontSize: 15,
+                                ),
+                              ),
+                              TextSpan(
+                                text: 'Privacy Policy.',
+                                style: kTextStyle.copyWith(
+                                  color: kDeepBlueColor,
+                                  fontFamily: 'Poppins',
+                                  fontSize: 15,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
                       child: ListTile(
                         leading: Checkbox(
-                          value: condition2,
+                          value: isChecked2,
                           onChanged: (bool? value) {
                             setState(() {
-                              condition2 = value!;
+                              isChecked2 = value!;
                             });
                           },
                           activeColor: kDeepBlueColor,
                         ),
-                        title: const Text(
-                            'We reserve the right to terminate or suspend your account at any time for violating our policies.'),
+                        title: RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text:
+                                    'We reserve the right to terminate or suspend your account at any time for violating our policies.',
+                                style: kTextStyle.copyWith(
+                                  fontFamily: 'Poppins',
+                                  fontSize: 15,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
 
@@ -216,55 +316,14 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
                             borderRadius: BorderRadius.circular(20.0),
                           ),
                         ),
-                        onPressed: () async {
-                          final String enteredEmail = email.text.trim();
-                          final String enteredPassword = password.text.trim();
-                          final String confirmPassword =
-                              confirmPasswordController.text.trim();
-                          try {
-                            if (enteredPassword == confirmPassword) {
-                              await FirebaseAuth.instance
-                                  .createUserWithEmailAndPassword(
-                                email: enteredEmail,
-                                password: enteredPassword,
-                              );
-                              sendVerificationLink(email.text);
-
-                              Fluttertoast.showToast(
-                                msg: "Account was successfully created",
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.CENTER,
-                                timeInSecForIosWeb: 2,
-                                backgroundColor: Colors.blue,
-                                textColor: Colors.white,
-                                fontSize: 24.0,
-
-                                // Account creation successful
-                              );
-                            } else if (enteredPassword != confirmPassword) {
-                              // Show a snackbar if passwords don't match
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                CustomSnackBar('Password does not match'),
-                              );
-                            }
-                          } on FirebaseAuthException catch (e) {
-                            if (e.code == 'weak-password') {
-                              // The password provided is too weak
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                CustomSnackBar('Weak password'),
-                              );
-                            } else if (e.code == 'email-already-in-use') {
-                              // The account already exists for that email
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                CustomSnackBar('Email already in use'),
-                              );
-                            } else if (enteredPassword.isEmpty ||
-                                enteredEmail.isEmpty) {
-                              // Show a snackbar if fields are empty
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                CustomSnackBar('Empty Email or Password'),
-                              );
-                            }
+                        onPressed: () {
+                          if (isCreateAccountButtonActive()) {
+                            createMyAccount();
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              CustomSnackBar(
+                                  'Please agree to Terms & Conditions'),
+                            );
                           }
                         },
                         child: const Padding(
