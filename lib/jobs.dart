@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/components/job_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:taskmate/job_details.dart';
 
 class Jobs extends StatefulWidget {
   const Jobs({Key? key}) : super(key: key);

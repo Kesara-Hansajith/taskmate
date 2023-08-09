@@ -7,6 +7,9 @@ import 'package:taskmate/constants.dart';
 import 'package:taskmate/components/bottom_sub_text.dart';
 import 'package:taskmate/authentication/create_my_account_1.dart';
 
+import 'package:taskmate/components/maintenance_page.dart';
+import 'package:taskmate/components/dark_main_button.dart';
+
 
 class SignUp extends StatelessWidget {
   const SignUp({super.key});
@@ -257,7 +260,46 @@ class SignUp extends StatelessWidget {
                                           ),
                                         ),
                                         onPressed: () {
-
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return MaintenancePage(
+                                                [
+                                                  const Image(
+                                                    image: AssetImage(
+                                                        'images/gear.webp'),
+                                                  ),
+                                                  Text(
+                                                    'We’re',
+                                                    style: kSubHeadingTextStyle
+                                                        .copyWith(height: 0.5),
+                                                  ),
+                                                  const Text(
+                                                    'Under Maintenance',
+                                                    style: kSubHeadingTextStyle,
+                                                  ),
+                                                  const Padding(
+                                                    padding:
+                                                    EdgeInsets.symmetric(
+                                                        vertical: 8.0),
+                                                    child: Text(
+                                                      'Please check back soon just putting little touch up on some pretty updates.',
+                                                      style: kTextStyle,
+                                                      textAlign:
+                                                      TextAlign.center,
+                                                    ),
+                                                  ),
+                                                  DarkMainButton(
+                                                      title: 'Close',
+                                                      process: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      screenWidth: screenWidth)
+                                                ],
+                                              );
+                                            },
+                                          );
                                         },
                                         child: Row(
                                           mainAxisAlignment:

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:taskmate/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 class JobDetails extends StatefulWidget {
   final String? documentID;
@@ -34,7 +33,7 @@ class _JobDetailsState extends State<JobDetails> {
               return Container(
                 width: screenWidth,
                 height: screenHeight,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage('images/noise_image.png'),
                     repeat: ImageRepeat.repeat,
@@ -44,7 +43,7 @@ class _JobDetailsState extends State<JobDetails> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.all(16.0),
                       child: Text(
                         'Job Details',
@@ -57,7 +56,7 @@ class _JobDetailsState extends State<JobDetails> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             'Title',
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.bold),
@@ -72,7 +71,7 @@ class _JobDetailsState extends State<JobDetails> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             'Job Offered by',
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.bold),
@@ -87,7 +86,7 @@ class _JobDetailsState extends State<JobDetails> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             'Description',
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.bold),

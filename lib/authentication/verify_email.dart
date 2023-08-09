@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:taskmate/authentication/take_action.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/components/light_main_button.dart';
@@ -15,7 +16,6 @@ class VerifyEmail extends StatefulWidget {
 
 class _VerifyEmailState extends State<VerifyEmail> {
   String? _email;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   void initState() {
@@ -28,19 +28,43 @@ class _VerifyEmailState extends State<VerifyEmail> {
     super.initState();
   }
 
-//Will send the verification mail again
-  Future<void> resendVerificationLink() async {
-    final user = _auth.currentUser;
+//Will check whether user is verified
+  void checkEmailVerification() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? user = auth.currentUser;
 
-    if (user != null && !user.emailVerified) {
-      await user.sendEmailVerification();
-      ScaffoldMessenger.of(context).showSnackBar(
-        CustomSnackBar('Verification link was sent'),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        CustomSnackBar('No user found'),
-      );
+    if (user != null) {
+      await user.reload(); // Reload user data to get the latest information
+      if (user.emailVerified) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const TakeAction(),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          CustomSnackBar('User\'s email is not verified.'),
+        );
+      }
+    }
+  }
+
+//Will send the verification mail again
+  void resendVerificationEmail() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? user = auth.currentUser;
+
+    if (user != null) {
+      try {
+        await user.sendEmailVerification();
+        ScaffoldMessenger.of(context).showSnackBar(
+          CustomSnackBar('Verification email sent successfully'),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          CustomSnackBar('Error sending verification email'),
+        );
+      }
     }
   }
 
@@ -96,7 +120,9 @@ class _VerifyEmailState extends State<VerifyEmail> {
                       textAlign: TextAlign.center,
                       style: kTextStyle,
                     ),
-                    const SizedBox(height: 10.0,),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
                     DarkMainButton(
                         title: 'Go to Email Inbox',
                         process: () async {
@@ -119,9 +145,16 @@ class _VerifyEmailState extends State<VerifyEmail> {
               LightMainButton(
                   title: 'Resend',
                   process: () {
-                    resendVerificationLink();
+                    resendVerificationEmail();
                   },
                   screenWidth: screenWidth),
+              LightMainButton(
+                title: 'Continue',
+                process: () {
+                  checkEmailVerification();
+                },
+                screenWidth: screenWidth,
+              ),
               const SizedBox(
                 height: 60.0,
               ),
