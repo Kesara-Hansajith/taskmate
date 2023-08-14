@@ -13,9 +13,9 @@ class RootPage extends StatelessWidget {
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return const SignUp();
-        } else {
           return const Login();
+        } else {
+          return const SignUp();
         }
       },
     );
