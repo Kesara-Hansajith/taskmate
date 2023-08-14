@@ -232,7 +232,11 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
                           ScaffoldMessenger.of(context).showSnackBar(
                             CustomSnackBar('Password does not match'),
                           );
+<<<<<<< HEAD
                         }
+=======
+                          }
+>>>>>>> c40e947a7d8f91774784ae9ce1efd6ef7d06e544
                       } on FirebaseAuthException catch (e) {
                         if (e.code == 'weak-password') {
                           // The password provided is too weak

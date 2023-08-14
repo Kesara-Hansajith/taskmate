@@ -5,7 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:taskmate/authentication/sign_up.dart';
+<<<<<<< HEAD
 import 'package:taskmate/authentication/take_action.dart';
+=======
+
+import 'package:taskmate/components/maintenance_page.dart';
+
+import 'package:taskmate/authentication/take_action.dart';
+
+>>>>>>> c40e947a7d8f91774784ae9ce1efd6ef7d06e544
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/components/bottom_sub_text.dart';
 import 'package:taskmate/home_page.dart';
@@ -368,8 +376,17 @@ class _LoginState extends State<Login> {
                                           BorderRadius.circular(16.0),
                                         ),
                                       ),
+<<<<<<< HEAD
                                       onPressed: ()  {
 
+=======
+                                      onPressed: () {
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return const MaintenancePage();
+                                            });
+>>>>>>> c40e947a7d8f91774784ae9ce1efd6ef7d06e544
                                       },
                                       child: Row(
                                         mainAxisAlignment:
@@ -406,7 +423,11 @@ class _LoginState extends State<Login> {
                                       Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
                                           builder: (context) =>
+<<<<<<< HEAD
                                           const TakeAction(),
+=======
+                                              const TakeAction(),
+>>>>>>> c40e947a7d8f91774784ae9ce1efd6ef7d06e544
                                         ),
                                       );
                                     },
