@@ -1,11 +1,15 @@
 
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class UserModel {
   final String? id;
   final String firstName ;
   final String lastName ;
   final String address ;
   final String zipcode ;
+  final String birthday ;
+  final String gender ;
   final String province ;
   final String city ;
   final String email ;
@@ -19,7 +23,7 @@ class UserModel {
   final String password ;
   final String? profilePhotoUrl;
 
-  const UserModel ({
+   UserModel ({
     this.id,
     required this.email,
     required this.password,
@@ -27,6 +31,8 @@ class UserModel {
     required this.lastName,
     required this.address,
     required this.zipcode,
+    required this.birthday,
+    required this.gender,
     required this.province,
     required this.city,
     required this.bio,
@@ -46,6 +52,8 @@ class UserModel {
       "LastName": lastName,
       "Address": address,
       "ZipCode": zipcode,
+      "Birthday": birthday,
+      "Gender": gender,
       "Province": province,
       "City":city,
       "Email": email,
@@ -60,4 +68,32 @@ class UserModel {
       "ProfilePhotoUrl": profilePhotoUrl,
     };
   }
+
+  // Named constructor to convert Firestore data to UserModel1 object
+  factory UserModel.fromJson(Map<String, dynamic> json, String documentId) {
+    return UserModel(
+      id: documentId,
+      email: json['Email'] ?? '',
+      // Use the null-aware operator to provide a default value
+      password: json['Password'] ?? '',
+      firstName: json['FirstName'] ?? '',
+      lastName: json['LastName'] ?? '',
+      address: json['Address'] ?? '',
+      zipcode: json['ZipCode'] ?? '',
+      birthday: json['Birthday'],
+      gender: json['Gender'],
+      province: json['Province'] ?? '',
+      city: json['City'] ?? '',
+      bio: json['Bio'] ?? '',
+      skills: json['Skills'] ?? '',
+      services: json['Services'] ?? '',
+      sociallink: json['SocialLink'] ?? '',
+      professionalRole: json['ProfessionalRole'] ?? '',
+      hourlyRate: json['HourlyRate'] ?? '',
+      phoneNo: json['Phone'] ?? '',
+      profilePhotoUrl: json['ProfilePhotoUrl'],
+    );
+  }
+
+
 }

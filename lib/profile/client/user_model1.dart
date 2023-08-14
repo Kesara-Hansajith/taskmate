@@ -5,6 +5,9 @@ class UserModel1 {
   final String lastName ;
   final String address ;
   final String zipcode ;
+  final String street;
+  final String birthday;
+  final String gender;
   final String province ;
   final String city ;
   final String email ;
@@ -20,6 +23,9 @@ class UserModel1 {
     required this.lastName,
     required this.address,
     required this.zipcode,
+    required this.street,
+    required this.birthday,
+    required this.gender,
     required this.province,
     required this.city,
     required this.phoneNo,
@@ -33,6 +39,9 @@ class UserModel1 {
       "LastName": lastName,
       "Address": address,
       "ZipCode": zipcode,
+      "Street": street,
+      "Birthday": birthday,
+      "Gender": gender,
       "Province": province,
       "City":city,
       "Email": email,
@@ -51,6 +60,9 @@ class UserModel1 {
       lastName: json['LastName'] ?? '',
       address: json['Address'] ?? '',
       zipcode: json['ZipCode'] ?? '',
+      street: json['Street'] ?? '',
+      birthday: json['Birthday'] ?? '',
+      gender: json['gender'] ?? '',
       province: json['Province'] ?? '',
       city: json['City'] ?? '',
       phoneNo: json['Phone'] ?? '',
