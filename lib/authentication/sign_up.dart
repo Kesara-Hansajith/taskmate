@@ -114,6 +114,7 @@ class SignUp extends StatelessWidget {
                                 const SizedBox(
                                   height: 30.0,
                                 ),
+
                                 const Padding(
                                   padding: EdgeInsets.symmetric(
                                     horizontal: 16.0,
@@ -134,6 +135,7 @@ class SignUp extends StatelessWidget {
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               const CreateMyAccount1(),
+
                                         ),
                                       );
                                     },
@@ -149,11 +151,13 @@ class SignUp extends StatelessWidget {
                                       //Button icon and Text goes here
                                       child: Row(
                                         mainAxisAlignment:
+
                                             MainAxisAlignment.spaceEvenly,
                                         children: const <Widget>[
                                           Icon(
                                             Icons.person_add,
                                             color: kBrilliantWhite,
+
                                           ),
                                           Text(
                                             'Continue with Email or Mobile',
@@ -165,6 +169,7 @@ class SignUp extends StatelessWidget {
                                       ),
                                     ),
                                   ),
+
                                 ),
                                 //Separator goes here
                                 Padding(
@@ -216,6 +221,7 @@ class SignUp extends StatelessWidget {
                                           shape: RoundedRectangleBorder(
                                             borderRadius:
                                                 BorderRadius.circular(16.0),
+
                                           ),
                                         ),
                                         onPressed: () {

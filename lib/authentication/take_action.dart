@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:taskmate/authentication/log_in.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/components/bottom_sub_text.dart';
+import 'package:taskmate/profile/client/profile_client.dart';
+import 'package:taskmate/profile/freelancer/profile_freelancer.dart';
 
 class TakeAction extends StatefulWidget {
   const TakeAction({super.key});
@@ -64,6 +66,7 @@ class _TakeActionState extends State<TakeAction> {
                             topRight: Radius.circular(20.0),
                           ),
                         ),
+
                         child: ListView(
                           children: [
                             Column(
@@ -132,13 +135,16 @@ class _TakeActionState extends State<TakeAction> {
                                           ),
                                           child: Icon(
                                             Icons.arrow_forward,
+
                                             color: isWork
                                                 ? kAshWhiteColor
                                                 : kDeepBlueColor,
                                           ),
                                         ),
+
                                       ],
                                     ),
+
                                   ),
                                 ),
                                 const Padding(
@@ -151,6 +157,7 @@ class _TakeActionState extends State<TakeAction> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ),
+
                                 GestureDetector(
                                   onTap: () {
                                     setState(() {
@@ -203,12 +210,15 @@ class _TakeActionState extends State<TakeAction> {
                                           ),
                                           child: Icon(
                                             Icons.arrow_forward,
+
                                             color: isHire
                                                 ? kAshWhiteColor
                                                 : kDeepBlueColor,
                                           ),
                                         ),
+
                                       ],
+
                                     ),
                                   ),
                                 ),
