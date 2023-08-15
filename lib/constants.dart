@@ -21,7 +21,22 @@ const kSubHeadingTextStyle = TextStyle(
     color: kDeepBlueColor, fontSize: 25.0, fontWeight: FontWeight.bold);
 
 const kTextStyle = TextStyle(
-    color: kDarkGreyColor, fontSize: 13.0,);
+  color: kDarkGreyColor,
+  fontSize: 13.0,
+);
 
 const kMainButtonTextStyle = TextStyle(
-    color: kBrilliantWhite, fontSize: 16.0,);
+  color: kBrilliantWhite,
+  fontSize: 16.0,
+);
+
+const kJobCardTitleTextStyle = TextStyle(
+  color: kDeepBlueColor,
+  fontSize: 16.0,
+  fontWeight: FontWeight.w600,
+);
+
+const kJobCardDescriptionTextStyle = TextStyle(
+  color: kDarkGreyColor,
+  fontSize: 12.0,
+);

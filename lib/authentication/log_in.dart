@@ -8,7 +8,7 @@ import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/components/bottom_sub_text.dart';
 import 'package:taskmate/components/snackbar.dart';
-import 'package:taskmate/jobs.dart';
+import 'package:taskmate/pages/jobs.dart';
 import 'package:taskmate/components/maintenance_page.dart';
 
 class Login extends StatefulWidget {
