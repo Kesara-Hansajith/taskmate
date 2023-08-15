@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
@@ -7,10 +8,6 @@ import 'package:taskmate/authentication/sign_up.dart';
 import 'package:taskmate/components/maintenance_page.dart';
 
 
-
-import 'package:taskmate/components/maintenance_page.dart';
-
-import 'package:taskmate/authentication/take_action.dart';
 
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/components/bottom_sub_text.dart';
@@ -45,7 +42,7 @@ class _LoginState extends State<Login> {
 
     // Obtain the auth details from the request
     final GoogleSignInAuthentication? googleAuth =
-    await googleUser?.authentication;
+        await googleUser?.authentication;
 
     // Create a new credential
     final credential = GoogleAuthProvider.credential(
@@ -77,9 +74,8 @@ class _LoginState extends State<Login> {
 //Method for Sign in with email and password
   void signInWithEmailAndPassword(String email, String password) async {
     try {
-
       UserCredential userCredential =
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -93,7 +89,6 @@ class _LoginState extends State<Login> {
         textColor: Colors.white,
         fontSize: 16.0,
       );
-
 
       // Sign-in successful, handle the user object or navigate to the next screen.
 
@@ -205,11 +200,11 @@ class _LoginState extends State<Login> {
                                       decoration: BoxDecoration(
                                         color: kBrilliantWhite,
                                         borderRadius:
-                                        BorderRadius.circular(20.0),
+                                            BorderRadius.circular(20.0),
                                       ),
                                       child:
-                                      //Email Textfield
-                                      TextFormField(
+                                          //Email Textfield
+                                          TextFormField(
                                         controller: emailController,
                                         validator: (value) {
                                           if (value == null ||
@@ -235,7 +230,7 @@ class _LoginState extends State<Login> {
                                       decoration: BoxDecoration(
                                         color: kBrilliantWhite,
                                         borderRadius:
-                                        BorderRadius.circular(20.0),
+                                            BorderRadius.circular(20.0),
                                       ),
                                       child: TextFormField(
                                         controller: passwordController,
@@ -306,10 +301,10 @@ class _LoginState extends State<Login> {
                               ),
                               Padding(
                                 padding:
-                                const EdgeInsets.symmetric(vertical: 12.0),
+                                    const EdgeInsets.symmetric(vertical: 12.0),
                                 child: Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceEvenly,
+                                      MainAxisAlignment.spaceEvenly,
                                   children: <Widget>[
                                     Center(
                                       child: Container(
@@ -336,7 +331,7 @@ class _LoginState extends State<Login> {
                               ),
                               Row(
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceEvenly,
+                                    MainAxisAlignment.spaceEvenly,
                                 children: <Widget>[
                                   //"Google" Signup Button
                                   Padding(
@@ -349,7 +344,7 @@ class _LoginState extends State<Login> {
                                         backgroundColor: kLightBlueColor,
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
-                                          BorderRadius.circular(16.0),
+                                              BorderRadius.circular(16.0),
                                         ),
                                       ),
                                       onPressed: () {
@@ -357,9 +352,9 @@ class _LoginState extends State<Login> {
                                       },
                                       child: Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                            MainAxisAlignment.center,
                                         crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                            CrossAxisAlignment.center,
                                         children: <Widget>[
                                           Image.asset(
                                             'icons/google.png',
@@ -390,23 +385,21 @@ class _LoginState extends State<Login> {
                                         backgroundColor: kLightBlueColor,
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
-                                          BorderRadius.circular(16.0),
+                                              BorderRadius.circular(16.0),
                                         ),
                                       ),
-
                                       onPressed: () {
                                         showDialog(
                                             context: context,
                                             builder: (context) {
                                               return const MaintenancePage();
                                             });
-
                                       },
                                       child: Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                            MainAxisAlignment.center,
                                         crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                            CrossAxisAlignment.center,
                                         children: <Widget>[
                                           Image.asset(
                                             'icons/facebook.png',
@@ -436,13 +429,7 @@ class _LoginState extends State<Login> {
                                     onPressed: () {
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
-
                                           builder: (context) => const SignUp(),
-
-                                          builder: (context) =>
-
-                                              const TakeAction(),
-
                                         ),
                                       );
                                     },
