@@ -66,7 +66,7 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
               children: <Widget>[
                 const Padding(
                   padding:
-                      EdgeInsets.symmetric(vertical: 10.0, horizontal: 8.0),
+                  EdgeInsets.symmetric(vertical: 10.0, horizontal: 8.0),
                   child: Text(
                     'Create My Account',
                     style: kHeadingTextStyle,
@@ -238,7 +238,12 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
                           ScaffoldMessenger.of(context).showSnackBar(
                             CustomSnackBar('Password does not match'),
                           );
+
                         }
+
+
+                          }
+
                       } on FirebaseAuthException catch (e) {
                         if (e.code == 'weak-password') {
                           // The password provided is too weak

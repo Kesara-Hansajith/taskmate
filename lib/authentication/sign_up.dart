@@ -100,7 +100,7 @@ class SignUp extends StatelessWidget {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            const CreateMyAccount1(),
+                                        const CreateMyAccount1(),
                                       ),
                                     );
                                   },
@@ -115,7 +115,7 @@ class SignUp extends StatelessWidget {
                                     //Button icon and Text goes here
                                     child: Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
+                                      MainAxisAlignment.spaceEvenly,
                                       children: const <Widget>[
                                         Icon(
                                           Icons.person_add,
@@ -135,10 +135,10 @@ class SignUp extends StatelessWidget {
                               //Separator goes here
                               Padding(
                                 padding:
-                                    const EdgeInsets.symmetric(vertical: 32.0),
+                                const EdgeInsets.symmetric(vertical: 32.0),
                                 child: Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                                  MainAxisAlignment.spaceEvenly,
                                   children: <Widget>[
                                     Center(
                                       child: Container(
@@ -166,7 +166,7 @@ class SignUp extends StatelessWidget {
                               //Third Party Auth buttons goes here
                               Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                MainAxisAlignment.spaceEvenly,
                                 children: <Widget>[
                                   //"Google" Signup Button
                                   Padding(
@@ -179,7 +179,7 @@ class SignUp extends StatelessWidget {
                                         backgroundColor: kLightBlueColor,
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
-                                              BorderRadius.circular(16.0),
+                                          BorderRadius.circular(16.0),
                                         ),
                                       ),
                                       onPressed: () {
@@ -187,9 +187,9 @@ class SignUp extends StatelessWidget {
                                       },
                                       child: Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                        MainAxisAlignment.center,
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.center,
+                                        CrossAxisAlignment.center,
                                         children: <Widget>[
                                           Image.asset(
                                             'icons/google.png',
@@ -220,7 +220,7 @@ class SignUp extends StatelessWidget {
                                         backgroundColor: kLightBlueColor,
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
-                                              BorderRadius.circular(16.0),
+                                          BorderRadius.circular(16.0),
                                         ),
                                       ),
                                       onPressed: () {
@@ -232,9 +232,9 @@ class SignUp extends StatelessWidget {
                                       },
                                       child: Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                        MainAxisAlignment.center,
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.center,
+                                        CrossAxisAlignment.center,
                                         children: <Widget>[
                                           Image.asset(
                                             'icons/facebook.png',

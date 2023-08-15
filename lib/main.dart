@@ -44,6 +44,7 @@ class Taskmate extends StatelessWidget {
       theme: ThemeData(fontFamily: "Poppins"),
       home:  SafeArea(
         child: ProfileFreelancer(),
+
       ),
     );
   }
