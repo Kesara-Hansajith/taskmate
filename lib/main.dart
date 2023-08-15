@@ -8,6 +8,7 @@ import 'package:taskmate/profile/freelancer/profile_freelancer.dart';
 import 'package:taskmate/profile/freelancer/profile_freelancer2.dart';
 import 'package:taskmate/profile/freelancer/profile_freelancer3.dart';
 import 'package:taskmate/profile/freelancer/user_repository.dart';
+import 'package:taskmate/verify_identity.dart';
 import 'firebase_options.dart';
 //imported pages
 import 'package:taskmate/authentication/splash_screen.dart';
@@ -48,7 +49,7 @@ class Taskmate extends StatelessWidget {
       theme: ThemeData(fontFamily: "Poppins"),
 
       home:  const SafeArea(
-        child: HomePage(),
+        child: VerifyIdentity(),
 
       ),
     );
