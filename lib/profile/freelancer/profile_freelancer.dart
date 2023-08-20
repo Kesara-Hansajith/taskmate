@@ -308,7 +308,7 @@ class _ProfileFreelancerState extends State<ProfileFreelancer> {
                                                     borderRadius:
                                                         BorderRadius.circular(13),
                                                     borderSide: BorderSide(
-                                                        color: Color(0xFF4B4646)),
+                                                        color: Color(0xFF4B4646),),
                                                   ),
                                                   filled: true,
                                                   fillColor: Color(0xF4F7F9),

@@ -33,7 +33,6 @@ void main() async {
   Get.put(UserRepository1());
   Get.put(UserRepository());
 
-
   runApp(
     const Taskmate(),
   );
@@ -47,10 +46,8 @@ class Taskmate extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: "Poppins"),
-
-      home:  const SafeArea(
-        child: VerifyIdentity(),
-
+      home: const SafeArea(
+        child: JobDetails(documentID: 'AN04f3Mlxip9AWHel2eF'),
       ),
     );
   }

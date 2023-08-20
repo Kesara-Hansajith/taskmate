@@ -104,8 +104,7 @@ class _JobsState extends State<Jobs> {
                 }),
 
                 // Center(
-                //   child: Text('Tab 2 Content'),
-                // ),
+                  Text('Tab 2 Content'),
               ],
             ),
           ),
