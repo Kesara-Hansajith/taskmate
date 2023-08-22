@@ -18,7 +18,7 @@ import 'package:taskmate/authentication/sign_up.dart';
 import 'package:taskmate/authentication/create_my_account_1.dart';
 import 'package:taskmate/authentication/get_started.dart';
 import 'package:taskmate/authentication/verify_email.dart';
-import 'package:taskmate/pages/jobs.dart';
+import 'package:taskmate/bottom_nav_bar/jobs.dart';
 import 'package:taskmate/job_details.dart';
 import 'package:taskmate/authentication/forget_password.dart';
 
@@ -47,7 +47,7 @@ class Taskmate extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: "Poppins"),
       home: const SafeArea(
-        child: JobDetails(documentID: 'AN04f3Mlxip9AWHel2eF'),
+        child: HomePage(),
       ),
     );
   }

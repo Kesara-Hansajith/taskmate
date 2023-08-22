@@ -47,7 +47,7 @@ class _JobCardState extends State<JobCard> {
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => JobDetails(
-                    documentID: widget.documentID,
+                    documentID: widget.documentID!,
                   ),
                 ));
               },

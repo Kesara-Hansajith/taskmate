@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:taskmate/pages/messaging.dart';
-import 'package:taskmate/pages/job_status.dart';
-import 'package:taskmate/pages/jobs.dart';
-import 'package:taskmate/pages/account.dart';
+import 'package:taskmate/bottom_nav_bar/messaging.dart';
+import 'package:taskmate/bottom_nav_bar/proposals.dart';
+import 'package:taskmate/bottom_nav_bar/jobs.dart';
+import 'package:taskmate/bottom_nav_bar/account.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -17,10 +17,8 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 2;
 
   final List _items = [
-    const SafeArea(
-      child: Messaging(),
-    ),
-    const JobStatus(),
+    const Messaging(),
+    const Proposals(),
     const Jobs(),
     const Account(),
   ];

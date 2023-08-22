@@ -5,9 +5,10 @@ import 'package:taskmate/components/maintenance_page.dart';
 import 'package:taskmate/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:taskmate/home_page.dart';
+import 'package:taskmate/models/job_details_data.dart';
 
 class JobDetails extends StatefulWidget {
-  final String? documentID;
+  final String documentID;
   const JobDetails({super.key, required this.documentID});
 
   @override
@@ -17,6 +18,8 @@ class JobDetails extends StatefulWidget {
 class _JobDetailsState extends State<JobDetails> {
   // final _formKey = GlobalKey<FormState>();
   // final _describeBidController = TextEditingController();
+
+  String description = '';
 
   final _formKey = GlobalKey<FormState>();
 
@@ -63,14 +66,24 @@ class _JobDetailsState extends State<JobDetails> {
     );
   }
 
+  Stream<JobDetailsData> fetchDocumentData(String documentId) {
+    return FirebaseFirestore.instance
+        .collection('available_projects')
+        .doc(documentId)
+        .snapshots()
+        .map((snapshot) {
+      return JobDetailsData(
+        title: snapshot['title'],
+        budget: snapshot['budget'],
+        description: snapshot['description'],
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHeight = MediaQuery.of(context).size.height;
-
-    DocumentReference userDocRef = FirebaseFirestore.instance
-        .collection('available_projects')
-        .doc(widget.documentID);
 
     return SafeArea(
       child: Scaffold(
@@ -91,13 +104,17 @@ class _JobDetailsState extends State<JobDetails> {
             ),
           ),
         ),
-        body: FutureBuilder<DocumentSnapshot>(
-          future: userDocRef.get(),
+        body: StreamBuilder<JobDetailsData>(
+          stream: fetchDocumentData(widget.documentID),
           builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              Map<String, dynamic> data =
-                  snapshot.data!.data() as Map<String, dynamic>;
-              //Overall Job Card flows through here
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              ); // Show loading indicator
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else if (snapshot.hasData) {
+              JobDetailsData data = snapshot.data!;
               return Container(
                 width: screenWidth,
                 height: screenHeight,
@@ -115,7 +132,7 @@ class _JobDetailsState extends State<JobDetails> {
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
                       child: Center(
                         child: Text(
-                          '${data['title']}',
+                          data.title,
                           textAlign: TextAlign.center,
                           style: kJobCardTitleTextStyle,
                         ),
@@ -125,7 +142,7 @@ class _JobDetailsState extends State<JobDetails> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Text(
-                          'LKR. ${data['budget']}',
+                          'LKR. ${data.budget}',
                           style: kJobCardDescriptionTextStyle,
                         ),
                         const Text('Remaining time goes here'),
@@ -145,7 +162,7 @@ class _JobDetailsState extends State<JobDetails> {
                             ),
                           ),
                           Text(
-                            '${data['description']}',
+                            data.description,
                             style: kJobCardDescriptionTextStyle,
                           ),
                           const Padding(
@@ -178,7 +195,7 @@ class _JobDetailsState extends State<JobDetails> {
                           Form(
                             key: _formKey,
                             child: Column(
-                              children: [
+                              children: <Widget>[
                                 TextFormField(
                                   maxLines: 5,
                                   controller: _bidDescriptionController,
@@ -188,8 +205,8 @@ class _JobDetailsState extends State<JobDetails> {
                                         'Add an clear overview about your bid',
                                     hintStyle: const TextStyle(fontSize: 12.0),
                                     border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(
-                                          10.0), // Customize border radius
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      // Customize border radius
                                       borderSide: const BorderSide(
                                           color:
                                               kDeepBlueColor), // Customize border color
@@ -231,8 +248,9 @@ class _JobDetailsState extends State<JobDetails> {
                                               hintStyle: const TextStyle(
                                                   fontSize: 12.0),
                                               border: OutlineInputBorder(
-                                                borderRadius: BorderRadius.circular(
-                                                    10.0), // Customize border radius
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                                // Customize border radius
                                                 borderSide: const BorderSide(
                                                     color:
                                                         kDeepBlueColor), // Customize border color
@@ -273,8 +291,9 @@ class _JobDetailsState extends State<JobDetails> {
                                               hintStyle: const TextStyle(
                                                   fontSize: 12.0),
                                               border: OutlineInputBorder(
-                                                borderRadius: BorderRadius.circular(
-                                                    10.0), // Customize border radius
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                                // Customize border radius
                                                 borderSide: const BorderSide(
                                                     color:
                                                         kDeepBlueColor), // Customize border color
@@ -328,8 +347,9 @@ class _JobDetailsState extends State<JobDetails> {
                   ],
                 ),
               );
+            } else {
+              return const Text('Document not found');
             }
-            return const Text('Loading....');
           },
         ),
       ),

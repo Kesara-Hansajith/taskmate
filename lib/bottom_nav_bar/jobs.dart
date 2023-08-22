@@ -90,9 +90,9 @@ class _JobsState extends State<Jobs> {
               children: [
                 //Best Match Jobs goes here
                 FutureBuilder(
-                    // future: getDocIDs(),
-                    builder: (context, snapshot) {
-                  return ListView.builder(
+                  // future: getDocIDs(),
+                  builder: (context, snapshot) {
+                    return ListView.builder(
                       itemCount: docIDs.length,
                       itemBuilder: (context, index) {
                         return ListTile(
@@ -100,11 +100,14 @@ class _JobsState extends State<Jobs> {
                               documentID: docIDs[index].toString(),
                               screenWidth: screenWidth),
                         );
-                      });
-                }),
-
-                // Center(
-                  Text('Tab 2 Content'),
+                      },
+                    );
+                  },
+                ),
+                //Most Recent Jobs goes here
+                const Center(
+                  child: Text('Most Recent Jobs will be displayed here'),
+                ),
               ],
             ),
           ),
