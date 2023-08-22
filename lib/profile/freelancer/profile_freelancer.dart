@@ -71,7 +71,7 @@ class _ProfileFreelancerState extends State<ProfileFreelancer> {
           decoration: const BoxDecoration(
             image: DecorationImage(
               fit: BoxFit.cover,
-              image: AssetImage('images/noise_image.png'),),),
+              image: AssetImage('images/noise_image.webp'),),),
           child: Form(
             key: formKey,
             child: SingleChildScrollView(
@@ -435,11 +435,6 @@ class _ProfileFreelancerState extends State<ProfileFreelancer> {
                             bio: bioController.text.trim(),
                             hourlyRate: hourlyrateController.text.trim(),
                             skills: skillsController.text.trim(),
-                            imageurl1: imageurl1Controller.text.trim(),
-                            imageurl2: imageurl2Controller.text.trim(),
-                            imageurl3: imageurl3Controller.text.trim(),
-                            title: titleController.text.trim(),
-                            itemdes: itemdesController.text.trim(),
                             services: servicesController.text.trim(),
                             sociallink: sociallinkController.text.trim(),
                             city: cityController.text.trim(),

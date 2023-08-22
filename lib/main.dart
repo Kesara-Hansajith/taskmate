@@ -7,6 +7,7 @@ import 'package:taskmate/profile/client/user_repository1.dart';
 import 'package:taskmate/profile/freelancer/profile_freelancer.dart';
 import 'package:taskmate/profile/freelancer/profile_freelancer2.dart';
 import 'package:taskmate/profile/freelancer/profile_freelancer3.dart';
+import 'package:taskmate/profile/freelancer/profile_freelancer4.dart';
 import 'package:taskmate/profile/freelancer/user_repository.dart';
 import 'package:taskmate/verify_identity.dart';
 import 'firebase_options.dart';

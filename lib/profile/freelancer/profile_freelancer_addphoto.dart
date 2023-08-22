@@ -72,7 +72,7 @@ class _ProfileFreelancerAddphotoState extends State<ProfileFreelancerAddphoto> {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('images/noise_image.png'),
+                image: AssetImage('images/noise_image.webp'),
                 fit: BoxFit.cover,),),),
           SingleChildScrollView(
             child:Column(
@@ -190,11 +190,6 @@ class _ProfileFreelancerAddphotoState extends State<ProfileFreelancerAddphoto> {
                               'bio': widget.user.bio,
                               'services': widget.user.services,
                               'socialLink': widget.user.sociallink,
-                              'imageUrl1': widget.user.imageurl1,
-                              'imageUrl2': widget.user.imageurl2,
-                              'imageUrl3': widget.user.imageurl3,
-                              'title': widget.user.title,
-                              'itemDes': widget.user.itemdes,
                               'profilePhotoUrl': downloadUrl,
                             });
 
@@ -210,7 +205,7 @@ class _ProfileFreelancerAddphotoState extends State<ProfileFreelancerAddphoto> {
                           minimumSize: Size(320, 55), // Adjust the width and height as needed
                         ),
                         child: Text(
-                          "Submit a Photo",
+                          "Submit",
                           style: TextStyle(
                             fontSize: 18,
                           ),

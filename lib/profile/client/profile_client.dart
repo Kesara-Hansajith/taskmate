@@ -54,7 +54,7 @@ class _ProfileClientState extends State<ProfileClient> {
           decoration: const BoxDecoration(
             image: DecorationImage(
               fit: BoxFit.cover,
-              image: AssetImage('images/noise_image.png'),),),
+              image: AssetImage('images/noise_image.webp'),),),
           child: Form(
             key: formKey,
             child: SingleChildScrollView(
