@@ -15,7 +15,9 @@ import 'package:taskmate/profile/freelancer/profile_freelancer_addphoto.dart';
 import 'package:taskmate/profile/freelancer/user_model.dart';
 import '../../constants.dart';
 import '../client/profile_client.dart';
+
 import 'package:taskmate/profile/freelancer/user_data_gather_title.dart';
+
 
 class ProfileFreelancer4 extends StatefulWidget {
   //final UserModel user;
@@ -185,7 +187,9 @@ class _ProfileFreelancer4State extends State<ProfileFreelancer4> {
                           ),
                           validator: (value) {
                             if (value!.isEmpty) {
+
                               return 'Please enter your portfolio item';}
+
                             return null;},),
                         ],),),
 

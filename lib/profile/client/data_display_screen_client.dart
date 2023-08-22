@@ -33,7 +33,7 @@ class _DataDisplayScreenClientState extends State<DataDisplayScreenClient> {
               itemBuilder: (context, index) {
                 UserModel1 client = clients![index];
                 return ListTile(
-                  title: Text(client.email),
+                  title: Text(client.firstName),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

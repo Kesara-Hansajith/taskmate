@@ -1,25 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-import 'package:taskmate/profile/client/data_details_screen_client.dart';
-import 'package:taskmate/profile/client/data_display_screen_client.dart';
-import 'package:taskmate/profile/client/upload_profile_image1.dart';
+import 'package:taskmate/profile/client/profile_client_addphoto.dart';
 import 'package:taskmate/profile/client/user_model1.dart';
-import 'dart:io';
 
-import 'package:taskmate/profile/client/user_repository1.dart';
-
+import '../../constants.dart';
 import '../freelancer/profile_freelancer.dart';
 
 class ProfileClient extends StatefulWidget {
   const ProfileClient({Key? key}) : super(key: key);
 
   @override
-  _ProfileFreelancerState createState() => _ProfileFreelancerState();
+  _ProfileClientState createState() => _ProfileClientState();
 }
 
-class _ProfileFreelancerState extends State<ProfileClient> {
+class _ProfileClientState extends State<ProfileClient> {
   final formKey = GlobalKey<FormState>();
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
@@ -29,12 +23,15 @@ class _ProfileFreelancerState extends State<ProfileClient> {
   final TextEditingController birthdayController = TextEditingController();
   final TextEditingController genderController = TextEditingController();
   final TextEditingController provinceController = TextEditingController();
+
   final TextEditingController professionalRoleController =
       TextEditingController();
+
   final TextEditingController cityController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
+
   final TextEditingController passwordController = TextEditingController();
+
 
   String? profileImageUrl;
   String? selectedGender;
@@ -55,6 +52,7 @@ class _ProfileFreelancerState extends State<ProfileClient> {
   get _urlRegex => RegExp(
       r"^(https?://)?([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(/\S*)?$");
   final _city1Regex = RegExp(r'^[a-zA-Z0-9\s]+$');
+
 
   Future<void> _pickProfileImage() async {
     final picker = ImagePicker();
@@ -752,7 +750,9 @@ class _ProfileFreelancerState extends State<ProfileClient> {
             ],
           ),
         ),
+
       ),
     );
   }
 }
+

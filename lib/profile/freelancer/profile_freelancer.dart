@@ -5,7 +5,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:taskmate/profile/freelancer/profile_freelancer2.dart';
 import 'package:taskmate/profile/freelancer/user_model.dart';
+
 import 'package:taskmate/profile/freelancer/user_data_gather_title.dart';
+
 
 import '../../constants.dart';
 import '../client/profile_client.dart';

@@ -10,15 +10,11 @@ class UserModel1 {
   final String gender;
   final String province ;
   final String city ;
-  final String email ;
   final String phoneNo ;
-  final String password ;
   final String? profilePhotoUrl;
 
   const UserModel1 ({
     this.id,
-    required this.email,
-    required this.password,
     required this.firstName,
     required this.lastName,
     required this.address,
@@ -44,9 +40,7 @@ class UserModel1 {
       "Gender": gender,
       "Province": province,
       "City":city,
-      "Email": email,
       "Phone": phoneNo,
-      "Password": password,
       "ProfilePhotoUrl": profilePhotoUrl,
     };
   }
@@ -54,8 +48,7 @@ class UserModel1 {
   factory UserModel1.fromJson(Map<String, dynamic> json, String documentId) {
     return UserModel1(
       id: documentId,
-      email: json['Email'] ?? '', // Use the null-aware operator to provide a default value
-      password: json['Password'] ?? '',
+      // Use the null-aware operator to provide a default value
       firstName: json['FirstName'] ?? '',
       lastName: json['LastName'] ?? '',
       address: json['Address'] ?? '',
