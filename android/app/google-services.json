@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "681609208614",
+    "firebase_url": "https://taskmate-8ab5f-default-rtdb.firebaseio.com",
     "project_id": "taskmate-8ab5f",
     "storage_bucket": "taskmate-8ab5f.appspot.com"
   },

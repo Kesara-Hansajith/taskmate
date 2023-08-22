@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:taskmate/authentication/forget_password.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
 import 'package:taskmate/authentication/sign_up.dart';
+
 import 'package:taskmate/components/dark_main_button.dart';
+
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/components/bottom_sub_text.dart';
 import 'package:taskmate/components/snackbar.dart';
@@ -62,8 +65,10 @@ class _LoginState extends State<Login> {
 //Method for Sign in with email and password
   void signInWithEmailAndPassword(String email, String password) async {
     try {
+
       final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: emailController.text, password: passwordController.text);
+
       // Sign-in successful, handle the user object or navigate to the next screen.
 
       Navigator.of(context).pushReplacement(

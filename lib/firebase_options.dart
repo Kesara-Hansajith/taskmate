@@ -52,6 +52,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '681609208614',
     projectId: 'taskmate-8ab5f',
     authDomain: 'taskmate-8ab5f.firebaseapp.com',
+    databaseURL: 'https://taskmate-8ab5f-default-rtdb.firebaseio.com',
     storageBucket: 'taskmate-8ab5f.appspot.com',
     measurementId: 'G-E69JHKB68V',
   );
@@ -61,6 +62,7 @@ class DefaultFirebaseOptions {
     appId: '1:681609208614:android:27758562f8f0c0dd3dd7e7',
     messagingSenderId: '681609208614',
     projectId: 'taskmate-8ab5f',
+    databaseURL: 'https://taskmate-8ab5f-default-rtdb.firebaseio.com',
     storageBucket: 'taskmate-8ab5f.appspot.com',
   );
 
@@ -69,6 +71,7 @@ class DefaultFirebaseOptions {
     appId: '1:681609208614:ios:bdf54e73d625f06c3dd7e7',
     messagingSenderId: '681609208614',
     projectId: 'taskmate-8ab5f',
+    databaseURL: 'https://taskmate-8ab5f-default-rtdb.firebaseio.com',
     storageBucket: 'taskmate-8ab5f.appspot.com',
     iosClientId: '681609208614-9f6miom5v6leeed7peq4u1k7asapiulv.apps.googleusercontent.com',
     iosBundleId: 'com.taskmateapp.taskmate',

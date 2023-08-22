@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:taskmate/authentication/log_in.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/components/bottom_sub_text.dart';
+import 'package:taskmate/profile/client/profile_client.dart';
+import 'package:taskmate/profile/freelancer/profile_freelancer.dart';
 
 class TakeAction extends StatefulWidget {
   const TakeAction({super.key});
@@ -11,7 +13,7 @@ class TakeAction extends StatefulWidget {
 }
 
 class _TakeActionState extends State<TakeAction> {
-  bool isWork = true;
+  bool isWork = false;
   bool isHire = false;
 
   @override
@@ -85,7 +87,12 @@ class _TakeActionState extends State<TakeAction> {
                                     setState(() {
                                       isWork = true;
                                       isHire = false;
-                                      //TODO- Add navigator to next page
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const ProfileFreelancer(),
+                                        ),
+                                      );
                                     });
                                   },
                                   child: Container(
@@ -96,7 +103,8 @@ class _TakeActionState extends State<TakeAction> {
                                       color: isWork
                                           ? kOceanBlueColor
                                           : kLowOpacityLightBlueColor,
-                                      border: Border.all(color: kOceanBlueColor),
+                                      border:
+                                          Border.all(color: kOceanBlueColor),
                                       borderRadius: BorderRadius.circular(12.0),
                                     ),
                                     child: Row(
@@ -167,7 +175,8 @@ class _TakeActionState extends State<TakeAction> {
                                       color: isHire
                                           ? kOceanBlueColor
                                           : kLowOpacityLightBlueColor,
-                                      border: Border.all(color: kOceanBlueColor),
+                                      border:
+                                          Border.all(color: kOceanBlueColor),
                                       borderRadius: BorderRadius.circular(12.0),
                                     ),
                                     child: Row(
@@ -212,7 +221,6 @@ class _TakeActionState extends State<TakeAction> {
                                     ),
                                   ),
                                 ),
-                                
                               ],
                             ),
                           ],

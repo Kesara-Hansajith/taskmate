@@ -135,6 +135,7 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
               repeat: ImageRepeat.repeat,
             ),
           ),
+
           child: SizedBox(
             width: screenWidth,
             height: screenHeight,
@@ -149,6 +150,7 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
                       child: Text(
                         'Create My Account',
                         style: kHeadingTextStyle,
+
                       ),
                     ),
                     const EmailPhoneToggle(),
@@ -226,6 +228,7 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
                         ),
                       ),
                     ),
+
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
                       child: ListTile(
@@ -274,6 +277,7 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
                             ],
                           ),
                         ),
+
                       ),
                     ),
                     Padding(

@@ -10,6 +10,7 @@ import 'package:taskmate/components/verifyidentity_outlinedbutton.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:taskmate/components/snackbar.dart';
 import 'package:taskmate/components/maintenance_page.dart';
+import 'package:taskmate/home_page.dart';
 
 class VerifyIdentity extends StatefulWidget {
   const VerifyIdentity({super.key});
@@ -91,8 +92,8 @@ class _VerifyIdentityState extends State<VerifyIdentity> {
               DarkMainButton(
                   title: 'Back To Home',
                   process: () {
-                    Navigator.of(context).pop();
-                    //TODO Add next Page
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const HomePage()));
                   },
                   screenWidth: MediaQuery.of(context).size.width)
             ],
@@ -111,84 +112,89 @@ class _VerifyIdentityState extends State<VerifyIdentity> {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHeight = MediaQuery.of(context).size.height;
 
-    return Scaffold(
-      body: Container(
-        width: screenWidth,
-        height: screenHeight,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            fit: BoxFit.fill,
-            image: AssetImage('images/noise_image.webp'),
+    return SafeArea(
+      child: Scaffold(
+        body: Container(
+          width: screenWidth,
+          height: screenHeight,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.fill,
+              image: AssetImage('images/noise_image.webp'),
+            ),
           ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 24.0, horizontal: 8.0),
-              child: Text(
-                'Verify Your Identity',
-                style: kHeadingTextStyle,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 24.0, horizontal: 8.0),
+                child: Text(
+                  'Verify Your Identity',
+                  style: kHeadingTextStyle,
+                ),
               ),
-            ),
-            Expanded(
-              child: VerifyIdentityCard(
-                bgColor: isIDSubmitted
-                    ? (kDeepBlueColor)
-                    : (const Color.fromARGB(102, 180, 215, 254)),
-                outlineColor:
-                    isIDSubmitted ? (kDeepBlueColor) : (kOceanBlueColor),
-                icon:
-                    isIDSubmitted ? (Icons.done_outline) : (Icons.contact_mail),
-                backCircleColor:
-                    isIDSubmitted ? (kAmberColor) : (kDeepBlueColor),
-                headingText: 'NIC/Driver License',
-                headFontColor: isIDSubmitted ? (kAmberColor) : (kDeepBlueColor),
-                subText:
-                    'Upload a national identity card, driver’s license or passport photo',
-                subFontColor:
-                    isIDSubmitted ? (kBrilliantWhite) : (kDarkGreyColor),
-                docSubmitButton: isIDSubmitted
-                    ? null
-                    : (VerifyIdentityOutlinedButton(
-                        function: pickIDFile, hyperlinkText: 'Add Document')),
+              Expanded(
+                child: VerifyIdentityCard(
+                  bgColor: isIDSubmitted
+                      ? (kDeepBlueColor)
+                      : (const Color.fromARGB(102, 180, 215, 254)),
+                  outlineColor:
+                      isIDSubmitted ? (kDeepBlueColor) : (kOceanBlueColor),
+                  icon: isIDSubmitted
+                      ? (Icons.done_outline)
+                      : (Icons.contact_mail),
+                  backCircleColor:
+                      isIDSubmitted ? (kAmberColor) : (kDeepBlueColor),
+                  headingText: 'NIC/Driver License',
+                  headFontColor:
+                      isIDSubmitted ? (kAmberColor) : (kDeepBlueColor),
+                  subText:
+                      'Upload a national identity card, driver’s license or passport photo',
+                  subFontColor:
+                      isIDSubmitted ? (kBrilliantWhite) : (kDarkGreyColor),
+                  docSubmitButton: isIDSubmitted
+                      ? null
+                      : (VerifyIdentityOutlinedButton(
+                          function: pickIDFile, hyperlinkText: 'Add Document')),
+                ),
               ),
-            ),
-            Expanded(
-              child: VerifyIdentityCard(
-                bgColor: isPhotoSubmitted
-                    ? (kDeepBlueColor)
-                    : (const Color.fromARGB(102, 180, 215, 254)),
-                outlineColor:
-                    isPhotoSubmitted ? (kDeepBlueColor) : (kOceanBlueColor),
-                icon: isPhotoSubmitted
-                    ? (Icons.done_outline)
-                    : (Icons.add_a_photo),
-                backCircleColor:
-                    isPhotoSubmitted ? (kAmberColor) : (kDeepBlueColor),
-                headingText: 'Selfie Photo',
-                headFontColor:
-                    isPhotoSubmitted ? (kAmberColor) : (kDeepBlueColor),
-                subText:
-                    'Take picture of your self to identity and facial verification',
-                subFontColor:
-                    isPhotoSubmitted ? (kBrilliantWhite) : (kDarkGreyColor),
-                docSubmitButton: isPhotoSubmitted
-                    ? (null)
-                    : VerifyIdentityOutlinedButton(
-                        function: pickSelfiePhoto, hyperlinkText: 'Take Photo'),
+              Expanded(
+                child: VerifyIdentityCard(
+                  bgColor: isPhotoSubmitted
+                      ? (kDeepBlueColor)
+                      : (const Color.fromARGB(102, 180, 215, 254)),
+                  outlineColor:
+                      isPhotoSubmitted ? (kDeepBlueColor) : (kOceanBlueColor),
+                  icon: isPhotoSubmitted
+                      ? (Icons.done_outline)
+                      : (Icons.add_a_photo),
+                  backCircleColor:
+                      isPhotoSubmitted ? (kAmberColor) : (kDeepBlueColor),
+                  headingText: 'Selfie Photo',
+                  headFontColor:
+                      isPhotoSubmitted ? (kAmberColor) : (kDeepBlueColor),
+                  subText:
+                      'Take picture of your self to identity and facial verification',
+                  subFontColor:
+                      isPhotoSubmitted ? (kBrilliantWhite) : (kDarkGreyColor),
+                  docSubmitButton: isPhotoSubmitted
+                      ? (null)
+                      : VerifyIdentityOutlinedButton(
+                          function: pickSelfiePhoto,
+                          hyperlinkText: 'Take Photo'),
+                ),
               ),
-            ),
-            DarkMainButton(
-                title: 'Submit Documents',
-                process: () {
-                  submitDocuments();
-                },
-                screenWidth: screenWidth),
-            const SizedBox(
-              height: 50.0,
-            ),
-          ],
+              DarkMainButton(
+                  title: 'Submit Documents',
+                  process: () {
+                    submitDocuments();
+                  },
+                  screenWidth: screenWidth),
+              const SizedBox(
+                height: 50.0,
+              ),
+            ],
+          ),
         ),
       ),
     );
