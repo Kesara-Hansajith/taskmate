@@ -9,6 +9,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:taskmate/profile/freelancer/profile_freelancer2.dart';
 import 'package:taskmate/profile/freelancer/profile_freelancer4.dart';
+import 'package:taskmate/profile/freelancer/profile_freelancer_addphoto.dart';
 import 'package:taskmate/profile/freelancer/upload_profile_image.dart';
 import 'package:taskmate/profile/freelancer/user_model.dart';
 
@@ -63,31 +64,7 @@ class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
   bool dataSubmitted = false;
 
 
-  Future<void> _saveImagesAndUrls() async {
-    List<String> imageUrls = [
-      await uploadFile(File(selectedImageUrl1!), 'image1.jpg', 'image'),
-      await uploadFile(File(selectedImageUrl2!), 'image2.jpg', 'image'),
-      await uploadFile(File(selectedImageUrl3!), 'image3.jpg', 'image'),
-    ];
 
-    User? user = _auth.currentUser;
-    if (user == null) {
-      throw Exception("User not authenticated.");
-    }
-
-    // Save image URLs to Firestore
-    await _firestore.collection('users').doc(user.uid).update({
-      'imageurl1': imageUrls[0],
-      'imageurl2': imageUrls[1],
-      'imageurl3': imageUrls[2],
-    });
-
-    setState(() {
-      selectedImageUrl1 = null;
-      selectedImageUrl2 = null;
-      selectedImageUrl3 = null;
-    });
-  }
 
   Future<String> uploadFile(File file, String filename, String fileType) async {
     User? user = _auth.currentUser;
@@ -126,7 +103,7 @@ class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     fit: BoxFit.cover,
-                    image: AssetImage('images/noise_image.png'),),),
+                    image: AssetImage('images/noise_image.webp'),),),
                 child: Form(
                   key: formKey,
                   child: SingleChildScrollView(
@@ -199,15 +176,11 @@ class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
                                 height: 120,
                                 child: GestureDetector(
                                   onTap: () async {
-                                    FilePickerResult? result = await FilePicker.platform.pickFiles(
-                                      type: FileType.image,
-                                      allowMultiple: false,
-                                    );
-                                    if (result != null && result.files.isNotEmpty) {
-                                      setState(() {
-                                        selectedImageUrl1 = result.files.first.path;
-                                      });
-                                    }},
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => ProfileFreelancer4()),
+                                      );
+                                    },
 
                                   child: Container(
                                     decoration: BoxDecoration(
@@ -233,15 +206,13 @@ class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
                                       height: 120,
                                       child: GestureDetector(
                                         onTap: () async {
-                                          FilePickerResult? result = await FilePicker.platform.pickFiles(
-                                            type: FileType.image,
-                                            allowMultiple: false,
-                                          );
-                                          if (result != null && result.files.isNotEmpty) {
-                                            setState(() {
-                                              selectedImageUrl1 = result.files.first.path;
-                                            });
-                                          }},
+
+                                            // Navigate to the profile_freelancer4 page
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(builder: (context) => ProfileFreelancer4()),
+                                            );
+                                          },
                                         child: Container(
                                           width: double.infinity,
                                           decoration: BoxDecoration(
@@ -267,15 +238,11 @@ class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
                                       height: 120,
                                       child: GestureDetector(
                                         onTap: () async {
-                                          FilePickerResult? result = await FilePicker.platform.pickFiles(
-                                            type: FileType.image,
-                                            allowMultiple: false,
-                                          );
-                                          if (result != null && result.files.isNotEmpty) {
-                                            setState(() {
-                                              selectedImageUrl1 = result.files.first.path;
-                                            });
-                                          }
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(builder: (context) => ProfileFreelancer4()),
+                                            );
+
                                         },
                                         child: Container(
                                           width: double.infinity,
@@ -297,26 +264,7 @@ class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
 
 
                                  // Adjust the position as needed
-                            Padding(
-                              padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 18.0),
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    ElevatedButton(
-                                    onPressed: _saveImagesAndUrls,
-                                    child: Text('Save Images',
-                                      style: TextStyle(fontSize: 13), // Adjust the font size as needed
-                                    ),
-                                    style: ElevatedButton.styleFrom(
-                                      primary: Color(0xFF16056B), // Change the background color
-                                      onPrimary: Colors.white,    // Change the text color
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(13), // Adjust the border radius as needed
-                                      ),
-                                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),),),
-                                  ],
-                              ),
-                            ),
+
     ],
                 ),
                           ),
@@ -342,20 +290,15 @@ class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
                                            skills: widget.user.skills,
                                            services: widget.user.services,
                                            sociallink: sociallinkController.text,
-                                           imageurl1: imageurl1Controller.text,
-                                           imageurl2: imageurl2Controller.text,
-                                           imageurl3: imageurl3Controller.text,
-                                           title: titleController.text,
-                                           itemdes: itemdesController.text,
 
                                          );
 
-                                         Navigator.push(
-                                           context,
-                                           MaterialPageRoute(
-                                             builder: (context) => ProfileFreelancer4(user: updatedUser),
-                                           ),
-                                         );
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => ProfileFreelancerAddphoto(user: updatedUser),
+                                            ),
+                                          );
                                        }
                                     },
                                     child: Text('Save & Next',

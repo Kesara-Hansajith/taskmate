@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,17 +10,19 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart' as path;
 import 'package:intl/intl.dart';
+import 'package:taskmate/profile/freelancer/profile_freelancer3.dart';
 import 'package:taskmate/profile/freelancer/profile_freelancer_addphoto.dart';
 import 'package:taskmate/profile/freelancer/user_model.dart';
 import '../../constants.dart';
 import '../client/profile_client.dart';
 
 class ProfileFreelancer4 extends StatefulWidget {
-  final UserModel user;
-
-  const ProfileFreelancer4({required  this.user}) ;
+  //final UserModel user;
+  const ProfileFreelancer4({Key? key}) : super(key: key);
+  //const ProfileFreelancer4({required  this.user}) ;
 
   @override
+
   _ProfileFreelancer4State createState() => _ProfileFreelancer4State();
 }
 
@@ -46,18 +49,22 @@ class _ProfileFreelancer4State extends State<ProfileFreelancer4> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController itemdesController = TextEditingController();
 
+  List<File> selectedImages = [];
+
   String existingUserId = 'your_existing_user_id';
   String? profileImageUrl;
   String? selectedGender;
   String? selectedProvince;
   String? selectedSkills;
   bool dataSubmitted = false;
-  List<File> selectedImages = [];
+
 
   get emailRegex => RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', caseSensitive: false, multiLine: false,);
   get phoneRegex => RegExp(r'^[0-9]{10}$', caseSensitive: false, multiLine: false,);
   get _urlRegex => RegExp(r"^(https?://)?([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(/\S*)?$");
   final _city1Regex = RegExp(r'^[a-zA-Z]+$');
+
+  get user => existingUserId;
 
   Future<void> pickImages() async {
     try {
@@ -74,51 +81,48 @@ class _ProfileFreelancer4State extends State<ProfileFreelancer4> {
       print('Error picking images: $e');
     }
   }
-  Future<void> uploadImagesToFirebase() async {
-    final storage = firebase_storage.FirebaseStorage.instance;
-    final userId = 'your_user_id'; // Replace with your actual user ID
 
-    List<String> uploadedImageUrls = []; // To store the uploaded image URLs
+  Future<void> savePortfolioItemToFirestore() async {
+    try {
+      List<String> uploadedImageUrls = [];
 
-    for (int i = 0; i < selectedImages.length; i++) {
-      try {
+      for (int i = 0; i < selectedImages.length; i++) {
         final imageFile = selectedImages[i];
         final imageName = path.basename(imageFile.path);
-        final storageRef = storage.ref().child('profile_images/${DateTime.now().millisecondsSinceEpoch}.jpg');
+        final storageRef = firebase_storage.FirebaseStorage.instance
+            .ref()
+            .child('portfolio_images/${DateTime.now().millisecondsSinceEpoch}/$imageName');
 
         final uploadTask = storageRef.putFile(imageFile);
         final taskSnapshot = await uploadTask;
-
-        if (taskSnapshot.state == TaskState.success) {
+        if (taskSnapshot.state == firebase_storage.TaskState.success) {
           final imageUrl = await taskSnapshot.ref.getDownloadURL();
           uploadedImageUrls.add(imageUrl);
-          print('Image $i uploaded successfully');
         }
-      } catch (e) {
-        print('Error uploading image $i: $e');
-      }
-    }
-    await saveImageUrlsToFirestore(uploadedImageUrls);
-    setState(() {
-      selectedImages.clear(); // Clear selectedImages list after upload
-    });
-
       }
 
-  Future<void> saveImageUrlsToFirestore(List<String> imageUrls) async {
-    try {
-      User? user = FirebaseAuth.instance.currentUser;
-      if (user == null) {
-        throw Exception("User not authenticated.");
-      }
-
-      await FirebaseFirestore.instance.collection('users').doc(user.uid).update({
-        'imageUrls': FieldValue.arrayUnion(imageUrls),
+      await FirebaseFirestore.instance.collection('portfolio_items').add({
+        'title': titleController.text,
+        'item_description': itemdesController.text,
+        'image_urls': selectedImages.map((image) => image.path).toList(),
+        'timestamp': FieldValue.serverTimestamp(),
       });
 
-      print('Image URLs saved to Firestore.');
+      print('Portfolio item saved to Firestore.');
     } catch (e) {
-      print('Error saving image URLs to Firestore: $e');
+      print('Error saving portfolio item to Firestore: $e');
+    }
+  }
+  void initState() {
+    super.initState();
+    Firebase.initializeApp();
+    checkAuthentication(); // You can call your authentication check function here
+  }
+  void checkAuthentication() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      // Redirect the user to the login page or show an authentication prompt
+      // This could be done using Navigator or other methods
     }
   }
 
@@ -145,7 +149,7 @@ class _ProfileFreelancer4State extends State<ProfileFreelancer4> {
           decoration: const BoxDecoration(
             image: DecorationImage(
               fit: BoxFit.cover,
-              image: AssetImage('images/noise_image.png'),),),
+              image: AssetImage('images/noise_image.webp'),),),
           child: Form(
             key: formKey,
             child: SingleChildScrollView(
@@ -208,13 +212,9 @@ class _ProfileFreelancer4State extends State<ProfileFreelancer4> {
                               color: Color(0xFF4B4646),),
                           ),
                           maxLines: 8,
-                          maxLength: 150,
                           validator: (value) {
                             if (value!.isEmpty) {
                               return 'Please enter your description ';}
-                            else if (value.length <= 100){
-                              return 'Please enter at least 100 characters';
-                            }
                             return null;},),],),),
 
                   Padding(
@@ -251,39 +251,28 @@ class _ProfileFreelancer4State extends State<ProfileFreelancer4> {
                         ),],),),
                   SizedBox(height: 100,),
 
+
                   Center(
                     child:ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (formKey.currentState!.validate()) {
                           // Validated successfully, submit the form
-                          UserModel updatedUser = UserModel(
-                            firstName: widget.user.firstName,
-                            lastName: widget.user.lastName,
-                            address: widget.user.address,
-                            zipcode: widget.user.zipcode,
-                            street: widget.user.street,
-                            birthday: widget.user.birthday,
-                            gender: widget.user.gender,
-                            province: widget.user.province,
-                            city: widget.user.city,
-                            phoneNo: widget.user.phoneNo,
-                            hourlyRate: widget.user.hourlyRate,
-                            bio: widget.user.bio,
-                            skills: widget.user.skills,
-                            services: widget.user.services,
-                            sociallink: widget.user.sociallink,
-                            imageurl1: widget.user.imageurl1,
-                            imageurl2: widget.user.imageurl2,
-                            imageurl3: widget.user.imageurl3,
-                            title: titleController.text,
-                            itemdes: itemdesController.text,
+                          await savePortfolioItemToFirestore();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Portfolio item saved.'),
+                            ),
                           );
-                           Navigator.push(
-                             context,
-                            MaterialPageRoute(
-                              builder: (context) => ProfileFreelancerAddphoto(user: updatedUser),
-                             ),
-                           );
+                          User? firebaseUser = FirebaseAuth.instance.currentUser;
+
+                          Navigator.pop(context);
+
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => ProfileFreelancer2(user: user),
+                          //   ),
+                          // );
 
 
                         }
@@ -315,6 +304,8 @@ class _ProfileFreelancer4State extends State<ProfileFreelancer4> {
 
   }
 }
+
+
 
 
 

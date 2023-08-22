@@ -74,7 +74,7 @@ class _ProfileFreelancer2State extends State<ProfileFreelancer2> {
           decoration: const BoxDecoration(
             image: DecorationImage(
               fit: BoxFit.cover,
-              image: AssetImage('images/noise_image.png'),),),
+              image: AssetImage('images/noise_image.webp'),),),
           child: Form(
             key: formKey,
             child: SingleChildScrollView(
@@ -142,11 +142,10 @@ class _ProfileFreelancer2State extends State<ProfileFreelancer2> {
                                 color: Color(0xFF4B4646),),
                             ),
                             maxLines: 8,
-                            maxLength: 200,
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return 'Please enter your overview';}
-                              else if (value.length <= 100) {
+                              else if (value.length < 100) {
                                 return 'Please enter at least 100 characters';
                               }
                               return null;},),],),),
@@ -226,7 +225,7 @@ class _ProfileFreelancer2State extends State<ProfileFreelancer2> {
                       children: [
                         // Service 1 and Service 2 side by side
                         GestureDetector(
-                          onTap: () => selectService('Service 1'),
+                          onTap: () => selectService('Logos and branding'),
                           child: Container(
                             margin: EdgeInsets.symmetric(horizontal: 26.0),
                             padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0), // Adjust the padding
@@ -245,7 +244,7 @@ class _ProfileFreelancer2State extends State<ProfileFreelancer2> {
                                 color: Color(0xFF4B4646),),),),),
 
                         GestureDetector(
-                          onTap: () => selectService('Service 2'),
+                          onTap: () => selectService('Infographics design'),
                           child: Container(
                             margin: EdgeInsets.symmetric(horizontal: 0.0),
                             padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0), // Adjust the padding
@@ -268,7 +267,7 @@ class _ProfileFreelancer2State extends State<ProfileFreelancer2> {
                       children: [
                         // Service 1 and Service 2 side by side
                         GestureDetector(
-                          onTap: () => selectService('Service 1'),
+                          onTap: () => selectService('Website/blog design'),
                           child: Container(
                             margin: EdgeInsets.symmetric(horizontal: 26.0),
                             padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0), // Adjust the padding
@@ -286,7 +285,7 @@ class _ProfileFreelancer2State extends State<ProfileFreelancer2> {
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xFF4B4646),),),),),
                         GestureDetector(
-                          onTap: () => selectService('Service 2'),
+                          onTap: () => selectService('Print design'),
                           child: Container(
                             margin: EdgeInsets.symmetric(horizontal: 0.0),
                             padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0), // Adjust the padding
@@ -310,7 +309,7 @@ class _ProfileFreelancer2State extends State<ProfileFreelancer2> {
                       children: [
                         // Service 1 and Service 2 side by side
                         GestureDetector(
-                          onTap: () => selectService('Service 1'),
+                          onTap: () => selectService('Podcast cover art design'),
                           child: Container(
                             margin: EdgeInsets.symmetric(horizontal: 26.0),
                             padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0), // Adjust the padding
@@ -328,7 +327,7 @@ class _ProfileFreelancer2State extends State<ProfileFreelancer2> {
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xFF4B4646),),),),),
                         GestureDetector(
-                          onTap: () => selectService('Service 2'),
+                          onTap: () => selectService('Photoshop design'),
                           child: Container(
                             margin: EdgeInsets.symmetric(horizontal: 0.0),
                             padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0), // Adjust the padding
@@ -369,11 +368,7 @@ class _ProfileFreelancer2State extends State<ProfileFreelancer2> {
                               sociallink: sociallinkController.text,
                               skills: skillsController.text,
                               services: servicesController.text,
-                              imageurl1: imageurl1Controller.text,
-                              imageurl2: imageurl2Controller.text,
-                              imageurl3: imageurl3Controller.text,
-                              title: titleController.text,
-                              itemdes: itemdesController.text,
+
                             );
 
                             Navigator.push(
