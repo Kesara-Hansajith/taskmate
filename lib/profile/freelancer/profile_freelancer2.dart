@@ -11,6 +11,9 @@ import 'package:taskmate/profile/freelancer/upload_profile_image.dart';
 import 'package:taskmate/profile/freelancer/user_model.dart';
 import 'package:taskmate/profile/freelancer/user_repository.dart';
 
+
+import 'package:taskmate/profile/freelancer/user_data_gather_title.dart';
+
 import '../../constants.dart';
 import '../client/profile_client.dart';
 

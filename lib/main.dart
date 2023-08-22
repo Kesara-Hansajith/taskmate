@@ -19,7 +19,7 @@ import 'package:taskmate/authentication/sign_up.dart';
 import 'package:taskmate/authentication/create_my_account_1.dart';
 import 'package:taskmate/authentication/get_started.dart';
 import 'package:taskmate/authentication/verify_email.dart';
-import 'package:taskmate/pages/jobs.dart';
+import 'package:taskmate/bottom_nav_bar/jobs.dart';
 import 'package:taskmate/job_details.dart';
 import 'package:taskmate/authentication/forget_password.dart';
 
@@ -33,7 +33,6 @@ void main() async {
   );
   Get.put(UserRepository1());
   Get.put(UserRepository());
-
 
   runApp(
     const Taskmate(),
@@ -49,7 +48,7 @@ class Taskmate extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: "Poppins"),
 
-      home:  const SafeArea(
+      home: const SafeArea(
         child: ProfileFreelancer(),
 
       ),
