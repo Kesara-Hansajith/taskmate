@@ -25,7 +25,7 @@ class UserModel1 {
     required this.province,
     required this.city,
     required this.phoneNo,
-    this.profilePhotoUrl,
+    this.profilePhotoUrl, required email, required String password,
   });
 
   Map<String, dynamic> toJson(){
@@ -59,7 +59,7 @@ class UserModel1 {
       province: json['Province'] ?? '',
       city: json['City'] ?? '',
       phoneNo: json['Phone'] ?? '',
-      profilePhotoUrl: json['ProfilePhotoUrl'],
+      profilePhotoUrl: json['ProfilePhotoUrl'], email: null, password: '',
     );
   }
 
