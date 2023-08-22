@@ -12,21 +12,17 @@ class UserModel {
   final String gender ;
   final String province ;
   final String city ;
-  final String email ;
+  final String street;
   final String phoneNo ;
   final String bio ;
   final String skills ;
   final String services ;
   final String sociallink ;
-  final String professionalRole ;
   final String hourlyRate ;
-  final String password ;
   final String? profilePhotoUrl;
 
    UserModel ({
     this.id,
-    required this.email,
-    required this.password,
     required this.firstName,
     required this.lastName,
     required this.address,
@@ -35,11 +31,11 @@ class UserModel {
     required this.gender,
     required this.province,
     required this.city,
+     required this.street,
     required this.bio,
     required this.skills,
     required this.services,
     required this.sociallink,
-    required this.professionalRole,
     required this.hourlyRate,
     required this.phoneNo,
     this.profilePhotoUrl,
@@ -56,15 +52,13 @@ class UserModel {
       "Gender": gender,
       "Province": province,
       "City":city,
-      "Email": email,
+      "Street":street,
       "Phone": phoneNo,
       "Bio" : bio,
       "Sills": skills,
       "Services" : services,
       "SocialLink" : sociallink,
-      "ProfessionalRole": professionalRole,
       "HourlyRate" : hourlyRate,
-      "Password": password,
       "ProfilePhotoUrl": profilePhotoUrl,
     };
   }
@@ -73,9 +67,7 @@ class UserModel {
   factory UserModel.fromJson(Map<String, dynamic> json, String documentId) {
     return UserModel(
       id: documentId,
-      email: json['Email'] ?? '',
       // Use the null-aware operator to provide a default value
-      password: json['Password'] ?? '',
       firstName: json['FirstName'] ?? '',
       lastName: json['LastName'] ?? '',
       address: json['Address'] ?? '',
@@ -84,11 +76,11 @@ class UserModel {
       gender: json['Gender'],
       province: json['Province'] ?? '',
       city: json['City'] ?? '',
+      street: json['Street'] ?? '',
       bio: json['Bio'] ?? '',
       skills: json['Skills'] ?? '',
       services: json['Services'] ?? '',
       sociallink: json['SocialLink'] ?? '',
-      professionalRole: json['ProfessionalRole'] ?? '',
       hourlyRate: json['HourlyRate'] ?? '',
       phoneNo: json['Phone'] ?? '',
       profilePhotoUrl: json['ProfilePhotoUrl'],

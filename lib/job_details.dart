@@ -16,7 +16,6 @@ class JobDetails extends StatefulWidget {
 }
 
 class _JobDetailsState extends State<JobDetails> {
-  // final _formKey = GlobalKey<FormState>();
   // final _describeBidController = TextEditingController();
 
   String description = '';
@@ -87,6 +86,7 @@ class _JobDetailsState extends State<JobDetails> {
 
     return SafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: const Text(
             'Job Details',
