@@ -1,11 +1,72 @@
 import 'package:flutter/material.dart';
 import 'package:taskmate/authentication/sign_up.dart';
+import 'package:taskmate/components/dark_main_button.dart';
+import 'package:taskmate/components/maintenance_page.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/components/bottom_sub_text.dart';
 import 'package:taskmate/authentication/root_page.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
-class GetStarted extends StatelessWidget {
+class GetStarted extends StatefulWidget {
   const GetStarted({super.key});
+
+  @override
+  State<GetStarted> createState() => _GetStartedState();
+}
+
+class _GetStartedState extends State<GetStarted> {
+  void _checkConnectivity() async {
+    final connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi) {
+      Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => const RootPage(),
+              ),
+            );
+    } else if (connectivityResult == ConnectivityResult.none) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return MaintenancePage(
+            [
+              const Image(
+                image: AssetImage(
+                    'images/no_connection.webp'),
+              ),
+              Text(
+                'Oops!',
+                style: kSubHeadingTextStyle
+                    .copyWith(height: 0.5),
+              ),
+              const Text(
+                'Wrong Turn...',
+                style: kSubHeadingTextStyle,
+              ),
+              const Padding(
+                padding:
+                EdgeInsets.symmetric(
+                    vertical: 8.0),
+                child: Text(
+                  'Please check your internet connection and try again.',
+                  style: kTextStyle,
+                  textAlign:
+                  TextAlign.center,
+                ),
+              ),
+              DarkMainButton(
+                  title: 'Try Again',
+                  process: () {
+                    Navigator.of(context)
+                        .pop();
+                  },
+                  screenWidth: MediaQuery.of(context).size.width)
+            ],
+          );
+        },
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,28 +130,35 @@ class GetStarted extends StatelessWidget {
                               margin: const EdgeInsets.symmetric(
                                   vertical: 4.0, horizontal: 28.0),
                               width: screenWidth,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: kDeepBlueColor,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20.0),
-                                  ),
-                                ),
-                                onPressed: () {
-                                  Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(
-                                      builder: (context) => const RootPage(),
-                                    ),
-                                  );
+                              child: DarkMainButton(
+                                title: 'GetStarted',
+                                process: () {
+                                  _checkConnectivity();
                                 },
-                                child: const Padding(
-                                  padding: EdgeInsets.all(16.0),
-                                  child: Text(
-                                    'Get Started!',
-                                    style: TextStyle(fontSize: 15.0),
-                                  ),
-                                ),
+                                screenWidth: screenWidth,
                               ),
+                              // ElevatedButton(
+                              //   style: ElevatedButton.styleFrom(
+                              //     backgroundColor: kDeepBlueColor,
+                              //     shape: RoundedRectangleBorder(
+                              //       borderRadius: BorderRadius.circular(20.0),
+                              //     ),
+                              //   ),
+                              //   onPressed: () {
+                              //     Navigator.of(context).pushReplacement(
+                              //       MaterialPageRoute(
+                              //         builder: (context) => const RootPage(),
+                              //       ),
+                              //     );
+                              //   },
+                              //   child: const Padding(
+                              //     padding: EdgeInsets.all(16.0),
+                              //     child: Text(
+                              //       'Get Started!',
+                              //       style: TextStyle(fontSize: 15.0),
+                              //     ),
+                              //   ),
+                              // ),
                             ),
                             //Bottom most row of screen
                             Row(
