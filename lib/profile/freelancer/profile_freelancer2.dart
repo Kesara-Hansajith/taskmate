@@ -1,20 +1,23 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-import 'package:taskmate/profile/freelancer/data_details_screen_freelancer.dart';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
-import 'package:intl/intl.dart';
 import 'package:taskmate/profile/freelancer/profile_freelancer.dart';
 import 'package:taskmate/profile/freelancer/profile_freelancer3.dart';
+import 'package:taskmate/profile/freelancer/profile_freelancer_addphoto.dart';
 import 'package:taskmate/profile/freelancer/upload_profile_image.dart';
 import 'package:taskmate/profile/freelancer/user_model.dart';
 import 'package:taskmate/profile/freelancer/user_repository.dart';
-import 'package:taskmate/verify_identity.dart';
+
+import '../../constants.dart';
+import '../client/profile_client.dart';
 
 class ProfileFreelancer2 extends StatefulWidget {
-  const ProfileFreelancer2({Key? key}) : super(key: key);
+  final UserModel user;
+
+  ProfileFreelancer2({required  this.user});
 
   @override
   _ProfileFreelancer2State createState() => _ProfileFreelancer2State();
@@ -28,7 +31,6 @@ class _ProfileFreelancer2State extends State<ProfileFreelancer2> {
   final TextEditingController zipCodeController = TextEditingController();
   final TextEditingController provinceController = TextEditingController();
   final TextEditingController cityController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController bioController = TextEditingController();
   final TextEditingController skillsController = TextEditingController();
@@ -37,10 +39,12 @@ class _ProfileFreelancer2State extends State<ProfileFreelancer2> {
   final TextEditingController birthdayController = TextEditingController();
   final TextEditingController genderController = TextEditingController();
   final TextEditingController servicesController = TextEditingController();
-  final TextEditingController professionalRoleController =
-      TextEditingController();
   final TextEditingController hourlyrateController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController imageurl1Controller = TextEditingController();
+  final TextEditingController imageurl2Controller = TextEditingController();
+  final TextEditingController imageurl3Controller = TextEditingController();
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController itemdesController = TextEditingController();
 
   String? profileImageUrl;
   String? selectedGender;
@@ -48,427 +52,372 @@ class _ProfileFreelancer2State extends State<ProfileFreelancer2> {
   String? selectedSkills;
   bool dataSubmitted = false;
 
-  String existingUserId = "your_existing_user_id";
-
+  String? get existingUserId => null;
   List<String> selectedServices = [];
 
   void updateData() {
     if (formKey.currentState!.validate()) {
-      // Validated successfully, update the data
-      // Update the data using the values in the text controllers
-      // You can use the values to update the user's profile, save it to a database, etc.
-
       setState(() {
-        dataSubmitted =
-            true; // Set the flag to indicate data has been submitted
-      });
-    }
-  }
+        dataSubmitted = true; });}}
 
-  Future<void> _pickProfileImage() async {
-    final picker = ImagePicker();
-    final pickedImage = await picker.pickImage(source: ImageSource.gallery);
-
-    if (pickedImage != null) {
-      final imageFile = File(pickedImage.path);
-      final String downloadUrl = await uploadProfileImage(imageFile);
-
-      setState(() {
-        profileImageUrl = downloadUrl;
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return SafeArea(
       child: Scaffold(
-          body: Container(
-            // Add margin to the container,
-            child: Stack(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('images/noise_image.webp'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  child: SingleChildScrollView(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 10.0),
-                      child: Form(
-                        key: formKey,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                IconButton(
-                                  icon: Icon(Icons.keyboard_arrow_left, size: 66),
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              ProfileFreelancer()),
-                                    );
-                                  },
-                                ),
-                                SizedBox(width: 55),
-                                // Add spacing between the icon and text
-                                Text(
-                                  "Set Up Your",
-                                  style: TextStyle(
-                                    color: Color(0xFF16056B),
-                                    // Use your color code here
-                                    fontSize: 32.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 2),
-                            Center(
-                              child: Text(
-                                "Freelancer Profile",
-                                style: TextStyle(
-                                  color: Color(0xFF16056B),
-                                  // You can use the same or a different color code
-                                  fontSize: 25.0,
-                                  // Adjust the font size as needed
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 12),
-                            Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 186.0),
-                                          // Add padding around the Column
-                                          child: TextFormField(
-                                            controller: hourlyrateController,
-                                            keyboardType: TextInputType.number,
-                                            inputFormatters: [
-                                              FilteringTextInputFormatter.allow(
-                                                  RegExp(r'^\d+\.?\d{0,2}?$'))
-                                            ],
-                                            decoration: InputDecoration(
-                                              label: Text('Hourly rate'),
-                                              prefixText: 'LKR. ',
-                                              suffixText: '/hour',
-                                              border: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(13),
-                                                borderSide: BorderSide(
-                                                    color: Color(0xFF4B4646)),
-                                              ),
-                                              filled: true,
-                                              fillColor: Color(0xF4F7F9),
-                                              labelStyle: TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold,
-                                                color: Color(0xFF4B4646),
-                                              ),
-                                            ),
-                                            validator: (value) {
-                                              if (value!.isEmpty) {
-                                                return 'Please enter your hourly rate ';
-                                              }
-                                              return null;
-                                            },
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  // Add padding around the Column
-                                  child: TextFormField(
-                                    controller: bioController,
-                                    decoration: InputDecoration(
-                                      label: Text('Your overview'),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(13),
-                                        borderSide:
-                                            BorderSide(color: Color(0xFF4B4646)),
-                                      ),
-                                      filled: true,
-                                      fillColor: Color(0xF4F7F9),
-                                      labelStyle: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                        color: Color(0xFF4B4646),
-                                      ),
-                                    ),
-                                    maxLines: 8,
-                                    // Adjust the number of lines as needed
-                                    maxLength: 100,
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return 'Please enter your overview ';
-                                      } else if (value.length < 100) {
-                                        return 'Please enter at least 100 characters';
-                                      }
-                                      return null;
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  // Add padding around the Column
-                                  child: TextFormField(
-                                    controller: skillsController,
-                                    decoration: InputDecoration(
-                                      label: Text('Your skills'),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(13),
-                                        borderSide:
-                                            BorderSide(color: Color(0xFF4B4646)),
-                                      ),
-                                      filled: true,
-                                      fillColor: Color(0xF4F7F9),
-                                      labelStyle: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                        color: Color(0xFF4B4646),
-                                      ),
-                                    ),
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return 'Please enter your skills ';
-                                      }
-                                      final skillsList = value
-                                          .split(',')
-                                          .map((skill) => skill.trim())
-                                          .toList();
+        body: Container(
+          width: screenWidth,
+          height: screenHeight,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: AssetImage('images/noise_image.png'),),),
+          child: Form(
+            key: formKey,
+            child: SingleChildScrollView(
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    const Center(
+                      child: Text(
+                        'Set Up Your',
+                        style: kHeadingTextStyle,),),
+                    Center(
+                      child: Text('Freelancer Profile', style: TextStyle(fontSize: 25,color: Color(0xFF16056B),fontWeight: FontWeight.bold, ).copyWith(height: 1.0),),),
 
-                                      if (skillsList.length < 5) {
-                                        return 'Please enter up to 5 skills';
-                                      }
-                                      return null;
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  // Add padding around the Column
-                                  child: TextFormField(
-                                    controller: servicesController,
-                                    decoration: InputDecoration(
-                                      label: Text('Your main services'),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(13),
-                                        borderSide:
-                                            BorderSide(color: Color(0xFF4B4646)),
-                                      ),
-                                      filled: true,
-                                      fillColor: Color(0xF4F7F9),
-                                      labelStyle: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                        color: Color(0xFF4B4646),
-                                      ),
-                                    ),
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return 'Please enter your main services ';
-                                      }
-                                      return null;
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 2),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 35.0), // Add horizontal padding
-                              child: Text(
-                                '-Selected Services',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(
-                                      0xFF4B4646), // Adjust the color as needed
-                                ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10.0, right: 210.0, bottom: 18.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const UserDataGatherTitle(title: 'Hourly rate*'),
+                          TextFormField(
+                            controller: hourlyrateController,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.allow(RegExp(r'^\d+$')),
+                            ],
+                            decoration: InputDecoration(
+                              hintText: '00.00',
+                              prefixText: '  LKR.',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(color: Color(0xFF4B4646)),
                               ),
+                              filled: true,
+                              fillColor: Color(0x4B4646),
+                              labelStyle: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF4B4646),),
                             ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                // Service 1 and Service 2 side by side
-                                GestureDetector(
-                                  onTap: () => selectService('Service 1'),
-                                  child: Container(
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 26.0),
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 16.0,
-                                        vertical: 8.0), // Adjust the padding
-                                    decoration: BoxDecoration(
-                                      color: Colors.transparent,
-                                      border: Border.all(
-                                        color: Color(0xFF4B4646),
-                                      ),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Text(
-                                      'Service 1',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                        color: Color(0xFF4B4646),
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter your Hourly rate ';}
+                              return null;},),],),),
 
-                                GestureDetector(
-                                  onTap: () => selectService('Service 2'),
-                                  child: Container(
-                                    margin: EdgeInsets.symmetric(horizontal: 0.0),
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 16.0,
-                                        vertical: 8.0), // Adjust the padding
-                                    decoration: BoxDecoration(
-                                      color: Colors.transparent,
-                                      border: Border.all(
-                                        color: Color(0xFF4B4646),
-                                      ),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Text(
-                                      'Service 2',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                        color: Color(0xFF4B4646),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            GestureDetector(
-                              onTap: () => selectService('Service 3'),
-                              child: Container(
-                                margin: EdgeInsets.symmetric(
-                                    vertical: 8.0, horizontal: 26.0),
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 16.0,
-                                    vertical: 8.0), // Adjust the padding
-                                decoration: BoxDecoration(
-                                  color: Colors.transparent,
-                                  border: Border.all(
-                                    color: Color(0xFF4B4646),
-                                  ),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Text(
-                                  'Service 3',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color(0xFF4B4646),
-                                  ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 18.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const UserDataGatherTitle(title: 'Your overview*'),
+                          TextFormField(
+                            controller: bioController,
+                            decoration: InputDecoration(
+                              hintText: 'Add an overview',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(color: Color(0xFF4B4646)
                                 ),
                               ),
+                              filled: true,
+                              fillColor: Color(0x4B4646),
+                              labelStyle: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF4B4646),),
                             ),
-                            SizedBox(height: 6),
-                            Center(
-                              child: ElevatedButton(
-                                onPressed: () async {
-                                  if (formKey.currentState!.validate()) {
-                                    UserModel user = UserModel(
-                                      id: existingUserId,
-                                      firstName: firstNameController.text,
-                                      lastName: lastNameController.text,
-                                      email: emailController.text,
-                                      password: passwordController.text,
-                                      address: addressController.text.trim(),
-                                      zipcode: zipCodeController.text.trim(),
-                                      birthday: birthdayController.text.trim(),
-                                      gender: genderController.text.trim(),
-                                      province: provinceController.text.trim(),
-                                      city: cityController.text.trim(),
-                                      phoneNo: phoneController.text.trim(),
-                                      bio: bioController.text.trim(),
-                                      skills: skillsController.text.trim(),
-                                      services: sociallinkController.text.trim(),
-                                      hourlyRate:
-                                          hourlyrateController.text.trim(),
-                                      sociallink: servicesController.text.trim(),
-                                      professionalRole:
-                                          professionalRoleController.text.trim(),
-                                      profilePhotoUrl: profileImageUrl,
-                                    );
-                                    UserRepository.instance.updateUser(user);
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const VerifyIdentity()), // Navigate to Profile_freelancer2.dart
-                                    );
-                                  }
-                                },
-                                child: Text(
-                                  'Save & Next',
-                                  style: TextStyle(
-                                      fontSize:
-                                          16), // Adjust the font size as needed
-                                ),
-                                style: ElevatedButton.styleFrom(
-                                  primary: Color(
-                                      0xFF16056B), // Change the background color
-                                  onPrimary:
-                                      Colors.white, // Change the text color
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        13), // Adjust the border radius as needed
-                                  ),
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 138, vertical: 15),
-                                ),
+                            maxLines: 8,
+                            maxLength: 200,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter your overview';}
+                              else if (value.length <= 100) {
+                                return 'Please enter at least 100 characters';
+                              }
+                              return null;},),],),),
+
+
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 18.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const UserDataGatherTitle(title: 'Your skills'),
+                          TextFormField(
+                            controller: skillsController,
+                            decoration: InputDecoration(
+                              hintText: 'Enter skills here',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(color: Color(0xFF4B4646)),
                               ),
-                            )
-                          ],
+                              filled: true,
+                              fillColor: Color(0x4B4646),
+                              labelStyle: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF4B4646),),
+                            ),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter your skills';}
+                              final skillsList = value.split(',').map((
+                                  skill) => skill.trim()).toList();
+
+                              if (skillsList.length < 5) {
+                                return 'Please enter up to 5 skills';
+                              }
+                              return null;},),],),),
+
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 18.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const UserDataGatherTitle(title: 'Your main services'),
+                          TextFormField(
+                            controller: servicesController,
+                            decoration: InputDecoration(
+                              hintText: 'Search for a service',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(color: Color(0xFF4B4646)),
+                              ),
+                              filled: true,
+                              fillColor: Color(0x4B4646),
+                              labelStyle: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF4B4646),),
+                            ),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter your service ';}
+                              return null;},),],),),
+                    SizedBox(height: 2),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 35.0), // Add horizontal padding
+                      child: Text('-Selected Services',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF4B4646), // Adjust the color as needed
                         ),
                       ),
                     ),
-                  ),
-                ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        // Service 1 and Service 2 side by side
+                        GestureDetector(
+                          onTap: () => selectService('Service 1'),
+                          child: Container(
+                            margin: EdgeInsets.symmetric(horizontal: 26.0),
+                            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0), // Adjust the padding
+                            decoration: BoxDecoration(
+                              color: Colors.transparent,
+                              border: Border.all(
+                                color: Color(0xFF4B4646),
+                              ),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Text(
+                              'Logos and branding',
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF4B4646),),),),),
+
+                        GestureDetector(
+                          onTap: () => selectService('Service 2'),
+                          child: Container(
+                            margin: EdgeInsets.symmetric(horizontal: 0.0),
+                            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0), // Adjust the padding
+                            decoration: BoxDecoration(
+                              color: Colors.transparent,
+                              border: Border.all(
+                                color: Color(0xFF4B4646),
+                              ),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Text(
+                              'Infographics design',
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF4B4646),),),),),],),
+                    SizedBox(height: 4,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        // Service 1 and Service 2 side by side
+                        GestureDetector(
+                          onTap: () => selectService('Service 1'),
+                          child: Container(
+                            margin: EdgeInsets.symmetric(horizontal: 26.0),
+                            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0), // Adjust the padding
+                            decoration: BoxDecoration(
+                              color: Colors.transparent,
+                              border: Border.all(
+                                color: Color(0xFF4B4646),
+                              ),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Text(
+                              'Website/blog design',
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF4B4646),),),),),
+                        GestureDetector(
+                          onTap: () => selectService('Service 2'),
+                          child: Container(
+                            margin: EdgeInsets.symmetric(horizontal: 0.0),
+                            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0), // Adjust the padding
+                            decoration: BoxDecoration(
+                              color: Colors.transparent,
+                              border: Border.all(
+                                color: Color(0xFF4B4646),
+                              ),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Text(
+                              'Print design',
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF4B4646),),),),),],),
+                    SizedBox(height: 4,),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        // Service 1 and Service 2 side by side
+                        GestureDetector(
+                          onTap: () => selectService('Service 1'),
+                          child: Container(
+                            margin: EdgeInsets.symmetric(horizontal: 26.0),
+                            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0), // Adjust the padding
+                            decoration: BoxDecoration(
+                              color: Colors.transparent,
+                              border: Border.all(
+                                color: Color(0xFF4B4646),
+                              ),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Text(
+                              'Podcast cover art design',
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF4B4646),),),),),
+                        GestureDetector(
+                          onTap: () => selectService('Service 2'),
+                          child: Container(
+                            margin: EdgeInsets.symmetric(horizontal: 0.0),
+                            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0), // Adjust the padding
+                            decoration: BoxDecoration(
+                              color: Colors.transparent,
+                              border: Border.all(
+                                color: Color(0xFF4B4646),
+                              ),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Text(
+                              'Photoshop design',
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF4B4646),),),),),],),
+
+                    SizedBox(height: 40,),
+
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          if (formKey.currentState!.validate()) {
+                            // Validated successfully, update the user data and navigate to the next page
+                            UserModel updatedUser = UserModel(
+                              firstName: widget.user.firstName,
+                              lastName: widget.user.lastName,
+                              address: widget.user.address,
+                              zipcode: widget.user.zipcode,
+                              street: widget.user.street,
+                              birthday: widget.user.birthday,
+                              gender: widget.user.gender,
+                              province: widget.user.province,
+                              city: widget.user.city,
+                              phoneNo: widget.user.phoneNo,
+                              hourlyRate: hourlyrateController.text,
+                              bio: bioController.text,
+                              sociallink: sociallinkController.text,
+                              skills: skillsController.text,
+                              services: servicesController.text,
+                              imageurl1: imageurl1Controller.text,
+                              imageurl2: imageurl2Controller.text,
+                              imageurl3: imageurl3Controller.text,
+                              title: titleController.text,
+                              itemdes: itemdesController.text,
+                            );
+
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ProfileFreelancer3(user: updatedUser),
+                              ),
+                            );
+                          }
+                        },
+                        child: Text(
+                          'Save & Next',
+                          style: TextStyle(fontSize: 16), // Adjust the font size as needed
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          primary: Color(0xFF16056B), // Change the background color
+                          onPrimary: Colors.white,    // Change the text color
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(13), // Adjust the border radius as needed
+                          ),
+                          padding: EdgeInsets.symmetric(horizontal: 140, vertical: 15),
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(height: 20,)
+
+
+
+
+
+
+
               ],
-            ),
+
+              ),
           ),
         ),
+      ),
+    ),
+
+
     );
   }
-
   void selectService(String serviceName) {
     setState(() {
       selectedServices.add(serviceName);

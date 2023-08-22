@@ -28,12 +28,7 @@ class DataDetailsScreenFreelancer extends StatelessWidget {
             ),
             SizedBox(height: 8),
             // Email
-            Center(
-              child: Text(
-                user.email,
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-            ),
+
             SizedBox(height: 6),
             // First Name + Last Name
             Center(
@@ -154,26 +149,6 @@ class DataDetailsScreenFreelancer extends StatelessWidget {
               ),
             ),
             SizedBox(height: 16),
-
-            Center(
-              child: SizedBox(
-                width: 300, // Adjust the width as needed
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12.0),
-                    border: Border.all(color: Colors.grey),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(13.0),
-                    child: Text('Email: ${user.email}',
-                      style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-              ),
-            ),
             SizedBox(height: 16),
 
             Center(
@@ -229,27 +204,6 @@ class DataDetailsScreenFreelancer extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(13.0),
                     child: Text('Services: ${user.services}',
-                      style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(height: 16),
-
-            Center(
-              child: SizedBox(
-                width: 300, // Adjust the width as needed
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12.0),
-                    border: Border.all(color: Colors.grey),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(13.0),
-                    child: Text('Professional Role: ${user.professionalRole}',
                       style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.bold),

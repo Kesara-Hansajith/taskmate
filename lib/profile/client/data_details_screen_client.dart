@@ -26,12 +26,7 @@ class DataDetailsScreenClient extends StatelessWidget {
             ),
             SizedBox(height: 8),
             // Email
-            Center(
-              child: Text(
-                client.email,
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-            ),
+
             SizedBox(height: 6),
             // First Name + Last Name
             Center(
