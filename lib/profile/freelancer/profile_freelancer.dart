@@ -477,9 +477,6 @@ class _ProfileFreelancerState extends State<ProfileFreelancer> {
                            builder: (context) => ProfileFreelancer2(user: user),
                           ),
                           );
-
-
-
                         }
                       },
                       child: Text('Save & Next',

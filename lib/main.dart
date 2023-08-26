@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:taskmate/Dashboard/FreelancerDashboard/Help.dart';
 import 'package:taskmate/profile/client/profile_client.dart';
 import 'package:taskmate/profile/client/user_repository1.dart';
 import 'package:taskmate/profile/freelancer/profile_freelancer.dart';
@@ -50,7 +51,7 @@ class Taskmate extends StatelessWidget {
       theme: ThemeData(fontFamily: "Poppins"),
 
       home:  const SafeArea(
-        child: ProfileFreelancer(),
+        child: Help(),
 
       ),
     );
