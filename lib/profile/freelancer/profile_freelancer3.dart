@@ -285,6 +285,7 @@ class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
                                            province: widget.user.province,
                                            city: widget.user.city,
                                            phoneNo: widget.user.phoneNo,
+                                           professionalrole: widget.user.professionalrole,
                                            hourlyRate: widget.user.hourlyRate,
                                            bio: widget.user.bio,
                                            skills: widget.user.skills,

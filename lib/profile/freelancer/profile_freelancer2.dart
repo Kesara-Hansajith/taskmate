@@ -363,6 +363,7 @@ class _ProfileFreelancer2State extends State<ProfileFreelancer2> {
                               province: widget.user.province,
                               city: widget.user.city,
                               phoneNo: widget.user.phoneNo,
+                              professionalrole: widget.user.professionalrole,
                               hourlyRate: hourlyrateController.text,
                               bio: bioController.text,
                               sociallink: sociallinkController.text,

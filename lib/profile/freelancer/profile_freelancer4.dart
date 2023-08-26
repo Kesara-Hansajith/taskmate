@@ -184,7 +184,7 @@ class _ProfileFreelancer4State extends State<ProfileFreelancer4> {
                           ),
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return 'Please enter your address';}
+                              return 'Please enter your portfolio item';}
                             return null;},),
                         ],),),
 

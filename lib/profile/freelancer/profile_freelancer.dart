@@ -38,6 +38,7 @@ class _ProfileFreelancerState extends State<ProfileFreelancer> {
   final TextEditingController imageurl3Controller = TextEditingController();
   final TextEditingController titleController = TextEditingController();
   final TextEditingController itemdesController = TextEditingController();
+  final TextEditingController professionalroleController = TextEditingController();
 
   String existingUserId = 'your_existing_user_id';
   String? profileImageUrl;
@@ -416,6 +417,34 @@ class _ProfileFreelancerState extends State<ProfileFreelancer> {
                             }
                             return null;},),],),),
 
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 18.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const UserDataGatherTitle(title: 'Professional Role*'),
+                        TextFormField(
+                          controller: professionalroleController,
+                          decoration: InputDecoration(
+                            hintText: 'Enter your professional role',
+
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(color: Color(0xFF4B4646)),
+                            ),
+                            filled: true,
+                            fillColor: Color(0x4B4646),
+                            labelStyle: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF4B4646),),
+                          ),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Please enter your professional role';}
+
+                            return null;},),],),),
+
                   SizedBox(height: 16,),
 
                   Center(
@@ -436,6 +465,7 @@ class _ProfileFreelancerState extends State<ProfileFreelancer> {
                             hourlyRate: hourlyrateController.text.trim(),
                             skills: skillsController.text.trim(),
                             services: servicesController.text.trim(),
+                            professionalrole: professionalroleController.text.trim(),
                             sociallink: sociallinkController.text.trim(),
                             city: cityController.text.trim(),
                             phoneNo: phoneController.text.trim(),

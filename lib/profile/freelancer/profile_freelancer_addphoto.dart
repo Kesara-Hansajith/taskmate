@@ -185,6 +185,7 @@ class _ProfileFreelancerAddphotoState extends State<ProfileFreelancerAddphoto> {
                               'province': widget.user.province,
                               'city': widget.user.city,
                               'phoneNo': widget.user.phoneNo,
+                              'professionalRole': widget.user.professionalrole,
                               'hourlyRate':widget.user.hourlyRate,
                               'skills': widget.user.skills,
                               'bio': widget.user.bio,
