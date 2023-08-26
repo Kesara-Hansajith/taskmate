@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,6 +22,8 @@ class _ProfileFreelancerState extends State<ProfileFreelancer> {
   final formKey = GlobalKey<FormState>();
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
   final TextEditingController zipCodeController = TextEditingController();
   final TextEditingController provinceController = TextEditingController();
@@ -46,6 +50,8 @@ class _ProfileFreelancerState extends State<ProfileFreelancer> {
   String? selectedProvince;
   String? selectedSkills;
   bool dataSubmitted = false;
+  bool _isUsernameUnique = true;
+  Timer? _debounce;
 
   get emailRegex => RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', caseSensitive: false, multiLine: false,);
   get phoneRegex => RegExp(r'^[0-9]{10}$', caseSensitive: false, multiLine: false,);
@@ -163,6 +169,13 @@ class _ProfileFreelancerState extends State<ProfileFreelancer> {
                                 validator: (value) {
                                   if (value!.isEmpty) {
                                     return 'Please select your birthday';}
+                                  DateTime selectedDate = DateTime.parse(value); // Convert selected value to DateTime
+                                  DateTime currentDate = DateTime.now();
+                                  DateTime minValidDate = currentDate.subtract(Duration(days: 365 * 18)); // 18 years ago
+
+                                  if (selectedDate.isAfter(minValidDate)) {
+                                    return 'You must be 18 years or older';
+                                  }
                                   return null;},)],),),),
                       Expanded(
                         child: Padding(padding: const EdgeInsets.only(left:10.0,right: 10.0, bottom: 18.0),
@@ -218,6 +231,84 @@ class _ProfileFreelancerState extends State<ProfileFreelancer> {
                                               child: Text('OK'),),],);},);
                                     if (selectedValue != null) {
                                       genderController.text = selectedValue;}})],),),),],),
+
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left:10.0,right: 10.0, bottom: 18.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const UserDataGatherTitle(title: 'Email*'),
+                              TextFormField(
+                                controller: emailController,
+                                decoration: InputDecoration(
+                                  hintText: 'Email',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: BorderSide(color: Color(0xFF4B4646)),),
+                                    filled: true,
+                                    fillColor: Color(0x4B4646),
+                                    labelStyle: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xFF4B4646),),
+
+                                ),
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Please enter your Email';}
+                                  if (!RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$').hasMatch(value)) {
+                                    return 'Please enter a valid email address';
+                                  }
+                                  return null;}
+                                ,)],),),),
+                      Expanded(
+                        child: Padding(padding: const EdgeInsets.only(left:10.0,right: 10.0, bottom: 18.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const UserDataGatherTitle(title: 'Password*'),
+                              TextFormField(
+                                  controller: passwordController,
+                                  obscureText: !_isPasswordVisible,
+                                  decoration: InputDecoration(
+                                    hintText: 'Password',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: BorderSide(color: Color(0xFF4B4646)),),
+                                    filled: true,
+                                    fillColor: Color(0x4B4646),
+                                    labelStyle: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xFF4B4646),
+                                    ),
+                                    suffixIcon: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          // Toggle password visibility
+                                          _isPasswordVisible = !_isPasswordVisible;
+                                        });
+                                      },
+                                      child: Icon(
+                                        _isPasswordVisible ? Icons.lock_open : Icons.lock,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'Please enter your Password';}
+                                    if (value.length < 8) {
+                                      return 'Password must be at least 8 characters';
+                                    }
+                                    if (!RegExp(r'^(?=.*[A-Za-z])(?=.*\d).+$').hasMatch(value)) {
+                                      return 'Password must include letters and numbers';
+                                    }
+                                    return null;}
+                                ,)],),),),],),
 
                   Padding(
                     padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 18.0),
@@ -422,7 +513,7 @@ class _ProfileFreelancerState extends State<ProfileFreelancer> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const UserDataGatherTitle(title: 'Professional Role*'),
+                        const UserDataGatherTitle(title: 'Your professional role*'),
                         TextFormField(
                           controller: professionalroleController,
                           decoration: InputDecoration(
@@ -455,6 +546,8 @@ class _ProfileFreelancerState extends State<ProfileFreelancer> {
                           final user = UserModel(
                             firstName: firstNameController.text.trim(),
                             lastName: lastNameController.text.trim(),
+                            email: emailController.text.trim(),
+                            password: passwordController.text.trim(),
                             address: addressController.text.trim(),
                             zipcode: zipCodeController.text.trim(),
                             street: streetController.text.trim(),
@@ -510,12 +603,7 @@ class _ProfileFreelancerState extends State<ProfileFreelancer> {
   }
 }
 
-
-
-
-
-
-
+bool _isPasswordVisible = false; // Define the variable here
 
 void selectDate(BuildContext context, TextEditingController birthdayController) async {
   final DateTime? picked = await showDatePicker(

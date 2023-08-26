@@ -172,6 +172,8 @@ class _ProfileClientAddphotoState extends State<ProfileClientAddphoto> {
                           await FirebaseFirestore.instance.collection('Clients').doc(existingUserId).set({
                             'firstName': widget.client.firstName,
                             'lastName': widget.client.lastName,
+                            'email': widget.client.email,
+                            'password': widget.client.password,
                             'address': widget.client.address,
                             'zipcode': widget.client.zipcode,
                             'street': widget.client.street,
@@ -181,6 +183,8 @@ class _ProfileClientAddphotoState extends State<ProfileClientAddphoto> {
                             'city': widget.client.city,
                             'phoneNo': widget.client.phoneNo,
                             'profilePhotoUrl': downloadUrl,
+                            'professionalRole': widget.client.professionalrole,
+
                           });
 
                           // Navigate back to the previous page or any other page

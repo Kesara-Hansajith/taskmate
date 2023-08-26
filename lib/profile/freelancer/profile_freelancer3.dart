@@ -95,6 +95,8 @@ class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
+    bool formSubmitted = true;
+
     return SafeArea(
       child: Scaffold(
         body: Container(
@@ -169,11 +171,17 @@ class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
                           Stack(
-                            alignment: Alignment.center,
                             children: [
-                              Container(
+                              Row(
+                          children: [
+                            Expanded(
+                          child: Container(
                                 width: double.infinity,
                                 height: 120,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Color(0xFF4B4646)),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                                 child: GestureDetector(
                                   onTap: () async {
                                       Navigator.push(
@@ -181,87 +189,121 @@ class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
                                         MaterialPageRoute(builder: (context) => ProfileFreelancer4()),
                                       );
                                     },
-
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      border: Border.all(color: Color(0xFF4B4646),),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: selectedImageUrl1 != null
-                                        ? Image.file(
-                                      File(selectedImageUrl1!),
-                                      fit: BoxFit.cover,
-                                    ): Center(
-                                    child: Text(
+                                    child: Center(
+                                      child: Text(
                                       '+ Add',
                                       style: TextStyle(
                                         fontSize: 12,
-                                        color: Color(0xFF4B4646), ),),),),),),],),
-                                SizedBox(height: 14),
+                                        color: Color(0xFF4B4646),
+                                      ),
+                                      ),
+                                    ),
+
+                                ),
+                          ),
+                          ),
+                            SizedBox(width: 16), // Adjust the spacing between the boxes
+                            Expanded(
+                              child: Container(
+                                height: 120,
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Color(0xFF4B4646)),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => ProfileFreelancer4()),
+                                    );
+                                  },
+                                // Add the contents of the second box here
+                                child: Center(
+                                  child: Text(
+                                    '+ Add',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFF4B4646),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            ),
+                          ],
+                              ),
+                            ],
+                          ),
+                                SizedBox(height: 20),
 
                                 Stack(
                                   children: [
-                                    Container(
-                                      width: double.infinity,
-                                      height: 120,
-                                      child: GestureDetector(
-                                        onTap: () async {
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Container(
+                                            width: double.infinity,
+                                            height: 120,
+                                            decoration: BoxDecoration(
+                                              border: Border.all(color: Color(0xFF4B4646)),
+                                              borderRadius: BorderRadius.circular(10),
+                                            ),
+                                            child: GestureDetector(
+                                              onTap: () async {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(builder: (context) => ProfileFreelancer4()),
+                                                );
+                                              },
+                                              child: Center(
+                                                child: Text(
+                                                  '+ Add',
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Color(0xFF4B4646),
+                                                  ),
+                                                ),
+                                              ),
 
-                                            // Navigate to the profile_freelancer4 page
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(builder: (context) => ProfileFreelancer4()),
-                                            );
-                                          },
-                                        child: Container(
-                                          width: double.infinity,
-                                          decoration: BoxDecoration(
-                                            border: Border.all(color: Color(0xFF4B4646),),
-                                            borderRadius: BorderRadius.circular(10),
+                                            ),
                                           ),
-                                          child: selectedImageUrl2!= null
-                                              ? Image.file(
-                                            File(selectedImageUrl2!),
-                                            fit: BoxFit.cover,
-                                          ): Center(
-                                            child: Text(
-                                              '+ Add',
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                color: Color(0xFF4B4646), ),),),),),),],),
-                                SizedBox(height: 14),
-
-                                Stack(
-                                  children: [
-                                    Container(
-                                      width: double.infinity,
-                                      height: 120,
-                                      child: GestureDetector(
-                                        onTap: () async {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(builder: (context) => ProfileFreelancer4()),
-                                            );
-
-                                        },
-                                        child: Container(
-                                          width: double.infinity,
-                                          decoration: BoxDecoration(
-                                            border: Border.all(color: Color(0xFF4B4646),),
-                                            borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        SizedBox(width: 16), // Adjust the spacing between the boxes
+                                        Expanded(
+                                          child: Container(
+                                            height: 120,
+                                            decoration: BoxDecoration(
+                                              border: Border.all(color: Color(0xFF4B4646)),
+                                              borderRadius: BorderRadius.circular(10),
+                                            ),
+                                            child: GestureDetector(
+                                              onTap: () async {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(builder: (context) => ProfileFreelancer4()),
+                                                );
+                                              },
+                                              // Add the contents of the second box here
+                                              child: Center(
+                                                child: Text(
+                                                  '+ Add',
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Color(0xFF4B4646),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
                                           ),
-                                          child: selectedImageUrl3 != null
-                                              ? Image.file(
-                                            File(selectedImageUrl3!),
-                                            fit: BoxFit.cover,
-                                          ): Center(
-                                            child: Text(
-                                              '+ Add',
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                color: Color(0xFF4B4646), ),),),),),),],),
-                                SizedBox(height: 10),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
 
+
+
+                                SizedBox(height: 180),
 
                                  // Adjust the position as needed
 
@@ -277,6 +319,8 @@ class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
                                          UserModel updatedUser = UserModel(
                                            firstName: widget.user.firstName,
                                            lastName: widget.user.lastName,
+                                           email: widget.user.email,
+                                           password: widget.user.password,
                                            address: widget.user.address,
                                            zipcode: widget.user.zipcode,
                                            street: widget.user.street,
@@ -290,8 +334,7 @@ class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
                                            bio: widget.user.bio,
                                            skills: widget.user.skills,
                                            services: widget.user.services,
-                                           sociallink: sociallinkController.text,
-
+                                           sociallink: sociallinkController.text ?? '', // Assign an empty string if null
                                          );
 
                                           Navigator.push(

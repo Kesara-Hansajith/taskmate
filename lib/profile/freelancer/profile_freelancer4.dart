@@ -245,9 +245,10 @@ class _ProfileFreelancer4State extends State<ProfileFreelancer4> {
                         SizedBox(height: 10),
                         Wrap(
                           spacing: 10,
-                          children: selectedImages
-                              .map((image) => Image.file(image, height: 80))
-                              .toList(),
+                          children: selectedImages.map((image) => Container(
+                            margin: EdgeInsets.only(bottom: 10), // Add a margin at the bottom
+                            child: Image.file(image, height: 80),
+                          )).toList(),
                         ),],),),
                   SizedBox(height: 100,),
 
@@ -314,15 +315,3 @@ class _ProfileFreelancer4State extends State<ProfileFreelancer4> {
 
 
 
-void selectDate(BuildContext context, TextEditingController birthdayController) async {
-  final DateTime? picked = await showDatePicker(
-    context: context,
-    initialDate: DateTime.now(),
-    firstDate: DateTime(1900),
-    lastDate: DateTime.now(),
-  );
-  if (picked != null && picked != DateTime.now()) {
-    final formattedDate = DateFormat('yyyy-MM-dd').format(picked);
-    birthdayController.text = formattedDate; // Update the text field
-  }
-}

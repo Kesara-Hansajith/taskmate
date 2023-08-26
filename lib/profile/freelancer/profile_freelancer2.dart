@@ -97,9 +97,6 @@ class _ProfileFreelancer2State extends State<ProfileFreelancer2> {
                           TextFormField(
                             controller: hourlyrateController,
                             keyboardType: TextInputType.number,
-                            inputFormatters: <TextInputFormatter>[
-                              FilteringTextInputFormatter.allow(RegExp(r'^\d+$')),
-                            ],
                             decoration: InputDecoration(
                               hintText: '00.00',
                               prefixText: '  LKR.',
@@ -117,6 +114,10 @@ class _ProfileFreelancer2State extends State<ProfileFreelancer2> {
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return 'Please enter your Hourly rate ';}
+                              double? hourlyRate = double.tryParse(value);
+                              if (hourlyRate == null || hourlyRate < 500) {
+                                return 'lowest amount LKR 500';
+                              }
                               return null;},),],),),
 
                     Padding(
@@ -160,7 +161,7 @@ class _ProfileFreelancer2State extends State<ProfileFreelancer2> {
                           TextFormField(
                             controller: skillsController,
                             decoration: InputDecoration(
-                              hintText: 'Enter skills here',
+                              hintText: 'Enter 5 skills here',
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide: BorderSide(color: Color(0xFF4B4646)),
@@ -355,6 +356,8 @@ class _ProfileFreelancer2State extends State<ProfileFreelancer2> {
                             UserModel updatedUser = UserModel(
                               firstName: widget.user.firstName,
                               lastName: widget.user.lastName,
+                              email: widget.user.email,
+                              password: widget.user.password,
                               address: widget.user.address,
                               zipcode: widget.user.zipcode,
                               street: widget.user.street,

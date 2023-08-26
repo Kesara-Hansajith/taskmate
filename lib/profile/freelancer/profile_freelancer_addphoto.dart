@@ -177,6 +177,8 @@ class _ProfileFreelancerAddphotoState extends State<ProfileFreelancerAddphoto> {
                             await FirebaseFirestore.instance.collection('Users').doc(existingUserId).set({
                               'firstName': widget.user.firstName,
                               'lastName': widget.user.lastName,
+                              'userName':widget.user.email,
+                              'password':widget.user.password,
                               'address': widget.user.address,
                               'zipcode': widget.user.zipcode,
                               'street': widget.user.street,
