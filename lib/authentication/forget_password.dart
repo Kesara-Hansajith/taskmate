@@ -50,10 +50,11 @@ class _ForgetPasswordState extends State<ForgetPassword> {
             ),
             DarkMainButton(
                 title: 'Check Inbox',
-                process: ()  async {
-                   await LaunchApp.openApp(
-                      androidPackageName: 'com.google.android.gm',
-                      openStore: false,);
+                process: () async {
+                  await LaunchApp.openApp(
+                    androidPackageName: 'com.google.android.gm',
+                    openStore: false,
+                  );
                 },
                 screenWidth: MediaQuery.of(context).size.width),
             const Padding(

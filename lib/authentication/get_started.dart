@@ -19,52 +19,50 @@ class _GetStartedState extends State<GetStarted> {
     final connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.mobile ||
         connectivityResult == ConnectivityResult.wifi) {
-      Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (context) => const RootPage(),
-              ),
-            );
+      if (context.mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const RootPage(),
+          ),
+        );
+      }
     } else if (connectivityResult == ConnectivityResult.none) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return MaintenancePage(
-            [
-              const Image(
-                image: AssetImage(
-                    'images/no_connection.webp'),
-              ),
-              Text(
-                'Oops!',
-                style: kSubHeadingTextStyle
-                    .copyWith(height: 0.5),
-              ),
-              const Text(
-                'Wrong Turn...',
-                style: kSubHeadingTextStyle,
-              ),
-              const Padding(
-                padding:
-                EdgeInsets.symmetric(
-                    vertical: 8.0),
-                child: Text(
-                  'Please check your internet connection and try again.',
-                  style: kTextStyle,
-                  textAlign:
-                  TextAlign.center,
+      if (context.mounted) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return MaintenancePage(
+              [
+                const Image(
+                  image: AssetImage('images/no_connection.webp'),
                 ),
-              ),
-              DarkMainButton(
-                  title: 'Try Again',
-                  process: () {
-                    Navigator.of(context)
-                        .pop();
-                  },
-                  screenWidth: MediaQuery.of(context).size.width)
-            ],
-          );
-        },
-      );
+                Text(
+                  'Oops!',
+                  style: kSubHeadingTextStyle.copyWith(height: 0.5),
+                ),
+                const Text(
+                  'Wrong Turn...',
+                  style: kSubHeadingTextStyle,
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8.0),
+                  child: Text(
+                    'Please check your internet connection and try again.',
+                    style: kTextStyle,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                DarkMainButton(
+                    title: 'Try Again',
+                    process: () {
+                      Navigator.of(context).pop();
+                    },
+                    screenWidth: MediaQuery.of(context).size.width)
+              ],
+            );
+          },
+        );
+      }
     }
   }
 
@@ -126,39 +124,12 @@ class _GetStartedState extends State<GetStarted> {
                               ),
                             ),
                             //"Get Started" will goes here
-                            Container(
-                              margin: const EdgeInsets.symmetric(
-                                  vertical: 4.0, horizontal: 28.0),
-                              width: screenWidth,
-                              child: DarkMainButton(
-                                title: 'GetStarted',
-                                process: () {
-                                  _checkConnectivity();
-                                },
-                                screenWidth: screenWidth,
-                              ),
-                              // ElevatedButton(
-                              //   style: ElevatedButton.styleFrom(
-                              //     backgroundColor: kDeepBlueColor,
-                              //     shape: RoundedRectangleBorder(
-                              //       borderRadius: BorderRadius.circular(20.0),
-                              //     ),
-                              //   ),
-                              //   onPressed: () {
-                              //     Navigator.of(context).pushReplacement(
-                              //       MaterialPageRoute(
-                              //         builder: (context) => const RootPage(),
-                              //       ),
-                              //     );
-                              //   },
-                              //   child: const Padding(
-                              //     padding: EdgeInsets.all(16.0),
-                              //     child: Text(
-                              //       'Get Started!',
-                              //       style: TextStyle(fontSize: 15.0),
-                              //     ),
-                              //   ),
-                              // ),
+                            DarkMainButton(
+                              title: 'Get Started',
+                              process: () {
+                                _checkConnectivity();
+                              },
+                              screenWidth: screenWidth,
                             ),
                             //Bottom most row of screen
                             Row(

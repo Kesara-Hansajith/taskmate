@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:taskmate/authentication/log_in.dart';
 import 'package:taskmate/authentication/verify_email.dart';
 import 'package:taskmate/components/bottom_sub_text.dart';
+import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/constants.dart';
-import 'package:taskmate/components/email_phone_toggle_switch.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:taskmate/components/snackbar.dart';
 
@@ -16,6 +16,7 @@ class CreateMyAccount1 extends StatefulWidget {
 }
 
 class _CreateMyAccount1State extends State<CreateMyAccount1> {
+  final _formKey = GlobalKey<FormState>();
   bool isChecked1 = false;
   bool isChecked2 = false;
 
@@ -29,6 +30,7 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
   void dispose() {
     email.dispose();
     password.dispose();
+    confirmPasswordController.dispose();
     super.dispose();
   }
 
@@ -72,11 +74,6 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
         ScaffoldMessenger.of(context).showSnackBar(
           CustomSnackBar('Email already in use'),
         );
-      } else if (enteredPassword.isEmpty || enteredEmail.isEmpty) {
-        // Show a snackbar if fields are empty
-        ScaffoldMessenger.of(context).showSnackBar(
-          CustomSnackBar('Empty Email or Password'),
-        );
       }
     }
   }
@@ -117,7 +114,9 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
         await user.sendEmailVerification();
         _navigateToVerifyEmail();
       }
-    } catch (e) {}
+    } catch (e) {
+      //Ignored catch block
+    }
   }
 
   @override
@@ -135,7 +134,6 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
               repeat: ImageRepeat.repeat,
             ),
           ),
-
           child: SizedBox(
             width: screenWidth,
             height: screenHeight,
@@ -146,89 +144,122 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
                   children: <Widget>[
                     const Padding(
                       padding:
-                          EdgeInsets.symmetric(vertical: 10.0, horizontal: 8.0),
+                          EdgeInsets.symmetric(vertical: 20.0, horizontal: 8.0),
                       child: Text(
                         'Create My Account',
                         style: kHeadingTextStyle,
-
                       ),
                     ),
-                    const EmailPhoneToggle(),
-                    //"Email" Textfield
-                    Container(
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 8.0, horizontal: 28.0),
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      decoration: BoxDecoration(
-                        color: kBrilliantWhite,
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      child: TextField(
-                        controller: email,
-                        obscureText: false,
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Email',
-                        ),
-                      ),
-                    ),
-                    //"Password" Textfield goes here
-                    Container(
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 8.0, horizontal: 28.0),
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      decoration: BoxDecoration(
-                        color: kBrilliantWhite,
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      child: TextField(
-                        controller: password,
-                        obscureText: obsecureController0,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Password',
-                          suffixIcon: IconButton(
-                            icon: obsecureController0
-                                ? const Icon(Icons.lock)
-                                : const Icon(Icons.lock_open),
-                            color: kJetBlack,
-                            //todo: Functionality for the Password Section Obsecure text availability
-                            onPressed: () {
-                              setObsecure0();
-                            },
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          //"Email" Textfield goes here
+                          Container(
+                            margin: const EdgeInsets.symmetric(
+                                vertical: 8.0, horizontal: 28.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            decoration: BoxDecoration(
+                              color: kBrilliantWhite,
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            child: TextFormField(
+                              controller: email,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Field can\'t be empty';
+                                } else if (!value.contains('@')) {
+                                  password.clear();
+                                  confirmPasswordController.clear();
+                                  return 'Please enter a valid Email Address';
+                                }
+                                return null; // Return null for valid input
+                              },
+                              obscureText: false,
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Email',
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                    //"Confirm Password" Textfield goes here
-                    Container(
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 8.0, horizontal: 28.0),
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      decoration: BoxDecoration(
-                        color: kBrilliantWhite,
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      child: TextField(
-                        controller: confirmPasswordController,
-                        obscureText: obsecureController1,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Confirm Password',
-                          suffixIcon: IconButton(
-                            icon: obsecureController1
-                                ? const Icon(Icons.lock)
-                                : const Icon(Icons.lock_open),
-                            color: kJetBlack,
-                            //todo: Functionality for the Confirm Password Section Obsecure text availability
-                            onPressed: () {
-                              setObsecure1();
-                            },
+                          const SizedBox(
+                            height: 10.0,
                           ),
-                        ),
+                          //"Password" Textfield goes here
+                          Container(
+                            margin: const EdgeInsets.symmetric(
+                                vertical: 8.0, horizontal: 28.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            decoration: BoxDecoration(
+                              color: kBrilliantWhite,
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            child: TextFormField(
+                              controller: password,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Field can\'t be empty';
+                                }
+                                return null; // Return null for valid input
+                              },
+                              obscureText: obsecureController0,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Password',
+                                suffixIcon: IconButton(
+                                  icon: obsecureController0
+                                      ? const Icon(Icons.lock)
+                                      : const Icon(Icons.lock_open),
+                                  color: kJetBlack,
+                                  onPressed: () {
+                                    setObsecure0();
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10.0,
+                          ),
+                          //"Confirm Password" Textfield goes here
+                          Container(
+                            margin: const EdgeInsets.symmetric(
+                                vertical: 8.0, horizontal: 28.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            decoration: BoxDecoration(
+                              color: kBrilliantWhite,
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            child: TextFormField(
+                              controller: confirmPasswordController,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Field can\'t be empty';
+                                }
+                                return null; // Return null for valid input
+                              },
+                              obscureText: obsecureController1,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Confirm Password',
+                                suffixIcon: IconButton(
+                                  icon: obsecureController1
+                                      ? const Icon(Icons.lock)
+                                      : const Icon(Icons.lock_open),
+                                  color: kJetBlack,
+                                  onPressed: () {
+                                    setObsecure1();
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
                       child: ListTile(
@@ -277,7 +308,6 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
                             ],
                           ),
                         ),
-
                       ),
                     ),
                     Padding(
@@ -308,37 +338,22 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
                         ),
                       ),
                     ),
-
-                    Container(
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 16.0, horizontal: 28.0),
-                      width: screenWidth,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: kDeepBlueColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                        ),
-                        onPressed: () {
-                          if (isCreateAccountButtonActive()) {
-                            createMyAccount();
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              CustomSnackBar(
-                                  'Please agree to Terms & Conditions'),
-                            );
+                    DarkMainButton(
+                        title: 'Create My Account',
+                        process: () {
+                          if (_formKey.currentState!.validate()) {
+                            // Form is valid, proceed with submission or other actions
+                            if (isCreateAccountButtonActive()) {
+                              createMyAccount();
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                CustomSnackBar(
+                                    'Please agree to Terms & Conditions'),
+                              );
+                            }
                           }
                         },
-                        child: const Padding(
-                          padding: EdgeInsets.all(16.0),
-                          child: Text(
-                            'Create My Account',
-                            style: TextStyle(fontSize: 15.0),
-                          ),
-                        ),
-                      ),
-                    ),
+                        screenWidth: screenWidth),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[

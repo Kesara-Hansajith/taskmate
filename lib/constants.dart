@@ -43,6 +43,6 @@ const kJobCardDescriptionTextStyle = TextStyle(
 
 const kUserDataGatherTitleTextStyle = TextStyle(
   color: kDarkGreyColor,
-  fontSize: 14.0,
+  fontSize: 13.0,
   fontWeight: FontWeight.bold,
 );
