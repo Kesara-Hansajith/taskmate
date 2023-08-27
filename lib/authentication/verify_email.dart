@@ -36,15 +36,19 @@ class _VerifyEmailState extends State<VerifyEmail> {
     if (user != null) {
       await user.reload(); // Reload user data to get the latest information
       if (user.emailVerified) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => const TakeAction(),
-          ),
-        );
+        if (context.mounted) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => const TakeAction(),
+            ),
+          );
+        }
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          CustomSnackBar('User\'s email is not verified.'),
-        );
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            CustomSnackBar('User\'s email is not verified.'),
+          );
+        }
       }
     }
   }
@@ -57,9 +61,11 @@ class _VerifyEmailState extends State<VerifyEmail> {
     if (user != null) {
       try {
         await user.sendEmailVerification();
-        ScaffoldMessenger.of(context).showSnackBar(
-          CustomSnackBar('Verification email sent successfully'),
-        );
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            CustomSnackBar('Verification email sent successfully'),
+          );
+        }
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           CustomSnackBar('Error sending verification email'),

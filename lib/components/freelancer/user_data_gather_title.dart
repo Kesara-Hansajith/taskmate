@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:taskmate/constants.dart';
+
 class UserDataGatherTitle extends StatelessWidget {
   const UserDataGatherTitle({
     super.key,
@@ -10,10 +12,11 @@ class UserDataGatherTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
       child: Text(
-        title,
-        style: TextStyle(
-          fontSize: 13, // Set the desired font size
-          color: Color(0xFF4B4646), // Set the desired font color
-          fontWeight: FontWeight.bold,),),);}}
+          title,
+          style: kUserDataGatherTitleTextStyle
+      ),
+    );
+  }
+}

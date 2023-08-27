@@ -10,33 +10,8 @@ import 'package:taskmate/authentication/create_my_account_1.dart';
 import 'package:taskmate/components/maintenance_page.dart';
 import 'package:taskmate/components/dark_main_button.dart';
 
-
 class SignUp extends StatelessWidget {
   const SignUp({super.key});
-
-  // void _showCustomDialog(BuildContext context) {
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return CustomAlertDialog(
-  //         child: Column(
-  //           mainAxisSize: MainAxisSize.min,
-  //           children: [
-  //             // Add your alert dialog content here
-  //             Text('Your Alert Title'),
-  //             SizedBox(height: 10),
-  //             Text('Your Alert Message'),
-  //             SizedBox(height: 20),
-  //             ElevatedButton(
-  //               onPressed: () => Navigator.of(context).pop(),
-  //               child: Text('Close'),
-  //             ),
-  //           ],
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
 
   //Method for Google Authentication
   Future<UserCredential> signInWithGoogle() async {
@@ -135,7 +110,6 @@ class SignUp extends StatelessWidget {
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               const CreateMyAccount1(),
-
                                         ),
                                       );
                                     },
@@ -151,13 +125,11 @@ class SignUp extends StatelessWidget {
                                       //Button icon and Text goes here
                                       child: Row(
                                         mainAxisAlignment:
-
                                             MainAxisAlignment.spaceEvenly,
                                         children: const <Widget>[
                                           Icon(
                                             Icons.person_add,
                                             color: kBrilliantWhite,
-
                                           ),
                                           Text(
                                             'Continue with Email or Mobile',
@@ -169,7 +141,6 @@ class SignUp extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-
                                 ),
                                 //Separator goes here
                                 Padding(
@@ -221,7 +192,6 @@ class SignUp extends StatelessWidget {
                                           shape: RoundedRectangleBorder(
                                             borderRadius:
                                                 BorderRadius.circular(16.0),
-
                                           ),
                                         ),
                                         onPressed: () {
@@ -286,13 +256,13 @@ class SignUp extends StatelessWidget {
                                                   ),
                                                   const Padding(
                                                     padding:
-                                                    EdgeInsets.symmetric(
-                                                        vertical: 8.0),
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 8.0),
                                                     child: Text(
                                                       'Please check back soon just putting little touch up on some pretty updates.',
                                                       style: kTextStyle,
                                                       textAlign:
-                                                      TextAlign.center,
+                                                          TextAlign.center,
                                                     ),
                                                   ),
                                                   DarkMainButton(

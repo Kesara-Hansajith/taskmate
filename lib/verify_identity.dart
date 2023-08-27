@@ -1,4 +1,3 @@
-import 'dart:io';
 //import 'package:camera/camera.dart';
 
 import 'package:flutter/material.dart';
@@ -32,7 +31,6 @@ class _VerifyIdentityState extends State<VerifyIdentity> {
       String? filePath = result.files.single.path;
       if (filePath != null) {
         setState(() {
-          File file = File(filePath);
           isIDSubmitted = true;
           // Do something with the file...
         });
@@ -53,7 +51,6 @@ class _VerifyIdentityState extends State<VerifyIdentity> {
       String? filePath = result.files.single.path;
       if (filePath != null) {
         setState(() {
-          File file = File(filePath);
           isPhotoSubmitted = true;
           // Do something with the file...
         });
@@ -127,7 +124,9 @@ class _VerifyIdentityState extends State<VerifyIdentity> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               const Padding(
-                padding: EdgeInsets.symmetric(vertical: 24.0, horizontal: 8.0),
+                padding: EdgeInsets.symmetric(
+                  vertical: 16.0,
+                ),
                 child: Text(
                   'Verify Your Identity',
                   style: kHeadingTextStyle,
@@ -186,9 +185,7 @@ class _VerifyIdentityState extends State<VerifyIdentity> {
               ),
               DarkMainButton(
                   title: 'Submit Documents',
-                  process: () {
-                    submitDocuments();
-                  },
+                  process: submitDocuments,
                   screenWidth: screenWidth),
               const SizedBox(
                 height: 50.0,
