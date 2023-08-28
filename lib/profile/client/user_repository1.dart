@@ -12,7 +12,7 @@ class UserRepository1 extends GetxController {
   Stream<List<UserModel1>> getClientsStream() {
     return _db.collection("Clients").snapshots().map(
           (querySnapshot) => querySnapshot.docs.map((doc) => UserModel1.fromJson(doc.data(), doc.id))
-              .toList(),
+          .toList(),
     );
   }
 

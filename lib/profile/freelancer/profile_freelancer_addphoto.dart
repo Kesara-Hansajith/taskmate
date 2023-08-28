@@ -8,6 +8,7 @@ import 'package:taskmate/profile/client/profile_client.dart';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:taskmate/profile/client/user_model1.dart';
+import 'package:taskmate/profile/freelancer/data_details_screen_freelancer.dart';
 import 'package:taskmate/profile/freelancer/upload_profile_image.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/profile/freelancer/user_model.dart';
@@ -197,6 +198,12 @@ class _ProfileFreelancerAddphotoState extends State<ProfileFreelancerAddphoto> {
                             });
 
                             // Navigate back to the previous page or any other page
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DataDetailsScreenFreelancer(user: widget.user),
+                              ),
+                            );
                           }
                         },
                         style: ElevatedButton.styleFrom(

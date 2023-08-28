@@ -4,6 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:taskmate/profile/client/data_details_screen_client.dart';
 import 'package:taskmate/profile/client/profile_client.dart';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
@@ -188,7 +189,12 @@ class _ProfileClientAddphotoState extends State<ProfileClientAddphoto> {
                           });
 
                           // Navigate back to the previous page or any other page
-                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DataDetailsScreenClient(client: widget.client),
+                            ),
+                          );
                         }
                       },
                       style: ElevatedButton.styleFrom(
