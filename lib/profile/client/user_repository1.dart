@@ -19,7 +19,15 @@ class UserRepository1 extends GetxController {
 
   createUser(UserModel1 client) async {
     try {
-      await _db.collection("Clients").add(client.toJson());
+      // Get a server timestamp to use as the document ID
+      FieldValue serverTimestamp = FieldValue.serverTimestamp();
+
+      // Create a reference to the document using the server timestamp
+      DocumentReference docRef = _db.collection("Clients").doc();
+
+      // Set the document ID as the server timestamp
+      await docRef.set(client.toJson(), SetOptions(merge: true));
+
       Get.snackbar(
         "Success",
         "Your Account has been Created",
@@ -27,9 +35,7 @@ class UserRepository1 extends GetxController {
         backgroundColor: Colors.green.withOpacity(0.1),
         colorText: Colors.green,
       );
-
-    }
-    catch (error) {
+    } catch (error) {
       Get.snackbar(
         "Error",
         "Something went wrong. Please try again.",
@@ -39,9 +45,9 @@ class UserRepository1 extends GetxController {
       );
       print(error.toString());
     }
-
-
   }
+
+
 
 
 }
