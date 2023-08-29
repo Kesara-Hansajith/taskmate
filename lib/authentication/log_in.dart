@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:taskmate/authentication/forget_password.dart';
-// import 'package:fluttertoast/fluttertoast.dart';
 import 'package:taskmate/authentication/sign_up.dart';
-
 import 'package:taskmate/components/dark_main_button.dart';
-
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/components/bottom_sub_text.dart';
 import 'package:taskmate/components/snackbar.dart';
-import 'package:taskmate/pages/jobs.dart';
+import 'package:taskmate/bottom_nav_bar/jobs.dart';
 import 'package:taskmate/components/maintenance_page.dart';
 
 class Login extends StatefulWidget {
@@ -54,28 +50,30 @@ class _LoginState extends State<Login> {
     UserCredential user = await signInWithGoogle();
 
     if (user != null) {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => const Jobs(),
-        ),
-      );
+      if (context.mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const Jobs(),
+          ),
+        );
+      }
     } else {}
   }
 
 //Method for Sign in with email and password
   void signInWithEmailAndPassword(String email, String password) async {
     try {
-
-      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: emailController.text, password: passwordController.text);
-
       // Sign-in successful, handle the user object or navigate to the next screen.
 
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => const Jobs(),
-        ),
-      );
+      if (context.mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const Jobs(),
+          ),
+        );
+      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-mail') {
         emailController.clear();
@@ -245,19 +243,9 @@ class _LoginState extends State<Login> {
                                   ),
                                 ),
                                 //"Log In" Button goes here
-                                Container(
-                                  margin: const EdgeInsets.symmetric(
-                                      vertical: 8.0, horizontal: 28.0),
-                                  width: screenWidth,
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: kDeepBlueColor,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(20.0),
-                                      ),
-                                    ),
-                                    onPressed: () {
+                                DarkMainButton(
+                                    title: 'Log In',
+                                    process: () {
                                       if (_formKey.currentState!.validate()) {
                                         // Form is valid, proceed with submission or other actions
                                         signInWithEmailAndPassword(
@@ -266,15 +254,7 @@ class _LoginState extends State<Login> {
                                         );
                                       }
                                     },
-                                    child: const Padding(
-                                      padding: EdgeInsets.all(16.0),
-                                      child: Text(
-                                        'Log In',
-                                        style: TextStyle(fontSize: 15.0),
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                                    screenWidth: screenWidth),
                                 TextButton(
                                   onPressed: () {
                                     Navigator.of(context).push(

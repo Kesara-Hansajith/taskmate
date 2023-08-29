@@ -52,7 +52,8 @@ dependencies:
   flutter_masked_text: ^0.8.0
   intl: ^0.18.1
   firebase_database: ^10.2.4
-  
+  connectivity_plus: ^4.0.2
+
 
 
 

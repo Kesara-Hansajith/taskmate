@@ -2,36 +2,42 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:taskmate/components/dark_main_button.dart';
-import 'package:taskmate/components/freelancer/user_data_gather_function.dart';
 import 'package:taskmate/components/freelancer/user_data_gather_textfield.dart';
-import 'package:taskmate/profile/client/profile_client_addphoto.dart';
-import 'package:taskmate/profile/client/user_model1.dart';
+import 'package:taskmate/profile/freelancer/profile_freelancer_2.dart';
+import 'package:taskmate/profile/freelancer/user_model.dart';
+import 'package:taskmate/constants.dart';
 import 'package:taskmate/components/freelancer/user_data_gather_title.dart';
-import '../../constants.dart';
+import 'package:taskmate/components/freelancer/user_data_gather_function.dart';
 
-class ProfileClient extends StatefulWidget {
-  const ProfileClient({Key? key}) : super(key: key);
+class ProfileFreelancer extends StatefulWidget {
+  const ProfileFreelancer({Key? key}) : super(key: key);
 
   @override
-  _ProfileClientState createState() => _ProfileClientState();
+  _ProfileFreelancerState createState() => _ProfileFreelancerState();
 }
 
-class _ProfileClientState extends State<ProfileClient> {
+class _ProfileFreelancerState extends State<ProfileFreelancer> {
   final formKey = GlobalKey<FormState>();
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
-  final TextEditingController streetController = TextEditingController();
   final TextEditingController zipCodeController = TextEditingController();
-  final TextEditingController birthdayController = TextEditingController();
-  final TextEditingController genderController = TextEditingController();
   final TextEditingController provinceController = TextEditingController();
   final TextEditingController cityController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
-  final TextEditingController professionalroleController =
-      TextEditingController();
+  final TextEditingController bioController = TextEditingController();
+  final TextEditingController skillsController = TextEditingController();
+  final TextEditingController sociallinkController = TextEditingController();
+  final TextEditingController streetController = TextEditingController();
+  final TextEditingController birthdayController = TextEditingController();
+  final TextEditingController genderController = TextEditingController();
+  final TextEditingController servicesController = TextEditingController();
+  final TextEditingController hourlyrateController = TextEditingController();
+  final TextEditingController imageurl1Controller = TextEditingController();
+  final TextEditingController imageurl2Controller = TextEditingController();
+  final TextEditingController imageurl3Controller = TextEditingController();
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController itemdesController = TextEditingController();
 
   String existingUserId = 'your_existing_user_id';
   String? profileImageUrl;
@@ -50,10 +56,7 @@ class _ProfileClientState extends State<ProfileClient> {
         caseSensitive: false,
         multiLine: false,
       );
-  get _urlRegex => RegExp(
-      r"^(https?://)?([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(/\S*)?$");
-
-  final _city1Regex = RegExp(r'^[a-zA-Z0-9\s]+$');
+  final _city1Regex = RegExp(r'^[a-zA-Z]+$');
 
   void selectDate(
       BuildContext context, TextEditingController birthdayController) async {
@@ -63,10 +66,17 @@ class _ProfileClientState extends State<ProfileClient> {
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
     );
-
     if (picked != null && picked != DateTime.now()) {
       final formattedDate = DateFormat('yyyy-MM-dd').format(picked);
       birthdayController.text = formattedDate; // Update the text field
+    }
+  }
+
+  void updateData() {
+    if (formKey.currentState!.validate()) {
+      setState(() {
+        dataSubmitted = true;
+      });
     }
   }
 
@@ -199,7 +209,7 @@ class _ProfileClientState extends State<ProfileClient> {
   void _routeToNextPage() async {
     if (formKey.currentState!.validate()) {
       // Validated successfully, submit the form
-      final client = UserModel1(
+      final user = UserModel(
         firstName: firstNameController.text.trim(),
         lastName: lastNameController.text.trim(),
         address: addressController.text.trim(),
@@ -208,6 +218,11 @@ class _ProfileClientState extends State<ProfileClient> {
         birthday: birthdayController.text.trim(),
         gender: genderController.text.trim(),
         province: provinceController.text.trim(),
+        bio: bioController.text.trim(),
+        hourlyRate: hourlyrateController.text.trim(),
+        skills: skillsController.text.trim(),
+        services: servicesController.text.trim(),
+        sociallink: sociallinkController.text.trim(),
         city: cityController.text.trim(),
         phoneNo: phoneController.text.trim(),
         profilePhotoUrl: profileImageUrl,
@@ -218,7 +233,7 @@ class _ProfileClientState extends State<ProfileClient> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ProfileClientAddphoto(client: client),
+          builder: (context) => ProfileFreelancer2(user: user),
         ),
       );
     }
@@ -254,7 +269,7 @@ class _ProfileClientState extends State<ProfileClient> {
                           style: kHeadingTextStyle,
                         ),
                         Text(
-                          'Client Profile',
+                          'Freelancer Profile',
                           style: const TextStyle(
                             fontSize: 25,
                             color: kDeepBlueColor,
@@ -295,11 +310,11 @@ class _ProfileClientState extends State<ProfileClient> {
                     height: 6.0,
                   ),
                   Row(
-                    children: [
+                    children: <Widget>[
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
+                          children: <Widget>[
                             const UserDataGatherTitle(title: 'Birthday*'),
                             Padding(
                               padding: const EdgeInsets.only(left: 18.0),
@@ -349,7 +364,7 @@ class _ProfileClientState extends State<ProfileClient> {
                     padding: const EdgeInsets.symmetric(horizontal: 18.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+                      children: <Widget>[
                         UserDataGatherTextField(
                             controller: addressController,
                             hintText: 'Apartment/Suite Number',
@@ -368,7 +383,7 @@ class _ProfileClientState extends State<ProfileClient> {
                     height: 6.0,
                   ),
                   Row(
-                    children: [
+                    children: <Widget>[
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -402,7 +417,7 @@ class _ProfileClientState extends State<ProfileClient> {
                                     return 'Enter City';
                                   }
                                   if (!_city1Regex.hasMatch(value)) {
-                                    return 'Please enter a valid CIty';
+                                    return 'Please enter a valid City';
                                   }
                                   return null;
                                 },
@@ -417,7 +432,7 @@ class _ProfileClientState extends State<ProfileClient> {
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
+                          children: <Widget>[
                             const UserDataGatherTitle(title: 'State/Province*'),
                             Padding(
                               padding: const EdgeInsets.only(right: 18.0),
@@ -520,7 +535,9 @@ class _ProfileClientState extends State<ProfileClient> {
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: DarkMainButton(
                         title: 'Save & Next',
-                        process: _routeToNextPage,
+                        process: () {
+                          _routeToNextPage();
+                        },
                         screenWidth: screenWidth),
                   ),
                 ],

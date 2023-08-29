@@ -3,7 +3,7 @@ import 'package:taskmate/authentication/log_in.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/components/bottom_sub_text.dart';
 import 'package:taskmate/profile/client/profile_client.dart';
-import 'package:taskmate/profile/freelancer/profile_freelancer.dart';
+import 'package:taskmate/profile/freelancer/profile_freelancer_1.dart';
 
 class TakeAction extends StatefulWidget {
   const TakeAction({super.key});

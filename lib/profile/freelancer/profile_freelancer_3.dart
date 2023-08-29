@@ -1,0 +1,272 @@
+import 'dart:async';
+import 'dart:core';
+
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
+import 'dart:io';
+import 'package:taskmate/components/dark_main_button.dart';
+import 'package:taskmate/components/freelancer/portfolio_item_box.dart';
+import 'package:taskmate/profile/freelancer/profile_freelancer_addphoto.dart';
+import 'package:taskmate/profile/freelancer/user_model.dart';
+import 'package:taskmate/components/freelancer/user_data_gather_title.dart';
+import '../../constants.dart';
+
+class ProfileFreelancer3 extends StatefulWidget {
+  final UserModel user;
+  const ProfileFreelancer3({super.key, required this.user});
+
+  @override
+  _ProfileFreelancer3State createState() => _ProfileFreelancer3State();
+}
+
+class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
+  final formKey = GlobalKey<FormState>();
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController addressController = TextEditingController();
+  final TextEditingController zipCodeController = TextEditingController();
+  final TextEditingController provinceController = TextEditingController();
+  final TextEditingController cityController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController bioController = TextEditingController();
+  final TextEditingController skillsController = TextEditingController();
+  final TextEditingController sociallinkController = TextEditingController();
+  final TextEditingController streetController = TextEditingController();
+  final TextEditingController birthdayController = TextEditingController();
+  final TextEditingController genderController = TextEditingController();
+  final TextEditingController servicesController = TextEditingController();
+  final TextEditingController professionalRoleController =
+      TextEditingController();
+  final TextEditingController hourlyrateController = TextEditingController();
+  final TextEditingController imageurl1Controller = TextEditingController();
+  final TextEditingController imageurl2Controller = TextEditingController();
+  final TextEditingController imageurl3Controller = TextEditingController();
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController itemdesController = TextEditingController();
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseStorage _storage = FirebaseStorage.instance;
+
+  String? profileImageUrl;
+  String? selectedGender;
+  String? selectedProvince;
+  String? selectedImageUrl1;
+  String? selectedImageUrl2;
+  String? selectedImageUrl3;
+  String? selectedFilePath;
+  String? selectedSkills;
+  bool dataSubmitted = false;
+
+  Future<String> uploadFile(File file, String filename, String fileType) async {
+    User? user = _auth.currentUser;
+    if (user == null) {
+      throw Exception("User not authenticated.");
+    }
+    try {
+      Reference storageRef =
+          _storage.ref().child('uploads/${user.uid}/$filename');
+      TaskSnapshot taskSnapshot = await storageRef.putFile(file);
+
+      String downloadUrl = await taskSnapshot.ref.getDownloadURL();
+
+      return downloadUrl;
+    } catch (e) {
+      return '';
+    }
+  }
+
+  void updateData() {
+    if (formKey.currentState!.validate()) {
+      setState(() {
+        dataSubmitted = true;
+      });
+    }
+  }
+
+  void _routeToNextPage() async {
+    if (formKey.currentState!.validate()) {
+      // Validated successfully, update the user data and navigate to the next page
+      UserModel updatedUser = UserModel(
+        firstName: widget.user.firstName,
+        lastName: widget.user.lastName,
+        address: widget.user.address,
+        zipcode: widget.user.zipcode,
+        street: widget.user.street,
+        birthday: widget.user.birthday,
+        gender: widget.user.gender,
+        province: widget.user.province,
+        city: widget.user.city,
+        phoneNo: widget.user.phoneNo,
+        hourlyRate: widget.user.hourlyRate,
+        bio: widget.user.bio,
+        skills: widget.user.skills,
+        services: widget.user.services,
+        sociallink: sociallinkController.text,
+        email: '',
+        password: '',
+        professionalrole: '',
+      );
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ProfileFreelancerAddphoto(user: updatedUser),
+        ),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
+    return SafeArea(
+      child: Scaffold(
+        body: Container(
+          width: screenWidth,
+          height: screenHeight,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: AssetImage('images/noise_image.webp'),
+            ),
+          ),
+          child: Form(
+            key: formKey,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Center(
+                    child: Column(
+                      children: [
+                        const Text(
+                          'Set Up Your',
+                          style: kHeadingTextStyle,
+                        ),
+                        Text(
+                          'Freelancer Profile',
+                          style: const TextStyle(
+                            fontSize: 25,
+                            color: kDeepBlueColor,
+                            fontWeight: FontWeight.bold,
+                          ).copyWith(height: 1.0),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 10.0),
+                  const UserDataGatherTitle(title: 'Add portfolio link'),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                    child: TextFormField(
+                      controller: sociallinkController,
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.all(10.0),
+                        hintText: 'Ex: https://www.linkedin.com/in/desmond/',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                            width: 1.0,
+                            color: kDarkGreyColor,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                            width: 2.0,
+                            color: kDeepBlueColor,
+                          ),
+                        ),
+                        filled: true,
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter URL ';
+                        }
+                        final urlPattern = RegExp(
+                          r"^(https?://)?([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(/\S*)?$",
+                          caseSensitive: false,
+                          multiLine: false,
+                        );
+                        if (!urlPattern.hasMatch(value)) {
+                          return 'Please enter a valid URL';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10.0,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      UserDataGatherTitle(title: 'Add Portfolio Items'),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0), // Add horizontal padding
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        PortfolioItemBox(
+                          screenWidth: screenWidth,
+                          image: selectedImageUrl1 != null
+                              ? Image.file(
+                                  File(selectedImageUrl1!),
+                                  fit: BoxFit.cover,
+                                )
+                              : const Center(
+                                  child: Text('+ Add'),
+                                ),
+                        ),
+                        const SizedBox(
+                          height: 15.0,
+                        ),
+                        PortfolioItemBox(
+                          screenWidth: screenWidth,
+                          image: selectedImageUrl2 != null
+                              ? Image.file(
+                                  File(selectedImageUrl2!),
+                                  fit: BoxFit.cover,
+                                )
+                              : const Center(
+                                  child: Text('+ Add'),
+                                ),
+                        ),
+                        const SizedBox(
+                          height: 15.0,
+                        ),
+                        PortfolioItemBox(
+                          screenWidth: screenWidth,
+                          image: selectedImageUrl3 != null
+                              ? Image.file(
+                                  File(selectedImageUrl3!),
+                                  fit: BoxFit.cover,
+                                )
+                              : const Center(
+                                  child: Text('+ Add'),
+                                ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  DarkMainButton(
+                      title: 'Save & Next',
+                      process: () {
+                        _routeToNextPage();
+                      },
+                      screenWidth: screenWidth),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

@@ -4,10 +4,10 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:taskmate/profile/client/profile_client.dart';
 import 'package:taskmate/profile/client/user_repository1.dart';
-import 'package:taskmate/profile/freelancer/profile_freelancer.dart';
-import 'package:taskmate/profile/freelancer/profile_freelancer2.dart';
-import 'package:taskmate/profile/freelancer/profile_freelancer3.dart';
-import 'package:taskmate/profile/freelancer/profile_freelancer4.dart';
+import 'package:taskmate/profile/freelancer/profile_freelancer_1.dart';
+import 'package:taskmate/profile/freelancer/profile_freelancer_2.dart';
+import 'package:taskmate/profile/freelancer/profile_freelancer_3.dart';
+import 'package:taskmate/profile/freelancer/profile_freelancer_4.dart';
 import 'package:taskmate/profile/freelancer/user_repository.dart';
 import 'package:taskmate/verify_identity.dart';
 import 'firebase_options.dart';
@@ -19,7 +19,7 @@ import 'package:taskmate/authentication/sign_up.dart';
 import 'package:taskmate/authentication/create_my_account_1.dart';
 import 'package:taskmate/authentication/get_started.dart';
 import 'package:taskmate/authentication/verify_email.dart';
-import 'package:taskmate/pages/jobs.dart';
+import 'package:taskmate/bottom_nav_bar/jobs.dart';
 import 'package:taskmate/job_details.dart';
 import 'package:taskmate/authentication/forget_password.dart';
 
@@ -34,7 +34,6 @@ void main() async {
   Get.put(UserRepository1());
   Get.put(UserRepository());
 
-
   runApp(
     const Taskmate(),
   );
@@ -48,10 +47,8 @@ class Taskmate extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: "Poppins"),
-
-      home:  const SafeArea(
+      home: const SafeArea(
         child: ProfileClient(),
-
       ),
     );
   }
