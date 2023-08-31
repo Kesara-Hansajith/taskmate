@@ -39,15 +39,17 @@ class _ActiveJobsState extends State<ActiveJobs> {
       child: Column(
         children: [
           Expanded(
-            child: FutureBuilder(
-              // future: getDocIDs(),
+            child: StreamBuilder(
+              //future: getDocIDs(),
               builder: (context, snapshot) {
                 return ListView.builder(
                   itemCount: _docIDs.length,
                   itemBuilder: (context, index) {
-                    return ActiveJobCard(
-                      documentID: _docIDs[index].toString(),
-                      screenWidth: screenWidth,
+                    return ListTile(
+                      title: ActiveJobCard(
+                        documentID: _docIDs[index].toString(),
+                        screenWidth: screenWidth,
+                      ),
                     );
                   },
                 );
