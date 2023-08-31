@@ -64,7 +64,7 @@ class _ProposalsState extends State<Proposals> {
             ),
           ),
           child: Column(
-            children: [
+            children: <Widget>[
               ToggleSwitch(
                 activeBgColor: const [kOceanBlueColor],
                 activeFgColor: kDeepBlueColor,
@@ -74,7 +74,7 @@ class _ProposalsState extends State<Proposals> {
                 radiusStyle: true,
                 minWidth: screenWidth,
                 minHeight: 50.0,
-                initialLabelIndex: 0,
+                initialLabelIndex: proposalItemIndex,
                 totalSwitches: 3,
                 customTextStyles: const [
                   TextStyle(fontSize: 15.0, fontWeight: FontWeight.w600),
