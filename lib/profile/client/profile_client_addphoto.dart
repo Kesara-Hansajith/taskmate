@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 
 import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/components/light_main_button.dart';
+import 'package:taskmate/profile/client/data_details_screen_client.dart';
 import 'dart:io';
 import 'package:taskmate/profile/client/user_model1.dart';
 import 'package:taskmate/constants.dart';
@@ -38,9 +39,7 @@ class _ProfileClientAddphotoState extends State<ProfileClientAddphoto> {
   final TextEditingController birthdayController = TextEditingController();
   final TextEditingController genderController = TextEditingController();
   final TextEditingController servicesController = TextEditingController();
-  final TextEditingController professionalRoleController =
-      TextEditingController();
-  final TextEditingController hourlyrateController = TextEditingController();
+  final TextEditingController professionalRoleController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   String? profileImageUrl;
@@ -89,8 +88,7 @@ class _ProfileClientAddphotoState extends State<ProfileClientAddphoto> {
 
   void _submitDetails() async {
     // Upload image to Firebase Storage and get the download URL
-    final String downloadUrl =
-        await uploadImageToFirebaseStorage(selectedImage!);
+    final String downloadUrl = await uploadImageToFirebaseStorage(selectedImage!);
 
     // Create a Firestore document and save the data
     await FirebaseFirestore.instance
@@ -107,6 +105,9 @@ class _ProfileClientAddphotoState extends State<ProfileClientAddphoto> {
       'province': widget.client.province,
       'city': widget.client.city,
       'phoneNo': widget.client.phoneNo,
+      'email':widget.client.email,
+      'password':widget.client.password,
+      'professionalRole':widget.client.professionalrole,
       'profilePhotoUrl': downloadUrl,
     });
 
@@ -114,7 +115,7 @@ class _ProfileClientAddphotoState extends State<ProfileClientAddphoto> {
     if (context.mounted) {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => const VerifyIdentity(),
+          builder: (context) => DataDetailsScreenClient(client: widget.client,profileImageUrl: downloadUrl,),       //const VerifyIdentity(),
         ),
       );
     }
@@ -153,13 +154,10 @@ class _ProfileClientAddphotoState extends State<ProfileClientAddphoto> {
                   radius: 150,
                   backgroundColor: Colors.transparent,
                   backgroundImage: selectedImage != null
-                      ? FileImage(
-                          selectedImage!) // Display selected/captured image
+                      ? FileImage(selectedImage!) // Display selected/captured image
                       : profileImageUrl != null
                           ? NetworkImage(profileImageUrl!)
-                          : const AssetImage(
-                                  'images/iconamoon_profile-circle-thin.png')
-                              as ImageProvider<Object>,
+                          : const AssetImage('images/iconamoon_profile-circle-thin.png') as ImageProvider<Object>,
                 ),
               ),
               DarkMainButton(

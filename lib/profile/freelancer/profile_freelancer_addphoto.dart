@@ -8,6 +8,7 @@ import 'package:taskmate/components/light_main_button.dart';
 import 'dart:io';
 
 import 'package:taskmate/constants.dart';
+import 'package:taskmate/profile/freelancer/data_details_screen_freelancer.dart';
 import 'package:taskmate/profile/freelancer/user_model.dart';
 import 'package:taskmate/verify_identity.dart';
 
@@ -140,7 +141,7 @@ class _ProfileFreelancerAddphotoState extends State<ProfileFreelancerAddphoto> {
       if (context.mounted) {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => const VerifyIdentity(),
+            builder: (context) => DataDetailsScreenFreelancer(user: widget.user,profileImageUrl: downloadUrl,),//const VerifyIdentity(),
           ),
         );
       }

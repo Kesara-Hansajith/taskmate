@@ -30,8 +30,7 @@ class _ProfileClientState extends State<ProfileClient> {
   final TextEditingController provinceController = TextEditingController();
   final TextEditingController cityController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
-  final TextEditingController professionalroleController =
-      TextEditingController();
+  final TextEditingController professionalroleController = TextEditingController();
 
   String existingUserId = 'your_existing_user_id';
   String? profileImageUrl;
@@ -39,6 +38,7 @@ class _ProfileClientState extends State<ProfileClient> {
   String? selectedProvince;
   String? selectedSkills;
   bool dataSubmitted = false;
+  bool _isPasswordVisible = false;
 
   get emailRegex => RegExp(
         r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
@@ -211,9 +211,9 @@ class _ProfileClientState extends State<ProfileClient> {
         city: cityController.text.trim(),
         phoneNo: phoneController.text.trim(),
         profilePhotoUrl: profileImageUrl,
-        email: '',
-        password: '',
-        professionalrole: '',
+        email:emailController.text.trim(),
+        password: passwordController.text.trim(),
+        professionalrole: professionalroleController.text.trim(),
       );
       Navigator.push(
         context,
@@ -303,14 +303,47 @@ class _ProfileClientState extends State<ProfileClient> {
                             const UserDataGatherTitle(title: 'Birthday*'),
                             Padding(
                               padding: const EdgeInsets.only(left: 18.0),
-                              child: UserDataGatherFunction(
+                              child: TextFormField(
                                 controller: birthdayController,
-                                hintText: 'Tap on Calender',
-                                validatorText: 'Select a Date',
-                                icon: Icons.calendar_month,
-                                function: () {
-                                  selectDate(context, birthdayController);
+                                onTap: () {
+                                  selectDate(context, birthdayController); // Show the date picker on tap
                                 },
+                                decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.all(10.0),
+                                  hintText: 'Birthday',
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                      width: 1.0,
+                                      color: kDarkGreyColor,
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                      width: 2.0,
+                                      color: kDeepBlueColor,
+                                    ),
+                                  ),
+                                  filled: true,
+                                    suffixIcon: InkWell(
+                                      onTap: () {
+                                        selectDate(context, birthdayController); // Show the date picker on icon tap
+                                      },
+                                      child: Icon(Icons.calendar_today,color: Colors.black87,),
+                                    ),
+                                ),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'Please select your birthday';}
+                                    DateTime selectedDate = DateTime.parse(value); // Convert selected value to DateTime
+                                    DateTime currentDate = DateTime.now();
+                                    DateTime minValidDate = currentDate.subtract(Duration(days: 365 * 18)); // 18 years ago
+
+                                    if (selectedDate.isAfter(minValidDate)) {
+                                      return 'You must be 18 years or older';
+                                    }
+                                    return null;}
                               ),
                             ),
                           ],
@@ -344,6 +377,112 @@ class _ProfileClientState extends State<ProfileClient> {
                   const SizedBox(
                     height: 6.0,
                   ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const UserDataGatherTitle(title: 'Email*'),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 18.0),
+                              child: TextFormField(
+                                controller: emailController,
+                                decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.all(10.0),
+                                  hintText: 'Email',
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                      width: 1.0,
+                                      color: kDarkGreyColor,
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                      width: 2.0,
+                                      color: kDeepBlueColor,
+                                    ),
+                                  ),
+                                  filled: true,
+                                ),
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Please enter your Email';
+                                  } else if (!RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$').hasMatch(value)) {
+                                    return 'Please enter a valid email address';
+                                  }
+                                  return null;
+                                },
+                            ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10.0,
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            const UserDataGatherTitle(title: 'Password*'),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 18.0),
+                              child: TextFormField(
+                                controller: passwordController,
+                                obscureText: !_isPasswordVisible,
+                                decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.all(10.0),
+                                  hintText: 'Password',
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                      width: 1.0,
+                                      color: kDarkGreyColor,
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                      width: 2.0,
+                                      color: kDeepBlueColor,
+                                    ),
+                                  ),
+                                  filled: true,
+                                  suffixIcon: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        // Toggle password visibility
+                                        _isPasswordVisible = !_isPasswordVisible;
+                                      });
+                                    },
+                                    child: Icon(
+                                      _isPasswordVisible ? Icons.lock_open : Icons.lock,
+                                      color: Colors.black87,
+                                    ),
+                                  ),
+                                ),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'Please enter your Password';}
+                                    if (value.length < 8) {
+                                      return 'Password must be at least 8 characters';
+                                    }
+                                    if (!RegExp(r'^(?=.*[A-Za-z])(?=.*\d).+$').hasMatch(value)) {
+                                      return 'Password must include letters and numbers';
+                                    }
+                                    return null;
+                                }
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+
                   const UserDataGatherTitle(title: 'Address*'),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 18.0),
@@ -513,6 +652,40 @@ class _ProfileClientState extends State<ProfileClient> {
                           return 'Enter a valid phone number';
                         }
                         return null;
+                      },
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 6.0,
+                  ),
+                  const UserDataGatherTitle(title: 'Professional Role*'),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                    child: TextFormField(
+                      controller: professionalroleController,
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.all(10.0),
+                        hintText: 'Add your professional roll here',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                            width: 1.0,
+                            color: kDarkGreyColor,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                            width: 2.0,
+                            color: kDeepBlueColor,
+                          ),
+                        ),
+                        filled: true,
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter your professional role';
+                        }return null;
                       },
                     ),
                   ),

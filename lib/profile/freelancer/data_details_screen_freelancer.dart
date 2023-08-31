@@ -4,8 +4,9 @@ import 'package:taskmate/profile/freelancer/user_model.dart';
 
 class DataDetailsScreenFreelancer extends StatelessWidget {
   final UserModel user;
+  final String? profileImageUrl;
 
-  DataDetailsScreenFreelancer({required this.user});
+  DataDetailsScreenFreelancer({required this.user,this.profileImageUrl});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class DataDetailsScreenFreelancer extends StatelessWidget {
             Center(
               child: CircleAvatar(
                 radius: 70,
-                backgroundImage: NetworkImage(user.profilePhotoUrl ?? ''),
+                backgroundImage: NetworkImage(profileImageUrl ?? ''),
               ),
             ),
             SizedBox(height: 8),
