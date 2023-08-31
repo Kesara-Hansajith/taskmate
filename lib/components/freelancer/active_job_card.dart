@@ -4,7 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:taskmate/constants.dart';
 
 class ActiveJobCard extends StatefulWidget {
-  const ActiveJobCard({super.key});
+  const ActiveJobCard({
+    super.key,
+    required this.screenWidth,
+    this.documentID,
+  });
+
+  final double screenWidth;
+  final String? documentID;
 
   @override
   State<ActiveJobCard> createState() => _ActiveJobCardState();
@@ -19,7 +26,7 @@ class _ActiveJobCardState extends State<ActiveJobCard> {
     double screenWidth = MediaQuery.of(context).size.width;
 
     return FutureBuilder<DocumentSnapshot>(
-      future: projects.doc().get(),
+      future: projects.doc(widget.documentID).get(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           Map<String, dynamic> data =
@@ -40,18 +47,21 @@ class _ActiveJobCardState extends State<ActiveJobCard> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('${data['title']}', style: kJobCardTitleTextStyle),
+                  Text(
+                    '${data['title']}',
+                    style: kJobCardTitleTextStyle,
+                  ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Bid Price: ${data['bidPrice']}',
+                          'Bid Price: LKR.${data['bidPrice']}',
                           style: kJobCardDescriptionTextStyle,
                         ),
                         Text(
-                          'Total Bids goes here',
+                          'Total Bids: ${data['bidCount']}',
                           style: kJobCardDescriptionTextStyle,
                         ),
                       ],
@@ -62,7 +72,9 @@ class _ActiveJobCardState extends State<ActiveJobCard> {
             ),
           );
         }
-        return const Text('Loading....');
+        return const Center(
+          child: Text('Loading....'),
+        );
       },
     );
   }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:taskmate/constants.dart';
-import 'package:taskmate/pages/freelancer/proposals/active_jobs.dart';
-import 'package:taskmate/pages/freelancer/proposals/completed_jobs.dart';
-import 'package:taskmate/pages/freelancer/proposals/pending_jobs.dart';
+import 'package:taskmate/pages/freelancer/proposals/active_jobs_pages/active_jobs.dart';
+import 'package:taskmate/pages/freelancer/proposals/completed_jobs_pages/completed_jobs.dart';
+import 'package:taskmate/pages/freelancer/proposals/pending_jobs_pages/pending_jobs.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 class Proposals extends StatefulWidget {

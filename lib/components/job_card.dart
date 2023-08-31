@@ -92,7 +92,9 @@ class _JobCardState extends State<JobCard> {
             ),
           );
         }
-        return const Text('Loading....');
+        return const Center(
+          child: Text('Loading....'),
+        );
       },
     );
   }

@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:taskmate/components/freelancer/active_job_card.dart';
-import 'package:taskmate/components/job_card.dart';
 
 class ActiveJobs extends StatefulWidget {
   const ActiveJobs({super.key});
@@ -12,13 +11,13 @@ class ActiveJobs extends StatefulWidget {
 }
 
 class _ActiveJobsState extends State<ActiveJobs> {
-  List<String> docIDs = [];
+  List<String> _docIDs = [];
 
   //Getting docIDs
   Future<void> getDocIDs() async {
     final snapshot =
         await FirebaseFirestore.instance.collection('active_jobs').get();
-    docIDs = snapshot.docs.map((element) => element.reference.id).toList();
+    _docIDs = snapshot.docs.map((element) => element.reference.id).toList();
   }
 
   @override
@@ -36,29 +35,26 @@ class _ActiveJobsState extends State<ActiveJobs> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 10.0,
-            ),
-            Center(
-              child: Text('Hello'),
-            ),
-            FutureBuilder(
+    return Expanded(
+      child: Column(
+        children: [
+          Expanded(
+            child: FutureBuilder(
               // future: getDocIDs(),
               builder: (context, snapshot) {
                 return ListView.builder(
-                  itemCount: docIDs.length,
+                  itemCount: _docIDs.length,
                   itemBuilder: (context, index) {
-                    return ActiveJobCard();
+                    return ActiveJobCard(
+                      documentID: _docIDs[index].toString(),
+                      screenWidth: screenWidth,
+                    );
                   },
                 );
               },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
