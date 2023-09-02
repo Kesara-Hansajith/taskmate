@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:taskmate/constants.dart';
-// import 'package:taskmate/pages/freelancer/proposals/active_jobs_pages/details_section.dart';
-// import 'package:taskmate/pages/freelancer/proposals/active_jobs_pages/files_section.dart';
-// import 'package:taskmate/pages/freelancer/proposals/active_jobs_pages/payments_section.dart';
-// import 'package:taskmate/pages/freelancer/proposals/active_jobs_pages/reviews_section.dart';
+import 'package:taskmate/pages/freelancer/proposals/active_jobs_pages/details_section.dart';
+import 'package:taskmate/pages/freelancer/proposals/active_jobs_pages/files_section.dart';
+import 'package:taskmate/pages/freelancer/proposals/active_jobs_pages/payments_section.dart';
+import 'package:taskmate/pages/freelancer/proposals/active_jobs_pages/reviews_section.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 class ActiveJobDetails extends StatefulWidget {
@@ -30,12 +30,12 @@ class _ActiveJobDetailsState extends State<ActiveJobDetails> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     final List activeJobItems = [
-      // Details(
-      //   documentID: widget.documentID,
-      // ),
-      //  Files(),
-      // const Payments(),
-      // const Reviews(),
+      Details(
+        documentID: widget.documentID,
+      ),
+       const Files(),
+      const Payments(),
+      const Reviews(),
     ];
 
     return SafeArea(
