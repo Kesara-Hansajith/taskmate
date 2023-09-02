@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:taskmate/constants.dart';
-import 'package:taskmate/pages/freelancer/proposals/active_jobs.dart';
-import 'package:taskmate/pages/freelancer/proposals/completed_jobs.dart';
-import 'package:taskmate/pages/freelancer/proposals/pending_jobs.dart';
+import 'package:taskmate/pages/freelancer/proposals/active_jobs_pages/active_jobs.dart';
+import 'package:taskmate/pages/freelancer/proposals/completed_jobs_pages/completed_jobs.dart';
+import 'package:taskmate/pages/freelancer/proposals/pending_jobs_pages/pending_jobs.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 class Proposals extends StatefulWidget {
@@ -64,7 +64,7 @@ class _ProposalsState extends State<Proposals> {
             ),
           ),
           child: Column(
-            children: [
+            children: <Widget>[
               ToggleSwitch(
                 activeBgColor: const [kOceanBlueColor],
                 activeFgColor: kDeepBlueColor,
@@ -74,7 +74,7 @@ class _ProposalsState extends State<Proposals> {
                 radiusStyle: true,
                 minWidth: screenWidth,
                 minHeight: 50.0,
-                initialLabelIndex: 0,
+                initialLabelIndex: proposalItemIndex,
                 totalSwitches: 3,
                 customTextStyles: const [
                   TextStyle(fontSize: 15.0, fontWeight: FontWeight.w600),
