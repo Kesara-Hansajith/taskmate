@@ -63,13 +63,17 @@ class _LoginState extends State<Login> {
 //Method for Sign in with email and password
   void signInWithEmailAndPassword(String email, String password) async {
     try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailController.text, password: passwordController.text);
       // Sign-in successful, handle the user object or navigate to the next screen.
 
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => const Jobs(),
-        ),
-      );
+      if (context.mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const Jobs(),
+          ),
+        );
+      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-mail') {
         emailController.clear();
