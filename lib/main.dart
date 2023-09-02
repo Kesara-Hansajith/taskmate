@@ -23,6 +23,7 @@ import 'package:taskmate/job_details.dart';
 import 'package:taskmate/authentication/forget_password.dart';
 
 import 'home_page.dart';
+import 'pages/freelancer/proposals/active_jobs_pages/active_job_details.dart';
 //import 'package:taskmate/verify_identity.dart';
 
 void main() async {

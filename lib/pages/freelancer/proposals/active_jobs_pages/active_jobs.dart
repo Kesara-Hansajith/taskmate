@@ -48,7 +48,7 @@ class _ActiveJobsState extends State<ActiveJobs> {
                     return ListTile(
                       title: ActiveJobCard(
                         documentID: _docIDs[index].toString(),
-                        screenWidth: screenWidth,
+
                       ),
                     );
                   },
