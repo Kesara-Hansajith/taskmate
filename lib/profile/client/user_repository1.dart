@@ -3,7 +3,6 @@ import 'package:taskmate/profile/client/user_model1.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-
 class UserRepository1 extends GetxController {
   static UserRepository1 get instance => Get.find();
 
@@ -11,22 +10,26 @@ class UserRepository1 extends GetxController {
 
   Stream<List<UserModel1>> getClientsStream() {
     return _db.collection("Clients").snapshots().map(
-          (querySnapshot) => querySnapshot.docs.map((doc) => UserModel1.fromJson(doc.data(), doc.id))
+          (querySnapshot) => querySnapshot.docs
+          .map((doc) => UserModel1.fromJson(doc.data(), doc.id))
           .toList(),
     );
   }
 
-
-  createUser(UserModel1 client) async {
+  createUser(UserModel1 client, String customDocumentID) async {
     try {
-      // Get a server timestamp to use as the document ID
-      FieldValue serverTimestamp = FieldValue.serverTimestamp();
+      // Create a reference to the Firestore collection
+      CollectionReference collection = _db.collection("Clients");
 
-      // Create a reference to the document using the server timestamp
-      DocumentReference docRef = _db.collection("Clients").doc();
+      // Add a new document with a custom document ID (customDocumentID)
+      DocumentReference docRef = collection.doc(customDocumentID);
 
-      // Set the document ID as the server timestamp
-      await docRef.set(client.toJson(), SetOptions(merge: true));
+
+      // Create a document with a custom document ID (customDocumentID) and user data
+      await docRef.set({
+        'UserUID': customDocumentID, // Store the customDocumentID as a field in the document
+        ...client.toJson(), // Spread the user data into the document
+      });
 
       Get.snackbar(
         "Success",
@@ -46,8 +49,4 @@ class UserRepository1 extends GetxController {
       print(error.toString());
     }
   }
-
-
-
-
 }

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -7,6 +8,7 @@ import 'package:taskmate/components/freelancer/user_data_gather_textfield.dart';
 import 'package:taskmate/profile/client/profile_client_addphoto.dart';
 import 'package:taskmate/profile/client/user_model1.dart';
 import 'package:taskmate/components/freelancer/user_data_gather_title.dart';
+import 'package:taskmate/profile/client/user_repository1.dart';
 import '../../constants.dart';
 
 class ProfileClient extends StatefulWidget {
@@ -32,7 +34,7 @@ class _ProfileClientState extends State<ProfileClient> {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController professionalroleController = TextEditingController();
 
-  String existingUserId = 'your_existing_user_id';
+
   String? profileImageUrl;
   String? selectedGender;
   String? selectedProvince;
@@ -215,12 +217,27 @@ class _ProfileClientState extends State<ProfileClient> {
         password: passwordController.text.trim(),
         professionalrole: professionalroleController.text.trim(),
       );
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ProfileClientAddphoto(client: client),
-        ),
-      );
+      // Get the authenticated user's UID
+      final FirebaseAuth _auth = FirebaseAuth.instance;
+      final User? user = _auth.currentUser;
+
+
+      if (user != null) {
+        final String userUid = user.uid;
+
+        // Use the user's UID as the Firestore document ID
+        await UserRepository1.instance.createUser(client, userUid);
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProfileClientAddphoto(client: client),
+          ),
+        );
+      } else {
+        // Handle the case where the user is not authenticated
+        // You may want to display an error message or redirect the user to the login page
+      }
     }
   }
 

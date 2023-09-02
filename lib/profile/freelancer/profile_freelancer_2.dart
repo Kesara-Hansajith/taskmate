@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/profile/freelancer/profile_freelancer_3.dart';
 import 'package:taskmate/profile/freelancer/user_model.dart';
+import 'package:taskmate/profile/freelancer/user_repository.dart';
 
 import '../../constants.dart';
 import 'package:taskmate/components/freelancer/user_data_gather_title.dart';
@@ -74,17 +76,33 @@ class _ProfileFreelancer2State extends State<ProfileFreelancer2> {
         bio: bioController.text,
         sociallink: sociallinkController.text,
         skills: skillsController.text,
-        services: servicesController.text, email: '', password: '', professionalrole: '',
+        services: servicesController.text,
+        email: widget.user.email,
+        password: widget.user.password,
+        professionalrole: widget.user.professionalrole,
       );
+      final FirebaseAuth _auth = FirebaseAuth.instance;
+      final User? firebaseUser = _auth.currentUser;
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ProfileFreelancer3(user: updatedUser),
-        ),
-      );
+      if (firebaseUser != null) {
+        final String userUid = firebaseUser.uid;
+
+        // Use the user's UID as the Firestore document ID
+        await UserRepository.instance.createUser(updatedUser, userUid);
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProfileFreelancer3(user: updatedUser),
+          ),
+        );
+      } else {
+        // Handle the case where the user is not authenticated
+        // You may want to display an error message or redirect the user to the login page
+      }
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -161,6 +179,10 @@ class _ProfileFreelancer2State extends State<ProfileFreelancer2> {
                           validator: (value) {
                             if (value!.isEmpty) {
                               return 'Please enter your Hourly rate ';
+                            }
+                            double? hourlyRate = double.tryParse(value);
+                            if (hourlyRate == null || hourlyRate < 700) {
+                              return 'lowest amount LKR 700';
                             }
                             return null;
                           },

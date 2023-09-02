@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -90,36 +91,49 @@ class _ProfileClientAddphotoState extends State<ProfileClientAddphoto> {
     // Upload image to Firebase Storage and get the download URL
     final String downloadUrl = await uploadImageToFirebaseStorage(selectedImage!);
 
-    // Create a Firestore document and save the data
-    await FirebaseFirestore.instance
-        .collection('Clients')
-        .doc(existingUserId)
-        .set({
-      'firstName': widget.client.firstName,
-      'lastName': widget.client.lastName,
-      'address': widget.client.address,
-      'zipcode': widget.client.zipcode,
-      'street': widget.client.street,
-      'birthday': widget.client.birthday,
-      'gender': widget.client.gender,
-      'province': widget.client.province,
-      'city': widget.client.city,
-      'phoneNo': widget.client.phoneNo,
-      'email':widget.client.email,
-      'password':widget.client.password,
-      'professionalRole':widget.client.professionalrole,
-      'profilePhotoUrl': downloadUrl,
-    });
+    // Get the current user's UID from Firebase Authentication
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final User? user = _auth.currentUser;
 
-    // Navigate back to the previous page or any other page
-    if (context.mounted) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => DataDetailsScreenClient(client: widget.client,profileImageUrl: downloadUrl,),       //const VerifyIdentity(),
-        ),
-      );
+    if (user != null) {
+      // Use the user's UID as the Firestore document ID
+      final userId = user.uid;
+
+      // Create a Firestore document and save the data with the user's UID as the document ID
+      await FirebaseFirestore.instance
+          .collection('Clients')
+          .doc(userId) // Use the user's UID as the document ID
+          .set({
+        'firstName': widget.client.firstName,
+        'lastName': widget.client.lastName,
+        'address': widget.client.address,
+        'zipcode': widget.client.zipcode,
+        'street': widget.client.street,
+        'birthday': widget.client.birthday,
+        'gender': widget.client.gender,
+        'province': widget.client.province,
+        'city': widget.client.city,
+        'phoneNo': widget.client.phoneNo,
+        'email': widget.client.email,
+        'password': widget.client.password,
+        'professionalRole': widget.client.professionalrole,
+        'profilePhotoUrl': downloadUrl,
+      });
+
+      // Navigate back to the previous page or any other page
+      if (context.mounted) {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => DataDetailsScreenClient(
+              client: widget.client,
+              profileImageUrl: downloadUrl,
+            ),
+          ),
+        );
+      }
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
