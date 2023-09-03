@@ -79,7 +79,7 @@ class _ProfileFreelancer2State extends State<ProfileFreelancer2> {
         services: servicesController.text,
         email: widget.user.email,
         password: widget.user.password,
-        professionalrole: widget.user.professionalrole,
+        professionalRole: widget.user.professionalRole,
       );
       final FirebaseAuth _auth = FirebaseAuth.instance;
       final User? firebaseUser = _auth.currentUser;

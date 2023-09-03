@@ -145,7 +145,7 @@ class _ProfileFreelancerAddphotoState extends State<ProfileFreelancerAddphoto> {
             'socialLink': widget.user.sociallink,
             'email': widget.user.email,
             'password': widget.user.password,
-            'professionalrole': widget.user.professionalrole,
+            'professionalRole': widget.user.professionalRole,
             'profilePhotoUrl': downloadUrl,
           },
         );

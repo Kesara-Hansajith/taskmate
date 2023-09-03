@@ -225,7 +225,7 @@ class _ProfileFreelancerState extends State<ProfileFreelancer> {
         gender: genderController.text.trim(),
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
-        professionalrole: professionalroleController.text.trim(),
+        professionalRole: professionalroleController.text.trim(),
         province: provinceController.text.trim(),
         bio: bioController.text.trim(),
         hourlyRate: hourlyrateController.text.trim(),
