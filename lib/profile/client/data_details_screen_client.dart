@@ -3,11 +3,13 @@ import 'package:taskmate/profile/client/user_model1.dart';
 
 class DataDetailsScreenClient extends StatelessWidget {
   final UserModel1 client;
+  final String? profileImageUrl;
 
-  DataDetailsScreenClient({required this.client});
+  DataDetailsScreenClient({required this.client,this.profileImageUrl});
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Data Details'),
@@ -21,7 +23,7 @@ class DataDetailsScreenClient extends StatelessWidget {
             Center(
               child: CircleAvatar(
                 radius: 70,
-                backgroundImage: NetworkImage(client.profilePhotoUrl ?? ''),
+                backgroundImage: NetworkImage(profileImageUrl ?? ''),
               ),
             ),
             SizedBox(height: 8),

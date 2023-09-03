@@ -14,9 +14,21 @@ class UserRepository extends GetxController {
           (querySnapshot) => querySnapshot.docs.map((doc) => UserModel.fromJson(doc.data(), doc.id)).toList(),
             );
           }
-  createUser(UserModel user) async {
+  createUser(UserModel user, String customDocumentID) async {
     try {
-      await _db.collection("Users").add(user.toJson());
+      // Create a reference to the Firestore collection
+      CollectionReference collection = _db.collection("Users");
+
+      // Add a new document with a custom document ID (customDocumentID)
+      DocumentReference docRef = collection.doc(customDocumentID);
+
+
+      // Create a document with a custom document ID (customDocumentID) and user data
+      await docRef.set({
+        'UserUID': customDocumentID, // Store the customDocumentID as a field in the document
+        ...user.toJson(), // Spread the user data into the document
+      });
+
       Get.snackbar(
         "Success",
         "Your Account has been Created",
@@ -24,9 +36,7 @@ class UserRepository extends GetxController {
         backgroundColor: Colors.green.withOpacity(0.1),
         colorText: Colors.green,
       );
-
-    }
-    catch (error) {
+    } catch (error) {
       Get.snackbar(
         "Error",
         "Something went wrong. Please try again.",
@@ -36,8 +46,6 @@ class UserRepository extends GetxController {
       );
       print(error.toString());
     }
-
-
   }
 
 }

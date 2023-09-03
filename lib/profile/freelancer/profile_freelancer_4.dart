@@ -38,9 +38,7 @@ class _ProfileFreelancer4State extends State<ProfileFreelancer4> {
   final TextEditingController genderController = TextEditingController();
   final TextEditingController servicesController = TextEditingController();
   final TextEditingController hourlyrateController = TextEditingController();
-  final TextEditingController imageurl1Controller = TextEditingController();
-  final TextEditingController imageurl2Controller = TextEditingController();
-  final TextEditingController imageurl3Controller = TextEditingController();
+
   final TextEditingController titleController = TextEditingController();
   final TextEditingController itemdesController = TextEditingController();
 
@@ -100,13 +98,6 @@ class _ProfileFreelancer4State extends State<ProfileFreelancer4> {
           uploadedImageUrls.add(imageUrl);
         }
       }
-
-      await FirebaseFirestore.instance.collection('portfolio_items').add({
-        'title': titleController.text,
-        'item_description': itemdesController.text,
-        'image_urls': selectedImages.map((image) => image.path).toList(),
-        'timestamp': FieldValue.serverTimestamp(),
-      });
     } catch (e) {
       //Ignored catch block
     }
@@ -147,16 +138,31 @@ class _ProfileFreelancer4State extends State<ProfileFreelancer4> {
           ),
         );
 
-        Navigator.pop(context);
+        // Get the current user
+        final FirebaseAuth _auth = FirebaseAuth.instance;
+        final User? firebaseUser = _auth.currentUser;
+
+        if (firebaseUser != null) {
+          final String userUid = firebaseUser.uid;
+
+          // Create a reference to the user's document
+          final DocumentReference userDocRef = FirebaseFirestore.instance.collection('Users').doc(userUid);
+
+          // Add the portfolio item to the subcollection 'portfolio_items'
+          await userDocRef.collection('portfolio_items').add({
+            'title': titleController.text.trim(),
+            'item_description': itemdesController.text.trim(),
+            'image_urls': selectedImages.map((image) => image.path).toList(),
+            'timestamp': FieldValue.serverTimestamp(),
+          });
+
+
+          Navigator.pop(context);
+        }
       }
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (context) => ProfileFreelancer2(user: user),
-      //   ),
-      // );
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -262,12 +268,59 @@ class _ProfileFreelancer4State extends State<ProfileFreelancer4> {
                         padding: const EdgeInsets.symmetric(horizontal: 18.0),
                         child: Wrap(
                           spacing: 10,
-                          children: selectedImages
-                              .map(
-                                (image) => Image.file(image, height: 80),
-                              )
-                              .toList(),
-                        ),
+                          children: selectedImages.asMap().entries.map((entry) {
+                            final index = entry.key;
+                            final image = entry.value;
+                            return MouseRegion(
+                              onHover: (event) {
+                                // Show delete icon when hovering
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    title: Text('Delete Image'),
+                                    content: Text('Are you sure you want to delete this image?'),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text('Cancel'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            selectedImages.removeAt(index);
+                                          });
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text('Delete'),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(bottom: 10),
+                                child: Stack(
+                                  children: [
+                                    Image.file(image, height: 80),
+                                    // Add an Icon to represent delete
+                                    Positioned(
+                                      top: 0,
+                                      right: 0,
+                                      child: Icon(
+                                        Icons.delete_outlined,
+                                        color: Colors.black54,
+                                        size: 20,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        )
+
                       ),
                     ],
                   ),
