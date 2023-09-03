@@ -6,6 +6,8 @@ class UserModel {
   final String? id;
   final String firstName ;
   final String lastName ;
+  final String email;
+  final String password;
   final String address ;
   final String zipcode ;
   final String birthday ;
@@ -18,6 +20,7 @@ class UserModel {
   final String skills ;
   final String services ;
   final String sociallink ;
+  final String professionalrole;
   final String hourlyRate ;
   final String? profilePhotoUrl;
 
@@ -25,6 +28,8 @@ class UserModel {
     this.id,
     required this.firstName,
     required this.lastName,
+     required this.email,
+     required this.password,
     required this.address,
     required this.zipcode,
     required this.birthday,
@@ -36,6 +41,7 @@ class UserModel {
     required this.skills,
     required this.services,
     required this.sociallink,
+     required this.professionalrole,
     required this.hourlyRate,
     required this.phoneNo,
     this.profilePhotoUrl,
@@ -46,6 +52,8 @@ class UserModel {
 
       "FirstName": firstName,
       "LastName": lastName,
+      "UserName": email,
+      "Password": password,
       "Address": address,
       "ZipCode": zipcode,
       "Birthday": birthday,
@@ -58,6 +66,7 @@ class UserModel {
       "Sills": skills,
       "Services" : services,
       "SocialLink" : sociallink,
+      "ProfessionalRole" : professionalrole,
       "HourlyRate" : hourlyRate,
       "ProfilePhotoUrl": profilePhotoUrl,
     };
@@ -70,6 +79,8 @@ class UserModel {
       // Use the null-aware operator to provide a default value
       firstName: json['FirstName'] ?? '',
       lastName: json['LastName'] ?? '',
+      email: json['Email'] ?? '',
+      password: json['Password'] ?? '',
       address: json['Address'] ?? '',
       zipcode: json['ZipCode'] ?? '',
       birthday: json['Birthday'],
@@ -81,6 +92,7 @@ class UserModel {
       skills: json['Skills'] ?? '',
       services: json['Services'] ?? '',
       sociallink: json['SocialLink'] ?? '',
+      professionalrole: json['ProfessionalRole'] ?? '',
       hourlyRate: json['HourlyRate'] ?? '',
       phoneNo: json['Phone'] ?? '',
       profilePhotoUrl: json['ProfilePhotoUrl'],

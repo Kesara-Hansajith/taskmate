@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +7,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/components/light_main_button.dart';
 import 'dart:io';
+
 import 'package:taskmate/constants.dart';
+import 'package:taskmate/profile/freelancer/data_details_screen_freelancer.dart';
 import 'package:taskmate/profile/freelancer/user_model.dart';
 import 'package:taskmate/verify_identity.dart';
 
@@ -38,8 +41,7 @@ class _ProfileFreelancerAddphotoState extends State<ProfileFreelancerAddphoto> {
   final TextEditingController birthdayController = TextEditingController();
   final TextEditingController genderController = TextEditingController();
   final TextEditingController servicesController = TextEditingController();
-  final TextEditingController professionalRoleController =
-      TextEditingController();
+  final TextEditingController professionalRoleController = TextEditingController();
   final TextEditingController hourlyrateController = TextEditingController();
   final TextEditingController imageurl1Controller = TextEditingController();
   final TextEditingController imageurl2Controller = TextEditingController();
@@ -109,42 +111,58 @@ class _ProfileFreelancerAddphotoState extends State<ProfileFreelancerAddphoto> {
   void _submitDetails() async {
     if (selectedImage != null) {
       // Upload image to Firebase Storage and get the download URL
-      final String downloadUrl =
-          await uploadImageToFirebaseStorage(selectedImage!);
+      final String downloadUrl = await uploadImageToFirebaseStorage(
+          selectedImage!);
 
-      // Create a Firestore document and save the data
-      await FirebaseFirestore.instance
-          .collection('Users')
-          .doc(existingUserId)
-          .set(
-        {
-          'firstName': widget.user.firstName,
-          'lastName': widget.user.lastName,
-          'address': widget.user.address,
-          'zipcode': widget.user.zipcode,
-          'street': widget.user.street,
-          'birthday': widget.user.birthday,
-          'gender': widget.user.gender,
-          'province': widget.user.province,
-          'city': widget.user.city,
-          'phoneNo': widget.user.phoneNo,
-          'hourlyRate': widget.user.hourlyRate,
-          'skills': widget.user.skills,
-          'bio': widget.user.bio,
-          'services': widget.user.services,
-          'socialLink': widget.user.sociallink,
-          'profilePhotoUrl': downloadUrl,
-        },
-      );
-      if (context.mounted) {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const VerifyIdentity(),
-          ),
+      // Get the current user's UID from Firebase Authentication
+      final FirebaseAuth _auth = FirebaseAuth.instance;
+      final User? firebaseUser = _auth.currentUser;
+
+      if (firebaseUser != null) {
+        // Use the user's UID as the Firestore document ID
+        final String userUid = firebaseUser.uid;
+
+        // Create a Firestore document and save the data
+        await FirebaseFirestore.instance
+            .collection('Users')
+            .doc(userUid)
+            .set(
+          {
+            'firstName': widget.user.firstName,
+            'lastName': widget.user.lastName,
+            'address': widget.user.address,
+            'zipcode': widget.user.zipcode,
+            'street': widget.user.street,
+            'birthday': widget.user.birthday,
+            'gender': widget.user.gender,
+            'province': widget.user.province,
+            'city': widget.user.city,
+            'phoneNo': widget.user.phoneNo,
+            'hourlyRate': widget.user.hourlyRate,
+            'skills': widget.user.skills,
+            'bio': widget.user.bio,
+            'services': widget.user.services,
+            'socialLink': widget.user.sociallink,
+            'email': widget.user.email,
+            'password': widget.user.password,
+            'professionalrole': widget.user.professionalrole,
+            'profilePhotoUrl': downloadUrl,
+          },
         );
+        if (context.mounted) {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) =>
+                  DataDetailsScreenFreelancer(
+                    user: widget.user,
+                    profileImageUrl: downloadUrl,
+                  ),
+            ),
+          );
+        }
       }
     }
-  }
+    }
 
   @override
   Widget build(BuildContext context) {
