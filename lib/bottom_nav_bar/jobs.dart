@@ -12,13 +12,13 @@ class Jobs extends StatefulWidget {
 }
 
 class _JobsState extends State<Jobs> {
-  List<String> docIDs = [];
+  List<String> _docIDs = [];
 
   //Getting docIDs
   Future<void> getDocIDs() async {
     final snapshot =
         await FirebaseFirestore.instance.collection('available_projects').get();
-    docIDs = snapshot.docs.map((element) => element.reference.id).toList();
+    _docIDs = snapshot.docs.map((element) => element.reference.id).toList();
   }
 
   @override
@@ -89,16 +89,17 @@ class _JobsState extends State<Jobs> {
             child: TabBarView(
               children: [
                 //Best Match Jobs goes here
-                FutureBuilder(
-                  // future: getDocIDs(),
+                StreamBuilder(
+                  //future: getDocIDs(),
                   builder: (context, snapshot) {
                     return ListView.builder(
-                      itemCount: docIDs.length,
+                      itemCount: _docIDs.length,
                       itemBuilder: (context, index) {
                         return ListTile(
                           title: JobCard(
-                              documentID: docIDs[index].toString(),
-                              screenWidth: screenWidth),
+                            documentID: _docIDs[index].toString(),
+                            screenWidth: screenWidth,
+                          ),
                         );
                       },
                     );
