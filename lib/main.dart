@@ -52,8 +52,7 @@ class Taskmate extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: "Poppins"),
       home: const SafeArea(
-
-        child: ProfileFreelancer(),
+        child: ProfileClient(),
 
       ),
     );
