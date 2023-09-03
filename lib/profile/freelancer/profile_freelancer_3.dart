@@ -59,6 +59,8 @@ class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
   String? selectedSkills;
   bool dataSubmitted = false;
 
+  bool isTapped = false;
+
   Future<String> uploadFile(File file, String filename, String fileType) async {
     User? user = _auth.currentUser;
     if (user == null) {
@@ -236,6 +238,7 @@ class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
                                 decoration: BoxDecoration(
                                   border: Border.all(color: Color(0xFF4B4646)),
                                   borderRadius: BorderRadius.circular(10),
+                                  color: isTapped ? Colors.green : Colors.transparent, // Set the color based on _isTapped
                                 ),
                                 child: GestureDetector(
                                   onTap: () async {
@@ -243,6 +246,10 @@ class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
                                       context,
                                       MaterialPageRoute(builder: (context) => ProfileFreelancer4()),
                                     );
+                                    // Set the tapped state to true when tapped
+                                    setState(() {
+                                      isTapped = true;
+                                    });
                                   },
                                   child: Center(
                                     child: Text(

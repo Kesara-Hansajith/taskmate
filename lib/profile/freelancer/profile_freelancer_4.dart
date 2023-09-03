@@ -38,9 +38,7 @@ class _ProfileFreelancer4State extends State<ProfileFreelancer4> {
   final TextEditingController genderController = TextEditingController();
   final TextEditingController servicesController = TextEditingController();
   final TextEditingController hourlyrateController = TextEditingController();
-  final TextEditingController imageurl1Controller = TextEditingController();
-  final TextEditingController imageurl2Controller = TextEditingController();
-  final TextEditingController imageurl3Controller = TextEditingController();
+
   final TextEditingController titleController = TextEditingController();
   final TextEditingController itemdesController = TextEditingController();
 
@@ -100,13 +98,6 @@ class _ProfileFreelancer4State extends State<ProfileFreelancer4> {
           uploadedImageUrls.add(imageUrl);
         }
       }
-
-      await FirebaseFirestore.instance.collection('portfolio_items').add({
-        'title': titleController.text,
-        'item_description': itemdesController.text,
-        'image_urls': selectedImages.map((image) => image.path).toList(),
-        'timestamp': FieldValue.serverTimestamp(),
-      });
     } catch (e) {
       //Ignored catch block
     }
@@ -155,8 +146,7 @@ class _ProfileFreelancer4State extends State<ProfileFreelancer4> {
           final String userUid = firebaseUser.uid;
 
           // Create a reference to the user's document
-          final DocumentReference userDocRef =
-          FirebaseFirestore.instance.collection('Users').doc(userUid);
+          final DocumentReference userDocRef = FirebaseFirestore.instance.collection('Users').doc(userUid);
 
           // Add the portfolio item to the subcollection 'portfolio_items'
           await userDocRef.collection('portfolio_items').add({
@@ -165,6 +155,7 @@ class _ProfileFreelancer4State extends State<ProfileFreelancer4> {
             'image_urls': selectedImages.map((image) => image.path).toList(),
             'timestamp': FieldValue.serverTimestamp(),
           });
+
 
           Navigator.pop(context);
         }
