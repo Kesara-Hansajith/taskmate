@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import 'package:taskmate/components/freelancer/active_job_card.dart';
 import 'package:taskmate/components/freelancer/completed_job_card.dart';
 
 class CompletedJobs extends StatefulWidget {
@@ -17,7 +16,7 @@ class _CompletedJobsState extends State<CompletedJobs> {
   //Getting docIDs
   Future<void> getDocIDs() async {
     final snapshot =
-    await FirebaseFirestore.instance.collection('completed_jobs').get();
+        await FirebaseFirestore.instance.collection('completed_jobs').get();
     _docIDs = snapshot.docs.map((element) => element.reference.id).toList();
   }
 
@@ -34,8 +33,6 @@ class _CompletedJobsState extends State<CompletedJobs> {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-
     return Expanded(
       child: Column(
         children: [
@@ -48,7 +45,6 @@ class _CompletedJobsState extends State<CompletedJobs> {
                   itemBuilder: (context, index) {
                     return CompletedJobCard(
                       documentID: _docIDs[index].toString(),
-                      screenWidth: screenWidth,
                     );
                   },
                 );

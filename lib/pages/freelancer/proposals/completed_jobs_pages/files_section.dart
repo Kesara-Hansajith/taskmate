@@ -30,7 +30,7 @@ class _FilesState extends State<Files> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 24.0),
                 child: Text(
-                  'Submit work for get the payment',
+                  'Submitted Work',
                   style: kJobCardTitleTextStyle.copyWith(color: kJetBlack),
                 ),
               ),
@@ -64,24 +64,6 @@ class _FilesState extends State<Files> {
                                 ),
                               ),
                             ),
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            //TODO Delete photo functionality
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const <Widget>[
-                              Icon(
-                                Icons.delete,
-                                color: kDarkGreyColor,
-                              ),
-                              Text(
-                                'Delete',
-                                style: kTextStyle,
-                              )
-                            ],
                           ),
                         ),
                       ],
@@ -120,24 +102,6 @@ class _FilesState extends State<Files> {
                             ),
                           ),
                         ),
-                        TextButton(
-                          onPressed: () {
-                            //TODO Delete photo functionality
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const <Widget>[
-                              Icon(
-                                Icons.delete,
-                                color: kDarkGreyColor,
-                              ),
-                              Text(
-                                'Delete',
-                                style: kTextStyle,
-                              )
-                            ],
-                          ),
-                        ),
                       ],
                     ),
                   ),
@@ -146,18 +110,6 @@ class _FilesState extends State<Files> {
               const SizedBox(
                 height: 50.0,
               ),
-              DarkMainButton(
-                  title: 'Submit Work',
-                  process: () {
-                    //TODO Submit files to firebase storage functionality
-                  },
-                  screenWidth: screenWidth),
-              LightMainButton(
-                  title: 'Message',
-                  process: () {
-                    //TODO Forward to messaging part
-                  },
-                  screenWidth: screenWidth)
             ],
           ),
         ),
