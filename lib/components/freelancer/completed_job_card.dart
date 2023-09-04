@@ -2,16 +2,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:taskmate/constants.dart';
+import 'package:taskmate/pages/freelancer/proposals/completed_jobs_pages/completed_job_details.dart';
 
 class CompletedJobCard extends StatefulWidget {
   const CompletedJobCard({
     super.key,
     required this.documentID,
-    required this.screenWidth,
+
   });
 
   final String documentID;
-  final double screenWidth;
+
 
   @override
   State<CompletedJobCard> createState() => _CompletedJobCardState();
@@ -33,7 +34,15 @@ class _CompletedJobCardState extends State<CompletedJobCard> {
               snapshot.data!.data() as Map<String, dynamic>;
           //Overall Job Card flows through here
           return InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => CompletedJobDetails(
+                    documentID: widget.documentID,
+                  ),
+                ),
+              );
+            },
             child: Container(
               margin:
                   const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
