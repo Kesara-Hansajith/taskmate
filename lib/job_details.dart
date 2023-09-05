@@ -334,6 +334,12 @@ class _JobDetailsState extends State<JobDetails> {
                 child: ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
+                      Map<String,String>dataToSave={
+                        'bidDescription' :_bidDescriptionController.text,
+                        'bidAmount' : _bidAmountController.text,
+                        'delivery':_deliveryTimeController.text,
+                      };
+                      FirebaseFirestore.instance.collection('pending_jobs').add(dataToSave);
                       congratulateOnPlaceBid();
                     }
                   },
