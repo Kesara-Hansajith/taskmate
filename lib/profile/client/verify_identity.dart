@@ -9,7 +9,7 @@ import 'package:taskmate/components/verifyidentity_outlinedbutton.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:taskmate/components/snackbar.dart';
 import 'package:taskmate/components/maintenance_page.dart';
-import 'package:taskmate/home_page.dart';
+import 'package:taskmate/client_home_page.dart';
 
 class VerifyIdentity extends StatefulWidget {
   const VerifyIdentity({super.key});
@@ -89,8 +89,11 @@ class _VerifyIdentityState extends State<VerifyIdentity> {
               DarkMainButton(
                   title: 'Back To Home',
                   process: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const HomePage()));
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const ClientHomePage(),
+                      ),
+                    );
                   },
                   screenWidth: MediaQuery.of(context).size.width)
             ],

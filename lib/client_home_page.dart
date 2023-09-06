@@ -1,33 +1,30 @@
 import 'package:flutter/material.dart';
-
+import 'package:taskmate/bottom_nav_bar/client/client_account.dart';
+import 'package:taskmate/bottom_nav_bar/client/client_messaging.dart';
+import 'package:taskmate/bottom_nav_bar/client/client_posted.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:taskmate/bottom_nav_bar/messaging.dart';
-import 'package:taskmate/bottom_nav_bar/proposals.dart';
-import 'package:taskmate/bottom_nav_bar/jobs.dart';
-import 'package:taskmate/bottom_nav_bar/account.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class ClientHomePage extends StatefulWidget {
+  const ClientHomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<ClientHomePage> createState() => _ClientHomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 2;
+class _ClientHomePageState extends State<ClientHomePage> {
+  int _selectedIndex = 1;
 
   final List _items = [
-    const Messaging(),
-    const Proposals(),
-    const Jobs(),
-    const Account(),
+    const ClientMessaging(),
+    const ClientPosted(),
+    const ClientAccount(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: GNav(
-        gap: 5.0,
+        gap: 10.0,
         selectedIndex: _selectedIndex,
         onTabChange: (int index) {
           setState(() {
@@ -38,10 +35,6 @@ class _HomePageState extends State<HomePage> {
           GButton(
             icon: Icons.mail_outline,
             text: 'Messages',
-          ),
-          GButton(
-            icon: Icons.work_history,
-            text: 'Job Status',
           ),
           GButton(
             icon: Icons.work,

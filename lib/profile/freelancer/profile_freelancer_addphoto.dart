@@ -8,7 +8,7 @@ import 'package:taskmate/components/light_main_button.dart';
 import 'dart:io';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/profile/freelancer/user_model.dart';
-import 'package:taskmate/verify_identity.dart';
+import 'package:taskmate/profile/freelancer/verify_identity.dart';
 
 class ProfileFreelancerAddphoto extends StatefulWidget {
   final UserModel user;

@@ -8,7 +8,7 @@ import 'package:taskmate/components/light_main_button.dart';
 import 'dart:io';
 import 'package:taskmate/profile/client/user_model1.dart';
 import 'package:taskmate/constants.dart';
-import 'package:taskmate/verify_identity.dart';
+import 'package:taskmate/profile/client/verify_identity.dart';
 
 class ProfileClientAddphoto extends StatefulWidget {
   final UserModel1 client;
