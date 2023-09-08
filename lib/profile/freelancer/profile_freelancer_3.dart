@@ -40,11 +40,8 @@ class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
   final TextEditingController servicesController = TextEditingController();
   final TextEditingController professionalRoleController = TextEditingController();
   final TextEditingController hourlyrateController = TextEditingController();
-  final TextEditingController imageurl1Controller = TextEditingController();
-  final TextEditingController imageurl2Controller = TextEditingController();
-  final TextEditingController imageurl3Controller = TextEditingController();
-  final TextEditingController titleController = TextEditingController();
-  final TextEditingController itemdesController = TextEditingController();
+  final TextEditingController levelController = TextEditingController();
+
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;

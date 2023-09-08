@@ -35,11 +35,7 @@ class _ProfileFreelancer2State extends State<ProfileFreelancer2> {
   final TextEditingController genderController = TextEditingController();
   final TextEditingController servicesController = TextEditingController();
   final TextEditingController hourlyrateController = TextEditingController();
-  final TextEditingController imageurl1Controller = TextEditingController();
-  final TextEditingController imageurl2Controller = TextEditingController();
-  final TextEditingController imageurl3Controller = TextEditingController();
-  final TextEditingController titleController = TextEditingController();
-  final TextEditingController itemdesController = TextEditingController();
+  final TextEditingController levelController = TextEditingController();
 
   String? profileImageUrl;
   String? selectedGender;

@@ -14,6 +14,7 @@ import 'package:taskmate/profile/freelancer/profile_freelancer_3.dart';
 import 'package:taskmate/profile/freelancer/profile_freelancer_4.dart';
 import 'package:taskmate/profile/freelancer/user_repository.dart';
 import 'package:taskmate/verify_identity.dart';
+import 'FreelancerDashboard/Dashboard.dart';
 import 'firebase_options.dart';
 //imported pages
 import 'package:taskmate/authentication/splash_screen.dart';
@@ -53,7 +54,7 @@ class Taskmate extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: "Poppins"),
       home: const SafeArea(
-        child: HomePage(),
+        child: ProfileFreelancer(),
 
       ),
     );

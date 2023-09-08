@@ -4,6 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:taskmate/FreelancerDashboard/Dashboard.dart';
 import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/components/light_main_button.dart';
 import 'dart:io';
@@ -20,8 +21,7 @@ class ProfileFreelancerAddphoto extends StatefulWidget {
       : super(key: key);
 
   @override
-  _ProfileFreelancerAddphotoState createState() =>
-      _ProfileFreelancerAddphotoState();
+  _ProfileFreelancerAddphotoState createState() => _ProfileFreelancerAddphotoState();
 }
 
 class _ProfileFreelancerAddphotoState extends State<ProfileFreelancerAddphoto> {
@@ -43,11 +43,7 @@ class _ProfileFreelancerAddphotoState extends State<ProfileFreelancerAddphoto> {
   final TextEditingController servicesController = TextEditingController();
   final TextEditingController professionalRoleController = TextEditingController();
   final TextEditingController hourlyrateController = TextEditingController();
-  final TextEditingController imageurl1Controller = TextEditingController();
-  final TextEditingController imageurl2Controller = TextEditingController();
-  final TextEditingController imageurl3Controller = TextEditingController();
-  final TextEditingController titleController = TextEditingController();
-  final TextEditingController itemdesController = TextEditingController();
+
 
   String? profileImageUrl;
   String? selectedGender;
@@ -123,10 +119,7 @@ class _ProfileFreelancerAddphotoState extends State<ProfileFreelancerAddphoto> {
         final String userUid = firebaseUser.uid;
 
         // Create a Firestore document and save the data
-        await FirebaseFirestore.instance
-            .collection('Users')
-            .doc(userUid)
-            .set(
+        await FirebaseFirestore.instance.collection('Users').doc(userUid).set(
           {
             'firstName': widget.user.firstName,
             'lastName': widget.user.lastName,
@@ -153,7 +146,7 @@ class _ProfileFreelancerAddphotoState extends State<ProfileFreelancerAddphoto> {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) =>
-                  DataDetailsScreenFreelancer(
+                  DashboardFreelance(
                     user: widget.user,
                     profileImageUrl: downloadUrl,
                   ),
@@ -197,13 +190,10 @@ class _ProfileFreelancerAddphotoState extends State<ProfileFreelancerAddphoto> {
                   radius: 150,
                   backgroundColor: Colors.transparent,
                   backgroundImage: selectedImage != null
-                      ? FileImage(
-                          selectedImage!) // Display selected/captured image
+                      ? FileImage(selectedImage!) // Display selected/captured image
                       : profileImageUrl != null
                           ? NetworkImage(profileImageUrl!)
-                          : const AssetImage(
-                                  'images/iconamoon_profile-circle-thin.png')
-                              as ImageProvider<Object>,
+                          : const AssetImage('images/iconamoon_profile-circle-thin.png') as ImageProvider<Object>,
                 ),
               ),
               DarkMainButton(

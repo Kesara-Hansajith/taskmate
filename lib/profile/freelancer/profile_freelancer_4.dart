@@ -80,10 +80,10 @@ class _ProfileFreelancer4State extends State<ProfileFreelancer4> {
       //Ignored catch block
     }
   }
+  List<String> uploadedImageUrls = [];
 
   Future<void> savePortfolioItemToFirestore() async {
     try {
-      List<String> uploadedImageUrls = [];
 
       for (int i = 0; i < selectedImages.length; i++) {
         final imageFile = selectedImages[i];
@@ -98,6 +98,7 @@ class _ProfileFreelancer4State extends State<ProfileFreelancer4> {
           uploadedImageUrls.add(imageUrl);
         }
       }
+      // Create a document in Firestore containing the uploaded image URLs
     } catch (e) {
       //Ignored catch block
     }
@@ -146,22 +147,32 @@ class _ProfileFreelancer4State extends State<ProfileFreelancer4> {
           final String userUid = firebaseUser.uid;
 
           // Create a reference to the user's document
-          final DocumentReference userDocRef = FirebaseFirestore.instance.collection('Users').doc(userUid);
+          final DocumentReference userDocRef =
+          FirebaseFirestore.instance.collection('Users').doc(userUid);
 
-          // Add the portfolio item to the subcollection 'portfolio_items'
-          await userDocRef.collection('portfolio_items').add({
+          // Fetch the current counter value and increment it
+          final DocumentSnapshot userDocSnapshot = await userDocRef.get();
+          final Map<String, dynamic>? userData = userDocSnapshot.data() as Map<String, dynamic>?;
+          int counter = userData?['portfolio_counter'] ?? 0;
+          counter++;
+
+          // Add the portfolio item with the custom ID
+          await userDocRef.collection('portfolio_items').doc(counter.toString()).set({
             'title': titleController.text.trim(),
             'item_description': itemdesController.text.trim(),
-            'image_urls': selectedImages.map((image) => image.path).toList(),
+            'image_urls': uploadedImageUrls,
             'timestamp': FieldValue.serverTimestamp(),
           });
 
+          // Update the counter in the user's document
+          await userDocRef.update({'portfolio_counter': counter});
 
           Navigator.pop(context);
         }
       }
     }
   }
+
 
 
   @override

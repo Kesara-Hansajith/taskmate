@@ -38,7 +38,7 @@ class _ProfileFreelancerState extends State<ProfileFreelancer> {
   final TextEditingController genderController = TextEditingController();
   final TextEditingController servicesController = TextEditingController();
   final TextEditingController hourlyrateController = TextEditingController();
-  final TextEditingController imageurl1Controller = TextEditingController();
+  final TextEditingController levelController = TextEditingController();
   final TextEditingController imageurl2Controller = TextEditingController();
   final TextEditingController imageurl3Controller = TextEditingController();
   final TextEditingController titleController = TextEditingController();
