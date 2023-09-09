@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:taskmate/constants.dart';
 
 class BottomSubText extends StatelessWidget {
-  const BottomSubText(this.title,{
+  const BottomSubText(
+    this.title, {
     super.key,
   });
 
