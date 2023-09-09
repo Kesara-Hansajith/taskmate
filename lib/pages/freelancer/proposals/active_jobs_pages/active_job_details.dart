@@ -33,7 +33,7 @@ class _ActiveJobDetailsState extends State<ActiveJobDetails> {
       Details(
         documentID: widget.documentID,
       ),
-       const Files(),
+      const Files(),
       const Payments(),
       const Reviews(),
     ];

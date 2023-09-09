@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:taskmate/bottom_nav_bar/client/client_account.dart';
+import 'package:taskmate/bottom_nav_bar/client/client_job_status.dart';
 import 'package:taskmate/bottom_nav_bar/client/client_messaging.dart';
 import 'package:taskmate/bottom_nav_bar/client/client_posted.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
@@ -17,6 +18,7 @@ class _ClientHomePageState extends State<ClientHomePage> {
   final List _items = [
     const ClientMessaging(),
     const ClientPosted(),
+    const ClientJobStatus(),
     const ClientAccount(),
   ];
 
@@ -37,8 +39,12 @@ class _ClientHomePageState extends State<ClientHomePage> {
             text: 'Messages',
           ),
           GButton(
+            icon: Icons.add_circle,
+            text: 'Post a Job',
+          ),
+          GButton(
             icon: Icons.work,
-            text: 'Jobs',
+            text: 'Job Status',
           ),
           GButton(
             icon: Icons.person,

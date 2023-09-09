@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:taskmate/components/client/no_job_card.dart';
+import 'package:taskmate/components/client/post_a_job.dart';
 import 'package:taskmate/constants.dart';
 
 class ClientPosted extends StatefulWidget {
@@ -38,8 +38,7 @@ class _ClientPostedState extends State<ClientPosted> {
                         'Nimali Ihalagama ',
                         style: kSubHeadingTextStyle,
                       ),
-                      NoJobCard(),
-
+                      PostAJob(),
                     ],
                   ),
                 ),

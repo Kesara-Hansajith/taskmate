@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/constants.dart';
+import 'package:taskmate/pages/client/client_post_job.dart';
 
-class NoJobCard extends StatelessWidget {
-  const NoJobCard({super.key});
+class PostAJob extends StatelessWidget {
+  const PostAJob({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,23 +26,29 @@ class NoJobCard extends StatelessWidget {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child:  Text(
-              'No Job Posts',
+            child: Text(
+              'Get your work Done',
               style: kJobCardTitleTextStyle.copyWith(fontSize: 20.0),
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 8.0),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 9.0),
             child: Text(
               'You haven’t posted any job, Post your job and find the best talented graphic designers in Sri Lanka',
-              style: kTextStyle,
+              style: kTextStyle.copyWith(fontSize: 14),
               textAlign: TextAlign.center,
             ),
           ),
           DarkMainButton(
-              title: 'Post a Job', process: () {
-                //TODO Navigate to publish a job page
-          }, screenWidth: screenWidth)
+              title: 'Post a Job',
+              process: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const ClientPostJob(),
+                  ),
+                );
+              },
+              screenWidth: screenWidth)
         ],
       ),
     );
