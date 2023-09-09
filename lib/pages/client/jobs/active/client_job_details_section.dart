@@ -1,30 +1,29 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:taskmate/constants.dart';
-import 'package:taskmate/models/active_job_details_data.dart';
+import 'package:taskmate/models/client_active_job_details_data.dart';
 
-class Details extends StatefulWidget {
+class ClientJobDetails extends StatefulWidget {
   final String documentID;
-  const Details({
+  const ClientJobDetails({
     super.key,
     required this.documentID,
   });
 
   @override
-  State<Details> createState() => _DetailsState();
+  State<ClientJobDetails> createState() => _ClientJobDetailsState();
 }
 
-class _DetailsState extends State<Details> {
-  Future<List<ActiveJobDetailsData>> fetchData(String documentId) async {
+class _ClientJobDetailsState extends State<ClientJobDetails> {
+  Future<List<ClientActiveJobDetailsData>> fetchData(String documentId) async {
     final DocumentSnapshot docSnapshot = await FirebaseFirestore.instance
-        .collection('active_jobs')
+        .collection('client_active_jobs')
         .doc(documentId)
         .get();
 
     return [
-      ActiveJobDetailsData(
+      ClientActiveJobDetailsData(
         title: docSnapshot['title'] as String,
-        bidCount: docSnapshot['bidCount'] as int,
         bidPrice: docSnapshot['bidPrice'] as int,
         description: docSnapshot['description'] as String,
       )
@@ -38,7 +37,7 @@ class _DetailsState extends State<Details> {
       width: screenWidth,
       child: Column(
         children: [
-          FutureBuilder<List<ActiveJobDetailsData>>(
+          FutureBuilder<List<ClientActiveJobDetailsData>>(
             future: fetchData(widget.documentID),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
@@ -50,7 +49,7 @@ class _DetailsState extends State<Details> {
               } else if (!snapshot.hasData) {
                 return const Text('No data available.');
               } else if (snapshot.hasData) {
-                List<ActiveJobDetailsData> data = snapshot.data!;
+                List<ClientActiveJobDetailsData> data = snapshot.data!;
                 return Center(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,7 +76,7 @@ class _DetailsState extends State<Details> {
                         style: kJobCardTitleTextStyle,
                       ),
                       Text(
-                        "LKR. " + data[0].bidPrice.toString(),
+                        "LKR. ${data[0].bidPrice}",
                         style: kTextStyle,
                       ),
                       const Text(

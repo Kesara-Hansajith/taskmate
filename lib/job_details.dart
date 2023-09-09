@@ -4,7 +4,7 @@ import 'package:taskmate/components/maintenance_page.dart';
 
 import 'package:taskmate/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:taskmate/home_page.dart';
+import 'package:taskmate/freelancer_home_page.dart';
 import 'package:taskmate/models/job_details_data.dart';
 
 class JobDetails extends StatefulWidget {
