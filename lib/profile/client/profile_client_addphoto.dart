@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+
 import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/components/light_main_button.dart';
+import 'package:taskmate/profile/client/data_details_screen_client.dart';
 import 'dart:io';
 import 'package:taskmate/profile/client/user_model1.dart';
 import 'package:taskmate/constants.dart';
@@ -37,9 +40,7 @@ class _ProfileClientAddphotoState extends State<ProfileClientAddphoto> {
   final TextEditingController birthdayController = TextEditingController();
   final TextEditingController genderController = TextEditingController();
   final TextEditingController servicesController = TextEditingController();
-  final TextEditingController professionalRoleController =
-      TextEditingController();
-  final TextEditingController hourlyrateController = TextEditingController();
+  final TextEditingController professionalRoleController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   String? profileImageUrl;
@@ -88,36 +89,51 @@ class _ProfileClientAddphotoState extends State<ProfileClientAddphoto> {
 
   void _submitDetails() async {
     // Upload image to Firebase Storage and get the download URL
-    final String downloadUrl =
-        await uploadImageToFirebaseStorage(selectedImage!);
+    final String downloadUrl = await uploadImageToFirebaseStorage(selectedImage!);
 
-    // Create a Firestore document and save the data
-    await FirebaseFirestore.instance
-        .collection('Clients')
-        .doc(existingUserId)
-        .set({
-      'firstName': widget.client.firstName,
-      'lastName': widget.client.lastName,
-      'address': widget.client.address,
-      'zipcode': widget.client.zipcode,
-      'street': widget.client.street,
-      'birthday': widget.client.birthday,
-      'gender': widget.client.gender,
-      'province': widget.client.province,
-      'city': widget.client.city,
-      'phoneNo': widget.client.phoneNo,
-      'profilePhotoUrl': downloadUrl,
-    });
+    // Get the current user's UID from Firebase Authentication
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final User? user = _auth.currentUser;
 
-    // Navigate back to the previous page or any other page
-    if (context.mounted) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => const VerifyIdentity(),
-        ),
-      );
+    if (user != null) {
+      // Use the user's UID as the Firestore document ID
+      final userId = user.uid;
+
+      // Create a Firestore document and save the data with the user's UID as the document ID
+      await FirebaseFirestore.instance
+          .collection('Clients')
+          .doc(userId) // Use the user's UID as the document ID
+          .set({
+        'firstName': widget.client.firstName,
+        'lastName': widget.client.lastName,
+        'address': widget.client.address,
+        'zipcode': widget.client.zipcode,
+        'street': widget.client.street,
+        'birthday': widget.client.birthday,
+        'gender': widget.client.gender,
+        'province': widget.client.province,
+        'city': widget.client.city,
+        'phoneNo': widget.client.phoneNo,
+        'email': widget.client.email,
+        'password': widget.client.password,
+        'professionalRole': widget.client.professionalrole,
+        'profilePhotoUrl': downloadUrl,
+      });
+
+      // Navigate back to the previous page or any other page
+      if (context.mounted) {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => DataDetailsScreenClient(
+              client: widget.client,
+              profileImageUrl: downloadUrl,
+            ),
+          ),
+        );
+      }
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +145,7 @@ class _ProfileClientAddphotoState extends State<ProfileClientAddphoto> {
         body: Container(
           height: screenHeight,
           width: screenWidth,
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             image: DecorationImage(
               image: AssetImage('images/noise_image.webp'),
               fit: BoxFit.cover,
@@ -152,13 +168,10 @@ class _ProfileClientAddphotoState extends State<ProfileClientAddphoto> {
                   radius: 150,
                   backgroundColor: Colors.transparent,
                   backgroundImage: selectedImage != null
-                      ? FileImage(
-                          selectedImage!) // Display selected/captured image
+                      ? FileImage(selectedImage!) // Display selected/captured image
                       : profileImageUrl != null
                           ? NetworkImage(profileImageUrl!)
-                          : const AssetImage(
-                                  'images/iconamoon_profile-circle-thin.png')
-                              as ImageProvider<Object>,
+                          : const AssetImage('images/iconamoon_profile-circle-thin.png') as ImageProvider<Object>,
                 ),
               ),
               DarkMainButton(

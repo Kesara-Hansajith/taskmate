@@ -1,12 +1,17 @@
+import 'dart:async';
+import 'dart:core';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/components/freelancer/portfolio_item_box.dart';
+import 'package:taskmate/profile/freelancer/profile_freelancer_4.dart';
 import 'package:taskmate/profile/freelancer/profile_freelancer_addphoto.dart';
 import 'package:taskmate/profile/freelancer/user_model.dart';
 import 'package:taskmate/components/freelancer/user_data_gather_title.dart';
+import 'package:taskmate/profile/freelancer/user_repository.dart';
 import '../../constants.dart';
 
 class ProfileFreelancer3 extends StatefulWidget {
@@ -33,8 +38,7 @@ class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
   final TextEditingController birthdayController = TextEditingController();
   final TextEditingController genderController = TextEditingController();
   final TextEditingController servicesController = TextEditingController();
-  final TextEditingController professionalRoleController =
-      TextEditingController();
+  final TextEditingController professionalRoleController = TextEditingController();
   final TextEditingController hourlyrateController = TextEditingController();
   final TextEditingController imageurl1Controller = TextEditingController();
   final TextEditingController imageurl2Controller = TextEditingController();
@@ -54,6 +58,8 @@ class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
   String? selectedFilePath;
   String? selectedSkills;
   bool dataSubmitted = false;
+
+  bool isTapped = false;
 
   Future<String> uploadFile(File file, String filename, String fileType) async {
     User? user = _auth.currentUser;
@@ -99,15 +105,31 @@ class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
         bio: widget.user.bio,
         skills: widget.user.skills,
         services: widget.user.services,
+        email: widget.user.email,
+        password: widget.user.password,
+        professionalrole: widget.user.professionalrole,
         sociallink: sociallinkController.text,
-      );
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ProfileFreelancerAddphoto(user: updatedUser),
-        ),
       );
+      final FirebaseAuth _auth = FirebaseAuth.instance;
+      final User? firebaseUser = _auth.currentUser;
+
+      if (firebaseUser != null) {
+        final String userUid = firebaseUser.uid;
+
+        // Use the user's UID as the Firestore document ID
+        await UserRepository.instance.createUser(updatedUser, userUid);
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProfileFreelancerAddphoto(user: updatedUser),
+          ),
+        );
+      } else {
+        // Handle the case where the user is not authenticated
+        // You may want to display an error message or redirect the user to the login page
+      }
     }
   }
 
@@ -207,45 +229,138 @@ class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        PortfolioItemBox(
-                          screenWidth: screenWidth,
-                          image: selectedImageUrl1 != null
-                              ? Image.file(
-                                  File(selectedImageUrl1!),
-                                  fit: BoxFit.cover,
-                                )
-                              : const Center(
-                                  child: Text('+ Add'),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                width: double.infinity,
+                                height: 120,
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Color(0xFF4B4646)),
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: isTapped ? Colors.green : Colors.transparent, // Set the color based on _isTapped
                                 ),
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => ProfileFreelancer4()),
+                                    );
+                                    // Set the tapped state to true when tapped
+                                    setState(() {
+                                      isTapped = true;
+                                    });
+                                  },
+                                  child: Center(
+                                    child: Text(
+                                      '+ Add',
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        color: Color(0xFF4B4646),
+                                      ),
+                                    ),
+                                  ),
+
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 16), // Adjust the spacing between the boxes
+                            Expanded(
+                              child: Container(
+                                height: 120,
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Color(0xFF4B4646)),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => ProfileFreelancer4()),
+                                    );
+                                  },
+                                  // Add the contents of the second box here
+                                  child: Center(
+                                    child: Text(
+                                      '+ Add',
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        color: Color(0xFF4B4646),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                         const SizedBox(
                           height: 15.0,
                         ),
-                        PortfolioItemBox(
-                          screenWidth: screenWidth,
-                          image: selectedImageUrl2 != null
-                              ? Image.file(
-                                  File(selectedImageUrl2!),
-                                  fit: BoxFit.cover,
-                                )
-                              : const Center(
-                                  child: Text('+ Add'),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                width: double.infinity,
+                                height: 120,
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Color(0xFF4B4646)),
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => ProfileFreelancer4()),
+                                    );
+                                  },
+                                  child: Center(
+                                    child: Text(
+                                      '+ Add',
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        color: Color(0xFF4B4646),
+                                      ),
+                                    ),
+                                  ),
+
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 16), // Adjust the spacing between the boxes
+                            Expanded(
+                              child: Container(
+                                height: 120,
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Color(0xFF4B4646)),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => ProfileFreelancer4()),
+                                    );
+                                  },
+                                  // Add the contents of the second box here
+                                  child: Center(
+                                    child: Text(
+                                      '+ Add',
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        color: Color(0xFF4B4646),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                         const SizedBox(
-                          height: 15.0,
+                          height: 220.0,
                         ),
-                        PortfolioItemBox(
-                          screenWidth: screenWidth,
-                          image: selectedImageUrl3 != null
-                              ? Image.file(
-                                  File(selectedImageUrl3!),
-                                  fit: BoxFit.cover,
-                                )
-                              : const Center(
-                                  child: Text('+ Add'),
-                                ),
-                        ),
+
                       ],
                     ),
                   ),

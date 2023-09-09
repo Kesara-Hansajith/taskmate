@@ -164,6 +164,12 @@ class _TakeActionState extends State<TakeAction> {
                                     setState(() {
                                       isWork = false;
                                       isHire = true;
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                          const ProfileClient(),
+                                        ),
+                                      );
                                     });
                                     //TODO- Add navigator to next page
                                   },
