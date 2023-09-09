@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:taskmate/bottom_nav_bar/messaging.dart';
-import 'package:taskmate/bottom_nav_bar/proposals.dart';
-import 'package:taskmate/bottom_nav_bar/jobs.dart';
-import 'package:taskmate/bottom_nav_bar/account.dart';
+import 'package:taskmate/bottom_nav_bar/freelancer/messaging.dart';
+import 'package:taskmate/bottom_nav_bar/freelancer/proposals.dart';
+import 'package:taskmate/bottom_nav_bar/freelancer/jobs.dart';
+import 'package:taskmate/bottom_nav_bar/freelancer/account.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
