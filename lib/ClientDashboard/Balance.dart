@@ -2,15 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:taskmate/ClientDashboard/Dashboard.dart';
 import 'package:taskmate/constants.dart';
 
+import '../profile/client/user_model1.dart';
 
-class Balance extends StatefulWidget {
-  const Balance({Key? key}) : super(key: key);
+
+class BalanceClient extends StatefulWidget {
+  final UserModel1 client;
+  final String? profileImageUrl;
+
+  const BalanceClient({required this.client, this.profileImageUrl});
 
   @override
-  State<Balance> createState() => _BalanceState();
+  State<BalanceClient> createState() => _BalanceClientState();
 }
 
-class _BalanceState extends State<Balance> {
+class _BalanceClientState extends State<BalanceClient> {
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
@@ -41,7 +46,7 @@ class _BalanceState extends State<Balance> {
                       onPressed: () {
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
-                            builder: (context) =>  Dashboard(),
+                            builder: (context) =>  DashboardClient(client: widget.client,profileImageUrl: widget.profileImageUrl,),
                           ),
                         );
                       },

@@ -3,14 +3,19 @@ import 'package:taskmate/ClientDashboard/Dashboard.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/authentication/create_my_account_1.dart';
 
-class Help extends StatefulWidget {
-  const Help({Key? key}) : super(key: key);
+import '../profile/client/user_model1.dart';
+
+class HelpClient extends StatefulWidget {
+  final UserModel1 client;
+  final String? profileImageUrl;
+  
+  const HelpClient({required this.client, this.profileImageUrl}) ;
 
   @override
-  State<Help> createState() => _HelpState();
+  State<HelpClient> createState() => _HelpClientState();
 }
 
-class _HelpState extends State<Help> {
+class _HelpClientState extends State<HelpClient> {
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
@@ -41,7 +46,7 @@ class _HelpState extends State<Help> {
                       onPressed: () {
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
-                            builder: (context) => Dashboard(),
+                            builder: (context) => DashboardClient(client: widget.client,profileImageUrl: widget.profileImageUrl,),
                           ),
                         );
                       },

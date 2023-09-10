@@ -2,15 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:taskmate/ClientDashboard/Dashboard.dart';
 import 'package:taskmate/constants.dart';
 
+import '../profile/client/user_model1.dart';
 
-class TermsandConditions extends StatefulWidget {
-  const TermsandConditions ({Key? key}) : super(key: key);
+
+class TermsandConditionsClient extends StatefulWidget {
+  final UserModel1 client;
+  final String? profileImageUrl;
+
+  const TermsandConditionsClient ({required this.client, this.profileImageUrl}) ;
 
   @override
-  State<TermsandConditions> createState() => _TermsandConditionsState();
+  State<TermsandConditionsClient> createState() => _TermsandConditionsClientState();
 }
 
-class _TermsandConditionsState extends State<TermsandConditions> {
+class _TermsandConditionsClientState extends State<TermsandConditionsClient> {
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
@@ -41,7 +46,7 @@ class _TermsandConditionsState extends State<TermsandConditions> {
                       onPressed: () {
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
-                            builder: (context) =>  Dashboard(),
+                            builder: (context) =>  DashboardClient(client: widget.client,profileImageUrl: widget.profileImageUrl,),
                           ),
                         );
                       },
@@ -54,7 +59,7 @@ class _TermsandConditionsState extends State<TermsandConditions> {
                       child: Text(
                         'Terms & Conditions',
                         style: TextStyle(
-                          fontSize: 35, // Adjust the font size as needed
+                          fontSize: 30, // Adjust the font size as needed
                           fontWeight: FontWeight.w600,
                           color: kDeepBlueColor, // Adjust the text color as needed
                         ),

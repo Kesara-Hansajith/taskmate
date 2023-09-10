@@ -58,9 +58,9 @@ class _TransactionhistoryFreelancerState extends State<TransactionhistoryFreelan
                     Align(
                       alignment: Alignment.topRight,
                       child: Text(
-                        'Transactiohistory',
+                        'Transaction History',
                         style: TextStyle(
-                          fontSize: 38, // Adjust the font size as needed
+                          fontSize: 28, // Adjust the font size as needed
                           fontWeight: FontWeight.w600,
                           color: kDeepBlueColor, // Adjust the text color as needed
                         ),

@@ -1,53 +1,58 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:taskmate/profile/client/EditClientProfile.dart';
 import 'package:taskmate/profile/client/user_model1.dart';
-import 'package:taskmate/profile/freelancer/user_model.dart';
 import 'package:taskmate/profile/freelancer/EditFreelancerProfile.dart';
 import 'package:taskmate/constants.dart';
 
 
-class DataDetailsScreenClient extends StatelessWidget {
-  final UserModel1 client;
+class DataDetailsScreenClient extends StatefulWidget {
+  late final UserModel1 client;
   final String? profileImageUrl;
 
-  DataDetailsScreenClient({required this.client,this.profileImageUrl});
+  DataDetailsScreenClient({required this.client, this.profileImageUrl});
 
-  String? CoverImageUrl;
+  @override
+  _DataDetailsScreenClientState createState() => _DataDetailsScreenClientState();
+}
+
+class _DataDetailsScreenClientState
+    extends State<DataDetailsScreenClient> {
   final double coverHeight = 220;
   final double profileHeight = 134;
 
-  Widget buildcoverImage() => Stack(
-    children: [
-      Container(
-        height: coverHeight,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: NetworkImage('https://marketplace.canva.com/EAEmBit3KfU/1/0/1600w/canva-black-flatlay-photo-motivational-finance-quote-facebook-cover-myVl9DXwcjQ.jpg'),
-            fit: BoxFit.cover,
+  Widget buildCoverImage() {
+    return Stack(
+      children: [
+        Container(
+          child: Container(
+            color: kDeepBlueColor,
+            child: widget.profileImageUrl != null
+                ? Image.network(widget.profileImageUrl!,
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: coverHeight,
+            )
+                : Placeholder(),
+            // You can replace Placeholder with a loading indicator
           ),
         ),
-      ),
-      Container(
-        color: kDeepBlueColor.withOpacity(0.6), // Add opacity to the color
-      ),
-    ],
-  );
 
-
-
-
-
+      ],
+    );
+  }
 
   Widget buildProfileImage() => CircleAvatar(
     radius: profileHeight / 2,
-    backgroundImage: AssetImage('images/Dashboard.png'),
+    backgroundImage: const AssetImage('images/noise_image.webp'),
     child: Stack(
       alignment: Alignment.center,
       children: [
         CircleAvatar(
           radius: profileHeight / 2 - 6,
           backgroundColor: Colors.white,
-          backgroundImage: NetworkImage(profileImageUrl ?? ''),
+          backgroundImage: NetworkImage(widget.profileImageUrl ?? ''),
         ),
       ],
     ),
@@ -62,19 +67,18 @@ class DataDetailsScreenClient extends StatelessWidget {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('images/Dashboard.png'),
+            image: AssetImage('images/noise_image.webp'),
             fit: BoxFit.cover,
           ),
         ),
         child: SingleChildScrollView(
-          // Wrap the Column with SingleChildScrollView
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Stack(
                 clipBehavior: Clip.none,
                 children: [
-                  buildcoverImage(),
+                  buildCoverImage(),
                   Positioned(
                     top: top,
                     left: (screenWidth - profileHeight) / 2,
@@ -83,16 +87,22 @@ class DataDetailsScreenClient extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 70),
-              // First Name + Last Name
               Center(
-                child: Text(
-                  '${client.firstName} ${client.lastName}',
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold,color: Colors.grey.shade800),
+                child: Column(
+                  children: [
+                    Text(
+                      '${widget.client.firstName} ${widget.client.lastName}',
+                      style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey.shade800,
+                      ),
+                    ),
+                    SizedBox(height: 5), // Add some spacing between the name and the level
+                  ],
                 ),
               ),
-
               SizedBox(height: 10),
-
               Padding(
                 padding: EdgeInsets.fromLTRB(10.0, 2.0, 10.0, 2.0),
                 child: SizedBox(
@@ -104,29 +114,20 @@ class DataDetailsScreenClient extends StatelessWidget {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(5.0),
-                      child: Text('ProfessionalRole: ${client.professionalrole}',
+                      child: Text('ProfessionalRole: ${widget.client.professionalrole}',
                         style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.grey.shade800),
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.grey.shade800,
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(13.0, 2.0, 10.0, 10.0),
-                child: SizedBox(
-                  width: 300, // Adjust the width as needed
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12.0),
-                      border: Border.all(color: Colors.transparent),
-                    ),
-                  ),
-                ),
-              ),
               SizedBox(height: 4),
+
+              SizedBox(height: 1),
               Container(
                 // Adjust this value for desired alignment
                 child: Center(
@@ -139,17 +140,14 @@ class DataDetailsScreenClient extends StatelessWidget {
                   ),
                 ),
               ),
-
-
-              SizedBox(height: 1),
-
               Padding(
-                padding: EdgeInsets.fromLTRB(25.0, 10.0, 10.0,
-                    10.0), // Adjust this value for desired alignment
+                padding: EdgeInsets.fromLTRB(25.0, 10.0, 10.0, 10.0),
                 child: Text(
                   'Reviews',
                   style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.grey.shade700),
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey.shade700,
+                  ),
                 ),
               ),
               Padding(
@@ -166,26 +164,35 @@ class DataDetailsScreenClient extends StatelessWidget {
                       child: Text(
                         'Review Part Under Construction',
                         style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500,
-                            color: kAmberColor),
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                          color: kAmberColor,
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-              SizedBox(
-                height: 200,
+              SizedBox(height: 200,
               ),
               Padding(
                 padding: EdgeInsets.fromLTRB(50.0, 0, 55.0, 0.0),
                 child: ElevatedButton(
                   onPressed: () {
-                     Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (context) => EditClientProfile(client: client),
-                    ),
-                     );
+                    Navigator.of(context)
+                        .push(
+                      MaterialPageRoute(
+                        builder: (context) => EditClientProfile(client: widget.client, profileImageUrl: widget.profileImageUrl,),
+                      ),
+                    )
+                        .then((updatedUser) {
+                      if (updatedUser != null) {
+                        setState(() {
+                          // Update the widget's user data with the updatedUser data
+                          widget.client = updatedUser;
+                        });
+                      }
+                    });
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: kDeepBlueColor,
@@ -195,22 +202,22 @@ class DataDetailsScreenClient extends StatelessWidget {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(15.0),
-                    //Button icon and Text goes here
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: const <Widget>[
                         Text(
                           'Edit Profile',
-                          style:
-                          TextStyle(color: kBrilliantWhite, fontSize: 15.0),
+                          style: TextStyle(
+                            color: kBrilliantWhite,
+                            fontSize: 15.0,
+                          ),
                         ),
                       ],
                     ),
                   ),
                 ),
               ),
-              SizedBox(
-                height: 20,
+              SizedBox(height: 500,
               ),
             ],
           ),

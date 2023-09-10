@@ -59,7 +59,7 @@ class _HelpFreelancerState extends State<HelpFreelancer> {
                       child: Text(
                         'Help & Support',
                         style: TextStyle(
-                          fontSize: 38, // Adjust the font size as needed
+                          fontSize: 35, // Adjust the font size as needed
                           fontWeight: FontWeight.w600,
                           color:
                               kDeepBlueColor, // Adjust the text color as needed

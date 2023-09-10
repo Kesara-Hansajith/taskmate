@@ -8,16 +8,22 @@ import 'package:taskmate/ClientDashboard/termsandconditions.dart';
 import 'package:taskmate/constants.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:taskmate/profile/client/data_details_screen_client.dart';
 import 'dart:io';
 
-class Dashboard extends StatefulWidget {
-  const Dashboard({Key? key}) : super(key: key);
+import '../profile/client/user_model1.dart';
+
+class DashboardClient extends StatefulWidget {
+  final UserModel1 client; // Add this line
+  final String? profileImageUrl;
+
+  const DashboardClient({Key? key, required this.client, this.profileImageUrl});
 
   @override
-  State<Dashboard> createState() => _DashboardState();
+  State<DashboardClient> createState() => _DashboardClientState();
 }
 
-class _DashboardState extends State<Dashboard> {
+class _DashboardClientState extends State<DashboardClient> {
   final formKey = GlobalKey<FormState>();
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
@@ -79,74 +85,49 @@ class _DashboardState extends State<Dashboard> {
   }
 
   Widget buildcoverImage() => Stack(
-        children: [
-          Container(
-            color: kDeepBlueColor,
-            child: CoverImageUrl != null
-                ? Image.network(
-                    CoverImageUrl!,
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                    height: coverHeight,
-                  )
-                : SizedBox(
-                    width: double.infinity,
-                    height: coverHeight,
-                  ),
-          ),
-          Positioned(
-            bottom: 0,
-            right: 0,
-            child: IconButton(
-              onPressed: () async {
-                final imageFile = await _pickProfileImage();
-                if (imageFile != null) {
-                  Navigator.pushReplacement(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) =>
-                          Dragtoadjust(imageFile: imageFile),
-                      transitionDuration:
-                          Duration(seconds: 0), // No transition animation
-                    ),
-                  );
-                }
-              },
-              icon: Icon(Icons.add_photo_alternate),
-              color: Colors.white,
-            ),
-          ),
-        ],
-      );
+    children: [
+      Container(
+        color: kDeepBlueColor,
+        child: widget.profileImageUrl != null
+            ? Image.network(widget.profileImageUrl ?? '',
+          fit: BoxFit.cover,
+          width: double.infinity,
+          height: coverHeight,
+        )
+            : SizedBox(
+          width: double.infinity,
+          height: coverHeight,
+        ),
+      ),
 
-  Widget buildProfileImage() => CircleAvatar(
-        radius: profileHeight / 2,
-        backgroundImage: AssetImage('images/noise_image.png'),
-        child: Stack(
-          alignment: Alignment.center,
+      Positioned(
+        bottom: 10, // Adjust the values as needed for positioning
+        left: 10, // Adjust the values as needed for positioning
+        child: Row(
           children: [
-            CircleAvatar(
-              radius: profileHeight / 2 - 6,
-              backgroundColor: Colors.white,
-              backgroundImage: NetworkImage(
-                "https://firebasestorage.googleapis.com/v0/b/taskmate-8ab5f.appspot.com/o/profile_images%2Fpexels-imad-clicks-14897846.jpg?alt=media&token=dc60ac42-44e0-4081-bfa3-c8924a27737e",
-              ),
-            ),
-            Positioned(
-              top: 80,
-              right: 35,
-              child: IconButton(
-                onPressed: () {
-                  //Navigate Basuru's Profile photo update
-                },
-                // Handle adding photo
-                icon: Icon(Icons.add_photo_alternate),
-                color: Colors.white,
-              ),
-            ),
+            SizedBox(width: 5,),
           ],
         ),
-      );
+      ),
+    ],
+  );
+
+
+
+  Widget buildProfileImage() => CircleAvatar(
+    radius: profileHeight / 2,
+    backgroundImage: const AssetImage('images/noise_image.webp'),
+    child: Stack(
+      alignment: Alignment.center,
+      children: [
+        CircleAvatar(
+          radius: profileHeight / 2 - 6,
+          backgroundColor: Colors.white,
+          backgroundImage: NetworkImage(widget.profileImageUrl ?? ''),
+        ),
+      ],
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -162,33 +143,33 @@ class _DashboardState extends State<Dashboard> {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('images/Dashboard.png'),
+                image: AssetImage('images/noise_image.webp'),
                 fit: BoxFit.cover,
               ),
             ),
           ),
           buildcoverImage(),
+
+
           Positioned(
             top: top,
             left: (screenWidth - profileHeight) / 2,
-            child: buildProfileImage(),
-          ),
-          Positioned(
-            bottom:
-                screenSize.height * 0.60, // Adjust position for greeting text
-            left: 0,
-            right: 0,
-            child: Center(
-              child: Text(
-                getGreeting(),
-                style: TextStyle(
-                  fontSize: 15,
-                  color: kAmberColor,
-                  fontWeight: FontWeight.w500,
+            child: Column(
+              children: [
+                buildProfileImage(),
+                SizedBox(height: 8.0),
+                Text(
+                  '${widget.client.firstName} ${widget.client.lastName}',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF16056B),
+                  ),
                 ),
-              ),
+              ],
             ),
           ),
+
 
           Positioned(
             top: screenSize.height *
@@ -197,11 +178,12 @@ class _DashboardState extends State<Dashboard> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(height: 24,),
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
-                        builder: (context) => const Balance(),
+                        builder: (context) => DataDetailsScreenClient(client: widget.client,profileImageUrl: widget.profileImageUrl),
                       ),
                     );
                   },
@@ -219,7 +201,7 @@ class _DashboardState extends State<Dashboard> {
                   onPressed: () {
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
-                        builder: (context) => const Balance(),
+                        builder: (context) =>  BalanceClient(client: widget.client,profileImageUrl: widget.profileImageUrl),
                       ),
                     );
                     // Handle button press
@@ -238,7 +220,7 @@ class _DashboardState extends State<Dashboard> {
                   onPressed: () {
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
-                        builder: (context) => const Transactionhistory(),
+                        builder: (context) => TransactionhistoryClient(client: widget.client,profileImageUrl: widget.profileImageUrl),
                       ),
                     );
                     // Handle button press
@@ -259,7 +241,7 @@ class _DashboardState extends State<Dashboard> {
 
           Positioned(
             top: screenSize.height *
-                0.57, // Adjust this value for desired alignment
+                0.60, // Adjust this value for desired alignment
             left: (screenWidth - 360) / 2,
             child: SizedBox(
               width: 360,
@@ -281,7 +263,7 @@ class _DashboardState extends State<Dashboard> {
                   onPressed: () {
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
-                        builder: (context) => const Help(),
+                        builder: (context) =>  HelpClient(client: widget.client,profileImageUrl: widget.profileImageUrl),
                       ),
                     );
                   },
@@ -300,7 +282,7 @@ class _DashboardState extends State<Dashboard> {
                   onPressed: () {
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
-                        builder: (context) => const InviteFriends(),
+                        builder: (context) =>  InviteFriendsClient(client: widget.client,profileImageUrl: widget.profileImageUrl),
                       ),
                     );
                   },
@@ -318,7 +300,7 @@ class _DashboardState extends State<Dashboard> {
                   onPressed: () {
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
-                        builder: (context) => const TermsandConditions(),
+                        builder: (context) => TermsandConditionsClient(client: widget.client,profileImageUrl: widget.profileImageUrl),
                       ),
                     );
                     // Handle button press

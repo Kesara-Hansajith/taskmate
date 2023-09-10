@@ -2,15 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:taskmate/ClientDashboard/Dashboard.dart';
 import 'package:taskmate/constants.dart';
 
+import '../profile/client/user_model1.dart';
 
-class Transactionhistory extends StatefulWidget {
-  const Transactionhistory({Key? key}) : super(key: key);
+
+class TransactionhistoryClient extends StatefulWidget {
+  final UserModel1 client;
+  final String? profileImageUrl;
+
+  const TransactionhistoryClient({required this.client, this.profileImageUrl}) ;
 
   @override
-  State<Transactionhistory> createState() => _TransactiohistoryState();
+  State<TransactionhistoryClient> createState() => _TransactionhistoryClientState();
 }
 
-class _TransactiohistoryState extends State<Transactionhistory> {
+class _TransactionhistoryClientState extends State<TransactionhistoryClient> {
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
@@ -41,7 +46,7 @@ class _TransactiohistoryState extends State<Transactionhistory> {
                       onPressed: () {
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
-                            builder: (context) =>  Dashboard(),
+                            builder: (context) =>  DashboardClient(client: widget.client,profileImageUrl: widget.profileImageUrl,),
                           ),
                         );
                       },
@@ -54,7 +59,7 @@ class _TransactiohistoryState extends State<Transactionhistory> {
                       child: Text(
                         'Transactiohistory',
                         style: TextStyle(
-                          fontSize: 38, // Adjust the font size as needed
+                          fontSize: 28, // Adjust the font size as needed
                           fontWeight: FontWeight.w600,
                           color: kDeepBlueColor, // Adjust the text color as needed
                         ),

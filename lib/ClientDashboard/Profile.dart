@@ -212,11 +212,6 @@ class _Profile1State extends State<Profile1> {
                       child: GestureDetector(
                         onTap: () {
                           // Handle button press
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) => const InviteFriends(),
-                            ),
-                          );
                         },
                         child: Stack(
                           alignment: Alignment.center,

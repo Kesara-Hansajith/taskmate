@@ -60,7 +60,7 @@ class _TermsandConditionsFreelancerState extends State<TermsandConditionsFreelan
                       child: Text(
                         'Terms & Conditions',
                         style: TextStyle(
-                          fontSize: 35, // Adjust the font size as needed
+                          fontSize: 30, // Adjust the font size as needed
                           fontWeight: FontWeight.w600,
                           color: kDeepBlueColor, // Adjust the text color as needed
                         ),

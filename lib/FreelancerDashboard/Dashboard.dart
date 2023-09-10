@@ -88,9 +88,8 @@ class _DashboardFreelanceState extends State<DashboardFreelance> {
     children: [
       Container(
         color: kDeepBlueColor,
-        child: CoverImageUrl != null
-            ? Image.network(
-          CoverImageUrl!,
+        child: widget.profileImageUrl != null
+            ? Image.network(widget.profileImageUrl ?? '',
           fit: BoxFit.cover,
           width: double.infinity,
           height: coverHeight,
@@ -107,12 +106,6 @@ class _DashboardFreelanceState extends State<DashboardFreelance> {
         child: Row(
           children: [
             SizedBox(width: 5,),
-            Icon(
-              Icons.facebook,
-              color: Colors.white,
-              size: 15,
-            ),
-            SizedBox(width: 5),
           ],
         ),
       ),
@@ -122,19 +115,19 @@ class _DashboardFreelanceState extends State<DashboardFreelance> {
 
 
   Widget buildProfileImage() => CircleAvatar(
-        radius: profileHeight / 2,
-        backgroundImage: AssetImage('images/noise_image.png'),
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            CircleAvatar(
-              radius: profileHeight / 2 - 6,
-              backgroundColor: Colors.white,
-              backgroundImage: NetworkImage(widget.profileImageUrl ?? ''),
-            ),
-          ],
+    radius: profileHeight / 2,
+    backgroundImage: const AssetImage('images/noise_image.webp'),
+    child: Stack(
+      alignment: Alignment.center,
+      children: [
+        CircleAvatar(
+          radius: profileHeight / 2 - 6,
+          backgroundColor: Colors.white,
+          backgroundImage: NetworkImage(widget.profileImageUrl ?? ''),
         ),
-      );
+      ],
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -150,7 +143,7 @@ class _DashboardFreelanceState extends State<DashboardFreelance> {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('images/Dashboard.png'),
+                image: AssetImage('images/noise_image.webp'),
                 fit: BoxFit.cover,
               ),
             ),

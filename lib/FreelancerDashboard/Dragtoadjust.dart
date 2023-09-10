@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:taskmate/FreelancerDashboard/Dashboard.dart';
 import 'package:taskmate/constants.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
@@ -54,11 +55,7 @@ class _DragtoadjustState extends State<Dragtoadjust> {
                   children: [
                     IconButton(
                       onPressed: () {
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (context) => const Dashboard(),
-                          ),
-                        );
+
                       },
                       icon: Icon(Icons.arrow_back_ios_sharp,size: 30.0),
                       color: kDeepBlueColor,
