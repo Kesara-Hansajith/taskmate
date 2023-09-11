@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'package:taskmate/client_home_page.dart';
 import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/components/freelancer/user_data_gather_textfield.dart';
 import 'package:taskmate/components/freelancer/user_data_gather_title.dart';
@@ -19,7 +18,8 @@ class ClientPostJob extends StatefulWidget {
 
 class _ClientPostJobState extends State<ClientPostJob> {
   final TextEditingController jobTitleController = TextEditingController();
-  final TextEditingController jobDescriptionController = TextEditingController();
+  final TextEditingController jobDescriptionController =
+      TextEditingController();
   final TextEditingController dayCountController = TextEditingController();
   final TextEditingController budgetController = TextEditingController();
 
@@ -34,11 +34,11 @@ class _ClientPostJobState extends State<ClientPostJob> {
   }
 
   Future<void> addJobToFirestore(
-      String jobTitle,
-      String jobDescription,
-      int dayCount,
-      int budget,
-      ) async {
+    String jobTitle,
+    String jobDescription,
+    int dayCount,
+    int budget,
+  ) async {
     try {
       // Get the current user's UID from FirebaseAuth
       User? user = FirebaseAuth.instance.currentUser;
@@ -46,13 +46,12 @@ class _ClientPostJobState extends State<ClientPostJob> {
 
       if (userUid == null) {
         // Handle the case where the user is not authenticated
-        print('User is not authenticated.');
         return;
       }
 
       // Get a reference to the Firestore collection
       CollectionReference jobsCollection =
-      FirebaseFirestore.instance.collection('jobs');
+          FirebaseFirestore.instance.collection('jobs');
 
       // Generate a unique job ID
       String jobId = jobsCollection.doc().id;
@@ -70,14 +69,10 @@ class _ClientPostJobState extends State<ClientPostJob> {
         'status': 'active', // Set the status to "active"
         // You can add more fields as needed
       });
-
-      print('Job added to Firestore with unique job ID: $jobId');
     } catch (e) {
       // Handle any errors that occur
-      print('Error adding job to Firestore: $e');
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -235,52 +230,6 @@ class _ClientPostJobState extends State<ClientPostJob> {
                     return null;
                   },
                 ),
-
-                  DarkMainButton(
-                    title: 'Post Job Now',
-                    process: () {
-                      showDialog(
-                        context: context,
-                        barrierDismissible: false,
-                        builder: (BuildContext context) {
-                          return MaintenancePage(
-                            [
-                              const Image(
-                                image: AssetImage('images/tick.webp'),
-                              ),
-                              Text(
-                                'Posted!',
-                                style:
-                                    kSubHeadingTextStyle.copyWith(height: 0.5),
-                              ),
-                              const Padding(
-                                padding: EdgeInsets.symmetric(vertical: 8.0),
-                                child: Text(
-                                  'Now keep in touch with your job for bids.',
-                                  style: kTextStyle,
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                              DarkMainButton(
-                                  title: 'Visit Job Status',
-                                  process: () {
-                                    // Navigator.of(context).pushReplacement(
-                                    //   MaterialPageRoute(
-                                    //     builder: (context) => ClientHomePage(
-                                    //       client: client,
-                                    //     ),
-                                    //   ),
-                                    // );
-                                  },
-                                  screenWidth: screenWidth)
-                            ],
-                          );
-                        },
-                      );
-                    },
-                    screenWidth: screenWidth,
-                  )
-                ],
               ),
               DarkMainButton(
                 title: 'Post Job Now',
@@ -291,6 +240,43 @@ class _ClientPostJobState extends State<ClientPostJob> {
                   int budget = int.tryParse(budgetController.text) ?? 0;
 
                   addJobToFirestore(jobTitle, jobDescription, dayCount, budget);
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (BuildContext context) {
+                      return MaintenancePage(
+                        [
+                          const Image(
+                            image: AssetImage('images/tick.webp'),
+                          ),
+                          Text(
+                            'Posted!',
+                            style: kSubHeadingTextStyle.copyWith(height: 0.5),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 8.0),
+                            child: Text(
+                              'Now keep in touch with your job for bids.',
+                              style: kTextStyle,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          DarkMainButton(
+                              title: 'Visit Job Status',
+                              process: () {
+                                // Navigator.of(context).pushReplacement(
+                                //   MaterialPageRoute(
+                                //     builder: (context) => ClientHomePage(
+                                //       client: client,
+                                //     ),
+                                //   ),
+                                // );
+                              },
+                              screenWidth: screenWidth)
+                        ],
+                      );
+                    },
+                  );
                 },
                 screenWidth: screenWidth,
               )
