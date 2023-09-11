@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:taskmate/constants.dart';
-import 'package:taskmate/models/active_job_details_data.dart';
+import 'package:taskmate/models/completed_job_details_data.dart';
 
 class Details extends StatefulWidget {
   final String documentID;
@@ -15,16 +15,16 @@ class Details extends StatefulWidget {
 }
 
 class _DetailsState extends State<Details> {
-  Future<List<ActiveJobDetailsData>> fetchData(String documentId) async {
+  Future<List<CompletedJobDetailsData>> fetchData(String documentId) async {
     final DocumentSnapshot docSnapshot = await FirebaseFirestore.instance
-        .collection('active_jobs')
+        .collection('completed_jobs')
         .doc(documentId)
         .get();
 
     return [
-      ActiveJobDetailsData(
+      CompletedJobDetailsData(
         title: docSnapshot['title'] as String,
-        bidCount: docSnapshot['bidCount'] as int,
+        // username: docSnapshot['username'] as String,
         bidPrice: docSnapshot['bidPrice'] as int,
         description: docSnapshot['description'] as String,
       )
@@ -38,7 +38,7 @@ class _DetailsState extends State<Details> {
       width: screenWidth,
       child: Column(
         children: [
-          FutureBuilder<List<ActiveJobDetailsData>>(
+          FutureBuilder<List<CompletedJobDetailsData>>(
             future: fetchData(widget.documentID),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
@@ -50,7 +50,7 @@ class _DetailsState extends State<Details> {
               } else if (!snapshot.hasData) {
                 return const Text('No data available.');
               } else if (snapshot.hasData) {
-                List<ActiveJobDetailsData> data = snapshot.data!;
+                List<CompletedJobDetailsData> data = snapshot.data!;
                 return Center(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,7 +61,7 @@ class _DetailsState extends State<Details> {
                         style: kJobCardTitleTextStyle,
                       ),
                       Text(
-                        data[0].title,
+                        data[0].title!,
                         style: kTextStyle,
                       ),
                       const Text(
@@ -69,7 +69,7 @@ class _DetailsState extends State<Details> {
                         style: kJobCardTitleTextStyle,
                       ),
                       Text(
-                        data[0].description,
+                        data[0].description!,
                         style: kTextStyle,
                       ),
                       const Text(
@@ -77,7 +77,7 @@ class _DetailsState extends State<Details> {
                         style: kJobCardTitleTextStyle,
                       ),
                       Text(
-                        "LKR. " + data[0].bidPrice.toString(),
+                        "LKR. ${data[0].bidPrice}",
                         style: kTextStyle,
                       ),
                       const Text(

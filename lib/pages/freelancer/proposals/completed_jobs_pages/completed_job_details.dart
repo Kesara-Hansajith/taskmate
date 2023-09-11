@@ -1,48 +1,50 @@
 import 'package:flutter/material.dart';
 import 'package:taskmate/constants.dart';
-import 'package:taskmate/pages/freelancer/proposals/active_jobs_pages/details_section.dart';
-import 'package:taskmate/pages/freelancer/proposals/active_jobs_pages/files_section.dart';
-import 'package:taskmate/pages/freelancer/proposals/active_jobs_pages/payments_section.dart';
-import 'package:taskmate/pages/freelancer/proposals/active_jobs_pages/reviews_section.dart';
+import 'package:taskmate/pages/freelancer/proposals/completed_jobs_pages/details_section.dart';
+import 'package:taskmate/pages/freelancer/proposals/completed_jobs_pages/files_section.dart';
+import 'package:taskmate/pages/freelancer/proposals/completed_jobs_pages/payments_section.dart';
+import 'package:taskmate/pages/freelancer/proposals/completed_jobs_pages/reviews_section.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
-class ActiveJobDetails extends StatefulWidget {
+class CompletedJobDetails extends StatefulWidget {
   final String documentID;
-  const ActiveJobDetails({
+  const CompletedJobDetails({
     super.key,
     required this.documentID,
   });
 
   @override
-  State<ActiveJobDetails> createState() => _ActiveJobDetailsState();
+  State<CompletedJobDetails> createState() => _CompletedJobDetailsState();
 }
 
-class _ActiveJobDetailsState extends State<ActiveJobDetails> {
-  int activeJobItemIndex = 0;
+class _CompletedJobDetailsState extends State<CompletedJobDetails> {
+  int completedJobItemIndex = 0;
 
   void _onToggle(int? index) {
     setState(() {
-      activeJobItemIndex = index!;
+      completedJobItemIndex = index!;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    final List activeJobItems = [
+    final List completedJobItems = [
       Details(
         documentID: widget.documentID,
       ),
       const Files(),
       const Payments(),
-      const Reviews(),
+      Reviews(
+        documentID: widget.documentID,
+      ),
     ];
 
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
           title: const Text(
-            'Active Job',
+            'Completed Job',
             style: kHeadingTextStyle,
           ),
           centerTitle: true,
@@ -80,7 +82,7 @@ class _ActiveJobDetailsState extends State<ActiveJobDetails> {
                 radiusStyle: true,
                 minWidth: screenWidth,
                 minHeight: 50.0,
-                initialLabelIndex: activeJobItemIndex,
+                initialLabelIndex: completedJobItemIndex,
                 totalSwitches: 4,
                 customTextStyles: const [
                   TextStyle(fontSize: 15.0, fontWeight: FontWeight.w600),
@@ -93,7 +95,7 @@ class _ActiveJobDetailsState extends State<ActiveJobDetails> {
                 labels: const ['Details', 'Files', 'Payments', 'Reviews'],
                 onToggle: _onToggle,
               ),
-              activeJobItems[activeJobItemIndex],
+              completedJobItems[completedJobItemIndex],
             ],
           ),
         ),

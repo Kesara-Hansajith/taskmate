@@ -1,22 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import 'package:taskmate/components/freelancer/completed_job_card.dart';
+import 'package:taskmate/pages/client/jobs/pending/client_pending_job_card.dart';
 
-class CompletedJobs extends StatefulWidget {
-  const CompletedJobs({super.key});
+class ClientPendingJobs extends StatefulWidget {
+  const ClientPendingJobs({super.key});
 
   @override
-  State<CompletedJobs> createState() => _CompletedJobsState();
+  State<ClientPendingJobs> createState() => _ClientPendingJobsState();
 }
 
-class _CompletedJobsState extends State<CompletedJobs> {
+class _ClientPendingJobsState extends State<ClientPendingJobs> {
   List<String> _docIDs = [];
 
   //Getting docIDs
   Future<void> getDocIDs() async {
-    final snapshot =
-        await FirebaseFirestore.instance.collection('completed_jobs').get();
+    final snapshot = await FirebaseFirestore.instance
+        .collection('client_pending_jobs')
+        .get();
     _docIDs = snapshot.docs.map((element) => element.reference.id).toList();
   }
 
@@ -33,18 +34,22 @@ class _CompletedJobsState extends State<CompletedJobs> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Expanded(
       child: Column(
         children: [
           Expanded(
-            child: FutureBuilder(
-              // future: getDocIDs(),
+            child: StreamBuilder(
+              //future: getDocIDs(),
               builder: (context, snapshot) {
                 return ListView.builder(
                   itemCount: _docIDs.length,
                   itemBuilder: (context, index) {
-                    return CompletedJobCard(
-                      documentID: _docIDs[index].toString(),
+                    return ListTile(
+                      title: ClientPendingJobCard(
+                        documentID: _docIDs[index].toString(),
+                      ),
                     );
                   },
                 );
