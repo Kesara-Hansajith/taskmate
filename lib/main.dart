@@ -4,11 +4,9 @@ import 'package:get/get.dart';
 
 import 'package:taskmate/client_home_page.dart';
 
-
 import 'package:get/get_core/src/get_main.dart';
 import 'package:taskmate/authentication/root_page.dart';
 import 'package:taskmate/pages/freelancer/proposals/pending_jobs_pages/pending_jobs.dart';
-
 
 import 'package:taskmate/profile/client/profile_client.dart';
 import 'package:taskmate/profile/client/user_repository1.dart';
@@ -18,7 +16,7 @@ import 'package:taskmate/profile/freelancer/profile_freelancer_3.dart';
 import 'package:taskmate/profile/freelancer/profile_freelancer_4.dart';
 import 'package:taskmate/profile/freelancer/user_repository.dart';
 
-import 'package:taskmate/verify_identity.dart';
+// import 'package:taskmate/verify_identity.dart';
 import 'FreelancerDashboard/Dashboard.dart';
 
 import 'firebase_options.dart';
@@ -60,10 +58,7 @@ class Taskmate extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: "Poppins"),
       home: const SafeArea(
-
-        child: ProfileFreelancer(),
-
-
+        child: ProfileClient(),
       ),
     );
   }
