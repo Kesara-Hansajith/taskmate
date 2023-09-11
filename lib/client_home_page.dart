@@ -33,7 +33,7 @@ class _ClientHomePageState extends State<ClientHomePage> {
             _selectedIndex = index;
           });
         },
-        tabs: const [
+        tabs: const <GButton>[
           GButton(
             icon: Icons.mail_outline,
             text: 'Messages',

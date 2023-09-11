@@ -54,7 +54,7 @@ class _JobDetailsState extends State<JobDetails> {
                 process: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => const HomePage(),
+                      builder: (context) => const FreelancerHomePage(),
                     ),
                   );
                 },

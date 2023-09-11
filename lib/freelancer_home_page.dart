@@ -6,14 +6,14 @@ import 'package:taskmate/bottom_nav_bar/freelancer/proposals.dart';
 import 'package:taskmate/bottom_nav_bar/freelancer/jobs.dart';
 import 'package:taskmate/bottom_nav_bar/freelancer/account.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class FreelancerHomePage extends StatefulWidget {
+  const FreelancerHomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<FreelancerHomePage> createState() => _FreelancerHomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _FreelancerHomePageState extends State<FreelancerHomePage> {
   int _selectedIndex = 2;
 
   final List _items = [
@@ -27,14 +27,14 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: GNav(
-        gap: 5.0,
+        gap: 10.0,
         selectedIndex: _selectedIndex,
         onTabChange: (int index) {
           setState(() {
             _selectedIndex = index;
           });
         },
-        tabs: const [
+        tabs: const <GButton>[
           GButton(
             icon: Icons.mail_outline,
             text: 'Messages',
