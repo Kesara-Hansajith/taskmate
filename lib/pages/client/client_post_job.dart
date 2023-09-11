@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:taskmate/client_home_page.dart';
 import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/components/freelancer/user_data_gather_textfield.dart';
 import 'package:taskmate/components/freelancer/user_data_gather_title.dart';
+import 'package:taskmate/components/maintenance_page.dart';
 import 'package:taskmate/constants.dart';
 import 'package:dotted_border/dotted_border.dart';
 
@@ -298,7 +300,46 @@ class _ClientPostJobState extends State<ClientPostJob> {
                   ),
                   DarkMainButton(
                     title: 'Post Job Now',
-                    process: () {},
+                    process: () {
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (BuildContext context) {
+                          return MaintenancePage(
+                            [
+                              const Image(
+                                image: AssetImage('images/tick.webp'),
+                              ),
+                              Text(
+                                'Posted!',
+                                style:
+                                    kSubHeadingTextStyle.copyWith(height: 0.5),
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.symmetric(vertical: 8.0),
+                                child: Text(
+                                  'Now keep in touch with your job for bids.',
+                                  style: kTextStyle,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                              DarkMainButton(
+                                  title: 'Visit Job Status',
+                                  process: () {
+                                    // Navigator.of(context).pushReplacement(
+                                    //   MaterialPageRoute(
+                                    //     builder: (context) => ClientHomePage(
+                                    //       client: client,
+                                    //     ),
+                                    //   ),
+                                    // );
+                                  },
+                                  screenWidth: screenWidth)
+                            ],
+                          );
+                        },
+                      );
+                    },
                     screenWidth: screenWidth,
                   )
                 ],

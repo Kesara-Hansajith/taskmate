@@ -89,11 +89,6 @@ class _VerifyIdentityState extends State<VerifyIdentity> {
               DarkMainButton(
                   title: 'Back To Home',
                   process: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const ClientHomePage(),
-                      ),
-                    );
                   },
                   screenWidth: MediaQuery.of(context).size.width)
             ],

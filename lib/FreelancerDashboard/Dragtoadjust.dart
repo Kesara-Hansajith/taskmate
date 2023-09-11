@@ -5,8 +5,6 @@ import 'package:taskmate/constants.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
 
-import '../ClientDashboard/Dashboard.dart';
-
 class Dragtoadjust extends StatefulWidget {
   final File? imageFile;
   const Dragtoadjust({Key? key, this.imageFile}) : super(key: key);

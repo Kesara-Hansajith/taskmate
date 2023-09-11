@@ -4,15 +4,13 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:taskmate/ClientDashboard/Dashboard.dart';
+import 'package:taskmate/client_home_page.dart';
 
 import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/components/light_main_button.dart';
-import 'package:taskmate/profile/client/data_details_screen_client.dart';
 import 'dart:io';
 import 'package:taskmate/profile/client/user_model1.dart';
 import 'package:taskmate/constants.dart';
-import 'package:taskmate/profile/client/verify_identity.dart';
 
 class ProfileClientAddphoto extends StatefulWidget {
   final UserModel1 client;
@@ -38,7 +36,8 @@ class _ProfileClientAddphotoState extends State<ProfileClientAddphoto> {
   final TextEditingController birthdayController = TextEditingController();
   final TextEditingController genderController = TextEditingController();
   final TextEditingController servicesController = TextEditingController();
-  final TextEditingController professionalRoleController = TextEditingController();
+  final TextEditingController professionalRoleController =
+      TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   String? profileImageUrl;
@@ -87,7 +86,8 @@ class _ProfileClientAddphotoState extends State<ProfileClientAddphoto> {
 
   void _submitDetails() async {
     // Upload image to Firebase Storage and get the download URL
-    final String downloadUrl = await uploadImageToFirebaseStorage(selectedImage!);
+    final String downloadUrl =
+        await uploadImageToFirebaseStorage(selectedImage!);
 
     // Get the current user's UID from Firebase Authentication
     final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -120,15 +120,17 @@ class _ProfileClientAddphotoState extends State<ProfileClientAddphoto> {
 
       // Navigate back to the previous page or any other page
       if (context.mounted) {
-        Navigator.of(context).push(
+        Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (context) => DashboardClient(client: widget.client, profileImageUrl: downloadUrl,),
+            builder: (context) => ClientHomePage(
+              client: widget.client,
+              downloadUrl: downloadUrl,
+            ),
           ),
         );
       }
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +142,7 @@ class _ProfileClientAddphotoState extends State<ProfileClientAddphoto> {
         body: Container(
           height: screenHeight,
           width: screenWidth,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             image: DecorationImage(
               image: AssetImage('images/noise_image.webp'),
               fit: BoxFit.cover,
@@ -163,10 +165,13 @@ class _ProfileClientAddphotoState extends State<ProfileClientAddphoto> {
                   radius: 150,
                   backgroundColor: Colors.transparent,
                   backgroundImage: selectedImage != null
-                      ? FileImage(selectedImage!) // Display selected/captured image
+                      ? FileImage(
+                          selectedImage!) // Display selected/captured image
                       : profileImageUrl != null
                           ? NetworkImage(profileImageUrl!)
-                          : const AssetImage('images/iconamoon_profile-circle-thin.png') as ImageProvider<Object>,
+                          : const AssetImage(
+                                  'images/iconamoon_profile-circle-thin.png')
+                              as ImageProvider<Object>,
                 ),
               ),
               DarkMainButton(

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:taskmate/constants.dart';
 
-import '../ClientDashboard/Dashboard.dart';
-import '../profile/freelancer/data_details_screen_freelancer.dart';
 import '../profile/freelancer/user_model.dart';
 import 'Dashboard.dart';
 

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/authentication/create_my_account_1.dart';
 
-import '../ClientDashboard/Dashboard.dart';
 import '../profile/freelancer/user_model.dart';
 import 'Dashboard.dart';
 

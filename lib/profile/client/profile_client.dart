@@ -32,8 +32,8 @@ class _ProfileClientState extends State<ProfileClient> {
   final TextEditingController provinceController = TextEditingController();
   final TextEditingController cityController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
-  final TextEditingController professionalroleController = TextEditingController();
-
+  final TextEditingController professionalroleController =
+      TextEditingController();
 
   String? profileImageUrl;
   String? selectedGender;
@@ -213,7 +213,7 @@ class _ProfileClientState extends State<ProfileClient> {
         city: cityController.text.trim(),
         phoneNo: phoneController.text.trim(),
         profilePhotoUrl: profileImageUrl,
-        email:emailController.text.trim(),
+        email: emailController.text.trim(),
         password: passwordController.text.trim(),
         professionalrole: professionalroleController.text.trim(),
       );
@@ -221,19 +221,19 @@ class _ProfileClientState extends State<ProfileClient> {
       final FirebaseAuth _auth = FirebaseAuth.instance;
       final User? user = _auth.currentUser;
 
-
       if (user != null) {
         final String userUid = user.uid;
 
         // Use the user's UID as the Firestore document ID
         await UserRepository1.instance.createUser(client, userUid);
-
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ProfileClientAddphoto(client: client),
-          ),
-        );
+        if (context.mounted) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ProfileClientAddphoto(client: client),
+            ),
+          );
+        }
       } else {
         // Handle the case where the user is not authenticated
         // You may want to display an error message or redirect the user to the login page
@@ -321,47 +321,56 @@ class _ProfileClientState extends State<ProfileClient> {
                             Padding(
                               padding: const EdgeInsets.only(left: 18.0),
                               child: TextFormField(
-                                controller: birthdayController,
-                                onTap: () {
-                                  selectDate(context, birthdayController); // Show the date picker on tap
-                                },
-                                decoration: InputDecoration(
-                                  contentPadding: const EdgeInsets.all(10.0),
-                                  hintText: 'Birthday',
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: const BorderSide(
-                                      width: 1.0,
-                                      color: kDarkGreyColor,
+                                  controller: birthdayController,
+                                  onTap: () {
+                                    selectDate(context,
+                                        birthdayController); // Show the date picker on tap
+                                  },
+                                  decoration: InputDecoration(
+                                    contentPadding: const EdgeInsets.all(10.0),
+                                    hintText: 'Birthday',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        width: 1.0,
+                                        color: kDarkGreyColor,
+                                      ),
                                     ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: const BorderSide(
-                                      width: 2.0,
-                                      color: kDeepBlueColor,
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        width: 2.0,
+                                        color: kDeepBlueColor,
+                                      ),
                                     ),
-                                  ),
-                                  filled: true,
+                                    filled: true,
                                     suffixIcon: InkWell(
                                       onTap: () {
-                                        selectDate(context, birthdayController); // Show the date picker on icon tap
+                                        selectDate(context,
+                                            birthdayController); // Show the date picker on icon tap
                                       },
-                                      child: Icon(Icons.calendar_today,color: Colors.black87,),
+                                      child: const Icon(
+                                        Icons.calendar_today,
+                                        color: Colors.black87,
+                                      ),
                                     ),
-                                ),
+                                  ),
                                   validator: (value) {
                                     if (value!.isEmpty) {
-                                      return 'Please select your birthday';}
-                                    DateTime selectedDate = DateTime.parse(value); // Convert selected value to DateTime
+                                      return 'Please select your birthday';
+                                    }
+                                    DateTime selectedDate = DateTime.parse(
+                                        value); // Convert selected value to DateTime
                                     DateTime currentDate = DateTime.now();
-                                    DateTime minValidDate = currentDate.subtract(Duration(days: 365 * 18)); // 18 years ago
+                                    DateTime minValidDate =
+                                        currentDate.subtract(const Duration(
+                                            days: 365 * 18)); // 18 years ago
 
                                     if (selectedDate.isAfter(minValidDate)) {
                                       return 'You must be 18 years or older';
                                     }
-                                    return null;}
-                              ),
+                                    return null;
+                                  }),
                             ),
                           ],
                         ),
@@ -427,12 +436,14 @@ class _ProfileClientState extends State<ProfileClient> {
                                 validator: (value) {
                                   if (value!.isEmpty) {
                                     return 'Please enter your Email';
-                                  } else if (!RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$').hasMatch(value)) {
+                                  } else if (!RegExp(
+                                          r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$')
+                                      .hasMatch(value)) {
                                     return 'Please enter a valid email address';
                                   }
                                   return null;
                                 },
-                            ),
+                              ),
                             ),
                           ],
                         ),
@@ -448,58 +459,61 @@ class _ProfileClientState extends State<ProfileClient> {
                             Padding(
                               padding: const EdgeInsets.only(right: 18.0),
                               child: TextFormField(
-                                controller: passwordController,
-                                obscureText: !_isPasswordVisible,
-                                decoration: InputDecoration(
-                                  contentPadding: const EdgeInsets.all(10.0),
-                                  hintText: 'Password',
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: const BorderSide(
-                                      width: 1.0,
-                                      color: kDarkGreyColor,
+                                  controller: passwordController,
+                                  obscureText: !_isPasswordVisible,
+                                  decoration: InputDecoration(
+                                    contentPadding: const EdgeInsets.all(10.0),
+                                    hintText: 'Password',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        width: 1.0,
+                                        color: kDarkGreyColor,
+                                      ),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        width: 2.0,
+                                        color: kDeepBlueColor,
+                                      ),
+                                    ),
+                                    filled: true,
+                                    suffixIcon: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          // Toggle password visibility
+                                          _isPasswordVisible =
+                                              !_isPasswordVisible;
+                                        });
+                                      },
+                                      child: Icon(
+                                        _isPasswordVisible
+                                            ? Icons.lock_open
+                                            : Icons.lock,
+                                        color: Colors.black87,
+                                      ),
                                     ),
                                   ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: const BorderSide(
-                                      width: 2.0,
-                                      color: kDeepBlueColor,
-                                    ),
-                                  ),
-                                  filled: true,
-                                  suffixIcon: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        // Toggle password visibility
-                                        _isPasswordVisible = !_isPasswordVisible;
-                                      });
-                                    },
-                                    child: Icon(
-                                      _isPasswordVisible ? Icons.lock_open : Icons.lock,
-                                      color: Colors.black87,
-                                    ),
-                                  ),
-                                ),
                                   validator: (value) {
                                     if (value!.isEmpty) {
-                                      return 'Please enter your Password';}
+                                      return 'Please enter your Password';
+                                    }
                                     if (value.length < 8) {
                                       return 'Password must be at least 8 characters';
                                     }
-                                    if (!RegExp(r'^(?=.*[A-Za-z])(?=.*\d).+$').hasMatch(value)) {
+                                    if (!RegExp(r'^(?=.*[A-Za-z])(?=.*\d).+$')
+                                        .hasMatch(value)) {
                                       return 'Password must include letters and numbers';
                                     }
                                     return null;
-                                }
-                              ),
+                                  }),
                             ),
                           ],
                         ),
                       ),
                     ],
                   ),
-
                   const UserDataGatherTitle(title: 'Address*'),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 18.0),
@@ -702,7 +716,8 @@ class _ProfileClientState extends State<ProfileClient> {
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Please enter your professional role';
-                        }return null;
+                        }
+                        return null;
                       },
                     ),
                   ),
