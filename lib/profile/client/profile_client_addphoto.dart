@@ -4,6 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:taskmate/ClientDashboard/Dashboard.dart';
 
 import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/components/light_main_button.dart';
@@ -33,9 +34,6 @@ class _ProfileClientAddphotoState extends State<ProfileClientAddphoto> {
   final TextEditingController cityController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
-  final TextEditingController bioController = TextEditingController();
-  final TextEditingController skillsController = TextEditingController();
-  final TextEditingController sociallinkController = TextEditingController();
   final TextEditingController streetController = TextEditingController();
   final TextEditingController birthdayController = TextEditingController();
   final TextEditingController genderController = TextEditingController();
@@ -124,10 +122,7 @@ class _ProfileClientAddphotoState extends State<ProfileClientAddphoto> {
       if (context.mounted) {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => DataDetailsScreenClient(
-              client: widget.client,
-              profileImageUrl: downloadUrl,
-            ),
+            builder: (context) => DashboardClient(client: widget.client, profileImageUrl: downloadUrl,),
           ),
         );
       }
