@@ -8,6 +8,8 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:taskmate/authentication/root_page.dart';
 
 import 'package:taskmate/pages/client/client_post_job.dart';
+import 'package:taskmate/pages/client/jobs/pending/bid_details.dart';
+import 'package:taskmate/pages/client/jobs/pending/bid_freelancer_list.dart';
 import 'package:taskmate/pages/freelancer/proposals/pending_jobs_pages/pending_jobs.dart';
 import 'package:taskmate/profile/client/EditClientProfile.dart';
 
@@ -60,8 +62,8 @@ class Taskmate extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: "Poppins"),
-      home: const SafeArea(
-        child: ProfileClient(),
+      home:  const SafeArea(
+        child: BidDetails(),
       ),
     );
   }
