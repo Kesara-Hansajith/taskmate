@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
@@ -7,10 +9,14 @@ import 'package:taskmate/client_home_page.dart';
 
 import 'package:get/get_core/src/get_main.dart';
 import 'package:taskmate/authentication/root_page.dart';
+
 import 'package:taskmate/pages/client/client_post_job.dart';
+import 'package:taskmate/pages/client/jobs/pending/client_pending_jobs.dart';
 import 'package:taskmate/pages/freelancer/proposals/pending_jobs_pages/pending_jobs.dart';
+import 'package:taskmate/profile/client/EditClientProfile.dart';
 
 import 'package:taskmate/profile/client/profile_client.dart';
+import 'package:taskmate/profile/client/user_model1.dart';
 import 'package:taskmate/profile/client/user_repository1.dart';
 import 'package:taskmate/profile/freelancer/profile_freelancer_1.dart';
 import 'package:taskmate/profile/freelancer/profile_freelancer_2.dart';
@@ -52,6 +58,7 @@ void main() async {
 }
 
 class Taskmate extends StatelessWidget {
+   // UserModel1 client;
   const Taskmate({super.key});
 
   @override
@@ -60,7 +67,7 @@ class Taskmate extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: "Poppins"),
       home: const SafeArea(
-        child: Proposals(),
+        child: ProfileClient(),
       ),
     );
   }

@@ -91,7 +91,7 @@ class _VerifyIdentityState extends State<VerifyIdentity> {
                   process: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => const HomePage(),
+                        builder: (context) => const FreelancerHomePage(),
                       ),
                     );
                   },

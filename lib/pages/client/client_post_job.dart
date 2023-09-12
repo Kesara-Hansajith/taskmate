@@ -1,13 +1,23 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:taskmate/client_home_page.dart';
+
 import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/components/freelancer/user_data_gather_textfield.dart';
 import 'package:taskmate/components/freelancer/user_data_gather_title.dart';
+import 'package:taskmate/components/maintenance_page.dart';
 import 'package:taskmate/constants.dart';
+import 'package:taskmate/profile/client/user_model1.dart';
 
 class ClientPostJob extends StatefulWidget {
-  const ClientPostJob({Key? key});
+  const ClientPostJob({
+    required this.client,
+    Key? key,
+  });
+
+  final UserModel1 client;
 
   @override
   State<ClientPostJob> createState() => _ClientPostJobState();
@@ -15,7 +25,8 @@ class ClientPostJob extends StatefulWidget {
 
 class _ClientPostJobState extends State<ClientPostJob> {
   final TextEditingController jobTitleController = TextEditingController();
-  final TextEditingController jobDescriptionController = TextEditingController();
+  final TextEditingController jobDescriptionController =
+      TextEditingController();
   final TextEditingController dayCountController = TextEditingController();
   final TextEditingController budgetController = TextEditingController();
 
@@ -30,11 +41,11 @@ class _ClientPostJobState extends State<ClientPostJob> {
   }
 
   Future<void> addJobToFirestore(
-      String jobTitle,
-      String jobDescription,
-      int dayCount,
-      int budget,
-      ) async {
+    String jobTitle,
+    String jobDescription,
+    int dayCount,
+    int budget,
+  ) async {
     try {
       // Get the current user's UID from FirebaseAuth
       User? user = FirebaseAuth.instance.currentUser;
@@ -42,13 +53,12 @@ class _ClientPostJobState extends State<ClientPostJob> {
 
       if (userUid == null) {
         // Handle the case where the user is not authenticated
-        print('User is not authenticated.');
         return;
       }
 
       // Get a reference to the Firestore collection
       CollectionReference jobsCollection =
-      FirebaseFirestore.instance.collection('jobs');
+          FirebaseFirestore.instance.collection('jobs');
 
       // Generate a unique job ID (e.g., using a timestamp)
       String timestamp = Timestamp.now().millisecondsSinceEpoch.toString();
@@ -70,14 +80,12 @@ class _ClientPostJobState extends State<ClientPostJob> {
         // You can add more fields as needed
       });
 
-      print('Job added to Firestore under subcollection "jobsnew" with timestamp: $timestamp');
+
+
     } catch (e) {
       // Handle any errors that occur
-      print('Error adding job to Firestore: $e');
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -244,6 +252,43 @@ class _ClientPostJobState extends State<ClientPostJob> {
                   int dayCount = int.tryParse(dayCountController.text) ?? 0;
                   int budget = int.tryParse(budgetController.text) ?? 0;
                   addJobToFirestore(jobTitle, jobDescription, dayCount, budget);
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (BuildContext context) {
+                      return MaintenancePage(
+                        [
+                          const Image(
+                            image: AssetImage('images/tick.webp'),
+                          ),
+                          Text(
+                            'Posted!',
+                            style: kSubHeadingTextStyle.copyWith(height: 0.5),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 8.0),
+                            child: Text(
+                              'Now keep in touch with your job for bids.',
+                              style: kTextStyle,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          DarkMainButton(
+                              title: 'Visit Job Status',
+                              process: () {
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                    builder: (context) => ClientHomePage(selectedIndex: 2,
+                                      client: widget.client,
+                                    ),
+                                  ),
+                                );
+                              },
+                              screenWidth: screenWidth)
+                        ],
+                      );
+                    },
+                  );
                 },
                 screenWidth: screenWidth,
               )

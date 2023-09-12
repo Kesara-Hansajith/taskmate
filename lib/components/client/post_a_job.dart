@@ -2,10 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/pages/client/client_post_job.dart';
+import 'package:taskmate/profile/client/user_model1.dart';
 
-class PostAJob extends StatelessWidget {
-  const PostAJob({super.key});
+class PostAJob extends StatefulWidget {
+  const PostAJob({
+    required this.client,
+    super.key,
+  });
 
+  final UserModel1 client;
+
+  @override
+  State<PostAJob> createState() => _PostAJobState();
+}
+
+class _PostAJobState extends State<PostAJob> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -27,14 +38,14 @@ class PostAJob extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: Text(
-              'Get your work Done',
+              'Get your work Done!',
               style: kJobCardTitleTextStyle.copyWith(fontSize: 20.0),
             ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 9.0),
             child: Text(
-              'You haven’t posted any job, Post your job and find the best talented graphic designers in Sri Lanka',
+              'Publishing a job on our platform is not just a task, it\'s an opportunity to connect with the best freelancers in the industry. We\'ve made it easier and friendlier than ever.',
               style: kTextStyle.copyWith(fontSize: 14),
               textAlign: TextAlign.center,
             ),
@@ -44,7 +55,7 @@ class PostAJob extends StatelessWidget {
               process: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => const ClientPostJob(),
+                    builder: (context) =>  ClientPostJob(client: widget.client,),
                   ),
                 );
               },

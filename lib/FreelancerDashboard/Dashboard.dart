@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:taskmate/ClientDashboard/Profile.dart';
+import 'package:taskmate/client_dashboard/Profile.dart';
 import 'package:taskmate/FreelancerDashboard/Balance.dart';
 import 'package:taskmate/FreelancerDashboard/invitefriends.dart';
 import 'package:taskmate/FreelancerDashboard/termsandconditions.dart';
@@ -8,13 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:taskmate/profile/freelancer/data_details_screen_freelancer.dart';
 import 'package:taskmate/profile/freelancer/user_model.dart';
-import 'package:taskmate/profile/freelancer/user_repository.dart';
 import 'dart:io';
-import '../ClientDashboard/Dragtoadjust.dart';
-import '../ClientDashboard/Help.dart';
-import '../ClientDashboard/Transactionhistory.dart';
-import '../ClientDashboard/invitefriends.dart';
-import '../ClientDashboard/termsandconditions.dart';
 import 'Help.dart';
 import 'Transactionhistory.dart';
 
