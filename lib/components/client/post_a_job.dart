@@ -2,10 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/pages/client/client_post_job.dart';
+import 'package:taskmate/profile/client/user_model1.dart';
 
-class PostAJob extends StatelessWidget {
-  const PostAJob({super.key});
+class PostAJob extends StatefulWidget {
+  const PostAJob({
+    required this.client,
+    super.key,
+  });
 
+  final UserModel1 client;
+
+  @override
+  State<PostAJob> createState() => _PostAJobState();
+}
+
+class _PostAJobState extends State<PostAJob> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -44,7 +55,7 @@ class PostAJob extends StatelessWidget {
               process: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => const ClientPostJob(),
+                    builder: (context) =>  ClientPostJob(client: widget.client,),
                   ),
                 );
               },

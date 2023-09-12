@@ -7,24 +7,22 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:taskmate/profile/client/user_model1.dart';
 
 class ClientHomePage extends StatefulWidget {
-
-  const ClientHomePage({
+  ClientHomePage({
     required this.client,
-     this.downloadUrl,
+    required this.selectedIndex,
+    this.downloadUrl,
     super.key,
   });
 
-
   final UserModel1 client; // Add this line
   final String? downloadUrl;
+  int selectedIndex;
 
   @override
   State<ClientHomePage> createState() => _ClientHomePageState();
 }
 
 class _ClientHomePageState extends State<ClientHomePage> {
-  int _selectedIndex = 1;
-
   late final List _items = [
     const ClientMessaging(),
     ClientPosted(
@@ -43,10 +41,10 @@ class _ClientHomePageState extends State<ClientHomePage> {
       child: Scaffold(
         bottomNavigationBar: GNav(
           gap: 10.0,
-          selectedIndex: _selectedIndex,
+          selectedIndex: widget.selectedIndex,
           onTabChange: (int index) {
             setState(() {
-              _selectedIndex = index;
+              widget.selectedIndex = index;
             });
           },
           tabs: const [
@@ -68,7 +66,7 @@ class _ClientHomePageState extends State<ClientHomePage> {
             ),
           ],
         ),
-        body: _items[_selectedIndex],
+        body: _items[widget.selectedIndex],
       ),
     );
   }

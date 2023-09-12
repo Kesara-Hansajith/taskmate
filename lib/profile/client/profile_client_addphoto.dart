@@ -125,6 +125,7 @@ class _ProfileClientAddphotoState extends State<ProfileClientAddphoto> {
             builder: (context) => ClientHomePage(
               client: widget.client,
               downloadUrl: downloadUrl,
+              selectedIndex: 1,
             ),
           ),
         );

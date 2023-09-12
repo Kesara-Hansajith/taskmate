@@ -2,15 +2,22 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:taskmate/client_home_page.dart';
 
 import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/components/freelancer/user_data_gather_textfield.dart';
 import 'package:taskmate/components/freelancer/user_data_gather_title.dart';
 import 'package:taskmate/components/maintenance_page.dart';
 import 'package:taskmate/constants.dart';
+import 'package:taskmate/profile/client/user_model1.dart';
 
 class ClientPostJob extends StatefulWidget {
-  const ClientPostJob({Key? key});
+  const ClientPostJob({
+    required this.client,
+    Key? key,
+  });
+
+  final UserModel1 client;
 
   @override
   State<ClientPostJob> createState() => _ClientPostJobState();
@@ -264,13 +271,13 @@ class _ClientPostJobState extends State<ClientPostJob> {
                           DarkMainButton(
                               title: 'Visit Job Status',
                               process: () {
-                                // Navigator.of(context).pushReplacement(
-                                //   MaterialPageRoute(
-                                //     builder: (context) => ClientHomePage(
-                                //       client: client,
-                                //     ),
-                                //   ),
-                                // );
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                    builder: (context) => ClientHomePage(selectedIndex: 2,
+                                      client: widget.client,
+                                    ),
+                                  ),
+                                );
                               },
                               screenWidth: screenWidth)
                         ],
