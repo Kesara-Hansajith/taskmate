@@ -50,15 +50,18 @@ class _ClientPostJobState extends State<ClientPostJob> {
       CollectionReference jobsCollection =
       FirebaseFirestore.instance.collection('jobs');
 
-      // Generate a unique job ID
-      String jobId = jobsCollection.doc().id;
+      // Generate a unique job ID (e.g., using a timestamp)
+      String timestamp = Timestamp.now().millisecondsSinceEpoch.toString();
 
-      // Use the user's UID as the document ID
+      // Use the user's UID as the document ID for the main job document
       DocumentReference jobDocument = jobsCollection.doc(userUid);
 
-      // Add job data to Firestore with the unique job ID
-      await jobDocument.set({
-        'jobId': jobId, // Store the unique job ID as a field
+      // Create or update a subcollection called "jobsnew" under the main job document
+      CollectionReference jobsNewCollection = jobDocument.collection('jobsnew');
+
+      // Add job data to Firestore within the "jobsnew" subcollection
+      await jobsNewCollection.doc(timestamp).set({
+        'JobID': timestamp,
         'jobTitle': jobTitle,
         'jobDescription': jobDescription,
         'dayCount': dayCount,
@@ -67,12 +70,13 @@ class _ClientPostJobState extends State<ClientPostJob> {
         // You can add more fields as needed
       });
 
-      print('Job added to Firestore with unique job ID: $jobId');
+      print('Job added to Firestore under subcollection "jobsnew" with timestamp: $timestamp');
     } catch (e) {
       // Handle any errors that occur
       print('Error adding job to Firestore: $e');
     }
   }
+
 
 
   @override
@@ -202,7 +206,7 @@ class _ClientPostJobState extends State<ClientPostJob> {
                   controller: budgetController,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                    prefixText: 'LKR',
+                    prefixText: 'LKR  ',
                     prefixStyle: const TextStyle(
                       color: Colors.red,
                     ),
@@ -239,7 +243,6 @@ class _ClientPostJobState extends State<ClientPostJob> {
                   String jobDescription = jobDescriptionController.text;
                   int dayCount = int.tryParse(dayCountController.text) ?? 0;
                   int budget = int.tryParse(budgetController.text) ?? 0;
-
                   addJobToFirestore(jobTitle, jobDescription, dayCount, budget);
                 },
                 screenWidth: screenWidth,

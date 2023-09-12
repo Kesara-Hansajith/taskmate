@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
+import 'package:taskmate/bottom_nav_bar/freelancer/proposals.dart';
 
 import 'package:taskmate/client_home_page.dart';
 
@@ -59,7 +60,7 @@ class Taskmate extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: "Poppins"),
       home: const SafeArea(
-        child: ClientPostJob(),
+        child: Proposals(),
       ),
     );
   }
