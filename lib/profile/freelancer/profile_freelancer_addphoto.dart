@@ -146,7 +146,7 @@ class _ProfileFreelancerAddphotoState extends State<ProfileFreelancerAddphoto> {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) =>
-                  DashboardFreelance(
+                  VerifyIdentity(
                     user: widget.user,
                     profileImageUrl: downloadUrl,
                   ),

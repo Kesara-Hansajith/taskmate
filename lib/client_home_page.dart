@@ -5,6 +5,7 @@ import 'package:taskmate/bottom_nav_bar/client/client_messaging.dart';
 import 'package:taskmate/bottom_nav_bar/client/client_posted.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:taskmate/profile/client/user_model1.dart';
+import 'package:taskmate/messaging/Receivemsg.dart';
 
 class ClientHomePage extends StatefulWidget {
   ClientHomePage({
@@ -24,7 +25,7 @@ class ClientHomePage extends StatefulWidget {
 
 class _ClientHomePageState extends State<ClientHomePage> {
   late final List _items = [
-    const ClientMessaging(),
+    Receivemsg(),
     ClientPosted(
       client: widget.client,
     ),

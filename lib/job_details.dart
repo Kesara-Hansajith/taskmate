@@ -6,6 +6,7 @@ import 'package:taskmate/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:taskmate/freelancer_home_page.dart';
 import 'package:taskmate/models/job_details_data.dart';
+import 'package:taskmate/sample.dart';
 
 class JobDetails extends StatefulWidget {
   final String documentID;
@@ -54,7 +55,7 @@ class _JobDetailsState extends State<JobDetails> {
                 process: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => const FreelancerHomePage(),
+                      builder: (context) => const Sample(),
                     ),
                   );
                 },

@@ -10,9 +10,12 @@ import 'package:file_picker/file_picker.dart';
 import 'package:taskmate/components/snackbar.dart';
 import 'package:taskmate/components/maintenance_page.dart';
 import 'package:taskmate/freelancer_home_page.dart';
+import 'package:taskmate/profile/freelancer/user_model.dart';
 
 class VerifyIdentity extends StatefulWidget {
-  const VerifyIdentity({super.key});
+  VerifyIdentity({super.key, required this.user, this.profileImageUrl});
+  final UserModel user;
+  String? profileImageUrl;
 
   @override
   State<VerifyIdentity> createState() => _VerifyIdentityState();
@@ -91,7 +94,10 @@ class _VerifyIdentityState extends State<VerifyIdentity> {
                   process: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => const FreelancerHomePage(),
+                        builder: (context) => FreelancerHomePage(
+                          user: widget.user,
+                          profileImageUrl: widget.profileImageUrl,
+                        ),
                       ),
                     );
                   },

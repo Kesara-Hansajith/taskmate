@@ -252,19 +252,6 @@ class _DashboardClientState extends State<DashboardClient> {
 
             Positioned(
               top: screenSize.height *
-                  0.60, // Adjust this value for desired alignment
-              left: (screenWidth - 360) / 2,
-              child: SizedBox(
-                width: 360,
-                child: Divider(
-                  color: Color(0xFF969595),
-                  thickness: 0.7,
-                ),
-              ),
-            ),
-
-            Positioned(
-              top: screenSize.height *
                   0.6, // Adjust this value for desired alignment
               left: 50,
               child: Column(
