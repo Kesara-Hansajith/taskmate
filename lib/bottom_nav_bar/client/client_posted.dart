@@ -44,7 +44,7 @@ class _ClientPostedState extends State<ClientPosted> {
                         '${widget.client.firstName} ${widget.client.lastName}',
                         style: kSubHeadingTextStyle,
                       ),
-                      const PostAJob(),
+                       PostAJob(client: widget.client,),
                     ],
                   ),
                 ),
