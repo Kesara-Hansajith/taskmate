@@ -35,7 +35,7 @@ class _ClientActiveJobDetailsState extends State<ClientActiveJobDetails> {
       ),
       const ClientActiveJobFiles(),
       const ClientActiveJobPayment(),
-      const ClientActiveJobReview(),
+      //const ClientActiveJobReview(),
     ];
 
     return SafeArea(

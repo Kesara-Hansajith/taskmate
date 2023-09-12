@@ -35,7 +35,7 @@ class _ActiveJobDetailsState extends State<ActiveJobDetails> {
       ),
       const Files(),
       const Payments(),
-      const Reviews(),
+      //const Reviews(),
     ];
 
     return SafeArea(

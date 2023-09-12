@@ -20,7 +20,7 @@ class UserModel {
   final String skills ;
   final String services ;
   final String sociallink ;
-  final String professionalrole;
+  final String professionalRole;
   final String hourlyRate ;
   final String? profilePhotoUrl;
 
@@ -41,7 +41,7 @@ class UserModel {
     required this.skills,
     required this.services,
     required this.sociallink,
-     required this.professionalrole,
+     required this.professionalRole,
     required this.hourlyRate,
     required this.phoneNo,
     this.profilePhotoUrl,
@@ -66,7 +66,7 @@ class UserModel {
       "Sills": skills,
       "Services" : services,
       "SocialLink" : sociallink,
-      "ProfessionalRole" : professionalrole,
+      "ProfessionalRole" : professionalRole,
       "HourlyRate" : hourlyRate,
       "ProfilePhotoUrl": profilePhotoUrl,
     };
@@ -92,7 +92,7 @@ class UserModel {
       skills: json['Skills'] ?? '',
       services: json['Services'] ?? '',
       sociallink: json['SocialLink'] ?? '',
-      professionalrole: json['ProfessionalRole'] ?? '',
+      professionalRole: json['ProfessionalRole'] ?? '',
       hourlyRate: json['HourlyRate'] ?? '',
       phoneNo: json['Phone'] ?? '',
       profilePhotoUrl: json['ProfilePhotoUrl'],

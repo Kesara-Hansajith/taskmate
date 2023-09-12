@@ -5,17 +5,17 @@ import 'package:taskmate/profile/freelancer/EditFreelancerProfile.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/profile/freelancer/user_model.dart';
 
-class DataDetailsScreenFreelancer extends StatefulWidget {
+class ClientHome05 extends StatefulWidget {
   late final UserModel user;
   final String? profileImageUrl;
 
-  DataDetailsScreenFreelancer({required this.user, this.profileImageUrl});
+  ClientHome05({required this.user, this.profileImageUrl});
 
   @override
-  _DataDetailsScreenFreelancerState createState() => _DataDetailsScreenFreelancerState();
+  _ClientHome05State createState() => _ClientHome05State();
 }
 
-class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelancer> {
+class _ClientHome05State extends State<ClientHome05> {
   final double coverHeight = 220;
   final double profileHeight = 134;
 
@@ -35,7 +35,20 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
             // You can replace Placeholder with a loading indicator
           ),
         ),
-
+        Positioned(
+          bottom: 13.0, // Adjust the values to position the WhatsApp icon as needed
+          right: 10.0,
+          child: GestureDetector(
+            onTap: () {
+              // navigate to the messaging part
+            },
+            child: Image.asset(
+              'images/hirenow.png', // Provide the correct path to your image asset
+              width: 60.0, // Set the desired width for the image
+              height: 16.0, // Set the desired height for the image
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -1089,57 +1102,9 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
                   ),
                 ),
               ),
-              SizedBox(
-                height: 20,
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(50.0, 0, 55.0, 0.0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context)
-                        .push(
-                      MaterialPageRoute(
-                        builder: (context) => EditFreelancerProfile(
-                          user: widget.user,
-                          profileImageUrl: widget.profileImageUrl,
-                        ),
-                      ),
-                    )
-                        .then((updatedUser) {
-                      if (updatedUser != null) {
-                        setState(() {
-                          // Update the widget's user data with the updatedUser data
-                          widget.user = updatedUser;
-                        });
-                      }
-                    });
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: kDeepBlueColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: const <Widget>[
-                        Text(
-                          'Edit Profile',
-                          style: TextStyle(
-                            color: kBrilliantWhite,
-                            fontSize: 15.0,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
+              SizedBox(height: 20,),
+
+              SizedBox(height: 20,),
             ],
           ),
         ),

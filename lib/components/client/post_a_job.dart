@@ -27,14 +27,14 @@ class PostAJob extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: Text(
-              'Get your work Done',
+              'Get your work Done!',
               style: kJobCardTitleTextStyle.copyWith(fontSize: 20.0),
             ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 9.0),
             child: Text(
-              'You haven’t posted any job, Post your job and find the best talented graphic designers in Sri Lanka',
+              'Publishing a job on our platform is not just a task, it\'s an opportunity to connect with the best freelancers in the industry. We\'ve made it easier and friendlier than ever.',
               style: kTextStyle.copyWith(fontSize: 14),
               textAlign: TextAlign.center,
             ),
