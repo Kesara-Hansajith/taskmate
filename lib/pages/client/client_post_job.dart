@@ -60,15 +60,18 @@ class _ClientPostJobState extends State<ClientPostJob> {
       CollectionReference jobsCollection =
           FirebaseFirestore.instance.collection('jobs');
 
-      // Generate a unique job ID
-      String jobId = jobsCollection.doc().id;
+      // Generate a unique job ID (e.g., using a timestamp)
+      String timestamp = Timestamp.now().millisecondsSinceEpoch.toString();
 
-      // Use the user's UID as the document ID
+      // Use the user's UID as the document ID for the main job document
       DocumentReference jobDocument = jobsCollection.doc(userUid);
 
-      // Add job data to Firestore with the unique job ID
-      await jobDocument.set({
-        'jobId': jobId, // Store the unique job ID as a field
+      // Create or update a subcollection called "jobsnew" under the main job document
+      CollectionReference jobsNewCollection = jobDocument.collection('jobsnew');
+
+      // Add job data to Firestore within the "jobsnew" subcollection
+      await jobsNewCollection.doc(timestamp).set({
+        'JobID': timestamp,
         'jobTitle': jobTitle,
         'jobDescription': jobDescription,
         'dayCount': dayCount,
@@ -76,6 +79,9 @@ class _ClientPostJobState extends State<ClientPostJob> {
         'status': 'active', // Set the status to "active"
         // You can add more fields as needed
       });
+
+
+
     } catch (e) {
       // Handle any errors that occur
     }
@@ -85,209 +91,210 @@ class _ClientPostJobState extends State<ClientPostJob> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Post a Job',
-          style: kHeadingTextStyle,
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          icon: const Icon(
-            Icons.navigate_before,
-            color: kDeepBlueColor,
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            'Post a Job',
+            style: kHeadingTextStyle,
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: const Icon(
+              Icons.navigate_before,
+              color: kDeepBlueColor,
+            ),
           ),
         ),
-      ),
-      body: SingleChildScrollView(
-        child: SizedBox(
-          width: screenWidth,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const UserDataGatherTitle(
-                title: 'Job Title',
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: UserDataGatherTextField(
-                  controller: jobTitleController,
-                  hintText: 'Ex: Need a Logo designer',
-                  validatorText: 'Field can\'t be empty',
+        body: SingleChildScrollView(
+          child: SizedBox(
+            width: screenWidth,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                const UserDataGatherTitle(
+                  title: 'Job Title',
                 ),
-              ),
-              const UserDataGatherTitle(
-                title: 'Describe about the project',
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                child: TextFormField(
-                  controller: jobDescriptionController,
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.all(10.0),
-                    hintText: 'Add job description here',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(
-                        width: 1.0,
-                        color: kDarkGreyColor,
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(
-                        width: 2.0,
-                        color: kDeepBlueColor,
-                      ),
-                    ),
-                    filled: true,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: UserDataGatherTextField(
+                    controller: jobTitleController,
+                    hintText: 'Ex: Need a Logo designer',
+                    validatorText: 'Field can\'t be empty',
                   ),
-                  maxLines: 6,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Field can\'t be empty';
-                    }
-                    return null;
-                  },
                 ),
-              ),
-              const UserDataGatherTitle(
-                title: 'Job done within',
-              ),
-              Row(
-                children: [
-                  SizedBox(
-                    width: screenWidth / 2,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: TextFormField(
-                        controller: dayCountController,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.all(10.0),
-                          hintText: '1-7 Days',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1.0,
-                              color: kDarkGreyColor,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 2.0,
-                              color: kDeepBlueColor,
-                            ),
-                          ),
-                          filled: true,
+                const UserDataGatherTitle(
+                  title: 'Describe about the project',
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                  child: TextFormField(
+                    controller: jobDescriptionController,
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.all(10.0),
+                      hintText: 'Add job description here',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(
+                          width: 1.0,
+                          color: kDarkGreyColor,
                         ),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Field can\'t be empty';
-                          }
-                          return null;
-                        },
                       ),
-                    ),
-                  ),
-                  const Text('Days'),
-                ],
-              ),
-              const UserDataGatherTitle(
-                title: 'Budget',
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: TextFormField(
-                  controller: budgetController,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    prefixText: 'LKR',
-                    prefixStyle: const TextStyle(
-                      color: Colors.red,
-                    ),
-                    contentPadding: const EdgeInsets.all(10.0),
-                    hintText: '1000-4500',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(
-                        width: 1.0,
-                        color: kDarkGreyColor,
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(
+                          width: 2.0,
+                          color: kDeepBlueColor,
+                        ),
                       ),
+                      filled: true,
                     ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(
-                        width: 2.0,
-                        color: kDeepBlueColor,
-                      ),
-                    ),
-                    filled: true,
-                  ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Field can\'t be empty';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              DarkMainButton(
-                title: 'Post Job Now',
-                process: () {
-                  String jobTitle = jobTitleController.text;
-                  String jobDescription = jobDescriptionController.text;
-                  int dayCount = int.tryParse(dayCountController.text) ?? 0;
-                  int budget = int.tryParse(budgetController.text) ?? 0;
-
-                  addJobToFirestore(jobTitle, jobDescription, dayCount, budget);
-                  showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (BuildContext context) {
-                      return MaintenancePage(
-                        [
-                          const Image(
-                            image: AssetImage('images/tick.webp'),
-                          ),
-                          Text(
-                            'Posted!',
-                            style: kSubHeadingTextStyle.copyWith(height: 0.5),
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 8.0),
-                            child: Text(
-                              'Now keep in touch with your job for bids.',
-                              style: kTextStyle,
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                          DarkMainButton(
-                              title: 'Visit Job Status',
-                              process: () {
-                                Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                    builder: (context) => ClientHomePage(selectedIndex: 2,
-                                      client: widget.client,
-                                    ),
-                                  ),
-                                );
-                              },
-                              screenWidth: screenWidth)
-                        ],
-                      );
+                    maxLines: 6,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Field can\'t be empty';
+                      }
+                      return null;
                     },
-                  );
-                },
-                screenWidth: screenWidth,
-              )
-            ],
+                  ),
+                ),
+                const UserDataGatherTitle(
+                  title: 'Job done within',
+                ),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: screenWidth / 2,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: TextFormField(
+                          controller: dayCountController,
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.all(10.0),
+                            hintText: '1-7 Days',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: const BorderSide(
+                                width: 1.0,
+                                color: kDarkGreyColor,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: const BorderSide(
+                                width: 2.0,
+                                color: kDeepBlueColor,
+                              ),
+                            ),
+                            filled: true,
+                          ),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Field can\'t be empty';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                    ),
+                    const Text('Days'),
+                  ],
+                ),
+                const UserDataGatherTitle(
+                  title: 'Budget',
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: TextFormField(
+                    controller: budgetController,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      prefixText: 'LKR  ',
+                      prefixStyle: const TextStyle(
+                        color: Colors.red,
+                      ),
+                      contentPadding: const EdgeInsets.all(10.0),
+                      hintText: '1000-4500',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(
+                          width: 1.0,
+                          color: kDarkGreyColor,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(
+                          width: 2.0,
+                          color: kDeepBlueColor,
+                        ),
+                      ),
+                      filled: true,
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Field can\'t be empty';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                DarkMainButton(
+                  title: 'Post Job Now',
+                  process: () {
+                    String jobTitle = jobTitleController.text;
+                    String jobDescription = jobDescriptionController.text;
+                    int dayCount = int.tryParse(dayCountController.text) ?? 0;
+                    int budget = int.tryParse(budgetController.text) ?? 0;
+                    addJobToFirestore(jobTitle, jobDescription, dayCount, budget);
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (BuildContext context) {
+                        return MaintenancePage(
+                          [
+                            const Image(
+                              image: AssetImage('images/tick.webp'),
+                            ),
+                            Text(
+                              'Posted!',
+                              style: kSubHeadingTextStyle.copyWith(height: 0.5),
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 8.0),
+                              child: Text(
+                                'Now keep in touch with your job for bids.',
+                                style: kTextStyle,
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            DarkMainButton(
+                                title: 'Visit Job Status',
+                                process: () {
+                                  Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                      builder: (context) => ClientHomePage(selectedIndex: 2,
+                                        client: widget.client,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                screenWidth: screenWidth)
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  screenWidth: screenWidth,
+                )
+              ],
+            ),
           ),
         ),
       ),
