@@ -113,7 +113,7 @@ class _JobsState extends State<Jobs> with SingleTickerProviderStateMixin {
 
                           if (!subSnapshot.hasData || subSnapshot.data!.docs.isEmpty) {
                             return const Center(
-                              child: Text('No data found in subcollection.'),
+                              child: Text('No data found'),
                             );
                           }
 

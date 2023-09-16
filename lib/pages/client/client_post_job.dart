@@ -25,8 +25,7 @@ class ClientPostJob extends StatefulWidget {
 
 class _ClientPostJobState extends State<ClientPostJob> {
   final TextEditingController jobTitleController = TextEditingController();
-  final TextEditingController jobDescriptionController =
-      TextEditingController();
+  final TextEditingController jobDescriptionController = TextEditingController();
   final TextEditingController dayCountController = TextEditingController();
   final TextEditingController budgetController = TextEditingController();
 
