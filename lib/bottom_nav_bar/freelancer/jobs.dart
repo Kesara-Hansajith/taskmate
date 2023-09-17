@@ -98,12 +98,14 @@ class _JobsState extends State<Jobs> with SingleTickerProviderStateMixin {
                   }
 
                   final jobDocs = snapshot.data!.docs;
+
+
                   return ListView.builder(
                     itemCount: jobDocs.length,
                     itemBuilder: (context, index) {
                       final doc = jobDocs[index];
                       return StreamBuilder<QuerySnapshot>(
-                        stream: doc.reference.collection('jobsnew').snapshots(),
+                        stream: doc.reference.collection('jobsnew').where('status', isEqualTo: 'pending').snapshots(),
                         builder: (context, subSnapshot) {
                           if (subSnapshot.connectionState == ConnectionState.waiting) {
                             return const Center(
@@ -113,7 +115,7 @@ class _JobsState extends State<Jobs> with SingleTickerProviderStateMixin {
 
                           if (!subSnapshot.hasData || subSnapshot.data!.docs.isEmpty) {
                             return const Center(
-                              child: Text('No data found'),
+                              child: Text('No pending jobs found'),
                             );
                           }
 
@@ -132,6 +134,7 @@ class _JobsState extends State<Jobs> with SingleTickerProviderStateMixin {
                   );
                 },
               ),
+
               const Center(
                 child: Text('Most Recent Jobs will be displayed here'),
               ),

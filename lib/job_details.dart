@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/components/maintenance_page.dart';
-
 import 'package:taskmate/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:taskmate/freelancer_home_page.dart';
@@ -16,14 +15,12 @@ class JobDetails extends StatefulWidget {
 }
 
 class _JobDetailsState extends State<JobDetails> {
-  // final _describeBidController = TextEditingController();
-
   String description = '';
 
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _bidDescriptionController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _bidAmountController = TextEditingController();
   final TextEditingController _deliveryTimeController = TextEditingController();
 
@@ -50,34 +47,21 @@ class _JobDetailsState extends State<JobDetails> {
               ),
             ),
             DarkMainButton(
-                title: 'Try Another Project',
-                process: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const FreelancerHomePage(),
-                    ),
-                  );
-                },
-                screenWidth: MediaQuery.of(context).size.width),
+              title: 'Try Another Project',
+              process: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const FreelancerHomePage(),
+                  ),
+                );
+              },
+              screenWidth: MediaQuery.of(context).size.width,
+            ),
           ],
         );
       },
     );
   }
-
-  // Stream<JobDetailsData> fetchDocumentData(String documentId) {
-  //   return FirebaseFirestore.instance
-  //       .collection('available_projects')
-  //       .doc(documentId)
-  //       .snapshots()
-  //       .map((snapshot) {
-  //     return JobDetailsData(
-  //       title: snapshot['title'],
-  //       budget: snapshot['budget'],
-  //       description: snapshot['description'],
-  //     );
-  //   });
-  // }
 
   Future<List<JobDetailsData>> fetchData(String documentId) async {
     final DocumentSnapshot docSnapshot = await FirebaseFirestore.instance
@@ -97,7 +81,6 @@ class _JobDetailsState extends State<JobDetails> {
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
-    // final double screenHeight = MediaQuery.of(context).size.height;
 
     return SafeArea(
       child: Scaffold(
@@ -198,16 +181,14 @@ class _JobDetailsState extends State<JobDetails> {
                       child: TextFormField(
                         maxLines: 5,
                         controller: _bidDescriptionController,
-                        maxLength: 500,
                         decoration: InputDecoration(
-                          hintText: 'Add an clear overview about your bid',
+                          hintText: 'Add a clear overview about your bid',
                           hintStyle: const TextStyle(fontSize: 12.0),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
-                            // Customize border radius
                             borderSide: const BorderSide(
                                 color:
-                                    kDeepBlueColor), // Customize border color
+                                kDeepBlueColor),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
@@ -218,8 +199,6 @@ class _JobDetailsState extends State<JobDetails> {
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'Field cannot be empty.';
-                          } else if (value.length < 500) {
-                            return 'Minimum 500 characters required.';
                           }
                           return null;
                         },
@@ -241,7 +220,7 @@ class _JobDetailsState extends State<JobDetails> {
                               ),
                               Padding(
                                 padding:
-                                    const EdgeInsets.only(top: 8.0, left: 18.0),
+                                const EdgeInsets.only(top: 8.0, left: 18.0),
                                 child: TextFormField(
                                   controller: _bidAmountController,
                                   keyboardType: TextInputType.number,
@@ -252,10 +231,9 @@ class _JobDetailsState extends State<JobDetails> {
                                     hintStyle: const TextStyle(fontSize: 12.0),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),
-                                      // Customize border radius
                                       borderSide: const BorderSide(
                                           color:
-                                              kDeepBlueColor), // Customize border color
+                                          kDeepBlueColor),
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),
@@ -299,10 +277,9 @@ class _JobDetailsState extends State<JobDetails> {
                                     hintStyle: const TextStyle(fontSize: 12.0),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),
-                                      // Customize border radius
                                       borderSide: const BorderSide(
                                           color:
-                                              kDeepBlueColor), // Customize border color
+                                          kDeepBlueColor),
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),
@@ -332,14 +309,41 @@ class _JobDetailsState extends State<JobDetails> {
                 margin: const EdgeInsets.symmetric(
                     horizontal: 28.0, vertical: 16.0),
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      Map<String,String>dataToSave={
-                        'bidDescription' :_bidDescriptionController.text,
-                        'bidAmount' : _bidAmountController.text,
-                        'delivery':_deliveryTimeController.text,
+                      Map<String, dynamic> dataToSave = {
+                        'bidDescription': _bidDescriptionController.text,
+                        'bidAmount': _bidAmountController.text,
+                        'delivery': _deliveryTimeController.text,
                       };
-                      FirebaseFirestore.instance.collection('pending_jobs').add(dataToSave);
+
+                      // Reference to the "jobsnew" subcollection
+                      CollectionReference jobsNewCollection =
+                      FirebaseFirestore.instance
+                          .collection('jobs')
+                          .doc(widget.documentID)
+                          .collection('jobsnew');
+
+                      // Add the data to the "jobsnew" subcollection
+                      DocumentReference newBidDocRef =
+                      await jobsNewCollection.add(dataToSave);
+
+                      // Reference to the "bidsjobs" subcollection
+                      CollectionReference bidsJobsCollection = FirebaseFirestore.instance
+                          .collection('job_collection') // Use your actual collection name
+                          .doc(widget.documentID)
+                          .collection('jobsnew')
+                          .doc(newBidDocRef.id) // Use the ID of the newly added document
+                          .collection('bidsjobs');
+
+                      // Add a reference to the newly created bid document in "bidsjobs"
+                      Map<String, dynamic> bidReferenceData = {
+                        'bidReference': newBidDocRef,
+                      };
+
+                      await bidsJobsCollection.add(bidReferenceData);
+
+                      // Show a success dialog
                       congratulateOnPlaceBid();
                     }
                   },
