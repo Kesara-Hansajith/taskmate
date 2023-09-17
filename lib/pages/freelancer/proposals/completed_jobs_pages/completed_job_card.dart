@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:taskmate/constants.dart';
-import 'package:taskmate/pages/client/jobs/active/client_active_job_details.dart';
+import 'package:taskmate/pages/freelancer/proposals/completed_jobs_pages/completed_job_details.dart';
 
-class ClientActiveJobCard extends StatefulWidget {
-  const ClientActiveJobCard({
+class CompletedJobCard extends StatefulWidget {
+  const CompletedJobCard({
     super.key,
     // required this.documentID,
   });
@@ -13,12 +13,12 @@ class ClientActiveJobCard extends StatefulWidget {
   // final String documentID;
 
   @override
-  State<ClientActiveJobCard> createState() => _ClientActiveJobCardState();
+  State<CompletedJobCard> createState() => _CompletedJobCardState();
 }
 
-class _ClientActiveJobCardState extends State<ClientActiveJobCard> {
+class _CompletedJobCardState extends State<CompletedJobCard> {
   // CollectionReference projects =
-  // FirebaseFirestore.instance.collection('client_active_jobs');
+  //     FirebaseFirestore.instance.collection('completed_jobs');
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +27,7 @@ class _ClientActiveJobCardState extends State<ClientActiveJobCard> {
     return InkWell(
       onTap: () {
         Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => ClientActiveJobDetails(),
-          ),
-        );
+            MaterialPageRoute(builder: (context) => CompletedJobDetails()));
       },
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 4.0),
@@ -43,6 +40,16 @@ class _ClientActiveJobCardState extends State<ClientActiveJobCard> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Completed on 2023.08.25',
+                  style: kTextStyle,
+                ),
+                Icon(Icons.arrow_circle_right,color: kDeepBlueColor,size: 25.0,),
+              ],
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 4.0),
               child: Text(
@@ -50,19 +57,15 @@ class _ClientActiveJobCardState extends State<ClientActiveJobCard> {
                 style: kJobCardTitleTextStyle,
               ),
             ),
-            Text(
-              'Freelancer: Kesara',
-              style: kTextStyle,
-            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Price: LKR. 2500',
+                  'by ClientName',
                   style: kJobCardDescriptionTextStyle,
                 ),
-                const Text(
-                  'Given on: 2023.08.24',
+                Text(
+                  'Price: LKR 9000',
                   style: kJobCardDescriptionTextStyle,
                 ),
               ],
@@ -76,22 +79,24 @@ class _ClientActiveJobCardState extends State<ClientActiveJobCard> {
     //   builder: (context, snapshot) {
     //     if (snapshot.connectionState == ConnectionState.done) {
     //       Map<String, dynamic> data =
-    //       snapshot.data!.data() as Map<String, dynamic>;
-    //       //Overall Active Job Card flows through here
+    //           snapshot.data!.data() as Map<String, dynamic>;
+    //       //Overall Job Card flows through here
     //       return InkWell(
     //         onTap: () {
     //           Navigator.of(context).push(
     //             MaterialPageRoute(
-    //               builder: (context) => ClientActiveJobDetails(
+    //               builder: (context) => CompletedJobDetails(
     //                 documentID: widget.documentID,
     //               ),
     //             ),
     //           );
     //         },
-    //         child: Container(
-    //           margin: const EdgeInsets.symmetric(vertical: 4.0),
+    //         child:
+    //         Container(
+    //           margin:
+    //               const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
     //           padding:
-    //           const EdgeInsets.symmetric(vertical: 16.0, horizontal: 9.0),
+    //               const EdgeInsets.symmetric(vertical: 16.0, horizontal: 9.0),
     //           width: screenWidth,
     //           decoration: BoxDecoration(
     //             borderRadius: BorderRadius.circular(16.0),
@@ -100,25 +105,22 @@ class _ClientActiveJobCardState extends State<ClientActiveJobCard> {
     //           child: Column(
     //             crossAxisAlignment: CrossAxisAlignment.start,
     //             children: <Widget>[
-    //               Text(
-    //                 '${data['title']}',
-    //                 style: kJobCardTitleTextStyle,
-    //               ),
-    //               Text(
-    //                 '${data['description']}',
+    //               const Text(
+    //                 'Completed',
     //                 style: kTextStyle,
     //               ),
+    //               Text('${data['title']}', style: kJobCardTitleTextStyle),
     //               Padding(
     //                 padding: const EdgeInsets.all(8.0),
     //                 child: Row(
     //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
     //                   children: [
     //                     Text(
-    //                       'Price: LKR.${data['bidPrice']}',
+    //                       '@${data['userName']}',
     //                       style: kJobCardDescriptionTextStyle,
     //                     ),
-    //                     const Text(
-    //                       'Date goes here',
+    //                     Text(
+    //                       'LKR.${data['bidPrice']}',
     //                       style: kJobCardDescriptionTextStyle,
     //                     ),
     //                   ],

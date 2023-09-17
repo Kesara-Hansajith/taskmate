@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:taskmate/constants.dart';
-import 'package:taskmate/pages/client/jobs/active/client_active_job_details.dart';
+import 'package:taskmate/pages/client/jobs/completed/client_completed_job_details.dart';
 
-class ClientActiveJobCard extends StatefulWidget {
-  const ClientActiveJobCard({
+class ClientCompletedJobCard extends StatefulWidget {
+  const ClientCompletedJobCard({
     super.key,
     // required this.documentID,
   });
@@ -13,10 +13,10 @@ class ClientActiveJobCard extends StatefulWidget {
   // final String documentID;
 
   @override
-  State<ClientActiveJobCard> createState() => _ClientActiveJobCardState();
+  State<ClientCompletedJobCard> createState() => _ClientCompletedJobCardState();
 }
 
-class _ClientActiveJobCardState extends State<ClientActiveJobCard> {
+class _ClientCompletedJobCardState extends State<ClientCompletedJobCard> {
   // CollectionReference projects =
   // FirebaseFirestore.instance.collection('client_active_jobs');
 
@@ -28,7 +28,7 @@ class _ClientActiveJobCardState extends State<ClientActiveJobCard> {
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => ClientActiveJobDetails(),
+            builder: (context) => ClientCompletedJobDetails(),
           ),
         );
       },
@@ -43,6 +43,20 @@ class _ClientActiveJobCardState extends State<ClientActiveJobCard> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Completed on 2023.08.27',
+                  style: kTextStyle,
+                ),
+                Icon(
+                  Icons.arrow_circle_right,
+                  color: kDeepBlueColor,
+                  size: 25.0,
+                ),
+              ],
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 4.0),
               child: Text(
@@ -50,19 +64,15 @@ class _ClientActiveJobCardState extends State<ClientActiveJobCard> {
                 style: kJobCardTitleTextStyle,
               ),
             ),
-            Text(
-              'Freelancer: Kesara',
-              style: kTextStyle,
-            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Price: LKR. 2500',
+                  'From FreelancerName',
                   style: kJobCardDescriptionTextStyle,
                 ),
-                const Text(
-                  'Given on: 2023.08.24',
+                Text(
+                  'Price: LKR 7500',
                   style: kJobCardDescriptionTextStyle,
                 ),
               ],

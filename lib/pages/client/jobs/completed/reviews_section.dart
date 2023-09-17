@@ -15,20 +15,20 @@ class Reviews extends StatefulWidget {
 }
 
 class _ReviewsState extends State<Reviews> {
-  Future<List<CompletedJobDetailsData>> fetchData(String documentId) async {
-    final DocumentSnapshot docSnapshot = await FirebaseFirestore.instance
-        .collection('completed_jobs')
-        .doc(documentId)
-        .get();
-
-    return [
-      CompletedJobDetailsData(
-        clientReview: docSnapshot['clientReview'] as String,
-        freelancerReview: docSnapshot['freelancerReview'] as String,
-        username: docSnapshot['userName'] as String,
-      )
-    ];
-  }
+  // Future<List<CompletedJobDetailsData>> fetchData(String documentId) async {
+  //   final DocumentSnapshot docSnapshot = await FirebaseFirestore.instance
+  //       .collection('completed_jobs')
+  //       .doc(documentId)
+  //       .get();
+  //
+  //   return [
+  //     CompletedJobDetailsData(
+  //       clientReview: docSnapshot['clientReview'] as String,
+  //       freelancerReview: docSnapshot['freelancerReview'] as String,
+  //       username: docSnapshot['userName'] as String,
+  //     )
+  //   ];
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +45,7 @@ class _ReviewsState extends State<Reviews> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: Text(
-                    'Review from @ClientName',
+                    'Review from @FreelancerName',
                     style: kJobCardTitleTextStyle.copyWith(color: kJetBlack),
                   ),
                 ),

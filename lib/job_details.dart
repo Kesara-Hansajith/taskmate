@@ -8,7 +8,7 @@ import 'package:taskmate/models/job_details_data.dart';
 
 class JobDetails extends StatefulWidget {
   final String documentID;
-  const JobDetails({super.key, required this.documentID});
+  const JobDetails({super.key, required this.documentID,});
 
   @override
   State<JobDetails> createState() => _JobDetailsState();
@@ -318,30 +318,23 @@ class _JobDetailsState extends State<JobDetails> {
                       };
 
                       // Reference to the "jobsnew" subcollection
-                      CollectionReference jobsNewCollection =
-                      FirebaseFirestore.instance
+                      CollectionReference jobsNewCollection = FirebaseFirestore.instance
                           .collection('jobs')
                           .doc(widget.documentID)
-                          .collection('jobsnew');
+                          .collection('jobsnew')
+                          .doc('1694944521298') // Automatically generates a unique document ID
+                          .collection('bidsjobs');
 
                       // Add the data to the "jobsnew" subcollection
-                      DocumentReference newBidDocRef =
-                      await jobsNewCollection.add(dataToSave);
+                      DocumentReference newBidDocRef = await jobsNewCollection.add(dataToSave);
 
                       // Reference to the "bidsjobs" subcollection
                       CollectionReference bidsJobsCollection = FirebaseFirestore.instance
-                          .collection('job_collection') // Use your actual collection name
+                          .collection('jobs') // Use your actual collection name
                           .doc(widget.documentID)
                           .collection('jobsnew')
-                          .doc(newBidDocRef.id) // Use the ID of the newly added document
+                          .doc('1694944521298') // Use the ID of the newly added document
                           .collection('bidsjobs');
-
-                      // Add a reference to the newly created bid document in "bidsjobs"
-                      Map<String, dynamic> bidReferenceData = {
-                        'bidReference': newBidDocRef,
-                      };
-
-                      await bidsJobsCollection.add(bidReferenceData);
 
                       // Show a success dialog
                       congratulateOnPlaceBid();

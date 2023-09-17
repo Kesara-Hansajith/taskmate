@@ -1,15 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:taskmate/pages/client/jobs/active/client_active_job_card.dart';
+import 'package:taskmate/pages/client/jobs/completed/client_completed_job_card.dart';
 
-class ClientActiveJobs extends StatefulWidget {
-  const ClientActiveJobs({super.key});
+class ClientCompletedJobs extends StatefulWidget {
+  const ClientCompletedJobs({super.key});
 
   @override
-  State<ClientActiveJobs> createState() => _ClientActiveJobsState();
+  State<ClientCompletedJobs> createState() => _ClientCompletedJobsState();
 }
 
-class _ClientActiveJobsState extends State<ClientActiveJobs> {
+class _ClientCompletedJobsState extends State<ClientCompletedJobs> {
   // List<String> _docIDs = [];
 
   //Getting docIDs
@@ -41,7 +41,7 @@ class _ClientActiveJobsState extends State<ClientActiveJobs> {
           width: screenWidth,
           child: Column(
             children: [
-              ClientActiveJobCard(),
+              ClientCompletedJobCard(),
             ],
           ),
         ),

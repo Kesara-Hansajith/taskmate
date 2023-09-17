@@ -5,16 +5,16 @@ import 'package:taskmate/components/light_main_button.dart';
 import 'package:taskmate/constants.dart';
 import 'package:dotted_border/dotted_border.dart';
 
-class ClientActiveJobFiles extends StatefulWidget {
-  const ClientActiveJobFiles({
+class Files extends StatefulWidget {
+  const Files({
     super.key,
   });
 
   @override
-  State<ClientActiveJobFiles> createState() => _ClientActiveJobFilesState();
+  State<Files> createState() => _FilesState();
 }
 
-class _ClientActiveJobFilesState extends State<ClientActiveJobFiles> {
+class _FilesState extends State<Files> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -27,7 +27,7 @@ class _ClientActiveJobFilesState extends State<ClientActiveJobFiles> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              'Download Submissions',
+              'Submitted Submissions',
               style: kJobCardTitleTextStyle.copyWith(
                 color: kJetBlack,
               ),
@@ -47,23 +47,7 @@ class _ClientActiveJobFilesState extends State<ClientActiveJobFiles> {
                           cardChild: null
                         ),
                       ),
-                      TextButton(
-                        onPressed: () {
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const <Widget>[
-                            Icon(
-                              Icons.download,
-                              color: kDarkGreyColor,
-                            ),
-                            Text(
-                              'Download',
-                              style: kTextStyle,
-                            )
-                          ],
-                        ),
-                      ),
+
                     ],
                   ),
                 ),
@@ -80,23 +64,7 @@ class _ClientActiveJobFilesState extends State<ClientActiveJobFiles> {
                           cardChild: null,
                         ),
                       ),
-                      TextButton(
-                        onPressed: () {
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const <Widget>[
-                            Icon(
-                              Icons.download,
-                              color: kDarkGreyColor,
-                            ),
-                            Text(
-                              'Download',
-                              style: kTextStyle,
-                            )
-                          ],
-                        ),
-                      ),
+
                     ],
                   ),
                 ),
@@ -105,19 +73,7 @@ class _ClientActiveJobFilesState extends State<ClientActiveJobFiles> {
             const SizedBox(
               height: 50.0,
             ),
-            DarkMainButton(
-              title: 'Accept',
-              process: () {
-                //TODO Accept Submissions
-              },
-              screenWidth: screenWidth,
-            ),
-            LightMainButton(
-                title: 'Message',
-                process: () {
-                  //TODO Forward to messaging part
-                },
-                screenWidth: screenWidth)
+
           ],
         ),
       ),

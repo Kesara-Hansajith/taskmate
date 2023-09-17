@@ -120,6 +120,14 @@ class _JobsState extends State<Jobs> with SingleTickerProviderStateMixin {
                           }
 
                           final jobNewDocs = subSnapshot.data!.docs;
+
+                          // Sort jobNewDocs by budget in descending order
+                          jobNewDocs.sort((a, b) {
+                            final budgetA = a['budget'] as int; // Assuming 'budget' is an integer field
+                            final budgetB = b['budget'] as int;
+                            return budgetB.compareTo(budgetA); // Sort in descending order
+                          });
+
                           final data = doc.data() as Map<String, dynamic>;
 
                           return JobCard(
@@ -132,6 +140,7 @@ class _JobsState extends State<Jobs> with SingleTickerProviderStateMixin {
                       );
                     },
                   );
+
                 },
               ),
 
