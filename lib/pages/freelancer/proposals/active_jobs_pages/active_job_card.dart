@@ -39,10 +39,16 @@ class _ActiveJobCardState extends State<ActiveJobCard> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
-              // '${data['title']}',
-              'In Progress . . . ',
-              style: kTextStyle,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  // '${data['title']}',
+                  'In Progress . . . ',
+                  style: kTextStyle,
+                ),
+                Icon(Icons.arrow_circle_right,color: kDeepBlueColor,size: 25.0,),
+              ],
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 4.0),

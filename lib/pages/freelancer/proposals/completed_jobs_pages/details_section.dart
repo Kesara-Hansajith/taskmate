@@ -44,9 +44,18 @@ class _DetailsState extends State<Details> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text(
-                  'Completed on: 2023.08.25',
-                  style: kTextStyle,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      'Recieved on: 2023.08.20',
+                      style: kTextStyle,
+                    ),
+                    Text(
+                      'Completed on: 2023.08.25',
+                      style: kTextStyle,
+                    ),
+                  ],
                 )
               ],
             ),

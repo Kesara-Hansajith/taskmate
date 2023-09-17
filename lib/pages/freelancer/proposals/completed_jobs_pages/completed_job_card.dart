@@ -40,9 +40,15 @@ class _CompletedJobCardState extends State<CompletedJobCard> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            const Text(
-              'Completed on 2023.08.25',
-              style: kTextStyle,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Completed on 2023.08.25',
+                  style: kTextStyle,
+                ),
+                Icon(Icons.arrow_circle_right,color: kDeepBlueColor,size: 25.0,),
+              ],
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 4.0),

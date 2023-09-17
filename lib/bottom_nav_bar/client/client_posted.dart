@@ -22,36 +22,40 @@ class _ClientPostedState extends State<ClientPosted> {
 
     return SafeArea(
       child: Scaffold(
-        body: Padding(
+        body: Container(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: SizedBox(
-            width: screenWidth,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 60.0,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children:  [
-                      const Text(
-                        'Welcome Back, ',
-                        style: kJobCardTitleTextStyle,
-                      ),
-                      Text(
-                        'First Name Last Name',
-                        style: kSubHeadingTextStyle,
-                      ),
-                       PostAJob(
-                         // client: widget.client,
-                       ),
-                    ],
-                  ),
-                ),
-              ],
+          width: screenWidth,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: AssetImage('images/noise_image.webp'),
             ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 60.0,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Welcome Back, ',
+                      style: kJobCardTitleTextStyle,
+                    ),
+                    Text(
+                      'First Name Last Name',
+                      style: kSubHeadingTextStyle,
+                    ),
+                    PostAJob(
+                        // client: widget.client,
+                        ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),
