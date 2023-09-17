@@ -47,7 +47,11 @@ class _ActiveJobCardState extends State<ActiveJobCard> {
                   'In Progress . . . ',
                   style: kTextStyle,
                 ),
-                Icon(Icons.arrow_circle_right,color: kDeepBlueColor,size: 25.0,),
+                Icon(
+                  Icons.arrow_circle_right,
+                  color: kDeepBlueColor,
+                  size: 25.0,
+                ),
               ],
             ),
             Padding(
