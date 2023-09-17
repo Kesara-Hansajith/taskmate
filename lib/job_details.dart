@@ -9,7 +9,7 @@ import 'package:taskmate/models/job_details_data.dart';
 
 class JobDetails extends StatefulWidget {
   final String documentID;
-  const JobDetails({super.key, required this.documentID});
+  const JobDetails({super.key, required this.documentID,});
 
   @override
   State<JobDetails> createState() => _JobDetailsState();

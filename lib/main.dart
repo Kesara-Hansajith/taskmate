@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
@@ -24,7 +23,7 @@ import 'package:taskmate/profile/freelancer/profile_freelancer_4.dart';
 import 'package:taskmate/profile/freelancer/user_repository.dart';
 
 // import 'package:taskmate/verify_identity.dart';
-import 'FreelancerDashboard/Dashboard.dart';
+// import 'FreelancerDashboard/Dashboard.dart';
 
 import 'firebase_options.dart';
 //imported pages
@@ -57,7 +56,7 @@ void main() async {
 }
 
 class Taskmate extends StatelessWidget {
-   // UserModel1 client;
+  // UserModel1 client;
   const Taskmate({super.key});
 
   @override
@@ -65,8 +64,8 @@ class Taskmate extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: "Poppins"),
-      home: const SafeArea(
-        child: SignUp(),
+      home: SafeArea(
+        child: ClientHomePage(),
       ),
     );
   }

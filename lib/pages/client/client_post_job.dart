@@ -13,11 +13,11 @@ import 'package:taskmate/profile/client/user_model1.dart';
 
 class ClientPostJob extends StatefulWidget {
   const ClientPostJob({
-    required this.client,
+    // required this.client,
     Key? key,
   });
 
-  final UserModel1 client;
+  // final UserModel1 client;
 
   @override
   State<ClientPostJob> createState() => _ClientPostJobState();
@@ -278,8 +278,11 @@ class _ClientPostJobState extends State<ClientPostJob> {
                               process: () {
                                 Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
-                                    builder: (context) => ClientHomePage(selectedIndex: 2,
-                                      client: widget.client,
+
+                                    builder: (context) =>
+                                        ClientHomePage(
+                                          // selectedIndex: 2,
+                                      // client: widget.client,
                                     ),
                                   ),
                                 );

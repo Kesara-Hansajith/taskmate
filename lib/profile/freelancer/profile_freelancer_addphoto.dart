@@ -4,7 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:taskmate/FreelancerDashboard/Dashboard.dart';
+// import 'package:taskmate/FreelancerDashboard/Dashboard.dart';
 import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/components/light_main_button.dart';
 import 'dart:io';
@@ -143,15 +143,15 @@ class _ProfileFreelancerAddphotoState extends State<ProfileFreelancerAddphoto> {
           },
         );
         if (context.mounted) {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) =>
-                  DashboardFreelance(
-                    user: widget.user,
-                    profileImageUrl: downloadUrl,
-                  ),
-            ),
-          );
+          // Navigator.of(context).push(
+          //   MaterialPageRoute(
+          //     builder: (context) =>
+          //   //       DashboardFreelance(
+          //   //         // user: widget.user,
+          //   //         // profileImageUrl: downloadUrl,
+          //   //       ),
+          //   ),
+          // );
         }
       }
     }

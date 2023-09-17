@@ -1,47 +1,62 @@
 import 'package:flutter/material.dart';
-
 import 'package:taskmate/constants.dart';
-import 'package:taskmate/pages/client/jobs/active/client_active_jobs.dart';
-import 'package:taskmate/pages/client/jobs/completed/client_completed_jobs.dart';
-import 'package:taskmate/pages/client/jobs/pending/client_pending_jobs.dart';
+
+import 'package:taskmate/pages/client/jobs/completed/details_section.dart';
+import 'package:taskmate/pages/client/jobs/completed/files_section.dart';
+import 'package:taskmate/pages/client/jobs/completed/payments_section.dart';
+import 'package:taskmate/pages/client/jobs/completed/reviews_section.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
-class ClientJobStatus extends StatefulWidget {
-  const ClientJobStatus({super.key});
+class ClientCompletedJobDetails extends StatefulWidget {
+  // final String documentID;
+  const ClientCompletedJobDetails({
+    super.key,
+    // required this.documentID,
+  });
 
   @override
-  State<ClientJobStatus> createState() => _ClientJobStatusState();
+  State<ClientCompletedJobDetails> createState() => _ClientCompletedJobDetailsState();
 }
 
-class _ClientJobStatusState extends State<ClientJobStatus> {
-  int itemIndex = 0;
-
-  final List _proposalItems = const [
-    ClientPendingJobs(),
-    ClientActiveJobs(),
-    ClientCompletedJobs(),
-  ];
+class _ClientCompletedJobDetailsState extends State<ClientCompletedJobDetails> {
+  int activeJobItemIndex = 0;
 
   void _onToggle(int? index) {
     setState(() {
-      itemIndex = index!;
+      activeJobItemIndex = index!;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
+    final List activeJobItems = [
+      Details(
+        // documentID: widget.documentID,
+      ),
+      const Files(),
+      const Payments(),
+      const Reviews(),
+    ];
 
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
           title: const Text(
-            'Jobs',
+            'Active Jobs',
             style: kHeadingTextStyle,
           ),
-          elevation: 0,
+          elevation: 4.0,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: const Icon(
+              Icons.navigate_before,
+              color: kDeepBlueColor,
+            ),
+          ),
           flexibleSpace: Stack(
             children: [
               // Background Image
@@ -55,7 +70,6 @@ class _ClientJobStatusState extends State<ClientJobStatus> {
           ),
         ),
         body: Container(
-          height: screenHeight,
           width: screenWidth,
           decoration: const BoxDecoration(
             image: DecorationImage(
@@ -66,7 +80,7 @@ class _ClientJobStatusState extends State<ClientJobStatus> {
           child: Column(
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12.0),
+                padding: const EdgeInsets.symmetric(vertical: 24.0),
                 child: ToggleSwitch(
                   activeBgColor: const [kOceanBlueColor],
                   activeFgColor: kDeepBlueColor,
@@ -76,24 +90,27 @@ class _ClientJobStatusState extends State<ClientJobStatus> {
                   radiusStyle: true,
                   minWidth: screenWidth,
                   minHeight: 50.0,
-                  initialLabelIndex: itemIndex,
-                  totalSwitches: 3,
-                  animate: true,
-                  curve: Curves.fastLinearToSlowEaseIn,
+                  initialLabelIndex: activeJobItemIndex,
+                  totalSwitches: 4,
                   customTextStyles: const [
                     TextStyle(fontSize: 15.0, fontWeight: FontWeight.w600),
                     TextStyle(fontSize: 15.0, fontWeight: FontWeight.w600),
                     TextStyle(fontSize: 15.0, fontWeight: FontWeight.w600),
+                    TextStyle(fontSize: 15.0, fontWeight: FontWeight.w600),
                   ],
-                  labels: const ['Pending', 'Active', 'Completed'],
+                  animate: true,
+                  curve: Curves.ease,
+                  labels: const ['Details', 'Files', 'Payments', 'Reviews'],
                   onToggle: _onToggle,
                 ),
               ),
               Expanded(
-                child: Column(
-                  children: <Widget>[
-                    _proposalItems[itemIndex],
-                  ],
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                  child: SizedBox(
+                    width: screenWidth,
+                    child: activeJobItems[activeJobItemIndex],
+                  ),
                 ),
               ),
             ],

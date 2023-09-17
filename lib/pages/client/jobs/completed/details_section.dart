@@ -4,18 +4,18 @@ import 'package:taskmate/components/attachment_card.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/models/client_active_job_details_data.dart';
 
-class ClientJobDetails extends StatefulWidget {
+class Details extends StatefulWidget {
   // final String documentID;
-  const ClientJobDetails({
+  const Details({
     super.key,
     // required this.documentID,
   });
 
   @override
-  State<ClientJobDetails> createState() => _ClientJobDetailsState();
+  State<Details> createState() => _DetailsState();
 }
 
-class _ClientJobDetailsState extends State<ClientJobDetails> {
+class _DetailsState extends State<Details> {
   // Future<List<ClientActiveJobDetailsData>> fetchData(String documentId) async {
   //   final DocumentSnapshot docSnapshot = await FirebaseFirestore.instance
   //       .collection('client_active_jobs')
@@ -42,9 +42,18 @@ class _ClientJobDetailsState extends State<ClientJobDetails> {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Text(
-                'Given on: 2023.08.24',
-                style: kTextStyle,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    'Given on: 2023.08.24',
+                    style: kTextStyle,
+                  ),
+                  Text(
+                    'Completed on: 2023.08.27',
+                    style: kTextStyle,
+                  ),
+                ],
               ),
             ],
           ),
