@@ -11,6 +11,7 @@ import 'package:taskmate/components/freelancer/user_data_gather_title.dart';
 import 'package:taskmate/components/maintenance_page.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/profile/client/user_model1.dart';
+import 'package:file_picker/file_picker.dart';
 
 class ClientPostJob extends StatefulWidget {
   const ClientPostJob({
@@ -51,6 +52,23 @@ class _ClientPostJobState extends State<ClientPostJob> {
       _skills.add(serviceName);
       skillController.text = _skills.join(', '); // Update the text field
     });
+  }
+
+  void _openFilePicker() async {
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.any,
+        allowMultiple: false,
+      );
+
+      if (result != null) {
+        PlatformFile file = result.files.first;
+      } else {
+        // User canceled the file picker
+      }
+    } catch (e) {
+      // Handle any exceptions that occur during file picking
+    }
   }
 
   Future<void> addJobToFirestore(
@@ -146,7 +164,9 @@ class _ClientPostJobState extends State<ClientPostJob> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  const SizedBox(height: 12.0,),
+                  const SizedBox(
+                    height: 12.0,
+                  ),
                   const UserDataGatherTitle(
                     title: 'Job Title',
                   ),
@@ -158,7 +178,9 @@ class _ClientPostJobState extends State<ClientPostJob> {
                       validatorText: 'Field can\'t be empty',
                     ),
                   ),
-                  const SizedBox(height: 12.0,),
+                  const SizedBox(
+                    height: 12.0,
+                  ),
                   const UserDataGatherTitle(
                     title: 'Describe about the project',
                   ),
@@ -194,7 +216,9 @@ class _ClientPostJobState extends State<ClientPostJob> {
                       },
                     ),
                   ),
-                  const SizedBox(height: 12.0,),
+                  const SizedBox(
+                    height: 12.0,
+                  ),
                   const UserDataGatherTitle(
                     title: 'Skills',
                   ),
@@ -345,7 +369,9 @@ class _ClientPostJobState extends State<ClientPostJob> {
                       // ),
                     ],
                   ),
-                  const SizedBox(height: 12.0,),
+                  const SizedBox(
+                    height: 12.0,
+                  ),
                   const UserDataGatherTitle(
                     title: 'Job done within',
                   ),
@@ -389,7 +415,9 @@ class _ClientPostJobState extends State<ClientPostJob> {
                       const Text('Days'),
                     ],
                   ),
-                  const SizedBox(height: 12.0,),
+                  const SizedBox(
+                    height: 12.0,
+                  ),
                   const UserDataGatherTitle(
                     title: 'Budget',
                   ),
@@ -401,7 +429,7 @@ class _ClientPostJobState extends State<ClientPostJob> {
                       decoration: InputDecoration(
                         prefixText: 'LKR  ',
                         prefixStyle: const TextStyle(
-                          color: Colors.red,
+                          color: kDeepBlueColor,
                         ),
                         contentPadding: const EdgeInsets.all(10.0),
                         hintText: '1000-4500',
@@ -429,17 +457,26 @@ class _ClientPostJobState extends State<ClientPostJob> {
                       },
                     ),
                   ),
-                  const SizedBox(height: 12.0,),
+                  const SizedBox(
+                    height: 12.0,
+                  ),
                   const UserDataGatherTitle(
                     title: 'Attachments',
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: AttachmentCard(
-                      cardChild: Text('Tap Here'),
+                    child: InkWell(
+                      onTap: () {
+                        _openFilePicker();
+                      },
+                      child: AttachmentCard(
+                        cardChild: Text('Tap Here'),
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 12.0,),
+                  const SizedBox(
+                    height: 12.0,
+                  ),
                   DarkMainButton(
                     title: 'Post Job Now',
                     process: () {
