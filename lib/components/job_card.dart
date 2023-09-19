@@ -30,7 +30,14 @@ class JobCard extends StatelessWidget {
           .get();
 
       for (final doc in subCollectionQuery.docs) {
-        sum += int.tryParse(doc.id) ?? 0;
+        final id = doc.id;
+        final parsedInt = int.tryParse(id);
+        if (parsedInt != null) {
+          sum += parsedInt;
+        } else {
+          // Handle the case where doc.id is not a valid integer
+          print('Invalid integer: $id');
+        }
       }
     } catch (e) {
       print('Error calculating sum of bids: $e');
@@ -38,6 +45,7 @@ class JobCard extends StatelessWidget {
 
     return sum;
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +107,7 @@ class JobCard extends StatelessWidget {
                                 style: kJobCardDescriptionTextStyle,
                               ),
                               Text(
-                                '$numBids bits', // Display the number of document IDs as bits
+                                '$numBids bids', // Display the number of document IDs as bits
                                 style: kJobCardDescriptionTextStyle,
                               ),
                             ],

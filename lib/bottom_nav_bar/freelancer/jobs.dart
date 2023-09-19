@@ -105,7 +105,7 @@ class _JobsState extends State<Jobs> with SingleTickerProviderStateMixin {
                     itemBuilder: (context, index) {
                       final doc = jobDocs[index];
                       return StreamBuilder<QuerySnapshot>(
-                        stream: doc.reference.collection('jobsnew').where('status', isEqualTo: 'pending').snapshots(),
+                        stream: doc.reference.collection('jobsnew').where('status', isEqualTo: 'new').snapshots(),
                         builder: (context, subSnapshot) {
                           if (subSnapshot.connectionState == ConnectionState.waiting) {
                             return const Center(
@@ -123,8 +123,9 @@ class _JobsState extends State<Jobs> with SingleTickerProviderStateMixin {
 
                           // Sort jobNewDocs by budget in descending order
                           jobNewDocs.sort((a, b) {
-                            final budgetA = a['budget'] as int; // Assuming 'budget' is an integer field
-                            final budgetB = b['budget'] as int;
+                            final budgetA = int.tryParse(a['budget'] as String) ?? 0;
+                            final budgetB = int.tryParse(b['budget'] as String) ?? 0;
+
                             return budgetB.compareTo(budgetA); // Sort in descending order
                           });
 
