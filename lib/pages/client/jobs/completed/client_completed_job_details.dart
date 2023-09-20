@@ -44,7 +44,7 @@ class _ClientCompletedJobDetailsState extends State<ClientCompletedJobDetails> {
         appBar: AppBar(
           centerTitle: true,
           title: const Text(
-            'Active Jobs',
+            'Completed Jobs',
             style: kHeadingTextStyle,
           ),
           elevation: 4.0,

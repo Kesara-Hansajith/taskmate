@@ -7,8 +7,13 @@ import 'package:taskmate/client_home_page.dart';
 
 import 'package:get/get_core/src/get_main.dart';
 import 'package:taskmate/authentication/root_page.dart';
+import 'package:taskmate/components/client/post_a_job.dart';
+import 'package:taskmate/dashboard/freelancer/dashboard.dart';
+import 'package:taskmate/dashboard/freelancer/profile.dart';
 
 import 'package:taskmate/pages/client/client_post_job.dart';
+import 'package:taskmate/pages/client/jobs/pending/bidded_freelancer_details.dart';
+import 'package:taskmate/pages/client/jobs/pending/bidded_freelancers.dart';
 import 'package:taskmate/pages/client/jobs/pending/client_pending_jobs.dart';
 import 'package:taskmate/pages/freelancer/proposals/pending_jobs_pages/pending_jobs.dart';
 import 'package:taskmate/profile/client/EditClientProfile.dart';
@@ -64,8 +69,8 @@ class Taskmate extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: "Poppins"),
-      home: SafeArea(
-        child: FreelancerHomePage(),
+      home: const SafeArea(
+        child: Dashboard(),
       ),
     );
   }

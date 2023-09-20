@@ -45,9 +45,19 @@ class _ClientActiveJobCardState extends State<ClientActiveJobCard> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 4.0),
-              child: Text(
-                'Title',
-                style: kJobCardTitleTextStyle,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Title',
+                    style: kJobCardTitleTextStyle,
+                  ),
+                  Icon(
+                    Icons.arrow_circle_right,
+                    color: kDeepBlueColor,
+                    size: 25.0,
+                  ),
+                ],
               ),
             ),
             Text(
