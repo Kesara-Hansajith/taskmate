@@ -6,6 +6,7 @@ import 'package:taskmate/dashboard/freelancer/balance.dart';
 import 'package:taskmate/dashboard/freelancer/help_support.dart';
 import 'package:taskmate/dashboard/freelancer/invite_friends.dart';
 import 'package:taskmate/dashboard/freelancer/profile.dart';
+import 'package:taskmate/dashboard/freelancer/terms_conditions.dart';
 import 'package:taskmate/dashboard/freelancer/transaction_history.dart';
 
 class Dashboard extends StatefulWidget {
@@ -16,7 +17,6 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-
   void navigateToProfile() {
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -60,7 +60,7 @@ class _DashboardState extends State<Dashboard> {
   void navigateToTermsConditions() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const InviteFriends(),
+        builder: (context) => const TermsConditions(),
       ),
     );
   }
@@ -216,6 +216,13 @@ class _DashboardState extends State<Dashboard> {
               )
             ],
           ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            //TODO AI Chatbot
+          },
+          backgroundColor: kDeepBlueColor,
+          child: const Icon(Icons.help),
         ),
       ),
     );

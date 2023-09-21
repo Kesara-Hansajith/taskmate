@@ -4,6 +4,8 @@ import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/components/freelancer/user_data_gather_title.dart';
 import 'package:taskmate/components/review_card.dart';
 import 'package:taskmate/constants.dart';
+import 'package:taskmate/dashboard/freelancer/dashboard.dart';
+import 'package:taskmate/dashboard/freelancer/edit_profile.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -13,6 +15,23 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+
+  void _navigateToEditProfile() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const EditProfile(),
+      ),
+    );
+  }
+
+  void _navigateToDashboard() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const Dashboard(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -56,6 +75,20 @@ class _ProfileState extends State<Profile> {
                         height: screenHeight / 15,
                         decoration: const BoxDecoration(
                           color: Colors.transparent,
+                        ),
+                        child: Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            onTap: _navigateToDashboard,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Icon(Icons.navigate_before,size: 35.0,),
+                                Text('Back'),
+                              ],
+                            ),
+                          ),
                         ),
                       ),
                     ],
@@ -169,12 +202,16 @@ class _ProfileState extends State<Profile> {
                         ReviewCard(
                           imagePath: 'images/blank_profile.webp',
                           jobTitle: 'Graphic designer for family care product',
-                          feedback: 'Great! Very creative and had great ideas! ',
+                          feedback:
+                              'Great! Very creative and had great ideas! ',
                           username: 'Nugera Gomez',
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 12.0),
-                          child: DarkMainButton(title: 'Edit Profile', process: (){}, screenWidth: screenWidth),
+                          child: DarkMainButton(
+                              title: 'Edit Profile',
+                              process: _navigateToEditProfile,
+                              screenWidth: screenWidth),
                         )
                       ],
                     ),
@@ -188,5 +225,3 @@ class _ProfileState extends State<Profile> {
     );
   }
 }
-
-

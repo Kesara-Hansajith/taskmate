@@ -9,6 +9,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:taskmate/authentication/root_page.dart';
 import 'package:taskmate/components/client/post_a_job.dart';
 import 'package:taskmate/dashboard/freelancer/dashboard.dart';
+import 'package:taskmate/dashboard/freelancer/edit_profile.dart';
 import 'package:taskmate/dashboard/freelancer/profile.dart';
 
 import 'package:taskmate/pages/client/client_post_job.dart';
