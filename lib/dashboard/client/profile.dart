@@ -4,8 +4,7 @@ import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/components/freelancer/user_data_gather_title.dart';
 import 'package:taskmate/components/review_card.dart';
 import 'package:taskmate/constants.dart';
-import 'package:taskmate/dashboard/freelancer/dashboard.dart';
-import 'package:taskmate/dashboard/freelancer/edit_profile.dart';
+import 'package:taskmate/dashboard/client/edit_profile.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -110,28 +109,16 @@ class _ProfileState extends State<Profile> {
                   ),
                 ],
               ),
-              Column(
-                children: [
-                  Text(
-                    'Good Morning!',
-                    style: kJobCardTitleTextStyle.copyWith(color: kAmberColor),
-                  ),
-                  Text(
-                    'Kesara Hansajith',
-                    style: kSubHeadingTextStyle,
-                  ),
-                  Text(
-                    'Top Level Freelancer',
-                    style: kTextStyle.copyWith(color: kOceanBlueColor),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Text(
-                      'Professional Role - Logo Designer | Digital Artist | Graphic Designer ',
-                      textAlign: TextAlign.center,
+              Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Nimali Ihalagama',
+                      style: kSubHeadingTextStyle,
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               Expanded(
                 child: ListView(
@@ -139,54 +126,10 @@ class _ProfileState extends State<Profile> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10.0),
-                          child: const UserDataGatherTitle(
-                            title: 'Hourly Rate : LKR. 1000',
-                          ),
-                        ),
-                        const UserDataGatherTitle(title: 'Overview'),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: Text(
-                            'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. ',
-                            style: kTextStyle,
-                          ),
-                        ),
                         Align(
                           alignment: Alignment.center,
                           child: Container(
-                            margin: const EdgeInsets.symmetric(vertical: 4.0),
-                            width: screenWidth / 1.2,
-                            child: const Divider(
-                              color: kDarkGreyColor,
-                              thickness: 1.0,
-                            ),
-                          ),
-                        ),
-                        UserDataGatherTitle(
-                          title: 'Portfolio',
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: Row(
-                            children: const <Widget>[
-                              Expanded(
-                                child: AttachmentCard(cardChild: null),
-                              ),
-                              SizedBox(
-                                width: 10.0,
-                              ),
-                              Expanded(
-                                child: AttachmentCard(cardChild: null),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.center,
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(vertical: 4.0),
+                            margin: const EdgeInsets.symmetric(vertical: 16.0),
                             width: screenWidth / 1.2,
                             child: const Divider(
                               color: kDarkGreyColor,

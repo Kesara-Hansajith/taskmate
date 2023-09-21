@@ -5,7 +5,7 @@ import 'package:taskmate/bottom_nav_bar/client/client_job_status.dart';
 import 'package:taskmate/bottom_nav_bar/client/client_messaging.dart';
 import 'package:taskmate/bottom_nav_bar/client/client_posted.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:taskmate/profile/client/user_model1.dart';
+import 'package:taskmate/dashboard/client/dashboard.dart';
 
 class ClientHomePage extends StatefulWidget {
   ClientHomePage({
@@ -31,7 +31,7 @@ class _ClientHomePageState extends State<ClientHomePage> {
       // client: widget.client,
     ),
     const ClientJobStatus(),
-    ClientAccount(
+    Dashboard(
       // client: widget.client,
       // profileImageUrl: widget.downloadUrl,
     ),

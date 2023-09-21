@@ -4,7 +4,7 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:taskmate/bottom_nav_bar/freelancer/messaging.dart';
 import 'package:taskmate/bottom_nav_bar/freelancer/proposals.dart';
 import 'package:taskmate/bottom_nav_bar/freelancer/jobs.dart';
-import 'package:taskmate/bottom_nav_bar/freelancer/account.dart';
+import 'package:taskmate/dashboard/freelancer/dashboard.dart';
 
 class FreelancerHomePage extends StatefulWidget {
   const FreelancerHomePage({super.key});
@@ -20,7 +20,7 @@ class _FreelancerHomePageState extends State<FreelancerHomePage> {
     const Messaging(),
     const Proposals(),
     const Jobs(),
-    const Account(),
+    const Dashboard(),
   ];
 
   @override

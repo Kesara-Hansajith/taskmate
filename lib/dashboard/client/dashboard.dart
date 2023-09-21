@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/components/dashboard_item.dart';
-import 'package:taskmate/dashboard/freelancer/about_us.dart';
-import 'package:taskmate/dashboard/freelancer/balance.dart';
-import 'package:taskmate/dashboard/freelancer/help_support.dart';
-import 'package:taskmate/dashboard/freelancer/invite_friends.dart';
-import 'package:taskmate/dashboard/freelancer/profile.dart';
-import 'package:taskmate/dashboard/freelancer/terms_conditions.dart';
-import 'package:taskmate/dashboard/freelancer/transaction_history.dart';
+import 'package:taskmate/dashboard/client/about_us.dart';
+import 'package:taskmate/dashboard/client/balance.dart';
+import 'package:taskmate/dashboard/client/help_support.dart';
+import 'package:taskmate/dashboard/client/invite_friends.dart';
+import 'package:taskmate/dashboard/client/profile.dart';
+import 'package:taskmate/dashboard/client/terms_conditions.dart';
+import 'package:taskmate/dashboard/client/transaction_history.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -145,13 +145,10 @@ class _DashboardState extends State<Dashboard> {
                     style: kJobCardTitleTextStyle.copyWith(color: kAmberColor),
                   ),
                   Text(
-                    'Kesara Hansajith',
+                    'Nimali Ihalagama',
                     style: kSubHeadingTextStyle,
                   ),
-                  Text(
-                    'Top Level Freelancer',
-                    style: kTextStyle.copyWith(color: kOceanBlueColor),
-                  ),
+
                 ],
               ),
               DashboardItem(
