@@ -83,49 +83,6 @@ class _ClientPendingJobCardState extends State<ClientPendingJobCard> {
         ),
       ),
     );
-    //   InkWell(
-    //   onTap: () {
-    //     // Handle onTap action if needed
-    //   },
-    //   child: Container(
-    //     margin: const EdgeInsets.symmetric(vertical: 4.0),
-    //     padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 9.0),
-    //     width: screenWidth,
-    //     decoration: BoxDecoration(
-    //       borderRadius: BorderRadius.circular(16.0),
-    //       border: Border.all(color: kDeepBlueColor, width: 1.0),
-    //     ),
-    //     child: Column(
-    //       crossAxisAlignment: CrossAxisAlignment.start,
-    //       children: <Widget>[
-    //         Text(
-    //           '${data['jobTitle']}',
-    //           style: kJobCardTitleTextStyle,
-    //         ),
-    //         Padding(
-    //           padding: const EdgeInsets.all(8.0),
-    //           child: Row(
-    //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //             children: [
-    //               Text(
-    //                 'Price Range: LKR.${data['budget']}',
-    //                 style: kJobCardDescriptionTextStyle,
-    //               ),
-    //               Text(
-    //                 'Job Done within: ${data['dayCount']}',
-    //                 style: kJobCardDescriptionTextStyle,
-    //               ),
-    //             ],
-    //           ),
-    //         ),
-    //       ],
-    //     ),
-    //   ),
-    // );
-    // } else {
-    //   // Handle the case when data is null or not of the expected type
-    //   return const Center(
-    //     child: Text('Data not available'),
-    //   );
+
   }
 }

@@ -3,30 +3,31 @@ import 'package:flutter/material.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/pages/freelancer/proposals/active_jobs_pages/active_job_details.dart';
 
-class ActiveJobCard extends StatefulWidget {
+class ActiveJobCard extends StatelessWidget {
   const ActiveJobCard({
-    super.key,
-    // required this.documentID,
-  });
+    Key? key,
+    required this.activeJobDoc,
+  }) : super(key: key);
 
-  // final String documentID;
-
-  @override
-  State<ActiveJobCard> createState() => _ActiveJobCardState();
-}
-
-class _ActiveJobCardState extends State<ActiveJobCard> {
-  // CollectionReference projects =
-  //     FirebaseFirestore.instance.collection('active_jobs');
+  final QueryDocumentSnapshot activeJobDoc;
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
 
+    final subData = activeJobDoc.data() as Map<String, dynamic>;
+    final jobTitle = subData['jobTitle'] as String;
+    final budget = subData['budget']; // Remove the parsing
+
     return InkWell(
       onTap: () {
         Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => const ActiveJobDetails()));
+          MaterialPageRoute(
+            builder: (context) => ActiveJobDetails(
+                  // Pass budget to ActiveJobDetails
+            ),
+          ),
+        );
       },
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 4.0),
@@ -34,47 +35,35 @@ class _ActiveJobCardState extends State<ActiveJobCard> {
         width: screenWidth,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16.0),
-          border: Border.all(color: kDeepBlueColor, width: 1.0),
+          border: Border.all(
+            color: kDeepBlueColor,
+            width: 1.0,
+          ),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  // '${data['title']}',
-                  'In Progress . . . ',
-                  style: kTextStyle,
-                ),
-                Icon(
-                  Icons.arrow_circle_right,
-                  color: kDeepBlueColor,
-                  size: 25.0,
-                ),
-              ],
+            Text(
+              'In Progress...',
+              style: kTextStyle,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 4.0),
               child: Text(
-                // '${data['title']}',
-                'Title',
+                jobTitle,
                 style: kJobCardTitleTextStyle,
               ),
+
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  // 'Bid Price: LKR.${data['bidPrice']}',
-                  'Bid Price: LKR. 1000',
+                  'Budget LKR.${budget.toString()}',
                   style: kJobCardDescriptionTextStyle,
                 ),
-                Text(
-                  // 'Total Bids: ${data['bidCount']}',
-                  'Total Bids: 41',
-                  style: kJobCardDescriptionTextStyle,
-                ),
+
+                // Add more widgets to display other job details.
               ],
             ),
           ],
@@ -83,65 +72,3 @@ class _ActiveJobCardState extends State<ActiveJobCard> {
     );
   }
 }
-//   FutureBuilder<DocumentSnapshot>(
-//   future: projects.doc(widget.documentID).get(),
-//   builder: (context, snapshot) {
-//     if (snapshot.connectionState == ConnectionState.done) {
-//       Map<String, dynamic> data =
-//           snapshot.data!.data() as Map<String, dynamic>;
-//       //Overall Active Job Card flows through here
-//       return InkWell(
-//         onTap: () {
-//           Navigator.of(context).push(
-//             MaterialPageRoute(
-//               builder: (context) => ActiveJobDetails(
-//                 documentID: widget.documentID,
-//               ),
-//             ),
-//           );
-//         },
-//         child: Container(
-//           margin: const EdgeInsets.symmetric(vertical: 4.0),
-//           padding:
-//               const EdgeInsets.symmetric(vertical: 16.0, horizontal: 9.0),
-//           width: screenWidth,
-//           decoration: BoxDecoration(
-//             borderRadius: BorderRadius.circular(16.0),
-//             border: Border.all(color: kDeepBlueColor, width: 1.0),
-//           ),
-//           child: Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: <Widget>[
-//               Text(
-//                 // '${data['title']}',
-//                 'Title',
-//                 style: kJobCardTitleTextStyle,
-//               ),
-//               Padding(
-//                 padding: const EdgeInsets.all(8.0),
-//                 child: Row(
-//                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                   children: [
-//                     Text(
-//                       // 'Bid Price: LKR.${data['bidPrice']}',
-//                       'Bid Price',
-//                       style: kJobCardDescriptionTextStyle,
-//                     ),
-//                     Text(
-//                       // 'Total Bids: ${data['bidCount']}',
-//                       'Total Bids',
-//                       style: kJobCardDescriptionTextStyle,
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//       );
-//     }
-//     return const Center(
-//       child: Text('Loading....'),
-//     );
-//   },
-// );

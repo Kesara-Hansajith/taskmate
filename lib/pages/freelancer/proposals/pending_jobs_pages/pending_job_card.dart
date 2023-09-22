@@ -1,26 +1,23 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:taskmate/constants.dart';
 
-class PendingJobCard extends StatefulWidget {
+class PendingJobCard extends StatelessWidget {
   const PendingJobCard({
-    super.key,
-    // this.documentID,
-  });
+    Key? key,
+    required this.jobNewDoc,
+  }) : super(key: key);
 
-  // final String? documentID;
-
-  @override
-  State<PendingJobCard> createState() => _PendingJobCardState();
-}
-
-class _PendingJobCardState extends State<PendingJobCard> {
-  // CollectionReference projects =
-  //     FirebaseFirestore.instance.collection('pending_jobs');
+  final QueryDocumentSnapshot jobNewDoc;
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+
+    final subData = jobNewDoc.data() as Map<String, dynamic>;
+    final jobTitle = subData['jobTitle'] as String;
+    final budget = int.tryParse(subData['budget'] ?? '0') ?? 0;
+    final bidsCollection = jobNewDoc.reference.collection('bidsjobs');
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4.0),
@@ -36,79 +33,47 @@ class _PendingJobCardState extends State<PendingJobCard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const Text('Pending . . .', style: kTextStyle),
+          Text(
+            'Pending...',
+            style: kTextStyle,
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 4.0),
             child: Text(
-              'Title',
+              jobTitle,
               style: kJobCardTitleTextStyle,
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Bid Price: LKR. 5000',
-                style: kJobCardDescriptionTextStyle,
-              ),
-              Text(
-                'Total Bids: 50',
-                style: kJobCardDescriptionTextStyle,
-              ),
-            ],
+          FutureBuilder<QuerySnapshot>(
+            future: bidsCollection.get(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return CircularProgressIndicator();
+              }
+
+              if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              }
+
+              final numBids = snapshot.data?.docs.length ?? 0;
+
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Budget LKR.${budget.toString()}',
+                    style: kJobCardDescriptionTextStyle,
+                  ),
+                  Text(
+                    'Total Bids: $numBids',
+                    style: kJobCardDescriptionTextStyle,
+                  ),
+                ],
+              );
+            },
           ),
         ],
       ),
     );
-    //   FutureBuilder<DocumentSnapshot>(
-    //   future: projects.doc(widget.documentID).get(),
-    //   builder: (context, snapshot) {
-    //     if (snapshot.connectionState == ConnectionState.done) {
-    //       Map<String, dynamic> data =
-    //           snapshot.data!.data() as Map<String, dynamic>;
-    //       //Overall Job Card flows through here
-    //       return InkWell(
-    //         onTap: () {},
-    //         child: Container(
-    //           margin:
-    //               const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-    //           padding:
-    //               const EdgeInsets.symmetric(vertical: 16.0, horizontal: 9.0),
-    //           width: screenWidth,
-    //           decoration: BoxDecoration(
-    //             borderRadius: BorderRadius.circular(16.0),
-    //             border: Border.all(color: kDeepBlueColor, width: 1.0),
-    //           ),
-    //           child: Column(
-    //             crossAxisAlignment: CrossAxisAlignment.start,
-    //             children: <Widget>[
-    //               const Text('In Progress', style: kTextStyle),
-    //               Text('${data['title']}', style: kJobCardTitleTextStyle),
-    //               Padding(
-    //                 padding: const EdgeInsets.all(8.0),
-    //                 child: Row(
-    //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //                   children: [
-    //                     Text(
-    //                       'Bid Price: LKR. ${data['bidAmount']}',
-    //                       style: kJobCardDescriptionTextStyle,
-    //                     ),
-    //                     Text(
-    //                       'Total Bids: ${data['totalBids']}',
-    //                       style: kJobCardDescriptionTextStyle,
-    //                     ),
-    //                   ],
-    //                 ),
-    //               ),
-    //             ],
-    //           ),
-    //         ),
-    //       );
-    //     }
-    //     return const Center(
-    //       child: Text('Loading....'),
-    //     );
-    //   },
-    // );
   }
 }

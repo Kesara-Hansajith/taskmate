@@ -31,8 +31,7 @@ class _ClientPostJobState extends State<ClientPostJob> {
   String _skillsText = '';
 
   final TextEditingController jobTitleController = TextEditingController();
-  final TextEditingController jobDescriptionController =
-      TextEditingController();
+  final TextEditingController jobDescriptionController = TextEditingController();
   final TextEditingController dayCountController = TextEditingController();
   final TextEditingController budgetController = TextEditingController();
   final TextEditingController skillController = TextEditingController();
@@ -88,8 +87,7 @@ class _ClientPostJobState extends State<ClientPostJob> {
       }
 
       // Get a reference to the Firestore collection
-      CollectionReference jobsCollection =
-          FirebaseFirestore.instance.collection('jobs');
+      CollectionReference jobsCollection = FirebaseFirestore.instance.collection('jobs');
 
       // Generate a unique job ID (e.g., using a timestamp)
       String timestamp = Timestamp.now().millisecondsSinceEpoch.toString();

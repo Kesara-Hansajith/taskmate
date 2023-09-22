@@ -11,27 +11,27 @@ class ClientPendingJobs extends StatefulWidget {
 }
 
 class _ClientPendingJobsState extends State<ClientPendingJobs> {
-  // List<String> _docIDs = [];
+  List<String> _docIDs = [];
 
-  // Getting docIDs
-  // Future<void> getDocIDs() async {
-  //   final snapshot = await FirebaseFirestore.instance.collection('jobs').get();
-  //   if (snapshot.docs.isNotEmpty) {
-  //     // Check if the query returned any documents
-  //     _docIDs = snapshot.docs.map((element) => element.id).toList();
-  //   }
-  // }
+  //Getting docIDs
+  Future<void> getDocIDs() async {
+    final snapshot = await FirebaseFirestore.instance.collection('jobs').get();
+    if (snapshot.docs.isNotEmpty) {
+      // Check if the query returned any documents
+      _docIDs = snapshot.docs.map((element) => element.id).toList();
+    }
+  }
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   // Use a Future inside initState to fetch data asynchronously
-  //   // and use then to handle the result
-  //   getDocIDs().then((_) {
-  //     // Calling setState to rebuild the widget with the fetched data
-  //     setState(() {});
-  //   });
-  // }
+  @override
+  void initState() {
+    super.initState();
+    // Use a Future inside initState to fetch data asynchronously
+    // and use then to handle the result
+    getDocIDs().then((_) {
+      // Calling setState to rebuild the widget with the fetched data
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
