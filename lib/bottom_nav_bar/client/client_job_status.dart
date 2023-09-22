@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/pages/client/jobs/active/client_active_jobs.dart';
+import 'package:taskmate/pages/client/jobs/completed/client_completed_jobs.dart';
 import 'package:taskmate/pages/client/jobs/pending/client_pending_jobs.dart';
-import 'package:taskmate/pages/freelancer/proposals/completed_jobs_pages/completed_jobs.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 class ClientJobStatus extends StatefulWidget {
@@ -19,7 +19,7 @@ class _ClientJobStatusState extends State<ClientJobStatus> {
   final List _proposalItems = const [
     ClientPendingJobs(),
     ClientActiveJobs(),
-    CompletedJobs(),
+    ClientCompletedJobs(),
   ];
 
   void _onToggle(int? index) {
@@ -65,24 +65,29 @@ class _ClientJobStatusState extends State<ClientJobStatus> {
           ),
           child: Column(
             children: <Widget>[
-              ToggleSwitch(
-                activeBgColor: const [kOceanBlueColor],
-                activeFgColor: kDeepBlueColor,
-                inactiveBgColor: kLightBlueColor,
-                inactiveFgColor: kOceanBlueColor,
-                cornerRadius: 10.0,
-                radiusStyle: true,
-                minWidth: screenWidth,
-                minHeight: 50.0,
-                initialLabelIndex: itemIndex,
-                totalSwitches: 3,
-                customTextStyles: const [
-                  TextStyle(fontSize: 15.0, fontWeight: FontWeight.w600),
-                  TextStyle(fontSize: 15.0, fontWeight: FontWeight.w600),
-                  TextStyle(fontSize: 15.0, fontWeight: FontWeight.w600),
-                ],
-                labels: const ['Pending', 'Active', 'Completed'],
-                onToggle: _onToggle,
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 12.0),
+                child: ToggleSwitch(
+                  activeBgColor: const [kOceanBlueColor],
+                  activeFgColor: kDeepBlueColor,
+                  inactiveBgColor: kLightBlueColor,
+                  inactiveFgColor: kOceanBlueColor,
+                  cornerRadius: 10.0,
+                  radiusStyle: true,
+                  minWidth: screenWidth,
+                  minHeight: 50.0,
+                  initialLabelIndex: itemIndex,
+                  totalSwitches: 3,
+                  animate: true,
+                  curve: Curves.fastLinearToSlowEaseIn,
+                  customTextStyles: const [
+                    TextStyle(fontSize: 15.0, fontWeight: FontWeight.w600),
+                    TextStyle(fontSize: 15.0, fontWeight: FontWeight.w600),
+                    TextStyle(fontSize: 15.0, fontWeight: FontWeight.w600),
+                  ],
+                  labels: const ['Pending', 'Active', 'Completed'],
+                  onToggle: _onToggle,
+                ),
               ),
               Expanded(
                 child: Column(

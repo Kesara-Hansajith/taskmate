@@ -7,10 +7,10 @@ class LightMainButton extends StatelessWidget {
     required this.title,
     required this.process,
     super.key,
-    required this.screenWidth,
+    this.screenWidth,
   });
 
-  final double screenWidth;
+  final double? screenWidth;
   final String? title;
   final void Function()? process;
 

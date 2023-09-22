@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:taskmate/components/attachment_card.dart';
 import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/components/light_main_button.dart';
 import 'package:taskmate/constants.dart';
@@ -22,172 +23,6 @@ class Files extends StatefulWidget {
 class _FilesState extends State<Files> {
   File? _selectedImage1;
   File? _selectedImage2;
-
-  @override
-  Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
-
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        child: SizedBox(
-          width: screenWidth,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 24.0),
-                child: Text(
-                  'Submit work for get the payment',
-                  style: kJobCardTitleTextStyle.copyWith(color: kJetBlack),
-                ),
-              ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 8.0,
-                          ),
-                          child: DottedBorder(
-                            borderType: BorderType.RRect,
-                            radius: const Radius.circular(12),
-                            padding: const EdgeInsets.all(6),
-                            child: ClipRRect(
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(12),
-                              ),
-                              child: GestureDetector(
-                                onTap: () {
-                                  _pickImage1(); // Call the _pickImage function when tapped
-                                },
-                                child: Container(
-                                  height: screenHeight / 6,
-                                  color: kLowOpacityLightBlueColor,
-                                  child: Center(
-                                    child: _selectedImage1 == null
-                                        ? Center(
-                                            child: Text('+ Add'),
-                                          )
-                                        : Image.file(_selectedImage1!),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            _selectedImage1 = null; // Reset selected image
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const <Widget>[
-                              Icon(
-                                Icons.delete,
-                                color: kDarkGreyColor,
-                              ),
-                              Text(
-                                'Delete',
-                                style: kTextStyle,
-                              )
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 15.0,
-                  ),
-                  Expanded(
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 8.0,
-                          ),
-                          child: DottedBorder(
-                            borderType: BorderType.RRect,
-                            radius: const Radius.circular(12),
-                            padding: const EdgeInsets.all(6),
-                            child: ClipRRect(
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(12),
-                              ),
-                              child: GestureDetector(
-                                onTap: () {
-                                  _pickImage2(); // Call the _pickImage function when tapped
-                                },
-                                child: Container(
-                                  height: screenHeight / 6,
-                                  color: kLowOpacityLightBlueColor,
-                                  child: Center(
-                                    child: _selectedImage2 == null
-                                        ? Center(
-                                            child: Text('+ Add'),
-                                          )
-                                        : Image.file(_selectedImage2!),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            _selectedImage2 = null; // Reset selected image
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const <Widget>[
-                              Icon(
-                                Icons.delete,
-                                color: kDarkGreyColor,
-                              ),
-                              Text(
-                                'Delete',
-                                style: kTextStyle,
-                              )
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 50.0,
-              ),
-              DarkMainButton(
-                title: 'Submit Work',
-                process: () {
-                  if (_selectedImage1 == null || _selectedImage2 == null) {
-                    // Show the snackbar with the error message
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        CustomSnackBar('Please select both images'));
-                  } else {
-                    _uploadImagesToFirebase();
-                  }
-                },
-                screenWidth: screenWidth,
-              ),
-              LightMainButton(
-                  title: 'Message',
-                  process: () {
-                    //TODO Forward to messaging part
-                  },
-                  screenWidth: screenWidth)
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 
   Future<void> _pickImage1() async {
     final imagePicker = ImagePicker();
@@ -246,5 +81,128 @@ class _FilesState extends State<Files> {
       // Handle case when one or both images are not selected
       print('Please select both images before submitting.');
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
+    return SingleChildScrollView(
+      child: SizedBox(
+        width: screenWidth,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              'Submit work for get the payment',
+              style: kJobCardTitleTextStyle.copyWith(
+                color: kJetBlack,
+              ),
+            ),
+            const SizedBox(
+              height: 20.0,
+            ),
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: Column(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          _pickImage1(); // Call the _pickImage function when tapped
+                        },
+                        child: AttachmentCard(
+                          cardChild: _selectedImage1 == null
+                              ? const Text('+ Add')
+                              : Image.file(_selectedImage1!),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          _selectedImage1 = null; // Reset selected image
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const <Widget>[
+                            Icon(
+                              Icons.delete,
+                              color: kDarkGreyColor,
+                            ),
+                            Text(
+                              'Delete',
+                              style: kTextStyle,
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  width: 15.0,
+                ),
+                Expanded(
+                  child: Column(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          _pickImage2(); // Call the _pickImage function when tapped
+                        },
+                        child: AttachmentCard(
+                          cardChild: _selectedImage2 == null
+                              ? const Text('+ Add')
+                              : Image.file(_selectedImage2!),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          _selectedImage2 = null; // Reset selected image
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const <Widget>[
+                            Icon(
+                              Icons.delete,
+                              color: kDarkGreyColor,
+                            ),
+                            Text(
+                              'Delete',
+                              style: kTextStyle,
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 50.0,
+            ),
+            DarkMainButton(
+              title: 'Submit Work',
+              process: () {
+                if (_selectedImage1 == null || _selectedImage2 == null) {
+                  // Show the snackbar with the error message
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      CustomSnackBar('Please select both images'));
+                } else {
+                  _uploadImagesToFirebase();
+                }
+              },
+              screenWidth: screenWidth,
+            ),
+            LightMainButton(
+                title: 'Message',
+                process: () {
+                  //TODO Forward to messaging part
+                },
+                screenWidth: screenWidth)
+          ],
+        ),
+      ),
+    );
   }
 }

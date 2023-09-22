@@ -123,9 +123,9 @@ class _ProfileClientAddphotoState extends State<ProfileClientAddphoto> {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: (context) => ClientHomePage(
-              client: widget.client,
-              downloadUrl: downloadUrl,
-              selectedIndex: 1,
+              // client: widget.client,
+              // downloadUrl: downloadUrl,
+              // selectedIndex: 1,
             ),
           ),
         );

@@ -11,52 +11,43 @@ class ClientPendingJobs extends StatefulWidget {
 }
 
 class _ClientPendingJobsState extends State<ClientPendingJobs> {
-  List<String> _docIDs = [];
+  // List<String> _docIDs = [];
 
-  //Getting docIDs
-  Future<void> getDocIDs() async {
-    final snapshot = await FirebaseFirestore.instance
-        .collection('client_pending_jobs')
-        .get();
-    _docIDs = snapshot.docs.map((element) => element.reference.id).toList();
-  }
+  // Getting docIDs
+  // Future<void> getDocIDs() async {
+  //   final snapshot = await FirebaseFirestore.instance.collection('jobs').get();
+  //   if (snapshot.docs.isNotEmpty) {
+  //     // Check if the query returned any documents
+  //     _docIDs = snapshot.docs.map((element) => element.id).toList();
+  //   }
+  // }
 
-  @override
-  void initState() {
-    super.initState();
-    // Use a Future inside initState to fetch data asynchronously
-    // and use then to handle the result
-    getDocIDs().then((_) {
-      // Calling setState to rebuild the widget with the fetched data
-      setState(() {});
-    });
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   // Use a Future inside initState to fetch data asynchronously
+  //   // and use then to handle the result
+  //   getDocIDs().then((_) {
+  //     // Calling setState to rebuild the widget with the fetched data
+  //     setState(() {});
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Expanded(
-      child: Column(
-        children: [
-          Expanded(
-            child: StreamBuilder(
-              //future: getDocIDs(),
-              builder: (context, snapshot) {
-                return ListView.builder(
-                  itemCount: _docIDs.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: ClientPendingJobCard(
-                        documentID: _docIDs[index].toString(),
-                      ),
-                    );
-                  },
-                );
-              },
-            ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4.0,horizontal: 16.0),
+        child: SizedBox(
+          width: screenWidth,
+          child: Column(
+            children: [
+              ClientPendingJobCard(),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

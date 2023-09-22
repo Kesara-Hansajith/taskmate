@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:taskmate/components/attachment_card.dart';
 import 'package:taskmate/components/dark_main_button.dart';
+import 'package:taskmate/components/freelancer/user_data_gather_title.dart';
 import 'package:taskmate/components/maintenance_page.dart';
 
 import 'package:taskmate/constants.dart';
@@ -9,7 +11,10 @@ import 'package:taskmate/models/job_details_data.dart';
 
 class JobDetails extends StatefulWidget {
   final String documentID;
-  const JobDetails({super.key, required this.documentID});
+  const JobDetails({
+    super.key,
+    required this.documentID,
+  });
 
   @override
   State<JobDetails> createState() => _JobDetailsState();
@@ -123,66 +128,116 @@ class _JobDetailsState extends State<JobDetails> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              FutureBuilder<List<JobDetailsData>>(
-                future: fetchData(widget.documentID),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else if (!snapshot.hasData) {
-                    return const Text('No data available.');
-                  } else if (snapshot.hasData) {
-                    List<JobDetailsData> data = snapshot.data!;
-                    return Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 16.0),
-                          child: Text(
-                            data[0].title,
-                            textAlign: TextAlign.center,
-                            style: kJobCardTitleTextStyle,
-                          ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text(
-                              'LKR. ${data[0].budget}',
-                              style: kJobCardDescriptionTextStyle,
-                            ),
-                            const Text('Remaining time goes here'),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Text(
-                            data[0].description,
-                            style: kJobCardDescriptionTextStyle,
-                            textAlign: TextAlign.start,
-                          ),
-                        ),
-                      ],
-                    );
-                  } else {
-                    return const Text('');
-                  }
-                },
-              ),
+              // FutureBuilder<List<JobDetailsData>>(
+              //   future: fetchData(widget.documentID),
+              //   builder: (context, snapshot) {
+              //     if (snapshot.connectionState == ConnectionState.waiting) {
+              //       return const Center(
+              //         child: CircularProgressIndicator(),
+              //       );
+              //     } else if (snapshot.hasError) {
+              //       return Text('Error: ${snapshot.error}');
+              //     } else if (!snapshot.hasData) {
+              //       return const Text('No data available.');
+              //     } else if (snapshot.hasData) {
+              //       List<JobDetailsData> data = snapshot.data!;
+              //       return Column(
+              //         children: [
+              //           Padding(
+              //             padding: const EdgeInsets.symmetric(vertical: 16.0),
+              //             child: Text(
+              //               data[0].title,
+              //               textAlign: TextAlign.center,
+              //               style: kJobCardTitleTextStyle,
+              //             ),
+              //           ),
+              //           Row(
+              //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //             children: [
+              //               Text(
+              //                 'LKR. ${data[0].budget}',
+              //                 style: kJobCardDescriptionTextStyle,
+              //               ),
+              //               const Text('Remaining time goes here'),
+              //             ],
+              //           ),
+              //           Padding(
+              //             padding: const EdgeInsets.all(12.0),
+              //             child: Text(
+              //               data[0].description,
+              //               style: kJobCardDescriptionTextStyle,
+              //               textAlign: TextAlign.start,
+              //             ),
+              //           ),
+              //         ],
+              //       );
+              //     } else {
+              //       return const Text('');
+              //     }
+              //   },
+              // ),
+              UserDataGatherTitle(title: 'LKR 1000.00 - 2500.00',),
               const Padding(
-                padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 18.0),
+                padding: EdgeInsets.symmetric(
+                  vertical: 10.0,
+                  horizontal: 20.0,
+                ),
+                child: Text(
+                  'Description',
+                  style: TextStyle(fontWeight: FontWeight.w600),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Text(
+                  'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
+                  style: kTextStyle,
+                ),
+              ),
+
+              const Padding(
+                padding: EdgeInsets.symmetric(
+                  vertical: 10.0,
+                  horizontal: 20.0,
+                ),
                 child: Text(
                   'Attachments',
                   style: TextStyle(fontWeight: FontWeight.w600),
                 ),
               ),
-              const Divider(
-                thickness: 1.0,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: AttachmentCard(cardChild: null),
+                    ),
+                    const SizedBox(
+                      width: 10.0,
+                    ),
+                    Expanded(
+                      child: AttachmentCard(cardChild: null),
+                    ),
+                  ],
+                ),
+              ),
+
+              Align(
+                alignment: Alignment.center,
+                child: Container(
+                  margin: const EdgeInsets.symmetric(vertical: 8.0),
+                  width: screenWidth / 1.1,
+                  child: const Divider(
+                    color: kDarkGreyColor,
+                    thickness: 1.0,
+                  ),
+                ),
               ),
               const Padding(
-                padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 18.0),
+                padding: EdgeInsets.symmetric(
+                  vertical: 10.0,
+                  horizontal: 20.0,
+                ),
                 child: Text(
                   'Describe your Bid',
                   style: TextStyle(fontWeight: FontWeight.w600),
@@ -194,11 +249,13 @@ class _JobDetailsState extends State<JobDetails> {
                   children: <Widget>[
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 10.0, horizontal: 18.0),
+                        vertical: 10.0,
+                        horizontal: 20.0,
+                      ),
                       child: TextFormField(
                         maxLines: 5,
                         controller: _bidDescriptionController,
-                        maxLength: 500,
+                        // maxLength: 500,
                         decoration: InputDecoration(
                           hintText: 'Add an clear overview about your bid',
                           hintStyle: const TextStyle(fontSize: 12.0),
@@ -212,15 +269,18 @@ class _JobDetailsState extends State<JobDetails> {
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             borderSide: const BorderSide(
-                                color: kDeepBlueColor, width: 2.0),
+                              color: kDeepBlueColor,
+                              width: 2.0,
+                            ),
                           ),
                         ),
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'Field cannot be empty.';
-                          } else if (value.length < 500) {
-                            return 'Minimum 500 characters required.';
                           }
+                          // else if (value.length < 500) {
+                          //   return 'Minimum 500 characters required.';
+                          // }
                           return null;
                         },
                       ),
@@ -334,12 +394,14 @@ class _JobDetailsState extends State<JobDetails> {
                 child: ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      Map<String,String>dataToSave={
-                        'bidDescription' :_bidDescriptionController.text,
-                        'bidAmount' : _bidAmountController.text,
-                        'delivery':_deliveryTimeController.text,
+                      Map<String, String> dataToSave = {
+                        'bidDescription': _bidDescriptionController.text,
+                        'bidAmount': _bidAmountController.text,
+                        'delivery': _deliveryTimeController.text,
                       };
-                      FirebaseFirestore.instance.collection('pending_jobs').add(dataToSave);
+                      FirebaseFirestore.instance
+                          .collection('pending_jobs')
+                          .add(dataToSave);
                       congratulateOnPlaceBid();
                     }
                   },

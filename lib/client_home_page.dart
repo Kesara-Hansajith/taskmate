@@ -1,37 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:taskmate/client_dashboard/Dashboard.dart';
+import 'package:taskmate/bottom_nav_bar/client/client_account.dart';
+// import 'package:taskmate/client_dashboard/Dashboard.dart';
 import 'package:taskmate/bottom_nav_bar/client/client_job_status.dart';
 import 'package:taskmate/bottom_nav_bar/client/client_messaging.dart';
 import 'package:taskmate/bottom_nav_bar/client/client_posted.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:taskmate/profile/client/user_model1.dart';
+import 'package:taskmate/dashboard/client/dashboard.dart';
 
 class ClientHomePage extends StatefulWidget {
   ClientHomePage({
-    required this.client,
-    required this.selectedIndex,
-    this.downloadUrl,
+    // required this.client,
+    // required this.selectedIndex,
+    // this.downloadUrl,
     super.key,
   });
 
-  final UserModel1 client; // Add this line
-  final String? downloadUrl;
-  int selectedIndex;
+  // final UserModel1 client; // Add this line
+  // final String? downloadUrl;
+
 
   @override
   State<ClientHomePage> createState() => _ClientHomePageState();
 }
 
 class _ClientHomePageState extends State<ClientHomePage> {
+  int selectedIndex=0;
   late final List _items = [
     const ClientMessaging(),
     ClientPosted(
-      client: widget.client,
+      // client: widget.client,
     ),
     const ClientJobStatus(),
-    DashboardClient(
-      client: widget.client,
-      profileImageUrl: widget.downloadUrl,
+    Dashboard(
+      // client: widget.client,
+      // profileImageUrl: widget.downloadUrl,
     ),
   ];
 
@@ -41,10 +43,10 @@ class _ClientHomePageState extends State<ClientHomePage> {
       child: Scaffold(
         bottomNavigationBar: GNav(
           gap: 10.0,
-          selectedIndex: widget.selectedIndex,
+          selectedIndex: selectedIndex,
           onTabChange: (int index) {
             setState(() {
-              widget.selectedIndex = index;
+              selectedIndex = index;
             });
           },
           tabs: const [
@@ -66,7 +68,7 @@ class _ClientHomePageState extends State<ClientHomePage> {
             ),
           ],
         ),
-        body: _items[widget.selectedIndex],
+        body: _items[selectedIndex],
       ),
     );
   }

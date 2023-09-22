@@ -7,10 +7,10 @@ import 'package:taskmate/pages/freelancer/proposals/active_jobs_pages/reviews_se
 import 'package:toggle_switch/toggle_switch.dart';
 
 class ActiveJobDetails extends StatefulWidget {
-  final String documentID;
+  // final String documentID;
   const ActiveJobDetails({
     super.key,
-    required this.documentID,
+    // required this.documentID,
   });
 
   @override
@@ -31,23 +31,22 @@ class _ActiveJobDetailsState extends State<ActiveJobDetails> {
     double screenWidth = MediaQuery.of(context).size.width;
     final List activeJobItems = [
       Details(
-        documentID: widget.documentID,
-      ),
+          //documentID: widget.documentID,
+          ),
       const Files(),
       const Payments(),
-      //const Reviews(),
+      const Reviews(),
     ];
 
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           title: const Text(
-            'Active Job',
+            'Active Jobs',
             style: kHeadingTextStyle,
           ),
-          centerTitle: true,
-          backgroundColor: Colors.transparent,
-          elevation: 0,
+          elevation: 4.0,
           leading: IconButton(
             onPressed: () {
               Navigator.of(context).pop();
@@ -56,6 +55,17 @@ class _ActiveJobDetailsState extends State<ActiveJobDetails> {
               Icons.navigate_before,
               color: kDeepBlueColor,
             ),
+          ),
+          flexibleSpace: Stack(
+            children: [
+              // Background Image
+              Positioned.fill(
+                child: Image.asset(
+                  'images/noise_image.webp',
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ],
           ),
         ),
         body: Container(
@@ -68,32 +78,40 @@ class _ActiveJobDetailsState extends State<ActiveJobDetails> {
           ),
           child: Column(
             children: <Widget>[
-              const SizedBox(
-                height: 10.0,
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 24.0),
+                child: ToggleSwitch(
+                  activeBgColor: const [kOceanBlueColor],
+                  activeFgColor: kDeepBlueColor,
+                  inactiveBgColor: kLightBlueColor,
+                  inactiveFgColor: kOceanBlueColor,
+                  cornerRadius: 10.0,
+                  radiusStyle: true,
+                  minWidth: screenWidth,
+                  minHeight: 50.0,
+                  initialLabelIndex: activeJobItemIndex,
+                  totalSwitches: 4,
+                  customTextStyles: const [
+                    TextStyle(fontSize: 15.0, fontWeight: FontWeight.w600),
+                    TextStyle(fontSize: 15.0, fontWeight: FontWeight.w600),
+                    TextStyle(fontSize: 15.0, fontWeight: FontWeight.w600),
+                    TextStyle(fontSize: 15.0, fontWeight: FontWeight.w600),
+                  ],
+                  animate: true,
+                  curve: Curves.ease,
+                  labels: const ['Details', 'Files', 'Payments', 'Reviews'],
+                  onToggle: _onToggle,
+                ),
               ),
-              ToggleSwitch(
-                activeBgColor: const [kOceanBlueColor],
-                activeFgColor: kDeepBlueColor,
-                inactiveBgColor: kLightBlueColor,
-                inactiveFgColor: kOceanBlueColor,
-                cornerRadius: 10.0,
-                radiusStyle: true,
-                minWidth: screenWidth,
-                minHeight: 50.0,
-                initialLabelIndex: activeJobItemIndex,
-                totalSwitches: 4,
-                customTextStyles: const [
-                  TextStyle(fontSize: 15.0, fontWeight: FontWeight.w600),
-                  TextStyle(fontSize: 15.0, fontWeight: FontWeight.w600),
-                  TextStyle(fontSize: 15.0, fontWeight: FontWeight.w600),
-                  TextStyle(fontSize: 15.0, fontWeight: FontWeight.w600),
-                ],
-                animate: true,
-                curve: Curves.ease,
-                labels: const ['Details', 'Files', 'Payments', 'Reviews'],
-                onToggle: _onToggle,
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                  child: SizedBox(
+                    width: screenWidth,
+                    child: activeJobItems[activeJobItemIndex],
+                  ),
+                ),
               ),
-              activeJobItems[activeJobItemIndex],
             ],
           ),
         ),
