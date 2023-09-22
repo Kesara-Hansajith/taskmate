@@ -2,11 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:taskmate/constants.dart';
-import 'package:taskmate/job_details.dart';
+import 'package:taskmate/pages/freelancer/job_details.dart';
 
 import 'package:flutter/material.dart';
 import 'package:taskmate/constants.dart';
-import 'package:taskmate/job_details.dart';
+import 'package:taskmate/pages/freelancer/job_details.dart';
 
 class JobCard extends StatelessWidget {
   const JobCard({

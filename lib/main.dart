@@ -14,6 +14,7 @@ import 'package:taskmate/dashboard/freelancer/profile.dart';
 
 import 'package:taskmate/pages/client/client_post_job.dart';
 import 'package:taskmate/pages/client/jobs/pending/bidded_freelancer_details.dart';
+import 'package:taskmate/pages/client/jobs/pending/bidded_freelancer_profile.dart';
 import 'package:taskmate/pages/client/jobs/pending/bidded_freelancers.dart';
 import 'package:taskmate/pages/client/jobs/pending/client_pending_jobs.dart';
 import 'package:taskmate/pages/freelancer/proposals/pending_jobs_pages/pending_jobs.dart';
@@ -41,7 +42,7 @@ import 'package:taskmate/authentication/create_my_account_1.dart';
 import 'package:taskmate/authentication/get_started.dart';
 import 'package:taskmate/authentication/verify_email.dart';
 import 'package:taskmate/bottom_nav_bar/freelancer/jobs.dart';
-import 'package:taskmate/job_details.dart';
+import 'package:taskmate/pages/freelancer/job_details.dart';
 import 'package:taskmate/authentication/forget_password.dart';
 
 import 'package:taskmate/freelancer_home_page.dart';

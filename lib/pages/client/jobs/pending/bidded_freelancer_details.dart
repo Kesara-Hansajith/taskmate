@@ -3,6 +3,7 @@ import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/components/freelancer/user_data_gather_title.dart';
 import 'package:taskmate/components/light_main_button.dart';
 import 'package:taskmate/constants.dart';
+import 'package:taskmate/pages/client/jobs/pending/bidded_freelancer_profile.dart';
 
 class BiddedFreelancerDetails extends StatefulWidget {
   const BiddedFreelancerDetails({super.key});
@@ -13,6 +14,14 @@ class BiddedFreelancerDetails extends StatefulWidget {
 }
 
 class _BiddedFreelancerDetailsState extends State<BiddedFreelancerDetails> {
+  void navigateToFreelancerProfile() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const BiddedFreelancerProfile(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -144,7 +153,7 @@ class _BiddedFreelancerDetailsState extends State<BiddedFreelancerDetails> {
                       screenWidth: screenWidth),
                   LightMainButton(
                       title: 'View Profile',
-                      process: () {},
+                      process: navigateToFreelancerProfile,
                       screenWidth: screenWidth),
                 ],
               ),

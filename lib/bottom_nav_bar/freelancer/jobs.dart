@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:taskmate/constants.dart';
-import 'package:taskmate/job_details.dart';
+import 'package:taskmate/pages/freelancer/job_details.dart';
 
 import '../../components/job_card.dart';
 
