@@ -16,7 +16,7 @@ class ClientJobStatus extends StatefulWidget {
 class _ClientJobStatusState extends State<ClientJobStatus> {
   int itemIndex = 0;
 
-  final List _proposalItems = const [
+  final List _proposalItems =  [
     ClientPendingJobs(),
     ClientActiveJobs(),
     ClientCompletedJobs(),

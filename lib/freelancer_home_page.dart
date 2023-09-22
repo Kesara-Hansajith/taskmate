@@ -18,7 +18,7 @@ class _FreelancerHomePageState extends State<FreelancerHomePage> {
 
   final List _items = [
     const Messaging(),
-    const Proposals(),
+     Proposals(),
     const Jobs(),
     const Dashboard(),
   ];

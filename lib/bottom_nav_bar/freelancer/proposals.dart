@@ -7,7 +7,7 @@ import 'package:taskmate/pages/freelancer/proposals/pending_jobs_pages/pending_j
 import 'package:toggle_switch/toggle_switch.dart';
 
 class Proposals extends StatefulWidget {
-  const Proposals({super.key});
+   Proposals({super.key});
 
   @override
   State<Proposals> createState() => _ProposalsState();
@@ -16,7 +16,7 @@ class Proposals extends StatefulWidget {
 class _ProposalsState extends State<Proposals> {
   int proposalItemIndex = 0;
 
-  final List _proposalItems = const [
+  final List<Widget> _proposalItems =  [
     ActiveJobs(),
     PendingJobs(),
     CompletedJobs(),

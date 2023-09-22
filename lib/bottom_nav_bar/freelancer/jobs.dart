@@ -98,12 +98,14 @@ class _JobsState extends State<Jobs> with SingleTickerProviderStateMixin {
                   }
 
                   final jobDocs = snapshot.data!.docs;
+
+
                   return ListView.builder(
                     itemCount: jobDocs.length,
                     itemBuilder: (context, index) {
                       final doc = jobDocs[index];
                       return StreamBuilder<QuerySnapshot>(
-                        stream: doc.reference.collection('jobsnew').snapshots(),
+                        stream: doc.reference.collection('jobsnew').where('status', isEqualTo: 'new').snapshots(),
                         builder: (context, subSnapshot) {
                           if (subSnapshot.connectionState == ConnectionState.waiting) {
                             return const Center(
@@ -113,11 +115,20 @@ class _JobsState extends State<Jobs> with SingleTickerProviderStateMixin {
 
                           if (!subSnapshot.hasData || subSnapshot.data!.docs.isEmpty) {
                             return const Center(
-                              child: Text('No data found in subcollection.'),
+                              child: Text('No pending jobs found'),
                             );
                           }
 
                           final jobNewDocs = subSnapshot.data!.docs;
+
+                          // Sort jobNewDocs by budget in descending order
+                          jobNewDocs.sort((a, b) {
+                            final budgetA = int.tryParse(a['budget'] as String) ?? 0;
+                            final budgetB = int.tryParse(b['budget'] as String) ?? 0;
+
+                            return budgetB.compareTo(budgetA); // Sort in descending order
+                          });
+
                           final data = doc.data() as Map<String, dynamic>;
 
                           return JobCard(
@@ -130,8 +141,10 @@ class _JobsState extends State<Jobs> with SingleTickerProviderStateMixin {
                       );
                     },
                   );
+
                 },
               ),
+
               const Center(
                 child: Text('Most Recent Jobs will be displayed here'),
               ),
