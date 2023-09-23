@@ -6,8 +6,15 @@ import 'package:taskmate/components/attachment_card.dart';
 
 class Details extends StatefulWidget {
   // final String documentID;
+  final String jobTitle; // Add this parameter
+  final String jobDescription;
+  final String budgetField;
+
   const Details({
     super.key,
+    required this.jobTitle,
+    required this.jobDescription,
+    required this.budgetField,
     // required this.documentID,
   });
 
@@ -16,21 +23,6 @@ class Details extends StatefulWidget {
 }
 
 class _DetailsState extends State<Details> {
-  // Future<List<ActiveJobDetailsData>> fetchData(String documentId) async {
-  //   final DocumentSnapshot docSnapshot = await FirebaseFirestore.instance
-  //       .collection('active_jobs')
-  //       .doc(documentId)
-  //       .get();
-  //
-  //   return [
-  //     ActiveJobDetailsData(
-  //       title: docSnapshot['title'] as String,
-  //       bidCount: docSnapshot['bidCount'] as int,
-  //       bidPrice: docSnapshot['bidPrice'] as int,
-  //       description: docSnapshot['description'] as String,
-  //     )
-  //   ];
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +42,7 @@ class _DetailsState extends State<Details> {
               style: kJobCardTitleTextStyle.copyWith(color: kJetBlack),
             ),
             Text(
-              'Title goes here...',
+              widget.jobTitle, // Display the jobTitle from the widget parameter
               style: kTextStyle,
             ),
             const SizedBox(
@@ -61,7 +53,7 @@ class _DetailsState extends State<Details> {
               style: kJobCardTitleTextStyle.copyWith(color: kJetBlack),
             ),
             Text(
-              'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. ',
+              widget.jobDescription,
               style: kTextStyle,
             ),
             const SizedBox(
@@ -72,7 +64,7 @@ class _DetailsState extends State<Details> {
               style: kJobCardTitleTextStyle.copyWith(color: kJetBlack),
             ),
             Text(
-              'LKR 3000',
+              widget.budgetField,
               style: kTextStyle,
             ),
             const SizedBox(
@@ -103,64 +95,7 @@ class _DetailsState extends State<Details> {
               ),
             ),
 
-            // FutureBuilder<List<ActiveJobDetailsData>>(
-            //   future: fetchData(widget.documentID),
-            //   builder: (context, snapshot) {
-            //     if (snapshot.connectionState == ConnectionState.waiting) {
-            //       return const Center(
-            //         child: CircularProgressIndicator(),
-            //       );
-            //     } else if (snapshot.hasError) {
-            //       return Text('Error: ${snapshot.error}');
-            //     } else if (!snapshot.hasData) {
-            //       return const Text('No data available.');
-            //     } else if (snapshot.hasData) {
-            //       List<ActiveJobDetailsData> data = snapshot.data!;
-            //       return Center(
-            //         child: Column(
-            //           crossAxisAlignment: CrossAxisAlignment.start,
-            //           children: [
-            //             const SizedBox(height: 20.0,),
-            //             const Text(
-            //               'Job Title',
-            //               style: kJobCardTitleTextStyle,
-            //             ),
-            //             Text(
-            //               data[0].title,
-            //               style: kTextStyle,
-            //             ),
-            //             const Text(
-            //               'Description',
-            //               style: kJobCardTitleTextStyle,
-            //             ),
-            //             Text(
-            //               data[0].description,
-            //               style: kTextStyle,
-            //             ),
-            //             const Text(
-            //               'Price',
-            //               style: kJobCardTitleTextStyle,
-            //             ),
-            //             Text(
-            //               "LKR. " + data[0].bidPrice.toString(),
-            //               style: kTextStyle,
-            //             ),
-            //             const Text(
-            //               'Attachments',
-            //               style: kJobCardTitleTextStyle,
-            //             ),
-            //             const Text(
-            //               'No Attachments',
-            //               style: kTextStyle,
-            //             ),
-            //           ],
-            //         ),
-            //       );
-            //     } else {
-            //       return const Text('');
-            //     }
-            //   },
-            // ),
+
           ],
         ),
       ),

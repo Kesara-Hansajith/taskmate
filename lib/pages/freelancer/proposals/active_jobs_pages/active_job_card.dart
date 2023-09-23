@@ -17,13 +17,33 @@ class ActiveJobCard extends StatelessWidget {
 
     final subData = activeJobDoc.data() as Map<String, dynamic>;
     final jobTitle = subData['jobTitle'] as String;
-    final budget = subData['budget']; // Remove the parsing
+    final jobDescription = subData['jobDescription'] as String;
+    final budgetField = subData['budget'];
+
+    String budget = '0.0'; // Initialize with a default value
+
+    if (budgetField is int) {
+      budget = budgetField.toString(); // Convert int to string
+    } else if (budgetField is double) {
+      budget = budgetField.toString(); // Convert double to string
+    } else if (budgetField is String) {
+      double? parsedBudget = double.tryParse(budgetField);
+      if (parsedBudget != null) {
+        budget = parsedBudget.toString();
+      }
+    }
+
+
 
     return InkWell(
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => ActiveJobDetails(
+              jobTitle: jobTitle, // Pass the jobTitle
+              budgetField: budget, // Pass the budget
+              jobDescription : jobDescription,
+
                   // Pass budget to ActiveJobDetails
             ),
           ),

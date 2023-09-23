@@ -8,8 +8,16 @@ import 'package:toggle_switch/toggle_switch.dart';
 
 class ActiveJobDetails extends StatefulWidget {
   // final String documentID;
-  const ActiveJobDetails({
+  final String jobTitle; // Add this parameter
+  final String jobDescription;
+  final String budgetField;
+
+
+   ActiveJobDetails({
     super.key,
+    required this.jobTitle, // Add this parameter
+     required this.jobDescription,
+    required this.budgetField,
     // required this.documentID,
   });
 
@@ -31,6 +39,9 @@ class _ActiveJobDetailsState extends State<ActiveJobDetails> {
     double screenWidth = MediaQuery.of(context).size.width;
     final List activeJobItems = [
       Details(
+          jobTitle: widget.jobTitle,
+        jobDescription : widget.jobDescription,
+        budgetField: widget.budgetField,
           //documentID: widget.documentID,
           ),
       const Files(),
