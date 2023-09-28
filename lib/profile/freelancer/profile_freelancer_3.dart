@@ -40,11 +40,8 @@ class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
   final TextEditingController servicesController = TextEditingController();
   final TextEditingController professionalRoleController = TextEditingController();
   final TextEditingController hourlyrateController = TextEditingController();
-  final TextEditingController imageurl1Controller = TextEditingController();
-  final TextEditingController imageurl2Controller = TextEditingController();
-  final TextEditingController imageurl3Controller = TextEditingController();
-  final TextEditingController titleController = TextEditingController();
-  final TextEditingController itemdesController = TextEditingController();
+  final TextEditingController levelController = TextEditingController();
+
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
@@ -59,7 +56,11 @@ class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
   String? selectedSkills;
   bool dataSubmitted = false;
 
-  bool isTapped = false;
+  bool isTapped1 = false;
+  bool isTapped2 = false;
+  bool isTapped3 = false;
+  bool isTapped4 = false;
+
 
   Future<String> uploadFile(File file, String filename, String fileType) async {
     User? user = _auth.currentUser;
@@ -107,7 +108,7 @@ class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
         services: widget.user.services,
         email: widget.user.email,
         password: widget.user.password,
-        professionalrole: widget.user.professionalrole,
+        professionalRole: widget.user.professionalRole,
         sociallink: sociallinkController.text,
 
       );
@@ -238,7 +239,7 @@ class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
                                 decoration: BoxDecoration(
                                   border: Border.all(color: Color(0xFF4B4646)),
                                   borderRadius: BorderRadius.circular(10),
-                                  color: isTapped ? Colors.green : Colors.transparent, // Set the color based on _isTapped
+                                  color: isTapped1 ? Color(0xFF5696FA) : Colors.transparent, // Set the color based on _isTapped
                                 ),
                                 child: GestureDetector(
                                   onTap: () async {
@@ -248,12 +249,12 @@ class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
                                     );
                                     // Set the tapped state to true when tapped
                                     setState(() {
-                                      isTapped = true;
+                                      isTapped1 = true;
                                     });
                                   },
                                   child: Center(
                                     child: Text(
-                                      '+ Add',
+                                      isTapped1 ? 'Items Added' : '+ Add',
                                       style: TextStyle(
                                         fontSize: 15,
                                         color: Color(0xFF4B4646),
@@ -271,6 +272,7 @@ class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
                                 decoration: BoxDecoration(
                                   border: Border.all(color: Color(0xFF4B4646)),
                                   borderRadius: BorderRadius.circular(10),
+                                  color: isTapped2 ? Color(0xFF5696FA) : Colors.transparent,
                                 ),
                                 child: GestureDetector(
                                   onTap: () async {
@@ -278,11 +280,14 @@ class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
                                       context,
                                       MaterialPageRoute(builder: (context) => ProfileFreelancer4()),
                                     );
+                                    setState(() {
+                                      isTapped2 = true;
+                                    });
                                   },
                                   // Add the contents of the second box here
                                   child: Center(
                                     child: Text(
-                                      '+ Add',
+                                      isTapped2 ? 'Items Added' : '+ Add',
                                       style: TextStyle(
                                         fontSize: 15,
                                         color: Color(0xFF4B4646),
@@ -306,6 +311,7 @@ class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
                                 decoration: BoxDecoration(
                                   border: Border.all(color: Color(0xFF4B4646)),
                                   borderRadius: BorderRadius.circular(10),
+                                  color: isTapped3 ? Color(0xFF5696FA) : Colors.transparent,
                                 ),
                                 child: GestureDetector(
                                   onTap: () async {
@@ -313,10 +319,13 @@ class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
                                       context,
                                       MaterialPageRoute(builder: (context) => ProfileFreelancer4()),
                                     );
+                                    setState(() {
+                                      isTapped3 = true;
+                                    });
                                   },
                                   child: Center(
                                     child: Text(
-                                      '+ Add',
+                                      isTapped3 ? 'Items Added' : '+ Add',
                                       style: TextStyle(
                                         fontSize: 15,
                                         color: Color(0xFF4B4646),
@@ -334,6 +343,7 @@ class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
                                 decoration: BoxDecoration(
                                   border: Border.all(color: Color(0xFF4B4646)),
                                   borderRadius: BorderRadius.circular(10),
+                                  color: isTapped4 ? Color(0xFF5696FA) : Colors.transparent,
                                 ),
                                 child: GestureDetector(
                                   onTap: () async {
@@ -341,11 +351,14 @@ class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
                                       context,
                                       MaterialPageRoute(builder: (context) => ProfileFreelancer4()),
                                     );
+                                    setState(() {
+                                      isTapped4 = true;
+                                    });
                                   },
                                   // Add the contents of the second box here
                                   child: Center(
                                     child: Text(
-                                      '+ Add',
+                                      isTapped4 ? 'Items Added' : '+ Add',
                                       style: TextStyle(
                                         fontSize: 15,
                                         color: Color(0xFF4B4646),

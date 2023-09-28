@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:taskmate/components/attachment_card.dart';
 import 'package:taskmate/components/dark_main_button.dart';
+import 'package:taskmate/components/freelancer/user_data_gather_title.dart';
 import 'package:taskmate/components/maintenance_page.dart';
-
 import 'package:taskmate/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:taskmate/freelancer_home_page.dart';
@@ -9,21 +10,22 @@ import 'package:taskmate/models/job_details_data.dart';
 
 class JobDetails extends StatefulWidget {
   final String documentID;
-  const JobDetails({super.key, required this.documentID});
+  const JobDetails({
+    super.key,
+    required this.documentID,
+  });
 
   @override
   State<JobDetails> createState() => _JobDetailsState();
 }
 
 class _JobDetailsState extends State<JobDetails> {
-  // final _describeBidController = TextEditingController();
-
   String description = '';
 
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _bidDescriptionController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _bidAmountController = TextEditingController();
   final TextEditingController _deliveryTimeController = TextEditingController();
 
@@ -50,34 +52,21 @@ class _JobDetailsState extends State<JobDetails> {
               ),
             ),
             DarkMainButton(
-                title: 'Try Another Project',
-                process: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const HomePage(),
-                    ),
-                  );
-                },
-                screenWidth: MediaQuery.of(context).size.width),
+              title: 'Try Another Project',
+              process: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const FreelancerHomePage(),
+                  ),
+                );
+              },
+              screenWidth: MediaQuery.of(context).size.width,
+            ),
           ],
         );
       },
     );
   }
-
-  // Stream<JobDetailsData> fetchDocumentData(String documentId) {
-  //   return FirebaseFirestore.instance
-  //       .collection('available_projects')
-  //       .doc(documentId)
-  //       .snapshots()
-  //       .map((snapshot) {
-  //     return JobDetailsData(
-  //       title: snapshot['title'],
-  //       budget: snapshot['budget'],
-  //       description: snapshot['description'],
-  //     );
-  //   });
-  // }
 
   Future<List<JobDetailsData>> fetchData(String documentId) async {
     final DocumentSnapshot docSnapshot = await FirebaseFirestore.instance
@@ -97,7 +86,6 @@ class _JobDetailsState extends State<JobDetails> {
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
-    // final double screenHeight = MediaQuery.of(context).size.height;
 
     return SafeArea(
       child: Scaffold(
@@ -123,66 +111,116 @@ class _JobDetailsState extends State<JobDetails> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              FutureBuilder<List<JobDetailsData>>(
-                future: fetchData(widget.documentID),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else if (!snapshot.hasData) {
-                    return const Text('No data available.');
-                  } else if (snapshot.hasData) {
-                    List<JobDetailsData> data = snapshot.data!;
-                    return Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 16.0),
-                          child: Text(
-                            data[0].title,
-                            textAlign: TextAlign.center,
-                            style: kJobCardTitleTextStyle,
-                          ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text(
-                              'LKR. ${data[0].budget}',
-                              style: kJobCardDescriptionTextStyle,
-                            ),
-                            const Text('Remaining time goes here'),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Text(
-                            data[0].description,
-                            style: kJobCardDescriptionTextStyle,
-                            textAlign: TextAlign.start,
-                          ),
-                        ),
-                      ],
-                    );
-                  } else {
-                    return const Text('');
-                  }
-                },
-              ),
+              // FutureBuilder<List<JobDetailsData>>(
+              //   future: fetchData(widget.documentID),
+              //   builder: (context, snapshot) {
+              //     if (snapshot.connectionState == ConnectionState.waiting) {
+              //       return const Center(
+              //         child: CircularProgressIndicator(),
+              //       );
+              //     } else if (snapshot.hasError) {
+              //       return Text('Error: ${snapshot.error}');
+              //     } else if (!snapshot.hasData) {
+              //       return const Text('No data available.');
+              //     } else if (snapshot.hasData) {
+              //       List<JobDetailsData> data = snapshot.data!;
+              //       return Column(
+              //         children: [
+              //           Padding(
+              //             padding: const EdgeInsets.symmetric(vertical: 16.0),
+              //             child: Text(
+              //               data[0].title,
+              //               textAlign: TextAlign.center,
+              //               style: kJobCardTitleTextStyle,
+              //             ),
+              //           ),
+              //           Row(
+              //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //             children: [
+              //               Text(
+              //                 'LKR. ${data[0].budget}',
+              //                 style: kJobCardDescriptionTextStyle,
+              //               ),
+              //               const Text('Remaining time goes here'),
+              //             ],
+              //           ),
+              //           Padding(
+              //             padding: const EdgeInsets.all(12.0),
+              //             child: Text(
+              //               data[0].description,
+              //               style: kJobCardDescriptionTextStyle,
+              //               textAlign: TextAlign.start,
+              //             ),
+              //           ),
+              //         ],
+              //       );
+              //     } else {
+              //       return const Text('');
+              //     }
+              //   },
+              // ),
+              UserDataGatherTitle(title: 'LKR 1000.00 - 2500.00',),
               const Padding(
-                padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 18.0),
+                padding: EdgeInsets.symmetric(
+                  vertical: 10.0,
+                  horizontal: 20.0,
+                ),
+                child: Text(
+                  'Description',
+                  style: TextStyle(fontWeight: FontWeight.w600),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Text(
+                  'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
+                  style: kTextStyle,
+                ),
+              ),
+
+              const Padding(
+                padding: EdgeInsets.symmetric(
+                  vertical: 10.0,
+                  horizontal: 20.0,
+                ),
                 child: Text(
                   'Attachments',
                   style: TextStyle(fontWeight: FontWeight.w600),
                 ),
               ),
-              const Divider(
-                thickness: 1.0,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: AttachmentCard(cardChild: null),
+                    ),
+                    const SizedBox(
+                      width: 10.0,
+                    ),
+                    Expanded(
+                      child: AttachmentCard(cardChild: null),
+                    ),
+                  ],
+                ),
+              ),
+
+              Align(
+                alignment: Alignment.center,
+                child: Container(
+                  margin: const EdgeInsets.symmetric(vertical: 8.0),
+                  width: screenWidth / 1.1,
+                  child: const Divider(
+                    color: kDarkGreyColor,
+                    thickness: 1.0,
+                  ),
+                ),
               ),
               const Padding(
-                padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 18.0),
+                padding: EdgeInsets.symmetric(
+                  vertical: 10.0,
+                  horizontal: 20.0,
+                ),
                 child: Text(
                   'Describe your Bid',
                   style: TextStyle(fontWeight: FontWeight.w600),
@@ -194,33 +232,39 @@ class _JobDetailsState extends State<JobDetails> {
                   children: <Widget>[
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 10.0, horizontal: 18.0),
+                        vertical: 10.0,
+                        horizontal: 20.0,
+                      ),
                       child: TextFormField(
                         maxLines: 5,
                         controller: _bidDescriptionController,
-                        maxLength: 500,
+
+                        // maxLength: 500,
+
                         decoration: InputDecoration(
-                          hintText: 'Add an clear overview about your bid',
+                          hintText: 'Add a clear overview about your bid',
                           hintStyle: const TextStyle(fontSize: 12.0),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
-                            // Customize border radius
                             borderSide: const BorderSide(
                                 color:
-                                    kDeepBlueColor), // Customize border color
+                                kDeepBlueColor),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             borderSide: const BorderSide(
-                                color: kDeepBlueColor, width: 2.0),
+                              color: kDeepBlueColor,
+                              width: 2.0,
+                            ),
                           ),
                         ),
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'Field cannot be empty.';
-                          } else if (value.length < 500) {
-                            return 'Minimum 500 characters required.';
                           }
+                          // else if (value.length < 500) {
+                          //   return 'Minimum 500 characters required.';
+                          // }
                           return null;
                         },
                       ),
@@ -241,7 +285,7 @@ class _JobDetailsState extends State<JobDetails> {
                               ),
                               Padding(
                                 padding:
-                                    const EdgeInsets.only(top: 8.0, left: 18.0),
+                                const EdgeInsets.only(top: 8.0, left: 18.0),
                                 child: TextFormField(
                                   controller: _bidAmountController,
                                   keyboardType: TextInputType.number,
@@ -252,10 +296,9 @@ class _JobDetailsState extends State<JobDetails> {
                                     hintStyle: const TextStyle(fontSize: 12.0),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),
-                                      // Customize border radius
                                       borderSide: const BorderSide(
                                           color:
-                                              kDeepBlueColor), // Customize border color
+                                          kDeepBlueColor),
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),
@@ -299,10 +342,9 @@ class _JobDetailsState extends State<JobDetails> {
                                     hintStyle: const TextStyle(fontSize: 12.0),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),
-                                      // Customize border radius
                                       borderSide: const BorderSide(
                                           color:
-                                              kDeepBlueColor), // Customize border color
+                                          kDeepBlueColor),
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),
@@ -332,14 +374,38 @@ class _JobDetailsState extends State<JobDetails> {
                 margin: const EdgeInsets.symmetric(
                     horizontal: 28.0, vertical: 16.0),
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      Map<String,String>dataToSave={
-                        'bidDescription' :_bidDescriptionController.text,
-                        'bidAmount' : _bidAmountController.text,
-                        'delivery':_deliveryTimeController.text,
+
+                      Map<String, dynamic> dataToSave = {
+
+                        'bidDescription': _bidDescriptionController.text,
+                        'bidAmount': _bidAmountController.text,
+                        'delivery': _deliveryTimeController.text,
                       };
-                      FirebaseFirestore.instance.collection('pending_jobs').add(dataToSave);
+
+
+                      // Reference to the "jobsnew" subcollection
+                      CollectionReference jobsNewCollection = FirebaseFirestore.instance
+                          .collection('jobs')
+                          .doc(widget.documentID)
+                          .collection('jobsnew')
+                          .doc('1694944521298') // Automatically generates a unique document ID
+                          .collection('bidsjobs');
+
+                      // Add the data to the "jobsnew" subcollection
+                      DocumentReference newBidDocRef = await jobsNewCollection.add(dataToSave);
+
+                      // Reference to the "bidsjobs" subcollection
+                      CollectionReference bidsJobsCollection = FirebaseFirestore.instance
+                          .collection('jobs') // Use your actual collection name
+                          .doc(widget.documentID)
+                          .collection('jobsnew')
+                          .doc('1694944521298') // Use the ID of the newly added document
+                          .collection('bidsjobs');
+
+                      // Show a success dialog
+
                       congratulateOnPlaceBid();
                     }
                   },

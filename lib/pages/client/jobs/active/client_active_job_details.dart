@@ -7,10 +7,10 @@ import 'package:taskmate/pages/client/jobs/active/client_active_job_reviews_sect
 import 'package:toggle_switch/toggle_switch.dart';
 
 class ClientActiveJobDetails extends StatefulWidget {
-  final String documentID;
+  // final String documentID;
   const ClientActiveJobDetails({
     super.key,
-    required this.documentID,
+    // required this.documentID,
   });
 
   @override
@@ -31,7 +31,7 @@ class _ClientActiveJobDetailsState extends State<ClientActiveJobDetails> {
     double screenWidth = MediaQuery.of(context).size.width;
     final List activeJobItems = [
       ClientJobDetails(
-        documentID: widget.documentID,
+        // documentID: widget.documentID,
       ),
       const ClientActiveJobFiles(),
       const ClientActiveJobPayment(),
@@ -41,13 +41,12 @@ class _ClientActiveJobDetailsState extends State<ClientActiveJobDetails> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           title: const Text(
-            'Active Job',
+            'Active Jobs',
             style: kHeadingTextStyle,
           ),
-          centerTitle: true,
-          backgroundColor: Colors.transparent,
-          elevation: 0,
+          elevation: 4.0,
           leading: IconButton(
             onPressed: () {
               Navigator.of(context).pop();
@@ -57,22 +56,31 @@ class _ClientActiveJobDetailsState extends State<ClientActiveJobDetails> {
               color: kDeepBlueColor,
             ),
           ),
-        ),
-        body: SingleChildScrollView(
-          child: Container(
-            width: screenWidth,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: AssetImage('images/noise_image.webp'),
-              ),
-            ),
-            child: Column(
-              children: <Widget>[
-                const SizedBox(
-                  height: 10.0,
+          flexibleSpace: Stack(
+            children: [
+              // Background Image
+              Positioned.fill(
+                child: Image.asset(
+                  'images/noise_image.webp',
+                  fit: BoxFit.cover,
                 ),
-                ToggleSwitch(
+              ),
+            ],
+          ),
+        ),
+        body: Container(
+          width: screenWidth,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: AssetImage('images/noise_image.webp'),
+            ),
+          ),
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 24.0),
+                child: ToggleSwitch(
                   activeBgColor: const [kOceanBlueColor],
                   activeFgColor: kDeepBlueColor,
                   inactiveBgColor: kLightBlueColor,
@@ -94,9 +102,17 @@ class _ClientActiveJobDetailsState extends State<ClientActiveJobDetails> {
                   labels: const ['Details', 'Files', 'Payments', 'Reviews'],
                   onToggle: _onToggle,
                 ),
-                activeJobItems[activeJobItemIndex],
-              ],
-            ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                  child: SizedBox(
+                    width: screenWidth,
+                    child: activeJobItems[activeJobItemIndex],
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),

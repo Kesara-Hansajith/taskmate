@@ -7,7 +7,7 @@ import 'package:taskmate/pages/freelancer/proposals/pending_jobs_pages/pending_j
 import 'package:toggle_switch/toggle_switch.dart';
 
 class Proposals extends StatefulWidget {
-  const Proposals({super.key});
+   Proposals({super.key});
 
   @override
   State<Proposals> createState() => _ProposalsState();
@@ -16,7 +16,7 @@ class Proposals extends StatefulWidget {
 class _ProposalsState extends State<Proposals> {
   int proposalItemIndex = 0;
 
-  final List _proposalItems = const [
+  final List<Widget> _proposalItems =  [
     ActiveJobs(),
     PendingJobs(),
     CompletedJobs(),
@@ -65,24 +65,29 @@ class _ProposalsState extends State<Proposals> {
           ),
           child: Column(
             children: <Widget>[
-              ToggleSwitch(
-                activeBgColor: const [kOceanBlueColor],
-                activeFgColor: kDeepBlueColor,
-                inactiveBgColor: kLightBlueColor,
-                inactiveFgColor: kOceanBlueColor,
-                cornerRadius: 10.0,
-                radiusStyle: true,
-                minWidth: screenWidth,
-                minHeight: 50.0,
-                initialLabelIndex: proposalItemIndex,
-                totalSwitches: 3,
-                customTextStyles: const [
-                  TextStyle(fontSize: 15.0, fontWeight: FontWeight.w600),
-                  TextStyle(fontSize: 15.0, fontWeight: FontWeight.w600),
-                  TextStyle(fontSize: 15.0, fontWeight: FontWeight.w600),
-                ],
-                labels: const ['Active', 'Pending', 'Completed'],
-                onToggle: _onToggle,
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 12.0),
+                child: ToggleSwitch(
+                  activeBgColor: const [kOceanBlueColor],
+                  activeFgColor: kDeepBlueColor,
+                  inactiveBgColor: kLightBlueColor,
+                  inactiveFgColor: kOceanBlueColor,
+                  cornerRadius: 10.0,
+                  radiusStyle: true,
+                  minWidth: screenWidth,
+                  minHeight: 50.0,
+                  initialLabelIndex: proposalItemIndex,
+                  totalSwitches: 3,
+                  animate: true,
+                  curve: Curves.fastLinearToSlowEaseIn,
+                  customTextStyles: const [
+                    TextStyle(fontSize: 15.0, fontWeight: FontWeight.w600),
+                    TextStyle(fontSize: 15.0, fontWeight: FontWeight.w600),
+                    TextStyle(fontSize: 15.0, fontWeight: FontWeight.w600),
+                  ],
+                  labels: const ['Active', 'Pending', 'Completed'],
+                  onToggle: _onToggle,
+                ),
               ),
               Expanded(
                 child: Column(

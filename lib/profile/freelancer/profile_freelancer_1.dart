@@ -34,11 +34,12 @@ class _ProfileFreelancerState extends State<ProfileFreelancer> {
   final TextEditingController birthdayController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController professionalroleController = TextEditingController();
+  final TextEditingController professionalroleController =
+      TextEditingController();
   final TextEditingController genderController = TextEditingController();
   final TextEditingController servicesController = TextEditingController();
   final TextEditingController hourlyrateController = TextEditingController();
-  final TextEditingController imageurl1Controller = TextEditingController();
+  final TextEditingController levelController = TextEditingController();
   final TextEditingController imageurl2Controller = TextEditingController();
   final TextEditingController imageurl3Controller = TextEditingController();
   final TextEditingController titleController = TextEditingController();
@@ -225,7 +226,7 @@ class _ProfileFreelancerState extends State<ProfileFreelancer> {
         gender: genderController.text.trim(),
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
-        professionalrole: professionalroleController.text.trim(),
+        professionalRole: professionalroleController.text.trim(),
         province: provinceController.text.trim(),
         bio: bioController.text.trim(),
         hourlyRate: hourlyrateController.text.trim(),
@@ -245,16 +246,17 @@ class _ProfileFreelancerState extends State<ProfileFreelancer> {
 
         // Use the user's UID as the Firestore document ID
         await UserRepository.instance.createUser(user, userUid);
-
+      } else {
+        // Handle the case where the user is not authenticated
+        // You may want to display an error message or redirect the user to the login page
+      }
+      if (context.mounted) {
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => ProfileFreelancer2(user: user),
           ),
         );
-      } else {
-        // Handle the case where the user is not authenticated
-        // You may want to display an error message or redirect the user to the login page
       }
     }
   }
@@ -341,7 +343,8 @@ class _ProfileFreelancerState extends State<ProfileFreelancer> {
                               child: TextFormField(
                                   controller: birthdayController,
                                   onTap: () {
-                                    selectDate(context, birthdayController); // Show the date picker on tap
+                                    selectDate(context,
+                                        birthdayController); // Show the date picker on tap
                                   },
                                   decoration: InputDecoration(
                                     contentPadding: const EdgeInsets.all(10.0),
@@ -363,23 +366,31 @@ class _ProfileFreelancerState extends State<ProfileFreelancer> {
                                     filled: true,
                                     suffixIcon: InkWell(
                                       onTap: () {
-                                        selectDate(context, birthdayController); // Show the date picker on icon tap
+                                        selectDate(context,
+                                            birthdayController); // Show the date picker on icon tap
                                       },
-                                      child: Icon(Icons.calendar_today,color: Colors.black87,),
+                                      child: const Icon(
+                                        Icons.calendar_today,
+                                        color: Colors.black87,
+                                      ),
                                     ),
                                   ),
                                   validator: (value) {
                                     if (value!.isEmpty) {
-                                      return 'Please select your birthday';}
-                                    DateTime selectedDate = DateTime.parse(value); // Convert selected value to DateTime
+                                      return 'Please select your birthday';
+                                    }
+                                    DateTime selectedDate = DateTime.parse(
+                                        value); // Convert selected value to DateTime
                                     DateTime currentDate = DateTime.now();
-                                    DateTime minValidDate = currentDate.subtract(Duration(days: 365 * 18)); // 18 years ago
+                                    DateTime minValidDate =
+                                        currentDate.subtract(const Duration(
+                                            days: 365 * 18)); // 18 years ago
 
                                     if (selectedDate.isAfter(minValidDate)) {
                                       return 'You must be 18 years or older';
                                     }
-                                    return null;}
-                              ),
+                                    return null;
+                                  }),
                             ),
                           ],
                         ),
@@ -445,7 +456,9 @@ class _ProfileFreelancerState extends State<ProfileFreelancer> {
                                 validator: (value) {
                                   if (value!.isEmpty) {
                                     return 'Please enter your Email';
-                                  } else if (!RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$').hasMatch(value)) {
+                                  } else if (!RegExp(
+                                          r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$')
+                                      .hasMatch(value)) {
                                     return 'Please enter a valid email address';
                                   }
                                   return null;
@@ -490,27 +503,31 @@ class _ProfileFreelancerState extends State<ProfileFreelancer> {
                                       onTap: () {
                                         setState(() {
                                           // Toggle password visibility
-                                          _isPasswordVisible = !_isPasswordVisible;
+                                          _isPasswordVisible =
+                                              !_isPasswordVisible;
                                         });
                                       },
                                       child: Icon(
-                                        _isPasswordVisible ? Icons.lock_open : Icons.lock,
+                                        _isPasswordVisible
+                                            ? Icons.lock_open
+                                            : Icons.lock,
                                         color: Colors.black87,
                                       ),
                                     ),
                                   ),
                                   validator: (value) {
                                     if (value!.isEmpty) {
-                                      return 'Please enter your Password';}
+                                      return 'Please enter your Password';
+                                    }
                                     if (value.length < 8) {
                                       return 'Password must be at least 8 characters';
                                     }
-                                    if (!RegExp(r'^(?=.*[A-Za-z])(?=.*\d).+$').hasMatch(value)) {
+                                    if (!RegExp(r'^(?=.*[A-Za-z])(?=.*\d).+$')
+                                        .hasMatch(value)) {
                                       return 'Password must include letters and numbers';
                                     }
                                     return null;
-                                  }
-                              ),
+                                  }),
                             ),
                           ],
                         ),
@@ -716,7 +733,8 @@ class _ProfileFreelancerState extends State<ProfileFreelancer> {
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Please enter your professional role';
-                        }return null;
+                        }
+                        return null;
                       },
                     ),
                   ),

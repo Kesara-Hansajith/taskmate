@@ -22,19 +22,18 @@ class _ClientActiveJobReviewState extends State<ClientActiveJobReview> {
 
     final reviewFieldController = TextEditingController();
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24.0),
+    return SingleChildScrollView(
       child: SizedBox(
         width: screenWidth,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 24.0),
-              child: Text(
-                'Write Your Review',
-                style: kJobCardTitleTextStyle.copyWith(color: kJetBlack),
-              ),
+            Text(
+              'Write Your Review',
+              style: kJobCardTitleTextStyle.copyWith(color: kJetBlack),
+            ),
+            const SizedBox(
+              height: 20.0,
             ),
             Form(
               key: _formKey,

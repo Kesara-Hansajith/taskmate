@@ -17,115 +17,115 @@ class _ClientActiveJobPaymentState extends State<ClientActiveJobPayment> {
     double screenWidth = MediaQuery.of(context).size.width;
 
     return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        child: SizedBox(
-          width: screenWidth,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 24.0),
-                child: Text(
-                  'Payment Summary',
-                  style: kJobCardTitleTextStyle.copyWith(color: kJetBlack),
-                ),
+      child: SizedBox(
+        width: screenWidth,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              'Payment Summary',
+              style: kJobCardTitleTextStyle.copyWith(color: kJetBlack),
+            ),
+            const SizedBox(
+              height: 20.0,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20.0,
+                vertical: 8.0,
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20.0,
-                  vertical: 8.0,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const <Widget>[
-                    Text('Requested'),
-                    Text('LKR. 1500.00'),
-                  ],
-                ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const <Widget>[
+                  Text('Requested'),
+                  Text('LKR. 1500.00'),
+                ],
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20.0,
-                  vertical: 8.0,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const <Widget>[
-                    Text('In Progress'),
-                    Text('LKR.  0.00'),
-                  ],
-                ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20.0,
+                vertical: 8.0,
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20.0,
-                  vertical: 8.0,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const <Widget>[
-                    Text('Released to Freelancer'),
-                    Text(
-                      'LKR.  0.00',
-                      textAlign: TextAlign.left,
-                    ),
-                  ],
-                ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const <Widget>[
+                  Text('In Progress'),
+                  Text('LKR.  0.00'),
+                ],
               ),
-              const SizedBox(
-                height: 50.0,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20.0,
+                vertical: 8.0,
               ),
-              DarkMainButton(
-                  title: 'Release Payment',
-                  process: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return MaintenancePage(
-                          [
-                            const Image(
-                              image: AssetImage('images/message.webp'),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const <Widget>[
+                  Text('Released to Freelancer'),
+                  Text(
+                    'LKR.  0.00',
+                    textAlign: TextAlign.left,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 50.0,
+            ),
+            DarkMainButton(
+                title: 'Release Payment',
+                process: () {
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (BuildContext context) {
+                      return MaintenancePage(
+                        [
+                          const Image(
+                            image: AssetImage('images/message.webp'),
+                          ),
+                          Text(
+                            'Are You Sure?',
+                            style: kSubHeadingTextStyle.copyWith(height: 0.5),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 8.0),
+                            child: Text(
+                              'If you choose Yes, then the amount will sent to freelancer account',
+                              style: kTextStyle,
+                              textAlign: TextAlign.center,
                             ),
-                            Text(
-                              'Are You Sure?',
-                              style: kSubHeadingTextStyle.copyWith(height: 0.5),
-                            ),
-                            const Padding(
-                              padding: EdgeInsets.symmetric(vertical: 8.0),
-                              child: Text(
-                                'If you choose Yes, then the amount will sent to freelancer account',
-                                style: kTextStyle,
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                            DarkMainButton(
-                              title: 'Yes, I ‘m Sure',
-                              process: () {
-                                Navigator.of(context).pop();
-                              },
-                              screenWidth: screenWidth,
-                            ),
-                            LightMainButton(
-                              title: 'Cancel',
-                              process: () {},
-                              screenWidth: screenWidth,
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                    //TODO Request Payment functionality
-                  },
-                  screenWidth: screenWidth),
-              LightMainButton(
-                  title: 'Message',
-                  process: () {
-                    //TODO Forward to messaging functionality
-                  },
-                  screenWidth: screenWidth)
-            ],
-          ),
+                          ),
+                          DarkMainButton(
+                            title: 'Yes, I ‘m Sure',
+                            process: () {
+                              Navigator.of(context).pop();
+                            },
+                            screenWidth: screenWidth,
+                          ),
+                          LightMainButton(
+                            title: 'Cancel',
+                            process: () {
+                              Navigator.of(context).pop();
+                            },
+                            screenWidth: screenWidth,
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                  //TODO Request Payment functionality
+                },
+                screenWidth: screenWidth),
+            LightMainButton(
+                title: 'Message',
+                process: () {
+                  //TODO Forward to messaging functionality
+                },
+                screenWidth: screenWidth)
+          ],
         ),
       ),
     );
