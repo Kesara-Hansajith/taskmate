@@ -43,12 +43,12 @@ class CompletedJobCard extends StatelessWidget {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => CompletedJobDetails(
-              // jobTitle: jobTitle, // Pass the jobTitle
-              // budgetField: budget, // Pass the budget
-              // jobDescription : jobDescription,
-              // activeJobDoc : completeJobDoc,
-              // image1Url: imageUrl1, // Pass the URL of image1
-              // image2Url: imageUrl2, // Pass the URL of imageUrl2
+               jobTitle: jobTitle, // Pass the jobTitle
+               budgetField: budget, // Pass the budget
+               jobDescription : jobDescription,
+               completeJobDoc : completeJobDoc,
+               image1Url: imageUrl1, // Pass the URL of image1
+               image2Url: imageUrl2, // Pass the URL of imageUrl2
 
 
 

@@ -1,10 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/components/light_main_button.dart';
 import 'package:taskmate/constants.dart';
 
 class Payments extends StatefulWidget {
-  const Payments({super.key});
+  final String budgetField;
+ // final QueryDocumentSnapshot completeJobDoc;
+
+  const Payments({
+  required this.budgetField,
+ // required this.completeJobDoc,
+    super.key
+  });
 
   @override
   State<Payments> createState() => _PaymentsState();
@@ -35,9 +43,9 @@ class _PaymentsState extends State<Payments> {
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const <Widget>[
+                children: <Widget>[
                   Text('Requested'),
-                  Text('LKR. 1500.00'),
+                  Text(widget.budgetField,),
                 ],
               ),
             ),
