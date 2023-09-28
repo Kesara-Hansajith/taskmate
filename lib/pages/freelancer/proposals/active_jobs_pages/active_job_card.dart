@@ -20,6 +20,7 @@ class ActiveJobCard extends StatelessWidget {
     final jobDescription = subData['jobDescription'] as String;
     final budgetField = subData['budget'];
 
+
     String budget = '0.0'; // Initialize with a default value
 
     if (budgetField is int) {
@@ -32,6 +33,9 @@ class ActiveJobCard extends StatelessWidget {
         budget = parsedBudget.toString();
       }
     }
+    String imageUrl1 = subData['imageUrl1'] ?? ''; // Replace 'imageUrl1' with the actual field name
+    String imageUrl2 = subData['imageUrl2'] ?? ''; // Replace 'imageUrl2' with the actual field name
+
 
 
 
@@ -43,6 +47,11 @@ class ActiveJobCard extends StatelessWidget {
               jobTitle: jobTitle, // Pass the jobTitle
               budgetField: budget, // Pass the budget
               jobDescription : jobDescription,
+              activeJobDoc : activeJobDoc,
+              image1Url: imageUrl1, // Pass the URL of image1
+              image2Url: imageUrl2, // Pass the URL of image2
+
+
 
                   // Pass budget to ActiveJobDetails
             ),

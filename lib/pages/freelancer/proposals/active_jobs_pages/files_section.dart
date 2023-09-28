@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:path/path.dart' as path;
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -12,56 +13,59 @@ import 'package:dotted_border/dotted_border.dart';
 import '../../../../components/snackbar.dart';
 
 class Files extends StatefulWidget {
-  const Files({
-    super.key,
-  });
+  final QueryDocumentSnapshot activeJobDoc;
+
+  Files({
+    Key? key,
+    required this.activeJobDoc,
+  }) : super(key: key);
 
   @override
   State<Files> createState() => _FilesState();
 }
 
 class _FilesState extends State<Files> {
-  File? _selectedImage1;
-  File? _selectedImage2;
+  File? _selectedImage3;
+  File? _selectedImage4;
 
-  Future<void> _pickImage1() async {
+  Future<void> _pickImage3() async {
     final imagePicker = ImagePicker();
     final pickedFile = await imagePicker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       setState(() {
-        _selectedImage1 = File(pickedFile.path); // Store the selected image
+        _selectedImage3 = File(pickedFile.path); // Store the selected image
       });
     }
   }
 
-  Future<void> _pickImage2() async {
+  Future<void> _pickImage4() async {
     final imagePicker = ImagePicker();
     final pickedFile = await imagePicker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       setState(() {
-        _selectedImage2 = File(pickedFile.path); // Store the selected image
+        _selectedImage4 = File(pickedFile.path); // Store the selected image
       });
     }
   }
 
   Future<void> _uploadImagesToFirebase() async {
-    if (_selectedImage1 != null && _selectedImage2 != null) {
+    if (_selectedImage3 != null && _selectedImage3 != null) {
       try {
         final FirebaseStorage storage = FirebaseStorage.instance;
 
         // Upload the first image
         final Reference ref1 = storage
             .ref()
-            .child('files/${path.basename(_selectedImage1!.path)}');
-        final UploadTask task1 = ref1.putFile(_selectedImage1!);
+            .child('files/${path.basename(_selectedImage3!.path)}');
+        final UploadTask task1 = ref1.putFile(_selectedImage3!);
 
         // Upload the second image
         final Reference ref2 = storage
             .ref()
-            .child('files/${path.basename(_selectedImage2!.path)}');
-        final UploadTask task2 = ref2.putFile(_selectedImage2!);
+            .child('files/${path.basename(_selectedImage4!.path)}');
+        final UploadTask task2 = ref2.putFile(_selectedImage4!);
 
         // Wait for both uploads to complete
         await Future.wait([
@@ -69,24 +73,43 @@ class _FilesState extends State<Files> {
           task2.whenComplete(() => print('Image 2 uploaded'))
         ]);
 
-        // After both images are uploaded, you can perform any additional actions you need, such as saving the download URLs.
-        // You can get the download URLs using task1.snapshot.ref.getDownloadURL() and task2.snapshot.ref.getDownloadURL().
+        // After both images are uploaded, get the download URLs
+        final String imageUrl1 = await ref1.getDownloadURL();
+        final String imageUrl2 = await ref2.getDownloadURL();
+
+        // Create a map with the data to update the Firestore document
+        final Map<String, dynamic> updatedData = {
+          'image3Url': imageUrl1,
+          'image4Url': imageUrl2,
+        };
+
+        // Update the Firestore document using the reference to the activeJobDoc
+        await widget.activeJobDoc.reference.update(updatedData);
+
+        // Show a success message
+        ScaffoldMessenger.of(context).showSnackBar(
+          CustomSnackBar('Work submitted successfully.'),
+        );
 
         // TODO: Add your additional logic here
       } catch (e) {
         print('Error uploading images: $e');
-        // Handle errors here
+        // Handle errors here, e.g., show an error message
+        ScaffoldMessenger.of(context).showSnackBar(
+          CustomSnackBar('Error submitting work: $e'),
+        );
       }
     } else {
       // Handle case when one or both images are not selected
-      print('Please select both images before submitting.');
+      ScaffoldMessenger.of(context).showSnackBar(
+        CustomSnackBar('Please select both images before submitting.'),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
 
     return SingleChildScrollView(
       child: SizedBox(
@@ -95,7 +118,7 @@ class _FilesState extends State<Files> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              'Submit work for get the payment',
+              'Submit work to get payment',
               style: kJobCardTitleTextStyle.copyWith(
                 color: kJetBlack,
               ),
@@ -105,22 +128,28 @@ class _FilesState extends State<Files> {
             ),
             Row(
               children: <Widget>[
+
+                const SizedBox(
+                  width: 15.0,
+                ),
                 Expanded(
                   child: Column(
                     children: [
                       GestureDetector(
                         onTap: () {
-                          _pickImage1(); // Call the _pickImage function when tapped
+                          _pickImage3(); // Call the _pickImage1 function when tapped
                         },
                         child: AttachmentCard(
-                          cardChild: _selectedImage1 == null
+                          cardChild: _selectedImage3 == null
                               ? const Text('+ Add')
-                              : Image.file(_selectedImage1!),
+                              : Image(
+                            image: FileImage(_selectedImage3!), // Use FileImage
+                          ),
                         ),
                       ),
                       TextButton(
                         onPressed: () {
-                          _selectedImage1 = null; // Reset selected image
+                          _selectedImage3 = null; // Reset selected image
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -147,17 +176,19 @@ class _FilesState extends State<Files> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          _pickImage2(); // Call the _pickImage function when tapped
+                          _pickImage4(); // Call the _pickImage2 function when tapped
                         },
                         child: AttachmentCard(
-                          cardChild: _selectedImage2 == null
+                          cardChild: _selectedImage4 == null
                               ? const Text('+ Add')
-                              : Image.file(_selectedImage2!),
+                              : Image(
+                            image: FileImage(_selectedImage4!), // Use FileImage
+                          ),
                         ),
                       ),
                       TextButton(
                         onPressed: () {
-                          _selectedImage2 = null; // Reset selected image
+                          _selectedImage4 = null; // Reset selected image
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -176,6 +207,7 @@ class _FilesState extends State<Files> {
                     ],
                   ),
                 ),
+
               ],
             ),
             const SizedBox(
@@ -184,10 +216,11 @@ class _FilesState extends State<Files> {
             DarkMainButton(
               title: 'Submit Work',
               process: () {
-                if (_selectedImage1 == null || _selectedImage2 == null) {
+                if (_selectedImage3 == null || _selectedImage4 == null) {
                   // Show the snackbar with the error message
                   ScaffoldMessenger.of(context).showSnackBar(
-                      CustomSnackBar('Please select both images'));
+                    CustomSnackBar('Please select both images'),
+                  );
                 } else {
                   _uploadImagesToFirebase();
                 }
@@ -195,11 +228,12 @@ class _FilesState extends State<Files> {
               screenWidth: screenWidth,
             ),
             LightMainButton(
-                title: 'Message',
-                process: () {
-                  //TODO Forward to messaging part
-                },
-                screenWidth: screenWidth)
+              title: 'Message',
+              process: () {
+                //TODO Forward to messaging part
+              },
+              screenWidth: screenWidth,
+            )
           ],
         ),
       ),

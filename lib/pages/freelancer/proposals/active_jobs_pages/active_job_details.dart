@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/pages/freelancer/proposals/active_jobs_pages/details_section.dart';
@@ -11,13 +12,19 @@ class ActiveJobDetails extends StatefulWidget {
   final String jobTitle; // Add this parameter
   final String jobDescription;
   final String budgetField;
+  final QueryDocumentSnapshot activeJobDoc;
+  final String image1Url; // URL for image1
+  final String image2Url; // URL for image2
 
 
-   ActiveJobDetails({
+  ActiveJobDetails({
     super.key,
     required this.jobTitle, // Add this parameter
      required this.jobDescription,
     required this.budgetField,
+     required this.activeJobDoc,
+    required this.image1Url,
+    required  this.image2Url,
     // required this.documentID,
   });
 
@@ -39,13 +46,15 @@ class _ActiveJobDetailsState extends State<ActiveJobDetails> {
     double screenWidth = MediaQuery.of(context).size.width;
     final List activeJobItems = [
       Details(
-          jobTitle: widget.jobTitle,
+        jobTitle: widget.jobTitle,
         jobDescription : widget.jobDescription,
         budgetField: widget.budgetField,
-          //documentID: widget.documentID,
+        image1Url: widget.image1Url, // Pass the URL of image1
+        image2Url: widget.image2Url, // Pass the URL of image2
+        //documentID: widget.documentID,
           ),
-      const Files(),
-      const Payments(),
+      Files(activeJobDoc: widget.activeJobDoc), // Pass the activeJobDoc
+      Payments( budgetField: widget.budgetField,activeJobDoc: widget.activeJobDoc),
       const Reviews(),
     ];
 
@@ -130,3 +139,4 @@ class _ActiveJobDetailsState extends State<ActiveJobDetails> {
     );
   }
 }
+

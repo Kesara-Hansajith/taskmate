@@ -5,17 +5,19 @@ import 'package:taskmate/models/active_job_details_data.dart';
 import 'package:taskmate/components/attachment_card.dart';
 
 class Details extends StatefulWidget {
-  // final String documentID;
-  final String jobTitle; // Add this parameter
+  final String jobTitle;
   final String jobDescription;
   final String budgetField;
+  final String image1Url; // URL for image1
+  final String image2Url; // URL for image2
 
   const Details({
     super.key,
     required this.jobTitle,
     required this.jobDescription,
     required this.budgetField,
-    // required this.documentID,
+    required this.image1Url, // Add this parameter
+    required this.image2Url, // Add this parameter
   });
 
   @override
@@ -77,10 +79,10 @@ class _DetailsState extends State<Details> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Row(
-                children: const <Widget>[
+                children: <Widget>[
                   Expanded(
                     child: AttachmentCard(
-                      cardChild: Text('Tap Here'),
+                      cardChild: Image.network(widget.image1Url), // Display image1 using its URL
                     ),
                   ),
                   SizedBox(
@@ -88,12 +90,13 @@ class _DetailsState extends State<Details> {
                   ),
                   Expanded(
                     child: AttachmentCard(
-                      cardChild: Text('Tap Here'),
+                      cardChild: Image.network(widget.image2Url), // Display image2 using its URL
                     ),
                   ),
                 ],
               ),
             ),
+
 
 
           ],
@@ -102,3 +105,5 @@ class _DetailsState extends State<Details> {
     );
   }
 }
+
+
