@@ -49,6 +49,7 @@ class _ActiveJobDetailsState extends State<ActiveJobDetails> {
         jobTitle: widget.jobTitle,
         jobDescription : widget.jobDescription,
         budgetField: widget.budgetField,
+        activeJobDoc: widget.activeJobDoc,
         image1Url: widget.image1Url, // Pass the URL of image1
         image2Url: widget.image2Url, // Pass the URL of image2
         //documentID: widget.documentID,

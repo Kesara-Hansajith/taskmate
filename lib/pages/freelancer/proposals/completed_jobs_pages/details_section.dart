@@ -8,17 +8,18 @@ class Details extends StatefulWidget {
   final String jobTitle;
   final String jobDescription;
   final String budgetField;
+  final QueryDocumentSnapshot completeJobDoc;
   final String image1Url; // URL for image1
   final String image2Url; // URL for image2
-  // final String documentID;
+
   const Details({
-    super.key,
+    Key? key,
     required this.jobTitle,
     required this.jobDescription,
     required this.budgetField,
-    required this.image1Url, // Add this parameter
-    required this.image2Url, // Add this parameter
-    // required this.documentID,
+    required this.completeJobDoc,
+    required this.image1Url,
+    required this.image2Url,
   });
 
   @override
@@ -26,6 +27,18 @@ class Details extends StatefulWidget {
 }
 
 class _DetailsState extends State<Details> {
+  late final String imageUrl1;
+  late final String imageUrl2;
+
+  @override
+  void initState() {
+    super.initState();
+    imageUrl1 = widget.completeJobDoc['image1Url'];
+    imageUrl2 = widget.completeJobDoc['image2Url'];
+  }
+
+  /// Custom method to display an image in full-screen with a black background
+
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +118,7 @@ class _DetailsState extends State<Details> {
                 children: <Widget>[
                   Expanded(
                     child: AttachmentCard(
-                      cardChild: Image.network(widget.image1Url), // Display image1 using its URL
+                      cardChild: Image.network(imageUrl1), // Display image1 using its URL
                     ),
                   ),
                   SizedBox(
@@ -113,7 +126,7 @@ class _DetailsState extends State<Details> {
                   ),
                   Expanded(
                     child: AttachmentCard(
-                      cardChild: Image.network(widget.image2Url), // Display image2 using its URL
+                      cardChild: Image.network(imageUrl2), // Display image2 using its URL
                     ),
                   ),
                 ],

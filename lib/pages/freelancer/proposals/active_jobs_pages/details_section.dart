@@ -8,6 +8,7 @@ class Details extends StatefulWidget {
   final String jobTitle;
   final String jobDescription;
   final String budgetField;
+  final QueryDocumentSnapshot activeJobDoc;
   final String image1Url; // URL for image1
   final String image2Url; // URL for image2
 
@@ -16,6 +17,7 @@ class Details extends StatefulWidget {
     required this.jobTitle,
     required this.jobDescription,
     required this.budgetField,
+    required this.activeJobDoc,
     required this.image1Url, // Add this parameter
     required this.image2Url, // Add this parameter
   });
@@ -25,6 +27,31 @@ class Details extends StatefulWidget {
 }
 
 class _DetailsState extends State<Details> {
+  late final String imageUrl1;
+  late final String imageUrl2;
+
+  @override
+  void initState() {
+    super.initState();
+    imageUrl1 = widget.activeJobDoc['image1Url'];
+    imageUrl2 = widget.activeJobDoc['image2Url'];
+  }
+
+  /// Custom method to display an image in full-screen with a black background
+  void _showFullScreenImage(String imageUrl) {
+    if (imageUrl != null) {
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => Scaffold(
+          body: Container(
+            color: Colors.black, // Set background color to black
+            child: Center(
+              child: Image.network(imageUrl),
+            ),
+          ),
+        ),
+      ));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,14 +64,30 @@ class _DetailsState extends State<Details> {
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
-              children: [Text('Recieved on: 2023.09.01',style: kTextStyle,)],
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      'Recieved on: 2023.08.20',
+                      style: kTextStyle,
+                    ),
+                    Text(
+                      'Completed on: 2023.08.25',
+                      style: kTextStyle,
+                    ),
+                  ],
+                )
+              ],
             ),
             Text(
-              'Job Title',
-              style: kJobCardTitleTextStyle.copyWith(color: kJetBlack),
+              widget.jobTitle,
+              style: kJobCardTitleTextStyle.copyWith(
+                color: kJetBlack,
+              ),
             ),
             Text(
-              widget.jobTitle, // Display the jobTitle from the widget parameter
+              'Title goes here...',
               style: kTextStyle,
             ),
             const SizedBox(
@@ -52,7 +95,9 @@ class _DetailsState extends State<Details> {
             ),
             Text(
               'Description',
-              style: kJobCardTitleTextStyle.copyWith(color: kJetBlack),
+              style: kJobCardTitleTextStyle.copyWith(
+                color: kJetBlack,
+              ),
             ),
             Text(
               widget.jobDescription,
@@ -63,7 +108,9 @@ class _DetailsState extends State<Details> {
             ),
             Text(
               'Price',
-              style: kJobCardTitleTextStyle.copyWith(color: kJetBlack),
+              style: kJobCardTitleTextStyle.copyWith(
+                color: kJetBlack,
+              ),
             ),
             Text(
               widget.budgetField,
@@ -74,7 +121,9 @@ class _DetailsState extends State<Details> {
             ),
             Text(
               'Attachments',
-              style: kJobCardTitleTextStyle.copyWith(color: kJetBlack),
+              style: kJobCardTitleTextStyle.copyWith(
+                color: kJetBlack,
+              ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -82,7 +131,7 @@ class _DetailsState extends State<Details> {
                 children: <Widget>[
                   Expanded(
                     child: AttachmentCard(
-                      cardChild: Image.network(widget.image1Url), // Display image1 using its URL
+                      cardChild: Image.network(imageUrl1), // Display image1 using its URL
                     ),
                   ),
                   SizedBox(
@@ -90,20 +139,15 @@ class _DetailsState extends State<Details> {
                   ),
                   Expanded(
                     child: AttachmentCard(
-                      cardChild: Image.network(widget.image2Url), // Display image2 using its URL
+                      cardChild: Image.network(imageUrl2), // Display image2 using its URL
                     ),
                   ),
                 ],
               ),
             ),
-
-
-
           ],
         ),
       ),
     );
   }
 }
-
-

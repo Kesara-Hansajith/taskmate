@@ -48,6 +48,7 @@ class _CompletedJobDetailsState extends State<CompletedJobDetails> {
         jobTitle: widget.jobTitle,
         jobDescription : widget.jobDescription,
         budgetField: widget.budgetField,
+        completeJobDoc: widget.completeJobDoc,
         image1Url: widget.image1Url, // Pass the URL of image1
         image2Url: widget.image2Url, // Pass the URL of image2
           // documentID: widget.documentID,
