@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/components/light_main_button.dart';
 import 'package:taskmate/components/maintenance_page.dart';
@@ -23,25 +24,33 @@ void requestPayment(QueryDocumentSnapshot activeJobDoc, BuildContext context) as
     // Reference to Firestore document
     final DocumentReference docRef = activeJobDoc.reference;
 
-    // Update the 'payment' field to 'Request'
-    await docRef.update({'paymentclient': 'release payment'});
+    // Get the current time and date
+    DateTime now = DateTime.now();
+    String releaseDateTime = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
+
+    // Update the 'paymentclient' field to 'release payment' and store the release time
+    await docRef.update({
+      'paymentclient': 'release payment',
+      'CompleteJobTime': releaseDateTime,
+    });
 
     // Show a success message
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Payment release successfully.'),
+        content: Text('Payment released successfully.'),
       ),
     );
   } catch (e) {
-    print('Error release payment: $e');
+    print('Error releasing payment: $e');
     // Handle errors here, e.g., show an error message
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Error release payment: $e'),
+        content: Text('Error releasing payment: $e'),
       ),
     );
   }
 }
+
 
 class _ClientActiveJobPaymentState extends State<ClientActiveJobPayment> {
   @override
@@ -134,6 +143,7 @@ class _ClientActiveJobPaymentState extends State<ClientActiveJobPayment> {
                             title: 'Yes, I ‘m Sure',
                             process: () {
                               requestPayment(widget.activeJobDoc, context); // Call the method to request payment
+                              Navigator.of(context).pop();
                             },
                             screenWidth: screenWidth,
                           ),
