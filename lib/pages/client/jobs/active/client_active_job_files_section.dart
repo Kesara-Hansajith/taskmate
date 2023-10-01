@@ -14,20 +14,18 @@ class ClientActiveJobFiles extends StatefulWidget {
   final String image4Url;
   final QueryDocumentSnapshot activeJobDoc;
 
-
   const ClientActiveJobFiles({
-    super.key,
+    Key? key,
     required this.image3Url,
     required this.image4Url,
     required this.activeJobDoc,
-  }) ;
+  }) : super(key: key);
 
   @override
   State<ClientActiveJobFiles> createState() => _ClientActiveJobFilesState();
 }
 
 class _ClientActiveJobFilesState extends State<ClientActiveJobFiles> {
-
   late final String imageUrl3;
   late final String imageUrl4;
 
@@ -41,7 +39,6 @@ class _ClientActiveJobFilesState extends State<ClientActiveJobFiles> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
 
     return SingleChildScrollView(
       child: SizedBox(
@@ -75,11 +72,11 @@ class _ClientActiveJobFilesState extends State<ClientActiveJobFiles> {
                       TextButton(
                         onPressed: () {
                           // Trigger the download action
-                          _downloadImage(context,imageUrl3);
+                          _downloadImage(context, imageUrl3);
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children:  <Widget>[
+                          children: <Widget>[
                             Icon(
                               Icons.download,
                               color: kDarkGreyColor,
@@ -106,7 +103,7 @@ class _ClientActiveJobFilesState extends State<ClientActiveJobFiles> {
                           // based on your specific requirements.
                         },
                         child: AttachmentCard(
-                          cardChild: Image.network(imageUrl4), // Display image3 using its URL
+                          cardChild: Image.network(imageUrl4),
                         ),
                       ),
                       TextButton(
@@ -141,7 +138,8 @@ class _ClientActiveJobFilesState extends State<ClientActiveJobFiles> {
               process: () async {
                 try {
                   // Update the status to "complete" in Firestore
-                  await widget.activeJobDoc.reference.update({'status': 'complete'});
+                  await widget.activeJobDoc.reference
+                      .update({'status': 'complete'});
 
                   // TODO: Add any other processing logic if needed
 
@@ -168,7 +166,7 @@ class _ClientActiveJobFilesState extends State<ClientActiveJobFiles> {
             LightMainButton(
                 title: 'Message',
                 process: () {
-                  //TODO Forward to messaging part
+                  // TODO Forward to messaging part
                 },
                 screenWidth: screenWidth)
           ],
@@ -179,10 +177,9 @@ class _ClientActiveJobFilesState extends State<ClientActiveJobFiles> {
 
   Future<void> _downloadImage(BuildContext context, String imageUrl) async {
     final dio = Dio();
-    final fileName = imageUrl.split('/').last; // Extract the file name from the URL
+    final fileName = imageUrl.split('/').last;
 
     try {
-      // Get the documents directory
       final directory = await getApplicationDocumentsDirectory();
       final savePath = directory.path + '/$fileName';
 
@@ -190,30 +187,28 @@ class _ClientActiveJobFilesState extends State<ClientActiveJobFiles> {
         imageUrl,
         savePath,
         onReceiveProgress: (received, total) {
-          // Update the UI with the download progress if needed
           print("Received: $received, Total: $total");
         },
       );
 
-      // Display a SnackBar after successful download
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Downloading complete'),
-          duration: Duration(seconds: 2), // Adjust the duration as needed
-        ),
-      );
-
-      print("Download successful: ${response.data}");
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Downloading complete'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      } else {
+        print('HTTP error: ${response.statusCode}');
+      }
     } catch (e) {
-      // Handle the download error
       print('Download error: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Error downloading file'),
-          duration: Duration(seconds: 2), // Adjust the duration as needed
+          content: Text('Error downloading file: $e'),
+          duration: Duration(seconds: 2),
         ),
       );
     }
   }
-
 }

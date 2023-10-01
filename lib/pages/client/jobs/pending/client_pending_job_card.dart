@@ -3,18 +3,14 @@ import 'package:flutter/material.dart';
 
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/pages/client/jobs/pending/bidded_freelancers.dart';
-// import 'package:taskmate/pages/client/jobs/pending/client_pending_job_details.dart';
-import 'package:taskmate/pages/freelancer/proposals/active_jobs_pages/active_job_details.dart';
 
 class ClientPendingJobCard extends StatefulWidget {
-  const ClientPendingJobCard(
-      {
-      // required this.documentID,
-      // required this.data,
-      super.key});
+  ClientPendingJobCard({
+    Key? key,
+    required this.pendingjobDoc,
+  }) : super(key: key);
 
-  // final String documentID;
-  // final Map<String, dynamic> data;
+  final QueryDocumentSnapshot pendingjobDoc;
 
   @override
   State<ClientPendingJobCard> createState() => _ClientPendingJobCardState();
@@ -25,14 +21,18 @@ class _ClientPendingJobCardState extends State<ClientPendingJobCard> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
 
-    // Check if widget.data is not null and is of type Map<String, dynamic>
-    // if (widget.data != null && widget.data is Map<String, dynamic>) {
-    //   final data = widget.data as Map<String, dynamic>;
+    final subData = widget.pendingjobDoc.data() as Map<String, dynamic>;
+    final jobTitle = subData['jobTitle'] as String;
+    final budget = int.tryParse(subData['budget'].toString() ?? '0') ?? 0;
+    final bidsCollection = widget.pendingjobDoc.reference.collection('bidsjobs');
+
     return InkWell(
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => BiddedFreelancers(),
+            builder: (context) => BiddedFreelancers(
+
+            ),
           ),
         );
       },
@@ -53,25 +53,42 @@ class _ClientPendingJobCardState extends State<ClientPendingJobCard> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4.0),
                   child: Text(
-                    'Title',
+                    jobTitle,
                     style: kJobCardTitleTextStyle,
                   ),
                 ),
                 Text(
-                  'Budget Range: LKR.3000 - 5000',
+                  'Budget LKR.${budget.toString()}',
                   style: kJobCardDescriptionTextStyle,
                 ),
                 Text(
                   'Posted on: ',
                   style: kJobCardDescriptionTextStyle,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4.0),
-                  child: Text(
-                    'Proposals: 03',
-                    style: kJobCardDescriptionTextStyle.copyWith(
-                        fontWeight: FontWeight.bold, color: kDeepBlueColor),
-                  ),
+                FutureBuilder<QuerySnapshot>(
+                  future: bidsCollection.get(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator();
+                    }
+
+                    if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    }
+
+                    final numBids = snapshot.data?.docs.length ?? 0;
+
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Proposals: $numBids',
+                          style: kJobCardDescriptionTextStyle.copyWith(
+                              fontWeight: FontWeight.bold, color: kDeepBlueColor),
+                        ),
+                      ],
+                    );
+                  },
                 ),
               ],
             ),
@@ -83,6 +100,5 @@ class _ClientPendingJobCardState extends State<ClientPendingJobCard> {
         ),
       ),
     );
-
   }
 }
