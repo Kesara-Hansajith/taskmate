@@ -6,7 +6,18 @@ import 'package:taskmate/constants.dart';
 import 'package:taskmate/pages/client/jobs/pending/bidded_freelancer_profile.dart';
 
 class BiddedFreelancerDetails extends StatefulWidget {
-  const BiddedFreelancerDetails({super.key});
+  final String bidDescription;
+  final String bidAmount;
+  final String delivery;
+  final String jobTitle;
+
+  const BiddedFreelancerDetails({ Key? key,
+    required this.bidDescription,
+    required this.bidAmount,
+    required this.delivery,
+    required this.jobTitle,
+  }) : super(key: key);
+
 
   @override
   State<BiddedFreelancerDetails> createState() =>
@@ -102,7 +113,7 @@ class _BiddedFreelancerDetailsState extends State<BiddedFreelancerDetails> {
                               fontSize: 15),
                         ),
                         Text(
-                          'Title',
+                          widget.jobTitle,
                           style: kTextStyle,
                         ),
                         const SizedBox(
@@ -114,7 +125,7 @@ class _BiddedFreelancerDetailsState extends State<BiddedFreelancerDetails> {
                               fontSize: 15),
                         ),
                         Text(
-                          'LKR. 2500',
+                          'LKR. ${widget.bidAmount}',
                           style: kTextStyle,
                         ),
                         const SizedBox(
@@ -126,7 +137,7 @@ class _BiddedFreelancerDetailsState extends State<BiddedFreelancerDetails> {
                               fontSize: 15),
                         ),
                         Text(
-                          '7 Days',
+                          '${widget.delivery} days',
                           style: kTextStyle,
                         ),
                         const SizedBox(
@@ -138,7 +149,7 @@ class _BiddedFreelancerDetailsState extends State<BiddedFreelancerDetails> {
                               fontSize: 15),
                         ),
                         Text(
-                          'Hi there, I read your project very well. I will help to do your project as you expected',
+                          widget.bidDescription,
                           style: kTextStyle,
                         ),
                       ],

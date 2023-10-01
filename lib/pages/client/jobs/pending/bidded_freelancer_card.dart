@@ -1,19 +1,34 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/pages/client/jobs/pending/bidded_freelancer_details.dart';
 
 class BiddedFreelancerCard extends StatelessWidget {
+  final QueryDocumentSnapshot bidDoc;
+  final String jobTitle;
+
   const BiddedFreelancerCard({
-    super.key,
-  });
+    Key? key,
+    required this.bidDoc,
+    required this.jobTitle,
+  }) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
+    final bidData = bidDoc.data() as Map<String, dynamic>;
+
     return InkWell(
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => const BiddedFreelancerDetails(),
+            builder: (context) => BiddedFreelancerDetails(
+              bidDescription: bidData['bidDescription'] ?? 'bidDescription',
+              bidAmount: bidData['bidAmount'] ?? 'bidAmount',
+              delivery: bidData['delivery'] ?? 'delivery',
+              jobTitle: jobTitle,
+
+            ),
           ),
         );
       },
@@ -42,18 +57,18 @@ class BiddedFreelancerCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      'Kesara Hansajith',
+                      bidData['freelancerName'] ?? 'Freelancer Name',
                       style: kJobCardTitleTextStyle,
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 4.0),
                       child: Text(
-                        'Logo Designer, Digital Artist, Graphic Designer ',
+                        bidData['bidDescription'] ?? 'bidDescription',
                         style: kTextStyle,
                       ),
                     ),
                     Text(
-                      'LKR. 1500.00',
+                      'LKR. ${bidData['bidAmount'] ?? 0.00}',
                       style: kUserDataGatherTitleTextStyle,
                     ),
                   ],

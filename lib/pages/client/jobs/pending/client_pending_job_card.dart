@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/pages/client/jobs/pending/bidded_freelancers.dart';
 
 class ClientPendingJobCard extends StatefulWidget {
+
   ClientPendingJobCard({
     Key? key,
     required this.pendingjobDoc,
@@ -23,18 +25,27 @@ class _ClientPendingJobCardState extends State<ClientPendingJobCard> {
 
     final subData = widget.pendingjobDoc.data() as Map<String, dynamic>;
     final jobTitle = subData['jobTitle'] as String;
+    Timestamp? createdAtTimestamp = subData['createdAt'] as Timestamp?;
+    String createdAt = '';
     final budget = int.tryParse(subData['budget'].toString() ?? '0') ?? 0;
     final bidsCollection = widget.pendingjobDoc.reference.collection('bidsjobs');
+
+    if (createdAtTimestamp != null) {
+      DateTime createdAtDateTime = createdAtTimestamp.toDate();
+      createdAt = DateFormat('yyyy-MM-dd HH:mm:ss').format(createdAtDateTime);
+    }
 
     return InkWell(
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => BiddedFreelancers(
-
+                pendingjobDoc: widget.pendingjobDoc,
+                jobTitle: jobTitle,
             ),
           ),
         );
+
       },
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 4.0),
@@ -62,7 +73,7 @@ class _ClientPendingJobCardState extends State<ClientPendingJobCard> {
                   style: kJobCardDescriptionTextStyle,
                 ),
                 Text(
-                  'Posted on: ',
+                  'Posted on: ${createdAt}',
                   style: kJobCardDescriptionTextStyle,
                 ),
                 FutureBuilder<QuerySnapshot>(
