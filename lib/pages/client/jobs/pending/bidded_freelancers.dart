@@ -95,6 +95,7 @@ class _BiddedFreelancersState extends State<BiddedFreelancers> {
                         return BiddedFreelancerCard(
                             bidDoc: bidDoc,
                            jobTitle: widget.jobTitle,
+                          pendingjobDoc: widget.pendingjobDoc,
                         );
                       }).toList(),
                     );

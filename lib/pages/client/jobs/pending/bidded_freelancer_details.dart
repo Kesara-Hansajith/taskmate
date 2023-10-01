@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/components/freelancer/user_data_gather_title.dart';
@@ -10,12 +11,14 @@ class BiddedFreelancerDetails extends StatefulWidget {
   final String bidAmount;
   final String delivery;
   final String jobTitle;
+  final QueryDocumentSnapshot pendingJobDoc;
 
   const BiddedFreelancerDetails({ Key? key,
     required this.bidDescription,
     required this.bidAmount,
     required this.delivery,
     required this.jobTitle,
+    required this.pendingJobDoc,
   }) : super(key: key);
 
 
@@ -159,9 +162,38 @@ class _BiddedFreelancerDetailsState extends State<BiddedFreelancerDetails> {
                     height: 30.0,
                   ),
                   DarkMainButton(
-                      title: 'Hire Now',
-                      process: () {},
-                      screenWidth: screenWidth),
+                    title: 'Hire Now',
+                    process: () async {
+                      try {
+                        // Update the status to "active" in Firestore
+                        await widget.pendingJobDoc.reference.update({'status': 'active'});
+
+                        // Update the budget in the main document with the bidAmount value
+                        await widget.pendingJobDoc.reference.update({'budget': widget.bidAmount});
+
+                        // Show a SnackBar indicating success
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Freelancer hired successfully!'),
+                            duration: Duration(seconds: 2),
+                          ),
+                        );
+
+                        // TODO: Add any other processing logic if needed
+                      } catch (e) {
+                        // Handle errors, and show a SnackBar indicating failure
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Error hiring freelancer: $e'),
+                            duration: Duration(seconds: 2),
+                          ),
+                        );
+                      }
+                    },
+                    screenWidth: screenWidth,
+                  ),
+
+
                   LightMainButton(
                       title: 'View Profile',
                       process: navigateToFreelancerProfile,

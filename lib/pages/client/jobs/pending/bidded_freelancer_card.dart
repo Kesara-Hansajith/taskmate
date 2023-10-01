@@ -6,11 +6,13 @@ import 'package:taskmate/pages/client/jobs/pending/bidded_freelancer_details.dar
 class BiddedFreelancerCard extends StatelessWidget {
   final QueryDocumentSnapshot bidDoc;
   final String jobTitle;
+  final QueryDocumentSnapshot pendingjobDoc;
 
   const BiddedFreelancerCard({
     Key? key,
     required this.bidDoc,
     required this.jobTitle,
+    required this.pendingjobDoc,
   }) : super(key: key);
 
 
@@ -27,6 +29,7 @@ class BiddedFreelancerCard extends StatelessWidget {
               bidAmount: bidData['bidAmount'] ?? 'bidAmount',
               delivery: bidData['delivery'] ?? 'delivery',
               jobTitle: jobTitle,
+              pendingJobDoc: pendingjobDoc,
 
             ),
           ),
