@@ -123,8 +123,11 @@ class _JobsState extends State<Jobs> with SingleTickerProviderStateMixin {
 
                           // Sort jobNewDocs by budget in descending order
                           jobNewDocs.sort((a, b) {
-                            final budgetA = int.tryParse(a['budget'] as String) ?? 0;
-                            final budgetB = int.tryParse(b['budget'] as String) ?? 0;
+                            final budgetA = a['budget'] is int ? a['budget'] as int : int.tryParse(a['budget'] as String) ?? 0;
+                            final budgetB = b['budget'] is int ? b['budget'] as int : int.tryParse(b['budget'] as String) ?? 0;
+
+
+
 
                             return budgetB.compareTo(budgetA); // Sort in descending order
                           });
