@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/pages/freelancer/proposals/active_jobs_pages/active_job_details.dart';
 
@@ -19,8 +20,21 @@ class CompletedJobCard extends StatelessWidget {
 
     final subData = completeJobDoc.data() as Map<String, dynamic>;
     final jobTitle = subData['jobTitle'] as String;
+    Timestamp? createdAtTimestamp = subData['createdAt'] as Timestamp?;
+    String createdAt = '';
     final jobDescription = subData['jobDescription'] as String;
     final budgetField = subData['budget'];
+
+    final completeJobTimeField = subData['CompleteJobTime'];
+    String completeJobTimeString = '';
+
+    if (completeJobTimeField is Timestamp) {
+      DateTime completeJobDateTime = completeJobTimeField.toDate();
+      completeJobTimeString = DateFormat('yyyy-MM-dd HH:mm:ss').format(completeJobDateTime);
+    } else if (completeJobTimeField is String) {
+      // Assuming CompleteJobTime is stored as a string
+      completeJobTimeString = completeJobTimeField;
+    }
 
 
     String budget = '0.0'; // Initialize with a default value
@@ -38,6 +52,11 @@ class CompletedJobCard extends StatelessWidget {
     String imageUrl1 = subData['imageUrl1'] ?? ''; // Replace 'imageUrl1' with the actual field name
     String imageUrl2 = subData['imageUrl2'] ?? ''; // Replace 'imageUrl2' with the actual field name
 
+    if (createdAtTimestamp != null) {
+      DateTime createdAtDateTime = createdAtTimestamp.toDate();
+      createdAt = DateFormat('yyyy-MM-dd HH:mm:ss').format(createdAtDateTime);
+    }
+
     return InkWell(
       onTap: () {
         Navigator.of(context).push(
@@ -49,6 +68,8 @@ class CompletedJobCard extends StatelessWidget {
                completeJobDoc : completeJobDoc,
                image1Url: imageUrl1, // Pass the URL of image1
                image2Url: imageUrl2, // Pass the URL of imageUrl2
+               createdAt: createdAt,
+              completeJobTime: completeJobTimeString,
 
 
 
@@ -72,7 +93,7 @@ class CompletedJobCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              'In Progress...',
+              'Completed on ${completeJobTimeString.toString()} ',
               style: kTextStyle,
             ),
             Padding(

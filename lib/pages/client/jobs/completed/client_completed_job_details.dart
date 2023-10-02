@@ -19,6 +19,7 @@ class ClientCompletedJobDetails extends StatefulWidget {
   final String image3Url; // URL for image1
   final String image4Url; // URL for image2
   final String createdAt; // Add this parameter
+  final String completeJobTime; // Add this parameter
 
 
   const ClientCompletedJobDetails({
@@ -32,7 +33,7 @@ class ClientCompletedJobDetails extends StatefulWidget {
     required  this.image3Url,
     required  this.image4Url,
     required this.createdAt,
-    // required this.documentID,
+    required this.completeJobTime,    // required this.documentID,
   });
 
 
@@ -61,6 +62,7 @@ class _ClientCompletedJobDetailsState extends State<ClientCompletedJobDetails> {
         image1Url: widget.image1Url, // Pass the URL of image1
         image2Url: widget.image2Url, // Pass the URL of image2
         createdAt: widget.createdAt, // Pass the createdAt value
+        completeJobTime:widget.completeJobTime,
 
         //documentID: widget.documentID,
       ),

@@ -13,6 +13,7 @@ class Details extends StatefulWidget {
   final String image1Url; // URL for image1
   final String image2Url; // URL for image2
   final String createdAt; // Add this parameter
+  final String completeJobTime; // Add this parameter
 
 
 
@@ -25,6 +26,7 @@ class Details extends StatefulWidget {
     required this.image1Url, // Add this parameter
     required this.image2Url, // Add this parameter
     required this.createdAt, // Add this parameter
+    required this.completeJobTime,
     // required this.documentID,
   });
 
@@ -61,7 +63,7 @@ class _DetailsState extends State<Details> {
                     style: kTextStyle,
                   ),
                   Text(
-                    'Completed on: 2023.08.27',
+                   'Completed on: ${widget.completeJobTime}',
                     style: kTextStyle,
                   ),
                 ],

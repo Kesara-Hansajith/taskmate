@@ -15,6 +15,9 @@ class CompletedJobDetails extends StatefulWidget {
   final QueryDocumentSnapshot completeJobDoc;
   final String image1Url; // URL for image1
   final String image2Url; // URL for image2
+  final String createdAt;
+  final String completeJobTime; // Add this parameter
+
 
   const CompletedJobDetails({
     super.key,
@@ -24,6 +27,8 @@ class CompletedJobDetails extends StatefulWidget {
     required this.completeJobDoc,
     required this.image1Url,
     required  this.image2Url,
+    required this.createdAt,
+    required this.completeJobTime,
     // required this.documentID,
   });
 
@@ -51,6 +56,8 @@ class _CompletedJobDetailsState extends State<CompletedJobDetails> {
         completeJobDoc: widget.completeJobDoc,
         image1Url: widget.image1Url, // Pass the URL of image1
         image2Url: widget.image2Url, // Pass the URL of image2
+        createdAt:widget.createdAt,
+        completeJobTime:widget.completeJobTime,
           // documentID: widget.documentID,
           ),
        Files(completeJobDoc: widget.completeJobDoc),

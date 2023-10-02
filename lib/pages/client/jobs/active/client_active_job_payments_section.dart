@@ -79,7 +79,7 @@ class _ClientActiveJobPaymentState extends State<ClientActiveJobPayment> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children:  <Widget>[
                   Text('Requested'),
-                  Text(widget.budgetField),
+                  Text('LKR.${widget.budgetField}'),
                 ],
               ),
             ),

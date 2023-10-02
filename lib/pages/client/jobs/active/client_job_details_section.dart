@@ -68,7 +68,7 @@ class _ClientJobDetailsState extends State<ClientJobDetails> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Text(
-                widget.createdAt,
+                'Given in: ${widget.createdAt}',
                 style: kTextStyle,
               ),
             ],
@@ -100,7 +100,7 @@ class _ClientJobDetailsState extends State<ClientJobDetails> {
             style: kJobCardTitleTextStyle.copyWith(color: kJetBlack),
           ),
           Text(
-            widget.budgetField,
+            'LKR.${widget.budgetField}',
             style: kTextStyle,
           ),
           const SizedBox(

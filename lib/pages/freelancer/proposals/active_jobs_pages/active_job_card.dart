@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/pages/freelancer/proposals/active_jobs_pages/active_job_details.dart';
 
@@ -17,10 +18,10 @@ class ActiveJobCard extends StatelessWidget {
 
     final subData = activeJobDoc.data() as Map<String, dynamic>;
     final jobTitle = subData['jobTitle'] as String;
+    Timestamp? createdAtTimestamp = subData['createdAt'] as Timestamp?;
+    String createdAt = '';
     final jobDescription = subData['jobDescription'] as String;
     final budgetField = subData['budget'];
-
-
     String budget = '0.0'; // Initialize with a default value
 
     if (budgetField is int) {
@@ -36,7 +37,10 @@ class ActiveJobCard extends StatelessWidget {
     String imageUrl1 = subData['imageUrl1'] ?? ''; // Replace 'imageUrl1' with the actual field name
     String imageUrl2 = subData['imageUrl2'] ?? ''; // Replace 'imageUrl2' with the actual field name
 
-
+    if (createdAtTimestamp != null) {
+      DateTime createdAtDateTime = createdAtTimestamp.toDate();
+      createdAt = DateFormat('yyyy-MM-dd HH:mm:ss').format(createdAtDateTime);
+    }
 
 
     return InkWell(
@@ -50,6 +54,7 @@ class ActiveJobCard extends StatelessWidget {
               activeJobDoc : activeJobDoc,
               image1Url: imageUrl1, // Pass the URL of image1
               image2Url: imageUrl2, // Pass the URL of image2
+              createdAt: createdAt,
 
 
 

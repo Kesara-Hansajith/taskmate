@@ -33,6 +33,17 @@ class _ClientCompletedJobCardState extends State<ClientCompletedJobCard> {
     final jobDescription = subData['jobDescription'] as String;
     final budgetField = subData['budget'];
     String budget = '0.0'; // Initialize with a default value
+    final completeJobTimeField = subData['CompleteJobTime'];
+    String completeJobTimeString = '';
+
+    if (completeJobTimeField is Timestamp) {
+      DateTime completeJobDateTime = completeJobTimeField.toDate();
+      completeJobTimeString = DateFormat('yyyy-MM-dd HH:mm:ss').format(completeJobDateTime);
+    } else if (completeJobTimeField is String) {
+      // Assuming CompleteJobTime is stored as a string
+      completeJobTimeString = completeJobTimeField;
+    }
+
 
     if (budgetField is int) {
       budget = budgetField.toString(); // Convert int to string
@@ -49,6 +60,10 @@ class _ClientCompletedJobCardState extends State<ClientCompletedJobCard> {
       DateTime createdAtDateTime = createdAtTimestamp.toDate();
       createdAt = DateFormat('yyyy-MM-dd HH:mm:ss').format(createdAtDateTime);
     }
+
+
+
+
     String imageUrl1 = subData['imageUrl1'] ?? ''; // Replace 'imageUrl1' with the actual field name
     String imageUrl2 = subData['imageUrl2'] ?? ''; // Replace 'imageUrl2' with the actual field name
     String imageUrl3 = subData['imageUrl3'] ?? '';
@@ -68,6 +83,8 @@ class _ClientCompletedJobCardState extends State<ClientCompletedJobCard> {
               image3Url: imageUrl3,
               image4Url: imageUrl4,
               createdAt: createdAt, // Pass the createdAt value
+              completeJobTime: completeJobTimeString, // Pass the CompleteJobTime value
+
             ),
           ),
         );
@@ -87,7 +104,7 @@ class _ClientCompletedJobCardState extends State<ClientCompletedJobCard> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                  Text(
-                  'Completed on  ${createdAt.toString()}',
+                  'Completed on ${completeJobTimeString.toString()} ',
                   style: kTextStyle,
                 ),
                 Icon(

@@ -52,7 +52,7 @@ class CompletedJobs extends StatelessWidget {
                       if (!subSnapshot.hasData ||
                           subSnapshot.data!.docs.isEmpty) {
                         return const Center(
-                          child: Text('No completed jobs found'),
+                          child: Text(''),
                         );
                       }
 

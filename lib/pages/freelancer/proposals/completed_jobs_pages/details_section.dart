@@ -11,6 +11,9 @@ class Details extends StatefulWidget {
   final QueryDocumentSnapshot completeJobDoc;
   final String image1Url; // URL for image1
   final String image2Url; // URL for image2
+  final String createdAt;
+  final String completeJobTime; // Add this parameter
+
 
   const Details({
     Key? key,
@@ -20,6 +23,9 @@ class Details extends StatefulWidget {
     required this.completeJobDoc,
     required this.image1Url,
     required this.image2Url,
+    required this.createdAt,
+    required this.completeJobTime,
+
   });
 
   @override
@@ -56,11 +62,11 @@ class _DetailsState extends State<Details> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      'Recieved on: 2023.08.20',
+                      'Recieved on: ${widget.createdAt}',
                       style: kTextStyle,
                     ),
                     Text(
-                      'Completed on: 2023.08.25',
+                      'Completed on: ${widget.completeJobTime}',
                       style: kTextStyle,
                     ),
                   ],

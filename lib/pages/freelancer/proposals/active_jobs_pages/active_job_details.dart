@@ -15,6 +15,7 @@ class ActiveJobDetails extends StatefulWidget {
   final QueryDocumentSnapshot activeJobDoc;
   final String image1Url; // URL for image1
   final String image2Url; // URL for image2
+  final String createdAt; // Add this parameter
 
 
   ActiveJobDetails({
@@ -25,6 +26,7 @@ class ActiveJobDetails extends StatefulWidget {
      required this.activeJobDoc,
     required this.image1Url,
     required  this.image2Url,
+    required this.createdAt,
     // required this.documentID,
   });
 
@@ -53,6 +55,7 @@ class _ActiveJobDetailsState extends State<ActiveJobDetails> {
         image1Url: widget.image1Url, // Pass the URL of image1
         image2Url: widget.image2Url, // Pass the URL of image2
         //documentID: widget.documentID,
+        createdAt:widget.createdAt,
           ),
       Files(activeJobDoc: widget.activeJobDoc), // Pass the activeJobDoc
       Payments( budgetField: widget.budgetField,activeJobDoc: widget.activeJobDoc),
