@@ -9,19 +9,20 @@ import 'package:taskmate/freelancer_home_page.dart';
 import 'package:taskmate/models/job_details_data.dart';
 
 class JobDetails extends StatefulWidget {
-  final String documentID;
+  final QueryDocumentSnapshot mostjobDoc;
+
+
   const JobDetails({
-    super.key,
-    required this.documentID,
-  });
+    Key? key,
+    required this.mostjobDoc,
+
+  }) : super(key: key);
 
   @override
   State<JobDetails> createState() => _JobDetailsState();
 }
 
 class _JobDetailsState extends State<JobDetails> {
-  String description = '';
-
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _bidDescriptionController =
@@ -68,24 +69,11 @@ class _JobDetailsState extends State<JobDetails> {
     );
   }
 
-  Future<List<JobDetailsData>> fetchData(String documentId) async {
-    final DocumentSnapshot docSnapshot = await FirebaseFirestore.instance
-        .collection('available_projects')
-        .doc(documentId)
-        .get();
-
-    return [
-      JobDetailsData(
-        title: docSnapshot['title'] as String,
-        budget: docSnapshot['budget'],
-        description: docSnapshot['description'] as String,
-      )
-    ];
-  }
-
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
+    // Extract job details from the document snapshot
+    final subData = widget.mostjobDoc.data() as Map<String, dynamic>;
 
     return SafeArea(
       child: Scaffold(
@@ -111,55 +99,8 @@ class _JobDetailsState extends State<JobDetails> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              // FutureBuilder<List<JobDetailsData>>(
-              //   future: fetchData(widget.documentID),
-              //   builder: (context, snapshot) {
-              //     if (snapshot.connectionState == ConnectionState.waiting) {
-              //       return const Center(
-              //         child: CircularProgressIndicator(),
-              //       );
-              //     } else if (snapshot.hasError) {
-              //       return Text('Error: ${snapshot.error}');
-              //     } else if (!snapshot.hasData) {
-              //       return const Text('No data available.');
-              //     } else if (snapshot.hasData) {
-              //       List<JobDetailsData> data = snapshot.data!;
-              //       return Column(
-              //         children: [
-              //           Padding(
-              //             padding: const EdgeInsets.symmetric(vertical: 16.0),
-              //             child: Text(
-              //               data[0].title,
-              //               textAlign: TextAlign.center,
-              //               style: kJobCardTitleTextStyle,
-              //             ),
-              //           ),
-              //           Row(
-              //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              //             children: [
-              //               Text(
-              //                 'LKR. ${data[0].budget}',
-              //                 style: kJobCardDescriptionTextStyle,
-              //               ),
-              //               const Text('Remaining time goes here'),
-              //             ],
-              //           ),
-              //           Padding(
-              //             padding: const EdgeInsets.all(12.0),
-              //             child: Text(
-              //               data[0].description,
-              //               style: kJobCardDescriptionTextStyle,
-              //               textAlign: TextAlign.start,
-              //             ),
-              //           ),
-              //         ],
-              //       );
-              //     } else {
-              //       return const Text('');
-              //     }
-              //   },
-              // ),
-              UserDataGatherTitle(title: 'LKR 1000.00 - 2500.00',),
+              UserDataGatherTitle(
+                  title: 'LKR.${subData['budget']}.00'),
               const Padding(
                 padding: EdgeInsets.symmetric(
                   vertical: 10.0,
@@ -173,7 +114,7 @@ class _JobDetailsState extends State<JobDetails> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Text(
-                  'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
+                  subData['jobDescription'] ?? '',
                   style: kTextStyle,
                 ),
               ),
@@ -193,13 +134,21 @@ class _JobDetailsState extends State<JobDetails> {
                 child: Row(
                   children: <Widget>[
                     Expanded(
-                      child: AttachmentCard(cardChild: null),
+                      child: AttachmentCard(
+                        cardChild: Image.network(
+                        subData['image1Url'] ?? '',
+                      ),
                     ),
-                    const SizedBox(
+        ),
+                     SizedBox(
                       width: 10.0,
                     ),
                     Expanded(
-                      child: AttachmentCard(cardChild: null),
+                      child: AttachmentCard(
+                        cardChild: Image.network(
+                          subData['image2Url'] ?? '',
+                      ),
+                      ),
                     ),
                   ],
                 ),
@@ -238,17 +187,13 @@ class _JobDetailsState extends State<JobDetails> {
                       child: TextFormField(
                         maxLines: 5,
                         controller: _bidDescriptionController,
-
-                        // maxLength: 500,
-
                         decoration: InputDecoration(
                           hintText: 'Add a clear overview about your bid',
                           hintStyle: const TextStyle(fontSize: 12.0),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             borderSide: const BorderSide(
-                                color:
-                                kDeepBlueColor),
+                                color: kDeepBlueColor),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
@@ -262,9 +207,6 @@ class _JobDetailsState extends State<JobDetails> {
                           if (value!.isEmpty) {
                             return 'Field cannot be empty.';
                           }
-                          // else if (value.length < 500) {
-                          //   return 'Minimum 500 characters required.';
-                          // }
                           return null;
                         },
                       ),
@@ -281,7 +223,8 @@ class _JobDetailsState extends State<JobDetails> {
                             children: [
                               const Text(
                                 'Bid Amount',
-                                style: TextStyle(fontWeight: FontWeight.w600),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600),
                               ),
                               Padding(
                                 padding:
@@ -290,15 +233,16 @@ class _JobDetailsState extends State<JobDetails> {
                                   controller: _bidAmountController,
                                   keyboardType: TextInputType.number,
                                   decoration: InputDecoration(
-                                    contentPadding: const EdgeInsets.symmetric(
+                                    contentPadding:
+                                    const EdgeInsets.symmetric(
                                         horizontal: 6.0),
                                     hintText: 'LKR',
-                                    hintStyle: const TextStyle(fontSize: 12.0),
+                                    hintStyle:
+                                    const TextStyle(fontSize: 12.0),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),
                                       borderSide: const BorderSide(
-                                          color:
-                                          kDeepBlueColor),
+                                          color: kDeepBlueColor),
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),
@@ -327,7 +271,8 @@ class _JobDetailsState extends State<JobDetails> {
                             children: <Widget>[
                               const Text(
                                 'Delivered within',
-                                style: TextStyle(fontWeight: FontWeight.w600),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600),
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(
@@ -336,15 +281,16 @@ class _JobDetailsState extends State<JobDetails> {
                                   controller: _deliveryTimeController,
                                   keyboardType: TextInputType.number,
                                   decoration: InputDecoration(
-                                    contentPadding: const EdgeInsets.symmetric(
+                                    contentPadding:
+                                    const EdgeInsets.symmetric(
                                         horizontal: 6.0),
                                     hintText: 'Days',
-                                    hintStyle: const TextStyle(fontSize: 12.0),
+                                    hintStyle:
+                                    const TextStyle(fontSize: 12.0),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),
                                       borderSide: const BorderSide(
-                                          color:
-                                          kDeepBlueColor),
+                                          color: kDeepBlueColor),
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),
@@ -369,6 +315,7 @@ class _JobDetailsState extends State<JobDetails> {
                   ],
                 ),
               ),
+
               Container(
                 width: screenWidth,
                 margin: const EdgeInsets.symmetric(
@@ -388,9 +335,9 @@ class _JobDetailsState extends State<JobDetails> {
                       // Reference to the "jobsnew" subcollection
                       CollectionReference jobsNewCollection = FirebaseFirestore.instance
                           .collection('jobs')
-                          .doc(widget.documentID)
+                          .doc('F9888VcrTES08BLorWTTxIMaic53')
                           .collection('jobsnew')
-                          .doc('1694944521298') // Automatically generates a unique document ID
+                          .doc(widget.mostjobDoc.id)
                           .collection('bidsjobs');
 
                       // Add the data to the "jobsnew" subcollection
@@ -399,10 +346,12 @@ class _JobDetailsState extends State<JobDetails> {
                       // Reference to the "bidsjobs" subcollection
                       CollectionReference bidsJobsCollection = FirebaseFirestore.instance
                           .collection('jobs') // Use your actual collection name
-                          .doc(widget.documentID)
+                          .doc('F9888VcrTES08BLorWTTxIMaic53')
                           .collection('jobsnew')
-                          .doc('1694944521298') // Use the ID of the newly added document
+                          .doc(widget.mostjobDoc.id)
                           .collection('bidsjobs');
+
+
 
                       // Show a success dialog
 
