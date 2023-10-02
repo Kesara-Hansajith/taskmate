@@ -165,4 +165,3 @@ class _JobsState extends State<Jobs> with SingleTickerProviderStateMixin {
     );
   }
 }
-
