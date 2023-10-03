@@ -71,10 +71,10 @@ class _PaymentsState extends State<Payments> {
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const <Widget>[
+                children:  <Widget>[
                   Text('Released to Freelancer'),
                   Text(
-                    'LKR.  9500.00',
+                    '${widget.budgetField}',
                     textAlign: TextAlign.left,
                   ),
                 ],
