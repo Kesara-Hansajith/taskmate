@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/pages/freelancer/proposals/completed_jobs_pages/details_section.dart';
@@ -8,8 +9,26 @@ import 'package:toggle_switch/toggle_switch.dart';
 
 class CompletedJobDetails extends StatefulWidget {
   // final String documentID;
+  final String jobTitle; // Add this parameter
+  final String jobDescription;
+  final String budgetField;
+  final QueryDocumentSnapshot completeJobDoc;
+  final String image1Url; // URL for image1
+  final String image2Url; // URL for image2
+  final String createdAt;
+  final String completeJobTime; // Add this parameter
+
+
   const CompletedJobDetails({
     super.key,
+    required this.jobTitle, // Add this parameter
+    required this.jobDescription,
+    required this.budgetField,
+    required this.completeJobDoc,
+    required this.image1Url,
+    required  this.image2Url,
+    required this.createdAt,
+    required this.completeJobTime,
     // required this.documentID,
   });
 
@@ -31,10 +50,18 @@ class _CompletedJobDetailsState extends State<CompletedJobDetails> {
     double screenWidth = MediaQuery.of(context).size.width;
     final List completedJobItems = [
       Details(
+        jobTitle: widget.jobTitle,
+        jobDescription : widget.jobDescription,
+        budgetField: widget.budgetField,
+        completeJobDoc: widget.completeJobDoc,
+        image1Url: widget.image1Url, // Pass the URL of image1
+        image2Url: widget.image2Url, // Pass the URL of image2
+        createdAt:widget.createdAt,
+        completeJobTime:widget.completeJobTime,
           // documentID: widget.documentID,
           ),
-      const Files(),
-      const Payments(),
+       Files(completeJobDoc: widget.completeJobDoc),
+       Payments(budgetField: widget.budgetField,),
       Reviews(
         // documentID: widget.documentID,
       ),

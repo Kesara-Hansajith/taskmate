@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:path/path.dart' as path;
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -12,81 +13,43 @@ import 'package:dotted_border/dotted_border.dart';
 import '../../../../components/snackbar.dart';
 
 class Files extends StatefulWidget {
+  final QueryDocumentSnapshot completeJobDoc;
+
   const Files({
-    super.key,
-  });
+    Key? key,
+    required this.completeJobDoc,
+  }) : super(key: key);
 
   @override
   State<Files> createState() => _FilesState();
 }
 
 class _FilesState extends State<Files> {
-  File? _selectedImage1;
-  File? _selectedImage2;
 
-  Future<void> _pickImage1() async {
-    final imagePicker = ImagePicker();
-    final pickedFile = await imagePicker.pickImage(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
-      setState(() {
-        _selectedImage1 = File(pickedFile.path); // Store the selected image
-      });
+/// Custom method to display an image in full-screen with a black background
+  void _showFullScreenImage(String imageUrl) {
+    if (imageUrl != null) {
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => Scaffold(
+          body: Container(
+            color: Colors.black, // Set background color to black
+            child: Center(
+              child: Image.network(imageUrl),
+            ),
+          ),
+        ),
+      ));
     }
   }
 
-  Future<void> _pickImage2() async {
-    final imagePicker = ImagePicker();
-    final pickedFile = await imagePicker.pickImage(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
-      setState(() {
-        _selectedImage2 = File(pickedFile.path); // Store the selected image
-      });
-    }
-  }
-
-  Future<void> _uploadImagesToFirebase() async {
-    if (_selectedImage1 != null && _selectedImage2 != null) {
-      try {
-        final FirebaseStorage storage = FirebaseStorage.instance;
-
-        // Upload the first image
-        final Reference ref1 = storage
-            .ref()
-            .child('files/${path.basename(_selectedImage1!.path)}');
-        final UploadTask task1 = ref1.putFile(_selectedImage1!);
-
-        // Upload the second image
-        final Reference ref2 = storage
-            .ref()
-            .child('files/${path.basename(_selectedImage2!.path)}');
-        final UploadTask task2 = ref2.putFile(_selectedImage2!);
-
-        // Wait for both uploads to complete
-        await Future.wait([
-          task1.whenComplete(() => print('Image 1 uploaded')),
-          task2.whenComplete(() => print('Image 2 uploaded'))
-        ]);
-
-        // After both images are uploaded, you can perform any additional actions you need, such as saving the download URLs.
-        // You can get the download URLs using task1.snapshot.ref.getDownloadURL() and task2.snapshot.ref.getDownloadURL().
-
-        // TODO: Add your additional logic here
-      } catch (e) {
-        print('Error uploading images: $e');
-        // Handle errors here
-      }
-    } else {
-      // Handle case when one or both images are not selected
-      print('Please select both images before submitting.');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
+
+    final imageUrl3 = widget.completeJobDoc['image3Url'];
+    final imageUrl4 = widget.completeJobDoc['image4Url'];
 
     return SingleChildScrollView(
       child: SizedBox(
@@ -110,12 +73,12 @@ class _FilesState extends State<Files> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          _pickImage1(); // Call the _pickImage function when tapped
+                          _showFullScreenImage(imageUrl3); // Call the _pickImage function when tapped
                         },
-                        child: const AttachmentCard(
-                          cardChild: Text('Tap Here'),
+                        child: imageUrl3 != null
+                            ? Image.network(imageUrl3)
+                            : const Text('Tap Here'),
                         ),
-                      ),
                     ],
                   ),
                 ),
@@ -126,10 +89,12 @@ class _FilesState extends State<Files> {
                   child: Column(
                     children: [
                       GestureDetector(
-                        onTap: () {},
-                        child: const AttachmentCard(
-                          cardChild: Text('Tap Here'),
-                        ),
+                        onTap: () {
+                          _showFullScreenImage(imageUrl4);
+                        },
+                        child: imageUrl4 != null
+                            ? Image.network(imageUrl4)
+                            : const Text('Tap Here'),
                       ),
                     ],
                   ),

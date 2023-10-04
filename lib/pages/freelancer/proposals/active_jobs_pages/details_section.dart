@@ -5,10 +5,23 @@ import 'package:taskmate/models/active_job_details_data.dart';
 import 'package:taskmate/components/attachment_card.dart';
 
 class Details extends StatefulWidget {
-  // final String documentID;
+  final String jobTitle;
+  final String jobDescription;
+  final String budgetField;
+  final QueryDocumentSnapshot activeJobDoc;
+  final String image1Url; // URL for image1
+  final String image2Url; // URL for image2
+  final String createdAt; // Add this parameter
+
   const Details({
     super.key,
-    // required this.documentID,
+    required this.jobTitle,
+    required this.jobDescription,
+    required this.budgetField,
+    required this.activeJobDoc,
+    required this.image1Url, // Add this parameter
+    required this.image2Url, // Add this parameter
+    required this.createdAt,
   });
 
   @override
@@ -16,21 +29,31 @@ class Details extends StatefulWidget {
 }
 
 class _DetailsState extends State<Details> {
-  // Future<List<ActiveJobDetailsData>> fetchData(String documentId) async {
-  //   final DocumentSnapshot docSnapshot = await FirebaseFirestore.instance
-  //       .collection('active_jobs')
-  //       .doc(documentId)
-  //       .get();
-  //
-  //   return [
-  //     ActiveJobDetailsData(
-  //       title: docSnapshot['title'] as String,
-  //       bidCount: docSnapshot['bidCount'] as int,
-  //       bidPrice: docSnapshot['bidPrice'] as int,
-  //       description: docSnapshot['description'] as String,
-  //     )
-  //   ];
-  // }
+  late final String imageUrl1;
+  late final String imageUrl2;
+
+  @override
+  void initState() {
+    super.initState();
+    imageUrl1 = widget.activeJobDoc['image1Url'];
+    imageUrl2 = widget.activeJobDoc['image2Url'];
+  }
+
+  /// Custom method to display an image in full-screen with a black background
+  void _showFullScreenImage(String imageUrl) {
+    if (imageUrl != null) {
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => Scaffold(
+          body: Container(
+            color: Colors.black, // Set background color to black
+            child: Center(
+              child: Image.network(imageUrl),
+            ),
+          ),
+        ),
+      ));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,11 +66,23 @@ class _DetailsState extends State<Details> {
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
-              children: [Text('Recieved on: 2023.09.01',style: kTextStyle,)],
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      'Recieved on: ${widget.createdAt}',
+                      style: kTextStyle,
+                    ),
+                  ],
+                )
+              ],
             ),
             Text(
-              'Job Title',
-              style: kJobCardTitleTextStyle.copyWith(color: kJetBlack),
+              widget.jobTitle,
+              style: kJobCardTitleTextStyle.copyWith(
+                color: kJetBlack,
+              ),
             ),
             Text(
               'Title goes here...',
@@ -58,10 +93,12 @@ class _DetailsState extends State<Details> {
             ),
             Text(
               'Description',
-              style: kJobCardTitleTextStyle.copyWith(color: kJetBlack),
+              style: kJobCardTitleTextStyle.copyWith(
+                color: kJetBlack,
+              ),
             ),
             Text(
-              'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. ',
+              widget.jobDescription,
               style: kTextStyle,
             ),
             const SizedBox(
@@ -69,10 +106,12 @@ class _DetailsState extends State<Details> {
             ),
             Text(
               'Price',
-              style: kJobCardTitleTextStyle.copyWith(color: kJetBlack),
+              style: kJobCardTitleTextStyle.copyWith(
+                color: kJetBlack,
+              ),
             ),
             Text(
-              'LKR 3000',
+              'LKR.${widget.budgetField}',
               style: kTextStyle,
             ),
             const SizedBox(
@@ -80,15 +119,17 @@ class _DetailsState extends State<Details> {
             ),
             Text(
               'Attachments',
-              style: kJobCardTitleTextStyle.copyWith(color: kJetBlack),
+              style: kJobCardTitleTextStyle.copyWith(
+                color: kJetBlack,
+              ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Row(
-                children: const <Widget>[
+                children: <Widget>[
                   Expanded(
                     child: AttachmentCard(
-                      cardChild: Text('Tap Here'),
+                      cardChild: Image.network(imageUrl1), // Display image1 using its URL
                     ),
                   ),
                   SizedBox(
@@ -96,71 +137,12 @@ class _DetailsState extends State<Details> {
                   ),
                   Expanded(
                     child: AttachmentCard(
-                      cardChild: Text('Tap Here'),
+                      cardChild: Image.network(imageUrl2), // Display image2 using its URL
                     ),
                   ),
                 ],
               ),
             ),
-
-            // FutureBuilder<List<ActiveJobDetailsData>>(
-            //   future: fetchData(widget.documentID),
-            //   builder: (context, snapshot) {
-            //     if (snapshot.connectionState == ConnectionState.waiting) {
-            //       return const Center(
-            //         child: CircularProgressIndicator(),
-            //       );
-            //     } else if (snapshot.hasError) {
-            //       return Text('Error: ${snapshot.error}');
-            //     } else if (!snapshot.hasData) {
-            //       return const Text('No data available.');
-            //     } else if (snapshot.hasData) {
-            //       List<ActiveJobDetailsData> data = snapshot.data!;
-            //       return Center(
-            //         child: Column(
-            //           crossAxisAlignment: CrossAxisAlignment.start,
-            //           children: [
-            //             const SizedBox(height: 20.0,),
-            //             const Text(
-            //               'Job Title',
-            //               style: kJobCardTitleTextStyle,
-            //             ),
-            //             Text(
-            //               data[0].title,
-            //               style: kTextStyle,
-            //             ),
-            //             const Text(
-            //               'Description',
-            //               style: kJobCardTitleTextStyle,
-            //             ),
-            //             Text(
-            //               data[0].description,
-            //               style: kTextStyle,
-            //             ),
-            //             const Text(
-            //               'Price',
-            //               style: kJobCardTitleTextStyle,
-            //             ),
-            //             Text(
-            //               "LKR. " + data[0].bidPrice.toString(),
-            //               style: kTextStyle,
-            //             ),
-            //             const Text(
-            //               'Attachments',
-            //               style: kJobCardTitleTextStyle,
-            //             ),
-            //             const Text(
-            //               'No Attachments',
-            //               style: kTextStyle,
-            //             ),
-            //           ],
-            //         ),
-            //       );
-            //     } else {
-            //       return const Text('');
-            //     }
-            //   },
-            // ),
           ],
         ),
       ),

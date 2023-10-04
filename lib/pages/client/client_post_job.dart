@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -35,6 +38,8 @@ class _ClientPostJobState extends State<ClientPostJob> {
   final TextEditingController dayCountController = TextEditingController();
   final TextEditingController budgetController = TextEditingController();
   final TextEditingController skillController = TextEditingController();
+  File? _selectedImage1;
+  File? _selectedImage2;
 
   @override
   void dispose() {
@@ -46,6 +51,7 @@ class _ClientPostJobState extends State<ClientPostJob> {
     super.dispose();
   }
 
+
   void selectService(String serviceName) {
     setState(() {
       _skills.add(serviceName);
@@ -53,29 +59,29 @@ class _ClientPostJobState extends State<ClientPostJob> {
     });
   }
 
-  void _openFilePicker() async {
+  Future<void> uploadFile(int imageNumber) async {
     try {
-      FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.any,
-        allowMultiple: false,
-      );
-
+      FilePickerResult? result = await FilePicker.platform.pickFiles();
       if (result != null) {
-        PlatformFile file = result.files.first;
-      } else {
-        // User canceled the file picker
+        File selectedImage = File(result.files.single.path!);
+        setState(() {
+          if (imageNumber == 1) {
+            _selectedImage1 = selectedImage;
+          } else if (imageNumber == 2) {
+            _selectedImage2 = selectedImage;
+          }
+        });
       }
     } catch (e) {
-      // Handle any exceptions that occur during file picking
+      // Handle errors
     }
   }
 
-  Future<void> addJobToFirestore(
-    String jobTitle,
-    String jobDescription,
-    int dayCount,
-    int budget,
-  ) async {
+
+  Future<void> addJobToFirestore(String jobTitle,
+      String jobDescription,
+      int dayCount,
+      int budget,) async {
     try {
       // Get the current user's UID from FirebaseAuth
       User? user = FirebaseAuth.instance.currentUser;
@@ -87,16 +93,26 @@ class _ClientPostJobState extends State<ClientPostJob> {
       }
 
       // Get a reference to the Firestore collection
-      CollectionReference jobsCollection = FirebaseFirestore.instance.collection('jobs');
+      CollectionReference jobsCollection = FirebaseFirestore.instance
+          .collection('jobs');
 
       // Generate a unique job ID (e.g., using a timestamp)
-      String timestamp = Timestamp.now().millisecondsSinceEpoch.toString();
+      String timestamp = Timestamp
+          .now()
+          .millisecondsSinceEpoch
+          .toString();
 
       // Use the user's UID as the document ID for the main job document
       DocumentReference jobDocument = jobsCollection.doc(userUid);
 
       // Create or update a subcollection called "jobsnew" under the main job document
       CollectionReference jobsNewCollection = jobDocument.collection('jobsnew');
+
+      // Upload images to Firebase Storage and get download URLs
+      String? image1Url = await uploadImageToStorage(
+          _selectedImage1, 'image1_$timestamp');
+      String? image2Url = await uploadImageToStorage(
+          _selectedImage2, 'image2_$timestamp');
 
       // Add job data to Firestore within the "jobsnew" subcollection
       await jobsNewCollection.doc(timestamp).set({
@@ -105,7 +121,11 @@ class _ClientPostJobState extends State<ClientPostJob> {
         'jobDescription': jobDescription,
         'dayCount': dayCount,
         'budget': budget,
-        'status': 'active', // Set the status to "active"
+        'skills': _skills,
+        'image1Url': image1Url,
+        'image2Url': image2Url,
+        'status': 'new', // Set the status to "active"
+        'createdAt': FieldValue.serverTimestamp(), // Add the timestamp field
         // You can add more fields as needed
       });
     } catch (e) {
@@ -115,7 +135,10 @@ class _ClientPostJobState extends State<ClientPostJob> {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
+    double screenWidth = MediaQuery
+        .of(context)
+        .size
+        .width;
 
     return SafeArea(
       child: Scaffold(
@@ -465,14 +488,36 @@ class _ClientPostJobState extends State<ClientPostJob> {
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: InkWell(
                       onTap: () {
-                        _openFilePicker();
+                        uploadFile(1);
                       },
                       child: AttachmentCard(
-                        cardChild: Text('Tap Here'),
+                        cardChild: _selectedImage1 != null
+                            ? Image.file(
+                          _selectedImage1!,
+                          fit: BoxFit.cover, // Adjust the fit as needed
+                        )
+                            : Container(), // Empty container if _selectedImage2 is null
                       ),
                     ),
                   ),
-                  const SizedBox(
+                  SizedBox(height: 12,),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: InkWell(
+                      onTap: () {
+                        uploadFile(2);
+                      },
+                      child: AttachmentCard(
+                        cardChild: _selectedImage2 != null
+                            ? Image.file(
+                          _selectedImage2!,
+                          fit: BoxFit.cover, // Adjust the fit as needed
+                        )
+                            : Container(), // Empty container if _selectedImage2 is null
+                      ),
+                    ),
+                  ),
+                  SizedBox(
                     height: 12.0,
                   ),
                   DarkMainButton(
@@ -481,11 +526,11 @@ class _ClientPostJobState extends State<ClientPostJob> {
                       if (formKey.currentState!.validate()) {
                         String jobTitle = jobTitleController.text;
                         String jobDescription = jobDescriptionController.text;
-                        int dayCount =
-                            int.tryParse(dayCountController.text) ?? 0;
+                        int dayCount = int.tryParse(dayCountController.text) ??
+                            0;
                         int budget = int.tryParse(budgetController.text) ?? 0;
                         addJobToFirestore(
-                            jobTitle, jobDescription, dayCount, budget);
+                          jobTitle, jobDescription, dayCount, budget,);
                         showDialog(
                           context: context,
                           barrierDismissible: false,
@@ -513,9 +558,10 @@ class _ClientPostJobState extends State<ClientPostJob> {
                                     process: () {
                                       Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
-                                          builder: (context) => ClientHomePage(
-                                              // selectedIndex: 2,
-                                              // client: widget.client,
+                                          builder: (context) =>
+                                              ClientHomePage(
+                                                // selectedIndex: 2,
+                                                // client: widget.client,
                                               ),
                                         ),
                                       );
@@ -537,4 +583,31 @@ class _ClientPostJobState extends State<ClientPostJob> {
       ),
     );
   }
+
+  Future<String?> uploadImageToStorage(File? image, String imageName) async {
+    if (image == null) {
+      return null;
+    }
+
+    try {
+      Reference storageReference =
+      FirebaseStorage.instance.ref().child('images/$imageName');
+      UploadTask uploadTask = storageReference.putFile(image);
+      await uploadTask.whenComplete(() async {
+        // Wait for the upload to complete and then return the download URL
+        return await storageReference.getDownloadURL();
+      });
+
+      // If the await inside whenComplete doesn't work as expected,
+      // you can try using await for the whole operation
+      String downloadURL = await storageReference.getDownloadURL();
+      return downloadURL;
+    } catch (e) {
+      // Handle errors
+      print("Error uploading image: $e");
+    }
+
+    return null;
+  }
+
 }

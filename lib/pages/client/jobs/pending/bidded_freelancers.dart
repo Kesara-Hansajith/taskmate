@@ -1,15 +1,31 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/pages/client/jobs/pending/bidded_freelancer_card.dart';
 
 class BiddedFreelancers extends StatefulWidget {
-  const BiddedFreelancers({super.key});
+  final QueryDocumentSnapshot pendingjobDoc;
+  final String jobTitle;
+
+  const BiddedFreelancers({
+    Key? key,
+    required this.pendingjobDoc,
+    required this.jobTitle,
+
+  }) : super(key: key);
+
 
   @override
   State<BiddedFreelancers> createState() => _BiddedFreelancersState();
 }
 
 class _BiddedFreelancersState extends State<BiddedFreelancers> {
+  late CollectionReference bidsCollection;
+
+  void initState() {
+    super.initState();
+    bidsCollection = widget.pendingjobDoc.reference.collection('bidsjobs');
+  }
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -60,7 +76,31 @@ class _BiddedFreelancersState extends State<BiddedFreelancers> {
                 const SizedBox(
                   height: 20.0,
                 ),
-                BiddedFreelancerCard(),
+                FutureBuilder<QuerySnapshot>(
+                  future: bidsCollection.get(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator();
+                    }
+
+                    if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    }
+
+                    // Process and display your data here
+                    List<QueryDocumentSnapshot> bidDocuments = snapshot.data!.docs;
+
+                    return Column(
+                      children: bidDocuments.map((bidDoc) {
+                        return BiddedFreelancerCard(
+                            bidDoc: bidDoc,
+                           jobTitle: widget.jobTitle,
+                          pendingjobDoc: widget.pendingjobDoc,
+                        );
+                      }).toList(),
+                    );
+                  },
+                ),
               ],
             ),
           ),

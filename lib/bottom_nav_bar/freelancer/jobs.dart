@@ -82,6 +82,7 @@ class _JobsState extends State<Jobs> with SingleTickerProviderStateMixin {
           child: TabBarView(
             controller: _tabController,
             children: [
+              // StreamBuilder for "Best Match" tab
               StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance.collection('jobs').snapshots(),
                 builder: (context, snapshot) {
@@ -99,13 +100,15 @@ class _JobsState extends State<Jobs> with SingleTickerProviderStateMixin {
 
                   final jobDocs = snapshot.data!.docs;
 
-
                   return ListView.builder(
                     itemCount: jobDocs.length,
                     itemBuilder: (context, index) {
                       final doc = jobDocs[index];
                       return StreamBuilder<QuerySnapshot>(
-                        stream: doc.reference.collection('jobsnew').where('status', isEqualTo: 'new').snapshots(),
+                        stream: doc.reference
+                            .collection('jobsnew')
+                            .where('status', isEqualTo: 'new') // Change filter condition
+                            .snapshots(),
                         builder: (context, subSnapshot) {
                           if (subSnapshot.connectionState == ConnectionState.waiting) {
                             return const Center(
@@ -115,36 +118,43 @@ class _JobsState extends State<Jobs> with SingleTickerProviderStateMixin {
 
                           if (!subSnapshot.hasData || subSnapshot.data!.docs.isEmpty) {
                             return const Center(
-                              child: Text('No pending jobs found'),
+                              child: Text('No matching jobs found'),
                             );
                           }
 
-                          final jobNewDocs = subSnapshot.data!.docs;
+                          final matchingJobDocs = subSnapshot.data!.docs;
 
-                          // Sort jobNewDocs by budget in descending order
-                          jobNewDocs.sort((a, b) {
-                            final budgetA = int.tryParse(a['budget'] as String) ?? 0;
-                            final budgetB = int.tryParse(b['budget'] as String) ?? 0;
+                          // Create a Set to keep track of unique job IDs
+                          final Set<String> uniqueJobIds = Set();
 
-                            return budgetB.compareTo(budgetA); // Sort in descending order
-                          });
+                          // Filter out duplicate jobs
+                          final filteredJobDocs = matchingJobDocs.where((subDoc) {
+                            final jobId = subDoc.id;
+                            if (uniqueJobIds.contains(jobId)) {
+                              return false; // Skip duplicate job
+                            } else {
+                              uniqueJobIds.add(jobId);
+                              return true; // Include unique job
+                            }
+                          }).toList();
 
-                          final data = doc.data() as Map<String, dynamic>;
-
-                          return JobCard(
-                            documentID: doc.id,
-                            screenWidth: screenWidth,
-                            jobData: data,
-                            jobNewDocs: jobNewDocs,
+                          // Customize how you want to display each matching job in the list
+                          return Column(
+                            children: filteredJobDocs.map<Widget>((subDoc) {
+                              return JobCard(
+                                  mostjobDoc: subDoc,
+                                  screenWidth: screenWidth
+                              );
+                            }).toList(),
                           );
                         },
                       );
                     },
                   );
-
                 },
               ),
 
+              // StreamBuilder for "Most Recent" tab
               const Center(
                 child: Text('Most Recent Jobs will be displayed here'),
               ),

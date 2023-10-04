@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/pages/client/jobs/active/client_active_job_files_section.dart';
@@ -8,9 +9,28 @@ import 'package:toggle_switch/toggle_switch.dart';
 
 class ClientActiveJobDetails extends StatefulWidget {
   // final String documentID;
-  const ClientActiveJobDetails({
-    super.key,
-    // required this.documentID,
+  final String jobTitle; // Add this parameter
+  final String jobDescription;
+  final String budgetField;
+  final QueryDocumentSnapshot activeJobDoc;
+  final String image1Url; // URL for image1
+  final String image2Url; // URL for image2
+  final String image3Url; // URL for image1
+  final String image4Url; // URL for image2
+  final String createdAt; // Add this parameter
+
+   ClientActiveJobDetails({
+     super.key,
+     required this.jobTitle, // Add this parameter
+     required this.jobDescription,
+     required this.budgetField,
+     required this.activeJobDoc,
+     required this.image1Url,
+     required  this.image2Url,
+     required  this.image3Url, // URL for image1
+     required  this.image4Url,
+     required this.createdAt, // URL for image2
+     // required this.documentID,
   });
 
   @override
@@ -31,10 +51,24 @@ class _ClientActiveJobDetailsState extends State<ClientActiveJobDetails> {
     double screenWidth = MediaQuery.of(context).size.width;
     final List activeJobItems = [
       ClientJobDetails(
-        // documentID: widget.documentID,
+        jobTitle: widget.jobTitle,
+        jobDescription : widget.jobDescription,
+        budgetField: widget.budgetField,
+        activeJobDoc: widget.activeJobDoc,
+        image1Url: widget.image1Url, // Pass the URL of image1
+        image2Url: widget.image2Url, // Pass the URL of image2
+        createdAt: widget.createdAt, // Pass the createdAt value
+        //documentID: widget.documentID,
       ),
-      const ClientActiveJobFiles(),
-      const ClientActiveJobPayment(),
+       ClientActiveJobFiles(
+        image3Url: widget.image3Url,
+        image4Url: widget.image4Url,
+         activeJobDoc: widget.activeJobDoc,
+      ),
+       ClientActiveJobPayment(
+        budgetField: widget.budgetField,
+        activeJobDoc: widget.activeJobDoc,
+      ),
       const ClientActiveJobReview(),
     ];
 

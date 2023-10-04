@@ -71,8 +71,12 @@ class Taskmate extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: "Poppins"),
-      home: SafeArea(
-        child: ClientHomePage(),
+
+
+      home: const SafeArea(
+        child: ProfileClient(),
+
+
       ),
     );
   }
