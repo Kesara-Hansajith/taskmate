@@ -3,8 +3,8 @@ class UserModel1 {
   final String? id;
   final String firstName ;
   final String lastName ;
-  final String email;
-  final String password;
+  // final String email;
+  // final String password;
   final String address ;
   final String zipcode ;
   final String street;
@@ -20,8 +20,8 @@ class UserModel1 {
     this.id,
     required this.firstName,
     required this.lastName,
-    required this.email,
-    required this.password,
+    // required this.email,
+    // required this.password,
     required this.address,
     required this.zipcode,
     required this.street,
@@ -39,8 +39,8 @@ class UserModel1 {
 
       "FirstName": firstName,
       "LastName": lastName,
-      "Email": email,
-      "Password": password,
+      // "Email": email,
+      // "Password": password,
       "Address": address,
       "ZipCode": zipcode,
       "Street": street,
@@ -60,8 +60,8 @@ class UserModel1 {
       // Use the null-aware operator to provide a default value
       firstName: json['FirstName'] ?? '',
       lastName: json['LastName'] ?? '',
-      email: json['Email'] ?? '',
-      password: json['Password'] ?? '',
+      // email: json['Email'] ?? '',
+      // password: json['Password'] ?? '',
       address: json['Address'] ?? '',
       zipcode: json['ZipCode'] ?? '',
       street: json['Street'] ?? '',
