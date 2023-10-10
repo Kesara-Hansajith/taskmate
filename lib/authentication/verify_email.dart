@@ -15,6 +15,16 @@ class VerifyEmail extends StatefulWidget {
 }
 
 class _VerifyEmailState extends State<VerifyEmail> {
+  String? imagePath;
+
+  Future<void> loadImages(String imageUrl) async {
+    try {
+      await precacheImage(AssetImage(imagePath!), context);
+    } catch (e) {
+      //Ignored
+    }
+  }
+
   String? _email;
 
   @override
@@ -25,6 +35,8 @@ class _VerifyEmailState extends State<VerifyEmail> {
     if (user != null) {
       _email = user.email!;
     }
+    loadImages('images/background/signup.webp');
+    loadImages('images/mailbox.webp');
     super.initState();
   }
 

@@ -18,6 +18,18 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+
+  String? imagePath;
+
+
+  Future<void> loadImages(String imageUrl) async {
+    try {
+      await precacheImage(AssetImage(imagePath!), context);
+    } catch (e) {
+      //Ignored
+    }
+  }
+
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -105,6 +117,14 @@ class _LoginState extends State<Login> {
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadImages('images/background/login.webp');
+    loadImages('images/taskmate_logo_light.webp');
+    loadImages('images/noise_image.webp');
   }
 
   @override
