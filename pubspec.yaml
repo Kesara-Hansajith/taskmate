@@ -103,6 +103,7 @@ flutter:
     - images/
     - icons/
     - gifs/
+    - audio/
   #   - images/a_dot_ham.jpeg
 
 

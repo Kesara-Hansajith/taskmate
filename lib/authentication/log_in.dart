@@ -9,6 +9,8 @@ import 'package:taskmate/components/bottom_sub_text.dart';
 import 'package:taskmate/components/snackbar.dart';
 import 'package:taskmate/bottom_nav_bar/freelancer/jobs.dart';
 import 'package:taskmate/components/maintenance_page.dart';
+import 'package:toggle_switch/toggle_switch.dart';
+
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -18,9 +20,14 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-
   String? imagePath;
+  int currentUserRole=0;
 
+  void _onToggle(int? index) {
+    setState(() {
+      currentUserRole = index!;
+    });
+  }
 
   Future<void> loadImages(String imageUrl) async {
     try {
@@ -188,6 +195,30 @@ class _LoginState extends State<Login> {
                                     'Welcome Back!',
                                     style: kHeadingTextStyle,
                                   ),
+                                ),
+                                ToggleSwitch(
+                                  activeBgColor: const [kOceanBlueColor],
+                                  activeFgColor: kDeepBlueColor,
+                                  inactiveBgColor: kLightBlueColor,
+                                  inactiveFgColor: kOceanBlueColor,
+                                  cornerRadius: 10.0,
+                                  radiusStyle: true,
+                                  minWidth: screenWidth,
+                                  minHeight: 50.0,
+                                  initialLabelIndex: currentUserRole,
+                                  totalSwitches: 2,
+                                  customTextStyles: const [
+                                    TextStyle(
+                                        fontSize: 15.0,
+                                        fontWeight: FontWeight.w600),
+                                    TextStyle(
+                                        fontSize: 15.0,
+                                        fontWeight: FontWeight.w600),
+                                  ],
+                                  animate: true,
+                                  curve: Curves.ease,
+                                  labels: const ['Freelancer', 'Client'],
+                                  onToggle: _onToggle,
                                 ),
                                 Form(
                                   key: _formKey,
