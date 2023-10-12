@@ -17,7 +17,7 @@ import 'package:taskmate/constants.dart';
 // import 'package:taskmate/profile/client/user_model1.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-// import 'package:taskmate/core/sound_recorder_class.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class ClientPostJob extends StatefulWidget {
   const ClientPostJob({
@@ -34,10 +34,15 @@ class ClientPostJob extends StatefulWidget {
 class _ClientPostJobState extends State<ClientPostJob> {
   final recorder = FlutterSoundRecorder();
   bool isRecorderReady = false;
-  // final recorder=SoundRecorder();
-  final String audioFilePath='audio_example.aac';
+  late final audioFile;
+
+  // final audioPlayer = AudioPlayer();
+  // bool isPlaying = false;
+  // Duration duration = Duration.zero;
+  // Duration position = Duration.zero;
 
   final formKey = GlobalKey<FormState>();
+
   final List<String> _skills = [];
   // String _skillsText = '';
 
@@ -49,6 +54,10 @@ class _ClientPostJobState extends State<ClientPostJob> {
   final TextEditingController skillController = TextEditingController();
   File? _selectedImage1;
   File? _selectedImage2;
+
+  // Future<void> playAudioFromUrl(String url)async{
+  //   await audioPlayer.play(UrlSource(url));
+  // }
 
   @override
   void dispose() {
@@ -64,13 +73,14 @@ class _ClientPostJobState extends State<ClientPostJob> {
 
   Future record() async {
     if (!isRecorderReady) return;
-    await recorder.startRecorder(toFile: audioFilePath);
+    await recorder.startRecorder(toFile: 'audio');
   }
 
   Future stop() async {
     if (!isRecorderReady) return;
     final path = await recorder.stopRecorder();
-    final audioFile = File(path!);
+    audioFile = File(path!);
+    print('Recorded voice: $audioFile');
   }
 
   void selectService(String serviceName) {
@@ -519,40 +529,50 @@ class _ClientPostJobState extends State<ClientPostJob> {
                   const UserDataGatherTitle(
                     title: 'Attachments',
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: InkWell(
-                      onTap: () {
-                        uploadFile(1);
-                      },
-                      child: AttachmentCard(
-                        cardChild: _selectedImage1 != null
-                            ? Image.file(
-                                _selectedImage1!,
-                                fit: BoxFit.cover, // Adjust the fit as needed
-                              )
-                            : Container(), // Empty container if _selectedImage2 is null
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 16.0),
+                          child: InkWell(
+                            onTap: () {
+                              uploadFile(1);
+                            },
+                            child: AttachmentCard(
+                              cardChild: _selectedImage1 != null
+                                  ? Image.file(
+                                      _selectedImage1!,
+                                      fit: BoxFit
+                                          .cover, // Adjust the fit as needed
+                                    )
+                                  : Container(), // Empty container if _selectedImage2 is null
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: InkWell(
-                      onTap: () {
-                        uploadFile(2);
-                      },
-                      child: AttachmentCard(
-                        cardChild: _selectedImage2 != null
-                            ? Image.file(
-                                _selectedImage2!,
-                                fit: BoxFit.cover, // Adjust the fit as needed
-                              )
-                            : Container(), // Empty container if _selectedImage2 is null
+                      const SizedBox(
+                        width: 8.0,
                       ),
-                    ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 16.0),
+                          child: InkWell(
+                            onTap: () {
+                              uploadFile(2);
+                            },
+                            child: AttachmentCard(
+                              cardChild: _selectedImage2 != null
+                                  ? Image.file(
+                                      _selectedImage2!,
+                                      fit: BoxFit
+                                          .cover, // Adjust the fit as needed
+                                    )
+                                  : Container(), // Empty container if _selectedImage2 is null
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(
                     height: 12.0,
@@ -562,63 +582,103 @@ class _ClientPostJobState extends State<ClientPostJob> {
                   ),
                   Align(
                     alignment: Alignment.center,
-                    child: Column(
-                      children: [
-                        StreamBuilder<RecordingDisposition>(
-                            stream: recorder.onProgress,
-                            builder: (context, snapshot) {
-                              final duration = snapshot.hasData
-                                  ? snapshot.data!.duration
-                                  : Duration.zero;
-                              String twoDigits(int n) =>
-                                  n.toString().padLeft(2, '0');
-                              final twoDigitMinutes =
-                                  twoDigits(duration.inMinutes.remainder(60));
-                              final twoDigitSeconds =
-                                  twoDigits(duration.inSeconds.remainder(60));
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                      ),
+                      padding: const EdgeInsets.all(
+                        8.0,
+                      ),
+                      width: screenWidth,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: kDeepBlueColor,
+                          width: 2.0
+                        ),
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      child: Column(
+                        children: [
+                          StreamBuilder<RecordingDisposition>(
+                              stream: recorder.onProgress,
+                              builder: (context, snapshot) {
+                                final duration = snapshot.hasData
+                                    ? snapshot.data!.duration
+                                    : Duration.zero;
+                                String twoDigits(int n) =>
+                                    n.toString().padLeft(2, '0');
+                                final twoDigitMinutes =
+                                    twoDigits(duration.inMinutes.remainder(60));
+                                final twoDigitSeconds =
+                                    twoDigits(duration.inSeconds.remainder(60));
 
-                              return Text(
-                                '$twoDigitMinutes:$twoDigitSeconds',
-                                style: kHeadingTextStyle,
-                              );
-                            }),
-                        // ElevatedButton.icon(
-                        //   onPressed: () async {
-                        //     recorder.toggleRecording();
-                        //     setState(() {});
-                        //   },
-                        //   icon:
-                        //       isRecording ? Icon(Icons.stop) : Icon(Icons.mic),
-                        //   label: isRecording ? Text('Stop') : Text('Record'),
-                        // ),
-                        Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: kDeepBlueColor,
-                          ),
-                          child: IconButton(
-                            tooltip: recorder.isRecording
-                                ? 'Tap here to Stop'
-                                : 'Tap here to record',
-                            onPressed: () async {
-                              if (recorder.isRecording) {
-                                await stop();
-                              } else {
-                                await record();
-                              }
-                              setState(() {});
-                            },
-                            icon: Icon(
-                              recorder.isRecording ? Icons.stop : Icons.mic,
-                              color: kBrilliantWhite,
+                                return Text(
+                                  '$twoDigitMinutes:$twoDigitSeconds',
+                                  style: kHeadingTextStyle,
+                                );
+                              }),
+                          // ElevatedButton.icon(
+                          //   onPressed: () async {
+                          //     recorder.toggleRecording();
+                          //     setState(() {});
+                          //   },
+                          //   icon:
+                          //       isRecording ? Icon(Icons.stop) : Icon(Icons.mic),
+                          //   label: isRecording ? Text('Stop') : Text('Record'),
+                          // ),
+                          Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: kDeepBlueColor,
+                            ),
+                            child: IconButton(
+                              tooltip: recorder.isRecording
+                                  ? 'Tap here to Stop'
+                                  : 'Tap here to record',
+                              onPressed: () async {
+                                if (recorder.isRecording) {
+                                  await stop();
+                                } else {
+                                  await record();
+                                }
+                                setState(() {});
+                              },
+                              icon: Icon(
+                                recorder.isRecording ? Icons.stop : Icons.mic,
+                                color: kBrilliantWhite,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                   const UserDataGatherTitle(
                     title: 'Play the Recording',
+                  ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: kDeepBlueColor,
+                      ),
+                      child: IconButton(
+                        // tooltip:
+                        //     isPlaying ? 'Tap here to Stop' : 'Tap here to Play',
+                        onPressed: () {
+                          final audioPlayer = AudioPlayer();
+                          audioPlayer.play(
+                            AssetSource('voice.mp3'),
+                          );
+                        },
+                        icon: Icon(
+                          // isPlaying ? Icons.stop :
+                          Icons.play_arrow,
+                          color: kBrilliantWhite,
+                        ),
+                      ),
+                    ),
                   ),
                   DarkMainButton(
                     title: 'Post Job Now',

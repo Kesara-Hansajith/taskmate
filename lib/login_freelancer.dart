@@ -11,18 +11,16 @@ import 'package:taskmate/bottom_nav_bar/freelancer/jobs.dart';
 import 'package:taskmate/components/maintenance_page.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
-
-class Login extends StatefulWidget {
-  const Login({super.key});
+class LoginFreelancer extends StatefulWidget {
+  const LoginFreelancer({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<LoginFreelancer> createState() => _LoginFreelancerState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginFreelancerState extends State<LoginFreelancer> {
   String? imagePath;
-  int currentUserRole=0;
-  List currentJobRole=[];
+  int currentUserRole = 0;
 
   void _onToggle(int? index) {
     setState(() {
@@ -296,17 +294,18 @@ class _LoginState extends State<Login> {
                                 ),
                                 //"Log In" Button goes here
                                 DarkMainButton(
-                                    title: 'Log In',
-                                    process: () {
-                                      if (_formKey.currentState!.validate()) {
-                                        // Form is valid, proceed with submission or other actions
-                                        signInWithEmailAndPassword(
-                                          emailController.text.trim(),
-                                          passwordController.text.trim(),
-                                        );
-                                      }
-                                    },
-                                    screenWidth: screenWidth),
+                                  title: 'Log In',
+                                  process: () {
+                                    if (_formKey.currentState!.validate()) {
+                                      // Form is valid, proceed with submission or other actions
+                                      signInWithEmailAndPassword(
+                                        emailController.text.trim(),
+                                        passwordController.text.trim(),
+                                      );
+                                    }
+                                  },
+                                  screenWidth: screenWidth,
+                                ),
                                 TextButton(
                                   onPressed: () {
                                     Navigator.of(context).push(
