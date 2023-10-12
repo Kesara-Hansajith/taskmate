@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/components/snackbar.dart';
@@ -5,7 +6,12 @@ import 'package:taskmate/constants.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class ClientActiveJobReview extends StatefulWidget {
-  const ClientActiveJobReview({super.key});
+  final QueryDocumentSnapshot activeJobDoc;
+
+  const ClientActiveJobReview( {
+    required this.activeJobDoc,
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<ClientActiveJobReview> createState() => _ClientActiveJobReviewState();
@@ -13,14 +19,40 @@ class ClientActiveJobReview extends StatefulWidget {
 
 class _ClientActiveJobReviewState extends State<ClientActiveJobReview> {
   final _formKey = GlobalKey<FormState>();
-  //Variable for star count
   int _starRating = 0;
+
+  TextEditingController reviewFieldController = TextEditingController();
+
+  // Function to submit the review
+  void submitReview() async {
+    if (_formKey.currentState!.validate() && _starRating != 0) {
+      // Firestore collection reference
+      final DocumentReference docRef =
+          widget.activeJobDoc.reference; // Access from widget properties
+
+      // Update the Firestore document for the review
+      await docRef.update({
+        'reviewdesclient': reviewFieldController.text,
+        'starclient': _starRating,
+      });
+
+      // Show a success message
+      ScaffoldMessenger.of(context).showSnackBar(
+        CustomSnackBar('Review submitted successfully.'),
+      );
+    } else {
+      // Show an error message if the form is not valid or no star rating
+      ScaffoldMessenger.of(context).showSnackBar(
+        CustomSnackBar(
+          'Please provide a review and rate the user with stars.',
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-
-    final reviewFieldController = TextEditingController();
 
     return SingleChildScrollView(
       child: SizedBox(
@@ -110,16 +142,9 @@ class _ClientActiveJobReviewState extends State<ClientActiveJobReview> {
             ),
             DarkMainButton(
                 title: 'Submit Review',
-                process: () {
-                  if (_formKey.currentState!.validate()) {}
-                  if (_starRating == 0) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      CustomSnackBar('Please rate the user with stars.'),
-                    );
-                  } else {}
-                  //TODO Submit review functionality
-                },
-                screenWidth: screenWidth)
+                process: submitReview,
+                screenWidth: screenWidth
+            )
           ],
         ),
       ),

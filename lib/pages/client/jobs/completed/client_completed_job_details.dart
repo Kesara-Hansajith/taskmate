@@ -75,7 +75,9 @@ class _ClientCompletedJobDetailsState extends State<ClientCompletedJobDetails> {
          budgetField: widget.budgetField,
          completeJobDoc: widget.completeJobDoc,
        ),
-       Reviews(),
+       Reviews(
+         completeJobDoc: widget.completeJobDoc,
+       ),
     ];
 
     return SafeArea(
