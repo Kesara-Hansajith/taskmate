@@ -90,9 +90,9 @@ class _ClientActiveJobPaymentState extends State<ClientActiveJobPayment> {
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const <Widget>[
+                children:  <Widget>[
                   Text('In Progress'),
-                  Text('LKR.  0.00'),
+                  Text('LKR. ${widget.activeJobDoc['Precentage']}'),
                 ],
               ),
             ),
@@ -103,10 +103,10 @@ class _ClientActiveJobPaymentState extends State<ClientActiveJobPayment> {
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const <Widget>[
+                children: <Widget>[
                   Text('Released to Freelancer'),
                   Text(
-                    'LKR.  0.00',
+                    'LKR. ${widget.activeJobDoc['releaseMoney']}',
                     textAlign: TextAlign.left,
                   ),
                 ],

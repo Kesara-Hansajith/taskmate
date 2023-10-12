@@ -6,11 +6,11 @@ import 'package:taskmate/constants.dart';
 
 class Payments extends StatefulWidget {
   final String budgetField;
- // final QueryDocumentSnapshot completeJobDoc;
+ final QueryDocumentSnapshot completeJobDoc;
 
   const Payments({
   required this.budgetField,
- // required this.completeJobDoc,
+ required this.completeJobDoc,
     super.key
   });
 
@@ -45,7 +45,7 @@ class _PaymentsState extends State<Payments> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text('Requested'),
-                  Text(widget.budgetField,),
+                  Text('LKR. ${widget.budgetField}',),
                 ],
               ),
             ),
@@ -56,9 +56,9 @@ class _PaymentsState extends State<Payments> {
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const <Widget>[
+                children:  <Widget>[
                   Text('In Progress'),
-                  Text('LKR.  0.00'),
+                  Text('LKR. ${widget.completeJobDoc['Precentage']}'),
                 ],
               ),
             ),
@@ -69,10 +69,10 @@ class _PaymentsState extends State<Payments> {
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const <Widget>[
+                children:  <Widget>[
                   Text('Released to Freelancer'),
                   Text(
-                    'LKR.  1500.00',
+                    'LKR. ${widget.completeJobDoc['releaseMoney']}',
                     textAlign: TextAlign.left,
                   ),
                 ],

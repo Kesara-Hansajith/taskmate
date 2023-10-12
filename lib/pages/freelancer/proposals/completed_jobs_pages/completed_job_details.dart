@@ -63,7 +63,10 @@ class _CompletedJobDetailsState extends State<CompletedJobDetails> {
           // documentID: widget.documentID,
           ),
        Files(completeJobDoc: widget.completeJobDoc),
-       Payments(budgetField: widget.budgetField,),
+       Payments(
+         budgetField: widget.budgetField,
+         completeJobDoc: widget.completeJobDoc,
+       ),
       Reviews(
         completeJobDoc: widget.completeJobDoc,
         // documentID: widget.documentID,

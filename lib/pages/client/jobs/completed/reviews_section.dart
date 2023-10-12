@@ -7,8 +7,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Reviews extends StatefulWidget {
   final QueryDocumentSnapshot completeJobDoc;
 
+
   const Reviews({
     required this.completeJobDoc,
+
     // required this.documentID,
     Key? key,
   }) : super(key: key);
@@ -20,7 +22,7 @@ class Reviews extends StatefulWidget {
 
 class _ReviewsState extends State<Reviews> {
   late double clientRating;
-  late double freelancerRating; // Add this line
+  late double freelancerRating;
 
   @override
   void initState() {
@@ -28,7 +30,6 @@ class _ReviewsState extends State<Reviews> {
     clientRating = widget.completeJobDoc['starclient']?.toDouble() ?? 0.0;
     clientRating = clientRating.roundToDouble();
 
-    // Add the following lines to initialize freelancerRating
     freelancerRating = widget.completeJobDoc['starfreelancer']?.toDouble() ?? 0.0;
     freelancerRating = freelancerRating.roundToDouble();
   }
@@ -51,20 +52,36 @@ class _ReviewsState extends State<Reviews> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  padding:  EdgeInsets.symmetric(vertical: 16.0),
                   child: Text(
-                    'Review from @ClientName',
+                    'Review from @FreelancerName',
                     style: kJobCardTitleTextStyle.copyWith(color: kJetBlack),
                   ),
                 ),
                 Text(
-                  'Kesara was great on the project, delivered what I wanted quickly. Recommend!',
+                  '${widget.completeJobDoc['reviewdesfreelancer']}',
                   style: kTextStyle,
                 ),
-                const SizedBox(
+                 SizedBox(
                   height: 16.0,
                 ),
-                const Divider(
+                RatingBar.builder(
+                  initialRating: freelancerRating,
+                  minRating: 1,
+                  direction: Axis.horizontal,
+                  allowHalfRating: false,
+                  itemCount: 5, // Fixed total number of stars
+                  itemSize: 30.0,
+                  itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  itemBuilder: (context, index) {
+                    return Icon(
+                      Icons.star,
+                      color: index < freelancerRating ? Colors.amber : Colors.grey, // Color based on the rating
+                    );
+                  },
+                  onRatingUpdate: (rating) {},
+                ),
+                 Divider(
                   thickness: 1.0,
                 ),
                 Padding(

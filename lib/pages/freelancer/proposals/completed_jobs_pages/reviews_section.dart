@@ -17,6 +17,7 @@ class Reviews extends StatefulWidget {
 
 class _ReviewsState extends State<Reviews> {
   late double clientRating;
+  late double freelancerRating;
 
   @override
   void initState() {
@@ -24,6 +25,9 @@ class _ReviewsState extends State<Reviews> {
     // Initialize clientRating with the actual rating value from Firestore
     clientRating = widget.completeJobDoc['starfreelancer']?.toDouble() ?? 0.0;
     clientRating = clientRating.roundToDouble(); // Round to the nearest integer
+
+    freelancerRating = widget.completeJobDoc['starclient']?.toDouble() ?? 0.0;
+    freelancerRating = freelancerRating.roundToDouble(); // Round to the nearest integer
   }
 
   @override
@@ -50,11 +54,27 @@ class _ReviewsState extends State<Reviews> {
                   ),
                 ),
                 Text(
-                  'Kesara was great on the project, delivered what I wanted quickly. Recommend!',
+                  '${widget.completeJobDoc['reviewdesclient']}',
                   style: kTextStyle,
                 ),
                 const SizedBox(
                   height: 16.0,
+                ),
+                RatingBar.builder(
+                  initialRating: freelancerRating,
+                  minRating: 1,
+                  direction: Axis.horizontal,
+                  allowHalfRating: false,
+                  itemCount: 5, // Fixed total number of stars
+                  itemSize: 30.0,
+                  itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  itemBuilder: (context, index) {
+                    return Icon(
+                      Icons.star,
+                      color: index < freelancerRating ? Colors.amber : Colors.grey, // Color based on the rating
+                    );
+                  },
+                  onRatingUpdate: (rating) {},
                 ),
                 const Divider(
                   thickness: 1.0,
