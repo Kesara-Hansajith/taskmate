@@ -22,7 +22,9 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   String? imagePath;
   int currentUserRole=0;
+
   List currentJobRole=[];
+
 
   void _onToggle(int? index) {
     setState(() {
