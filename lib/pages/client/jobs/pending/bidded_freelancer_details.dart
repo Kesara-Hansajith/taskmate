@@ -72,23 +72,23 @@ class _BiddedFreelancerDetailsState extends State<BiddedFreelancerDetails> {
             ],
           ),
         ),
-        body: SingleChildScrollView(
-          child: Container(
-            width: screenWidth,
-            height: screenHeight - appBarHeight,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: AssetImage('images/noise_image.webp'),
-              ),
+        body: Container(
+          width: screenWidth,
+          height: screenHeight - appBarHeight,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: AssetImage('images/noise_image.webp'),
             ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 24.0),
+                    padding: const EdgeInsets.symmetric(vertical: 30.0),
                     child: ListTile(
                       leading: CircleAvatar(
                         backgroundImage:

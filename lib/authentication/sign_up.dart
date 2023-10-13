@@ -10,8 +10,23 @@ import 'package:taskmate/authentication/create_my_account_1.dart';
 import 'package:taskmate/components/maintenance_page.dart';
 import 'package:taskmate/components/dark_main_button.dart';
 
-class SignUp extends StatelessWidget {
+class SignUp extends StatefulWidget {
   const SignUp({super.key});
+
+  @override
+  State<SignUp> createState() => _SignUpState();
+}
+
+class _SignUpState extends State<SignUp> {
+  String? imagePath;
+
+  Future<void> loadImages(String imageUrl) async {
+    try {
+      await precacheImage(AssetImage(imagePath!), context);
+    } catch (e) {
+      //Ignored
+    }
+  }
 
   //Method for Google Authentication
   Future<UserCredential> signInWithGoogle() async {
@@ -30,6 +45,14 @@ class SignUp extends StatelessWidget {
 
     // Once signed in, return the UserCredential
     return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadImages('images/background/signup.webp');
+    loadImages('images/taskmate_logo_light.webp');
+    loadImages('images/noise_image.webp');
   }
 
   @override
@@ -132,7 +155,7 @@ class SignUp extends StatelessWidget {
                                             color: kBrilliantWhite,
                                           ),
                                           Text(
-                                            'Continue with Email or Mobile',
+                                            'Continue with Email',
                                             style: TextStyle(
                                                 color: kBrilliantWhite,
                                                 fontSize: 15.0),

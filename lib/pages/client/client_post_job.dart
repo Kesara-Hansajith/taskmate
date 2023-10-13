@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_sound/flutter_sound.dart';
 import 'package:taskmate/client_home_page.dart';
 import 'package:taskmate/components/attachment_card.dart';
 
@@ -13,8 +14,10 @@ import 'package:taskmate/components/freelancer/user_data_gather_textfield.dart';
 import 'package:taskmate/components/freelancer/user_data_gather_title.dart';
 import 'package:taskmate/components/maintenance_page.dart';
 import 'package:taskmate/constants.dart';
-import 'package:taskmate/profile/client/user_model1.dart';
+// import 'package:taskmate/profile/client/user_model1.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class ClientPostJob extends StatefulWidget {
   const ClientPostJob({
@@ -29,9 +32,24 @@ class ClientPostJob extends StatefulWidget {
 }
 
 class _ClientPostJobState extends State<ClientPostJob> {
+  final recorder = FlutterSoundRecorder();
+  bool isRecorderReady = false;
+  late final audioFile;
+  final audioPlayer = AudioPlayer();
+  bool isPlaying = false;
+  Duration duration = Duration.zero;
+  Duration position = Duration.zero;
+
+
+  // final audioPlayer = AudioPlayer();
+  // bool isPlaying = false;
+  // Duration duration = Duration.zero;
+  // Duration position = Duration.zero;
+
   final formKey = GlobalKey<FormState>();
-  List<String> _skills = [];
-  String _skillsText = '';
+
+  final List<String> _skills = [];
+  // String _skillsText = '';
 
   final TextEditingController jobTitleController = TextEditingController();
   final TextEditingController jobDescriptionController = TextEditingController();
@@ -41,6 +59,10 @@ class _ClientPostJobState extends State<ClientPostJob> {
   File? _selectedImage1;
   File? _selectedImage2;
 
+  // Future<void> playAudioFromUrl(String url)async{
+  //   await audioPlayer.play(UrlSource(url));
+  // }
+
   @override
   void dispose() {
     // Dispose of the text controllers to prevent memory leaks
@@ -48,7 +70,23 @@ class _ClientPostJobState extends State<ClientPostJob> {
     jobDescriptionController.dispose();
     dayCountController.dispose();
     budgetController.dispose();
+    recorder.closeRecorder();
+    // recorder.dispose();
     super.dispose();
+  }
+
+  Future record() async {
+    if (!isRecorderReady) return;
+    await recorder.startRecorder(toFile: 'audio');
+  }
+
+  Future stop() async {
+    if (!isRecorderReady) return;
+    final path = await recorder.stopRecorder();
+    setState(() {
+      audioFile = File(path!);
+      print('Recorded voice: $audioFile');
+    });
   }
 
 
@@ -77,11 +115,12 @@ class _ClientPostJobState extends State<ClientPostJob> {
     }
   }
 
-
-  Future<void> addJobToFirestore(String jobTitle,
-      String jobDescription,
-      int dayCount,
-      int budget,) async {
+  Future<void> addJobToFirestore(
+    String jobTitle,
+    String jobDescription,
+    int dayCount,
+    int budget,)
+  async {
     try {
       // Get the current user's UID from FirebaseAuth
       User? user = FirebaseAuth.instance.currentUser;
@@ -91,16 +130,11 @@ class _ClientPostJobState extends State<ClientPostJob> {
         // Handle the case where the user is not authenticated
         return;
       }
-
       // Get a reference to the Firestore collection
-      CollectionReference jobsCollection = FirebaseFirestore.instance
-          .collection('jobs');
+      CollectionReference jobsCollection = FirebaseFirestore.instance.collection('jobs');
 
       // Generate a unique job ID (e.g., using a timestamp)
-      String timestamp = Timestamp
-          .now()
-          .millisecondsSinceEpoch
-          .toString();
+      String timestamp = Timestamp.now().millisecondsSinceEpoch.toString();
 
       // Use the user's UID as the document ID for the main job document
       DocumentReference jobDocument = jobsCollection.doc(userUid);
@@ -109,10 +143,12 @@ class _ClientPostJobState extends State<ClientPostJob> {
       CollectionReference jobsNewCollection = jobDocument.collection('jobsnew');
 
       // Upload images to Firebase Storage and get download URLs
-      String? image1Url = await uploadImageToStorage(
-          _selectedImage1, 'image1_$timestamp');
-      String? image2Url = await uploadImageToStorage(
-          _selectedImage2, 'image2_$timestamp');
+      String? image1Url = await uploadImageToStorage(_selectedImage1, 'image1_$timestamp');
+      String? image2Url = await uploadImageToStorage(_selectedImage2, 'image2_$timestamp');
+
+      // Upload audio to Firebase Storage and get download URL
+      String? audioUrl = await uploadAudioToStorage(audioFile, 'audio_$timestamp');
+
 
       // Add job data to Firestore within the "jobsnew" subcollection
       await jobsNewCollection.doc(timestamp).set({
@@ -124,6 +160,7 @@ class _ClientPostJobState extends State<ClientPostJob> {
         'skills': _skills,
         'image1Url': image1Url,
         'image2Url': image2Url,
+        'audioUrl': audioUrl, // Add the audio URL
         'status': 'new', // Set the status to "active"
         'createdAt': FieldValue.serverTimestamp(), // Add the timestamp field
         // You can add more fields as needed
@@ -133,12 +170,28 @@ class _ClientPostJobState extends State<ClientPostJob> {
     }
   }
 
+  Future initRecorder() async {
+    final status = await Permission.microphone.request();
+    if (status != PermissionStatus.granted) {
+      throw 'Microphone permission not granted';
+    }
+    await recorder.openRecorder();
+    isRecorderReady = true;
+    recorder.setSubscriptionDuration(
+      const Duration(milliseconds: 500),
+    );
+  }
+
+  @override
+  void initState() {
+    initRecorder();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
+    // final isRecording = recorder.isRecording;
+    double screenWidth = MediaQuery.of(context).size.width;
 
     return SafeArea(
       child: Scaffold(
@@ -460,53 +513,181 @@ class _ClientPostJobState extends State<ClientPostJob> {
                   const UserDataGatherTitle(
                     title: 'Attachments',
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: InkWell(
-                      onTap: () {
-                        uploadFile(1);
-                      },
-                      child: AttachmentCard(
-                        cardChild: _selectedImage1 != null
-                            ? Image.file(
-                          _selectedImage1!,
-                          fit: BoxFit.cover, // Adjust the fit as needed
-                        )
-                            : Container(), // Empty container if _selectedImage2 is null
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 16.0),
+                          child: InkWell(
+                            onTap: () {
+                              uploadFile(1);
+                            },
+                            child: AttachmentCard(
+                              cardChild: _selectedImage1 != null
+                                  ? Image.file(
+                                      _selectedImage1!,
+                                      fit: BoxFit
+                                          .cover, // Adjust the fit as needed
+                                    )
+                                  : Container(), // Empty container if _selectedImage2 is null
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  SizedBox(height: 12,),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: InkWell(
-                      onTap: () {
-                        uploadFile(2);
-                      },
-                      child: AttachmentCard(
-                        cardChild: _selectedImage2 != null
-                            ? Image.file(
-                          _selectedImage2!,
-                          fit: BoxFit.cover, // Adjust the fit as needed
-                        )
-                            : Container(), // Empty container if _selectedImage2 is null
+                      const SizedBox(
+                        width: 8.0,
                       ),
-                    ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 16.0),
+                          child: InkWell(
+                            onTap: () {
+                              uploadFile(2);
+                            },
+                            child: AttachmentCard(
+                              cardChild: _selectedImage2 != null
+                                  ? Image.file(
+                                      _selectedImage2!,
+                                      fit: BoxFit
+                                          .cover, // Adjust the fit as needed
+                                    )
+                                  : Container(), // Empty container if _selectedImage2 is null
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 12.0,
                   ),
+                  const UserDataGatherTitle(
+                    title: 'Express your job with Voice',
+                  ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                      ),
+                      padding: const EdgeInsets.all(
+                        8.0,
+                      ),
+                      width: screenWidth,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: kDeepBlueColor,
+                          width: 2.0
+                        ),
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      child: Column(
+                        children: [
+                          StreamBuilder<RecordingDisposition>(
+                              stream: recorder.onProgress,
+                              builder: (context, snapshot) {
+                                final duration = snapshot.hasData
+                                    ? snapshot.data!.duration
+                                    : Duration.zero;
+                                String twoDigits(int n) =>
+                                    n.toString().padLeft(2, '0');
+                                final twoDigitMinutes =
+                                    twoDigits(duration.inMinutes.remainder(60));
+                                final twoDigitSeconds =
+                                    twoDigits(duration.inSeconds.remainder(60));
+
+                                return Text(
+                                  '$twoDigitMinutes:$twoDigitSeconds',
+                                  style: kHeadingTextStyle,
+                                );
+                              }),
+                          // ElevatedButton.icon(
+                          //   onPressed: () async {
+                          //     recorder.toggleRecording();
+                          //     setState(() {});
+                          //   },
+                          //   icon:
+                          //       isRecording ? Icon(Icons.stop) : Icon(Icons.mic),
+                          //   label: isRecording ? Text('Stop') : Text('Record'),
+                          // ),
+                          Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: kDeepBlueColor,
+                            ),
+                            child: IconButton(
+                              tooltip: recorder.isRecording
+                                  ? 'Tap here to Stop'
+                                  : 'Tap here to record',
+                              onPressed: () async {
+                                if (recorder.isRecording) {
+                                  await stop();
+                                } else {
+                                  await record();
+                                }
+                                setState(() {});
+                              },
+                              icon: Icon(
+                                recorder.isRecording ? Icons.stop : Icons.mic,
+                                color: kBrilliantWhite,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const UserDataGatherTitle(
+                    title: 'Play the Recording',
+                  ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: kDeepBlueColor,
+                      ),
+                      child: IconButton(
+                        onPressed: () async {
+                          if (audioFile != null) {
+                            if (isPlaying) {
+                              await audioPlayer.stop();
+                            } else {
+                              await audioPlayer.play(
+                                audioFile.path,
+                              );
+                            }
+                            setState(() {
+                              isPlaying = !isPlaying;
+                            });
+                          }
+                        },
+                        icon: Icon(
+                          isPlaying ? Icons.stop : Icons.play_arrow,
+                          color: kBrilliantWhite,
+                        ),
+                      ),
+                    ),
+                  ),
+
+
+
+
                   DarkMainButton(
                     title: 'Post Job Now',
                     process: () {
                       if (formKey.currentState!.validate()) {
                         String jobTitle = jobTitleController.text;
                         String jobDescription = jobDescriptionController.text;
-                        int dayCount = int.tryParse(dayCountController.text) ??
-                            0;
+                        int dayCount =
+                            int.tryParse(dayCountController.text) ?? 0;
                         int budget = int.tryParse(budgetController.text) ?? 0;
                         addJobToFirestore(
-                          jobTitle, jobDescription, dayCount, budget,);
+                          jobTitle,
+                          jobDescription,
+                          dayCount,
+                          budget,
+                        );
                         showDialog(
                           context: context,
                           barrierDismissible: false,
@@ -534,10 +715,9 @@ class _ClientPostJobState extends State<ClientPostJob> {
                                     process: () {
                                       Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
-                                          builder: (context) =>
-                                              ClientHomePage(
-                                                // selectedIndex: 2,
-                                                // client: widget.client,
+                                          builder: (context) => ClientHomePage(
+                                              // selectedIndex: 2,
+                                              // client: widget.client,
                                               ),
                                         ),
                                       );
@@ -564,10 +744,8 @@ class _ClientPostJobState extends State<ClientPostJob> {
     if (image == null) {
       return null;
     }
-
     try {
-      Reference storageReference =
-      FirebaseStorage.instance.ref().child('images/$imageName');
+      Reference storageReference = FirebaseStorage.instance.ref().child('images/$imageName');
       UploadTask uploadTask = storageReference.putFile(image);
       await uploadTask.whenComplete(() async {
         // Wait for the upload to complete and then return the download URL
@@ -580,10 +758,34 @@ class _ClientPostJobState extends State<ClientPostJob> {
       return downloadURL;
     } catch (e) {
       // Handle errors
-      print("Error uploading image: $e");
     }
 
     return null;
   }
-
 }
+
+Future<String?> uploadAudioToStorage(File audioFile, String audioFileName) async {
+  if (audioFile == null) {
+    return null;
+  }
+
+  try {
+    Reference storageReference =
+    FirebaseStorage.instance.ref().child('audio/$audioFileName');
+    UploadTask uploadTask = storageReference.putFile(audioFile);
+    await uploadTask.whenComplete(() async {
+      // Wait for the upload to complete and then return the download URL
+      return await storageReference.getDownloadURL();
+    });
+
+    // If the await inside whenComplete doesn't work as expected,
+    // you can try using await for the whole operation
+    String downloadURL = await storageReference.getDownloadURL();
+    return downloadURL;
+  } catch (e) {
+    // Handle errors
+  }
+
+  return null;
+}
+
