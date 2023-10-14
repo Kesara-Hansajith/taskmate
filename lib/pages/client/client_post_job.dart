@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_sound/flutter_sound.dart';
+import 'package:get/get.dart';
 import 'package:taskmate/client_home_page.dart';
 import 'package:taskmate/components/attachment_card.dart';
 
@@ -13,6 +14,7 @@ import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/components/freelancer/user_data_gather_textfield.dart';
 import 'package:taskmate/components/freelancer/user_data_gather_title.dart';
 import 'package:taskmate/components/maintenance_page.dart';
+import 'package:taskmate/components/snackbar.dart';
 import 'package:taskmate/constants.dart';
 // import 'package:taskmate/profile/client/user_model1.dart';
 import 'package:file_picker/file_picker.dart';
@@ -34,10 +36,10 @@ class ClientPostJob extends StatefulWidget {
 class _ClientPostJobState extends State<ClientPostJob> {
   final recorder = FlutterSoundRecorder();
   bool isRecorderReady = false;
-  late final audioFile;
+  // late final audioFile;
 
-  // final audioPlayer = AudioPlayer();
-  // bool isPlaying = false;
+  final audioPlayer = AudioPlayer();
+  bool isPlaying = false;
   // Duration duration = Duration.zero;
   // Duration position = Duration.zero;
 
@@ -79,7 +81,7 @@ class _ClientPostJobState extends State<ClientPostJob> {
   Future stop() async {
     if (!isRecorderReady) return;
     final path = await recorder.stopRecorder();
-    audioFile = File(path!);
+    final audioFile = File(path!);
     print('Recorded voice: $audioFile');
   }
 
@@ -163,10 +165,13 @@ class _ClientPostJobState extends State<ClientPostJob> {
   }
 
   Future initRecorder() async {
-    final status = await Permission.microphone.request();
-    if (status != PermissionStatus.granted) {
-      throw 'Microphone permission not granted';
+    final micStatus = await Permission.microphone.request();
+    final storageStatus = await Permission.storage.request();
+    if (micStatus != PermissionStatus.granted ||
+        storageStatus != PermissionStatus.granted) {
+      throw Exception('Microphone permission not granted');
     }
+
     await recorder.openRecorder();
     isRecorderReady = true;
     recorder.setSubscriptionDuration(
@@ -176,7 +181,12 @@ class _ClientPostJobState extends State<ClientPostJob> {
 
   @override
   void initState() {
-    initRecorder();
+    try {
+      initRecorder();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(CustomSnackBar(e.toString()));
+    }
+
     super.initState();
   }
 
@@ -591,10 +601,7 @@ class _ClientPostJobState extends State<ClientPostJob> {
                       ),
                       width: screenWidth,
                       decoration: BoxDecoration(
-                        border: Border.all(
-                          color: kDeepBlueColor,
-                          width: 2.0
-                        ),
+                        border: Border.all(color: kDeepBlueColor, width: 2.0),
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                       child: Column(
@@ -626,57 +633,63 @@ class _ClientPostJobState extends State<ClientPostJob> {
                           //       isRecording ? Icon(Icons.stop) : Icon(Icons.mic),
                           //   label: isRecording ? Text('Stop') : Text('Record'),
                           // ),
-                          Container(
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: kDeepBlueColor,
-                            ),
-                            child: IconButton(
-                              tooltip: recorder.isRecording
-                                  ? 'Tap here to Stop'
-                                  : 'Tap here to record',
-                              onPressed: () async {
-                                if (recorder.isRecording) {
-                                  await stop();
-                                } else {
-                                  await record();
-                                }
-                                setState(() {});
-                              },
-                              icon: Icon(
-                                recorder.isRecording ? Icons.stop : Icons.mic,
-                                color: kBrilliantWhite,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: kDeepBlueColor,
+                                ),
+                                child: IconButton(
+                                  tooltip: recorder.isRecording
+                                      ? 'Tap here to Stop'
+                                      : 'Tap here to record',
+                                  onPressed: () async {
+                                    if (recorder.isRecording) {
+                                      await stop();
+                                    } else {
+                                      await record();
+                                    }
+                                    setState(() {});
+                                  },
+                                  icon: Icon(
+                                    recorder.isRecording
+                                        ? Icons.stop
+                                        : Icons.mic,
+                                    color: kBrilliantWhite,
+                                  ),
+                                ),
                               ),
-                            ),
+                              const SizedBox(
+                                width: 10.0,
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: kDeepBlueColor,
+                                ),
+                                child: IconButton(
+                                  onPressed: () async {
+                                    await audioPlayer.play(UrlSource('https://file-examples.com/storage/feaade38c1651bd01984236/2017/11/file_example_MP3_700KB.mp3'));
+                                    setState(() {
+
+                                    });
+                                  },
+                                  icon: Icon(
+                                    isPlaying ? Icons.stop : Icons.play_arrow,
+                                    color: kBrilliantWhite,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Text(
+                                recorder.isRecording ? 'Recording...' : ''),
                           ),
                         ],
-                      ),
-                    ),
-                  ),
-                  const UserDataGatherTitle(
-                    title: 'Play the Recording',
-                  ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: kDeepBlueColor,
-                      ),
-                      child: IconButton(
-                        // tooltip:
-                        //     isPlaying ? 'Tap here to Stop' : 'Tap here to Play',
-                        onPressed: () {
-                          final audioPlayer = AudioPlayer();
-                          audioPlayer.play(
-                            AssetSource('voice.mp3'),
-                          );
-                        },
-                        icon: Icon(
-                          // isPlaying ? Icons.stop :
-                          Icons.play_arrow,
-                          color: kBrilliantWhite,
-                        ),
                       ),
                     ),
                   ),

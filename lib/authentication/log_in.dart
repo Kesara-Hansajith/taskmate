@@ -3,14 +3,16 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:taskmate/authentication/forget_password.dart';
 import 'package:taskmate/authentication/sign_up.dart';
+import 'package:taskmate/client_home_page.dart';
 import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/components/bottom_sub_text.dart';
 import 'package:taskmate/components/snackbar.dart';
 import 'package:taskmate/bottom_nav_bar/freelancer/jobs.dart';
 import 'package:taskmate/components/maintenance_page.dart';
+import 'package:taskmate/freelancer_home_page.dart';
 import 'package:toggle_switch/toggle_switch.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -21,10 +23,9 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   String? imagePath;
-  int currentUserRole=0;
+  int currentUserRole = 0;
 
-  List currentJobRole=[];
-
+  List currentJobRole = [];
 
   void _onToggle(int? index) {
     setState(() {
@@ -90,11 +91,17 @@ class _LoginState extends State<Login> {
       // Sign-in successful, handle the user object or navigate to the next screen.
 
       if (context.mounted) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => const Jobs(),
-          ),
-        );
+        (currentUserRole == 0)
+            ? Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => const FreelancerHomePage(),
+                ),
+              )
+            : Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => ClientHomePage(),
+                ),
+              );
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-mail') {
@@ -299,13 +306,45 @@ class _LoginState extends State<Login> {
                                 //"Log In" Button goes here
                                 DarkMainButton(
                                     title: 'Log In',
-                                    process: () {
+                                    process: () async {
                                       if (_formKey.currentState!.validate()) {
                                         // Form is valid, proceed with submission or other actions
-                                        signInWithEmailAndPassword(
-                                          emailController.text.trim(),
-                                          passwordController.text.trim(),
-                                        );
+                                        // signInWithEmailAndPassword(
+                                        //   emailController.text.trim(),
+                                        //   passwordController.text.trim(),
+                                        // );
+
+                                        CollectionReference
+                                            collectionReference =
+                                            FirebaseFirestore.instance
+                                                .collection(
+                                                    (currentUserRole == 0)
+                                                        ? 'Users'
+                                                        : 'Client');
+
+                                        QuerySnapshot querySnapshot =
+                                            await collectionReference
+                                                .where('email',
+                                                    isEqualTo:
+                                                        emailController.text)
+                                                .get();
+
+                                        if (querySnapshot.docs.isNotEmpty) {
+                                          // for (QueryDocumentSnapshot documentSnapshot
+                                          //     in querySnapshot.docs) {
+                                          //   Map<String, dynamic> data =
+                                          //       documentSnapshot.data()
+                                          //           as Map<String, dynamic>;
+                                          //   print(data);
+                                          // }
+                                          signInWithEmailAndPassword(
+                                            emailController.text.trim(),
+                                            passwordController.text.trim(),
+                                          );
+                                        } else {
+                                          print(
+                                              'No documents matching the filter found.');
+                                        }
                                       }
                                     },
                                     screenWidth: screenWidth),
