@@ -3,8 +3,10 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:taskmate/authentication/forget_password.dart';
 import 'package:taskmate/authentication/sign_up.dart';
+import 'package:taskmate/classes/cus_snackbar.dart';
 import 'package:taskmate/client_home_page.dart';
 import 'package:taskmate/components/dark_main_button.dart';
+import 'package:taskmate/components/loading_screen.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/components/bottom_sub_text.dart';
 import 'package:taskmate/components/snackbar.dart';
@@ -24,6 +26,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   String? imagePath;
   int currentUserRole = 0;
+  bool isLoading = false;
 
   List currentJobRole = [];
 
@@ -151,412 +154,351 @@ class _LoginState extends State<Login> {
     // final double screenHeight = screenSize.height;
 
     return SafeArea(
-      child: Scaffold(
-        body: Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              fit: BoxFit.fill,
-              image: AssetImage('images/background/login.webp'),
-            ),
-          ),
-          child: Column(
-            children: <Widget>[
-              Expanded(
-                flex: 2,
-                child: Image.asset('images/taskmate_logo_light.webp'),
-              ),
-              Expanded(
-                flex: 5,
-                child: Stack(
+      child: !isLoading
+          ? Scaffold(
+              body: Container(
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    fit: BoxFit.fill,
+                    image: AssetImage('images/background/login.webp'),
+                  ),
+                ),
+                child: Column(
                   children: <Widget>[
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.4),
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(45.0),
-                          topRight: Radius.circular(45.0),
-                        ),
-                      ),
+                    Expanded(
+                      flex: 2,
+                      child: Image.asset('images/taskmate_logo_light.webp'),
                     ),
-                    Positioned(
-                      top: 12,
-                      bottom: 0,
-                      child: Container(
-                        width: screenWidth,
-                        decoration: const BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage('images/noise_image.webp'),
-                            repeat: ImageRepeat.repeat,
+                    Expanded(
+                      flex: 6,
+                      child: Stack(
+                        children: <Widget>[
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.4),
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(45.0),
+                                topRight: Radius.circular(45.0),
+                              ),
+                            ),
                           ),
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(20.0),
-                            topRight: Radius.circular(20.0),
-                          ),
-                        ),
-                        child: ListView(
-                          children: <Widget>[
-                            Column(
-                              mainAxisSize: MainAxisSize.max,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 8.0),
-                                  child: Text(
-                                    'Welcome Back!',
-                                    style: kHeadingTextStyle,
-                                  ),
+                          Positioned(
+                            top: 12,
+                            bottom: 0,
+                            child: Container(
+                              width: screenWidth,
+                              decoration: const BoxDecoration(
+                                image: DecorationImage(
+                                  image: AssetImage('images/noise_image.webp'),
+                                  repeat: ImageRepeat.repeat,
                                 ),
-                                ToggleSwitch(
-                                  activeBgColor: const [kOceanBlueColor],
-                                  activeFgColor: kDeepBlueColor,
-                                  inactiveBgColor: kLightBlueColor,
-                                  inactiveFgColor: kOceanBlueColor,
-                                  cornerRadius: 10.0,
-                                  radiusStyle: true,
-                                  minWidth: screenWidth,
-                                  minHeight: 50.0,
-                                  initialLabelIndex: currentUserRole,
-                                  totalSwitches: 2,
-                                  customTextStyles: const [
-                                    TextStyle(
-                                        fontSize: 15.0,
-                                        fontWeight: FontWeight.w600),
-                                    TextStyle(
-                                        fontSize: 15.0,
-                                        fontWeight: FontWeight.w600),
-                                  ],
-                                  animate: true,
-                                  curve: Curves.ease,
-                                  labels: const ['Freelancer', 'Client'],
-                                  onToggle: _onToggle,
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(20.0),
+                                  topRight: Radius.circular(20.0),
                                 ),
-                                Form(
-                                  key: _formKey,
-                                  child: Column(
+                              ),
+                              child: ListView(
+                                children: <Widget>[
+                                  Column(
+                                    mainAxisSize: MainAxisSize.max,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: <Widget>[
-                                      //Email Textfield
-                                      Container(
-                                        margin: const EdgeInsets.symmetric(
-                                            vertical: 8.0, horizontal: 28.0),
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 16.0),
-                                        decoration: BoxDecoration(
-                                          color: kBrilliantWhite,
-                                          borderRadius:
-                                              BorderRadius.circular(20.0),
+                                      const Padding(
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 8.0),
+                                        child: Text(
+                                          'Welcome Back!',
+                                          style: kHeadingTextStyle,
                                         ),
-                                        child:
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 8.0),
+                                        child: ToggleSwitch(
+                                          activeBgColor: const [
+                                            kOceanBlueColor
+                                          ],
+                                          activeFgColor: kDeepBlueColor,
+                                          inactiveBgColor: kLightBlueColor,
+                                          inactiveFgColor: kOceanBlueColor,
+                                          cornerRadius: 10.0,
+                                          radiusStyle: true,
+                                          minWidth: screenWidth,
+                                          minHeight: 45.0,
+                                          initialLabelIndex: currentUserRole,
+                                          totalSwitches: 2,
+                                          customTextStyles: const [
+                                            TextStyle(
+                                                fontSize: 15.0,
+                                                fontWeight: FontWeight.w600),
+                                            TextStyle(
+                                                fontSize: 15.0,
+                                                fontWeight: FontWeight.w600),
+                                          ],
+                                          animate: true,
+                                          curve: Curves.ease,
+                                          labels: const [
+                                            'Freelancer',
+                                            'Client'
+                                          ],
+                                          onToggle: _onToggle,
+                                        ),
+                                      ),
+                                      Form(
+                                        key: _formKey,
+                                        child: Column(
+                                          children: <Widget>[
                                             //Email Textfield
-                                            TextFormField(
-                                          controller: emailController,
-                                          validator: (value) {
-                                            if (value == null ||
-                                                value.isEmpty ||
-                                                !value.contains('@')) {
-                                              return 'Please enter a valid Email Address';
-                                            }
-                                            return null; // Return null for valid input
-                                          },
-                                          obscureText: false,
-                                          decoration: const InputDecoration(
-                                            border: InputBorder.none,
-                                            hintText: 'Email',
-                                          ),
-                                        ),
-                                      ),
-                                      //Password Textfield
-                                      Container(
-                                        margin: const EdgeInsets.symmetric(
-                                            vertical: 8.0, horizontal: 28.0),
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 16.0),
-                                        decoration: BoxDecoration(
-                                          color: kBrilliantWhite,
-                                          borderRadius:
-                                              BorderRadius.circular(20.0),
-                                        ),
-                                        child: TextFormField(
-                                          controller: passwordController,
-                                          validator: (value) {
-                                            if (value == null ||
-                                                value.isEmpty) {
-                                              return 'Please enter the Password';
-                                            }
-                                            return null; // Return null for valid input
-                                          },
-                                          obscureText: obsecureController,
-                                          decoration: InputDecoration(
-                                            border: InputBorder.none,
-                                            hintText: 'Password',
-                                            suffixIcon: IconButton(
-                                              icon: obsecureController
-                                                  ? const Icon(Icons.lock)
-                                                  : const Icon(Icons.lock_open),
-                                              color: kJetBlack,
-                                              onPressed: () {
-                                                setObsecure();
-                                              },
+                                            Container(
+                                              margin:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 8.0,
+                                                      horizontal: 28.0),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 16.0),
+                                              decoration: BoxDecoration(
+                                                color: kBrilliantWhite,
+                                                borderRadius:
+                                                    BorderRadius.circular(20.0),
+                                              ),
+                                              child:
+                                                  //Email Textfield
+                                                  TextFormField(
+                                                controller: emailController,
+                                                validator: (value) {
+                                                  if (value == null ||
+                                                      value.isEmpty ||
+                                                      !value.contains('@')) {
+                                                    return 'Please enter a valid Email Address';
+                                                  }
+                                                  return null; // Return null for valid input
+                                                },
+                                                obscureText: false,
+                                                decoration:
+                                                    const InputDecoration(
+                                                  border: InputBorder.none,
+                                                  hintText: 'Email',
+                                                ),
+                                              ),
                                             ),
-                                          ),
+                                            //Password Textfield
+                                            Container(
+                                              margin:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 8.0,
+                                                      horizontal: 28.0),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 16.0),
+                                              decoration: BoxDecoration(
+                                                color: kBrilliantWhite,
+                                                borderRadius:
+                                                    BorderRadius.circular(20.0),
+                                              ),
+                                              child: TextFormField(
+                                                controller: passwordController,
+                                                validator: (value) {
+                                                  if (value == null ||
+                                                      value.isEmpty) {
+                                                    return 'Please enter the Password';
+                                                  }
+                                                  return null; // Return null for valid input
+                                                },
+                                                obscureText: obsecureController,
+                                                decoration: InputDecoration(
+                                                  border: InputBorder.none,
+                                                  hintText: 'Password',
+                                                  suffixIcon: IconButton(
+                                                    icon: obsecureController
+                                                        ? const Icon(Icons.lock)
+                                                        : const Icon(
+                                                            Icons.lock_open),
+                                                    color: kJetBlack,
+                                                    onPressed: () {
+                                                      setObsecure();
+                                                    },
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                ),
-                                //"Log In" Button goes here
-                                DarkMainButton(
-                                    title: 'Log In',
-                                    process: () async {
-                                      if (_formKey.currentState!.validate()) {
-                                        // Form is valid, proceed with submission or other actions
-                                        // signInWithEmailAndPassword(
-                                        //   emailController.text.trim(),
-                                        //   passwordController.text.trim(),
-                                        // );
+                                      //"Log In" Button goes here
+                                      DarkMainButton(
+                                          title: 'Log In',
+                                          process: () async {
+                                            if (_formKey.currentState!
+                                                .validate()) {
+                                              // Form is valid, proceed with submission or other actions
+                                              // signInWithEmailAndPassword(
+                                              //   emailController.text.trim(),
+                                              //   passwordController.text.trim(),
+                                              // );
 
-                                        CollectionReference
-                                            collectionReference =
-                                            FirebaseFirestore.instance
-                                                .collection(
-                                                    (currentUserRole == 0)
-                                                        ? 'Users'
-                                                        : 'Client');
+                                              CollectionReference
+                                                  collectionReference =
+                                                  FirebaseFirestore.instance
+                                                      .collection(
+                                                          (currentUserRole == 0)
+                                                              ? 'Users'
+                                                              : 'Clients');
 
-                                        QuerySnapshot querySnapshot =
-                                            await collectionReference
-                                                .where('email',
-                                                    isEqualTo:
-                                                        emailController.text)
-                                                .get();
+                                              setState(() {
+                                                isLoading = true;
+                                              });
 
-                                        if (querySnapshot.docs.isNotEmpty) {
-                                          // for (QueryDocumentSnapshot documentSnapshot
-                                          //     in querySnapshot.docs) {
-                                          //   Map<String, dynamic> data =
-                                          //       documentSnapshot.data()
-                                          //           as Map<String, dynamic>;
-                                          //   print(data);
-                                          // }
-                                          signInWithEmailAndPassword(
-                                            emailController.text.trim(),
-                                            passwordController.text.trim(),
-                                          );
-                                        } else {
-                                          print(
-                                              'No documents matching the filter found.');
-                                        }
-                                      }
-                                    },
-                                    screenWidth: screenWidth),
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const ForgetPassword(),
-                                      ),
-                                    );
-                                  },
-                                  child: const Text(
-                                    'Forgot your Password',
-                                    style: TextStyle(
-                                      color: kDarkGreyColor,
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 12.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: <Widget>[
-                                      Center(
-                                        child: Container(
-                                          height: 3.0,
-                                          width: screenWidth / 4,
-                                          color: kLightBlueColor,
-                                        ),
-                                      ),
-                                      const Text(
-                                        'Or continue with',
-                                        style: TextStyle(
-                                          fontSize: 13.0,
-                                        ),
-                                      ),
-                                      Center(
-                                        child: Container(
-                                          height: 3.0,
-                                          width: screenWidth / 4,
-                                          color: kLightBlueColor,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: <Widget>[
-                                    //"Google" Signup Button
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 8.0),
-                                      child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 12.0, horizontal: 24.0),
-                                          backgroundColor: kLightBlueColor,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(16.0),
-                                          ),
-                                        ),
+                                              QuerySnapshot querySnapshot =
+                                                  await collectionReference
+                                                      .where('email',
+                                                          isEqualTo:
+                                                              emailController
+                                                                  .text)
+                                                      .get();
+
+                                              if (querySnapshot
+                                                  .docs.isNotEmpty) {
+                                                // for (QueryDocumentSnapshot documentSnapshot
+                                                //     in querySnapshot.docs) {
+                                                //   Map<String, dynamic> data =
+                                                //       documentSnapshot.data()
+                                                //           as Map<String, dynamic>;
+                                                //   print(data);
+                                                // }
+                                                signInWithEmailAndPassword(
+                                                  emailController.text.trim(),
+                                                  passwordController.text
+                                                      .trim(),
+                                                );
+                                              } else {
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  CusSnackBar(
+                                                    backColor: kWarningRedColor,
+                                                    time: 3,
+                                                    title:
+                                                        'User isn\'t available',
+                                                    icon: Icons.dangerous,
+                                                  ),
+                                                );
+                                              }
+                                            }
+                                            setState(() {
+                                              isLoading = false;
+                                            });
+                                          },
+                                          screenWidth: screenWidth),
+                                      TextButton(
                                         onPressed: () {
-                                          handleSignIn(context);
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const ForgetPassword(),
+                                            ),
+                                          );
                                         },
+                                        child: const Text(
+                                          'Forgot your Password',
+                                          style: TextStyle(
+                                            color: kDarkGreyColor,
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 12.0),
                                         child: Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
+                                              MainAxisAlignment.spaceEvenly,
                                           children: <Widget>[
-                                            Image.asset(
+                                            Center(
+                                              child: Container(
+                                                height: 3.0,
+                                                width: screenWidth / 4,
+                                                color: kLightBlueColor,
+                                              ),
+                                            ),
+                                            const Text(
+                                              'Or continue with',
+                                              style: TextStyle(
+                                                fontSize: 13.0,
+                                              ),
+                                            ),
+                                            Center(
+                                              child: Container(
+                                                height: 3.0,
+                                                width: screenWidth / 4,
+                                                color: kLightBlueColor,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(4.0),
+                                        child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 12.0,
+                                                horizontal: 24.0),
+                                            backgroundColor: kLightBlueColor,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(16.0),
+                                            ),
+                                          ),
+                                          onPressed: () {
+                                            handleSignIn(context);
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Image.asset(
                                               'icons/google.png',
                                               width: 25.0,
                                             ),
-                                            const SizedBox(
-                                              width: 8.0,
-                                            ),
-                                            const Text(
-                                              'Google',
-                                              style: TextStyle(
-                                                  color: kDeepBlueColor,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 15.0),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    //"Facebook" Signup Button
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 8.0),
-                                      child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 12.0, horizontal: 24.0),
-                                          backgroundColor: kLightBlueColor,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(16.0),
                                           ),
                                         ),
-                                        onPressed: () {
-                                          showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return MaintenancePage(
-                                                [
-                                                  const Image(
-                                                    image: AssetImage(
-                                                        'images/gear.webp'),
-                                                  ),
-                                                  Text(
-                                                    'We’re',
-                                                    style: kSubHeadingTextStyle
-                                                        .copyWith(height: 0.5),
-                                                  ),
-                                                  const Text(
-                                                    'Under Maintenance',
-                                                    style: kSubHeadingTextStyle,
-                                                  ),
-                                                  const Padding(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 8.0),
-                                                    child: Text(
-                                                      'Please check back soon just putting little touch up on some pretty updates.',
-                                                      style: kTextStyle,
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    ),
-                                                  ),
-                                                  DarkMainButton(
-                                                      title: 'Close',
-                                                      process: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                      screenWidth: screenWidth)
-                                                ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          const BottomSubText('Create a'),
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const SignUp(),
+                                                ),
                                               );
                                             },
-                                          );
-                                        },
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: <Widget>[
-                                            Image.asset(
-                                              'icons/facebook.png',
-                                              width: 25.0,
-                                            ),
-                                            const SizedBox(
-                                              width: 8.0,
-                                            ),
-                                            const Text(
-                                              'Facebook',
+                                            child: const Text(
+                                              'TaskMate',
                                               style: TextStyle(
-                                                  color: kDeepBlueColor,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 15.0),
+                                                color: kAmberColor,
+                                              ),
                                             ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    const BottomSubText('Create a'),
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const SignUp(),
                                           ),
-                                        );
-                                      },
-                                      child: const Text(
-                                        'TaskMate',
-                                        style: TextStyle(
-                                          color: kAmberColor,
-                                        ),
+                                          const BottomSubText('Account'),
+                                        ],
                                       ),
-                                    ),
-                                    const BottomSubText('Account'),
-                                  ],
-                                ),
-                              ],
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
-                          ],
-                        ),
+                          )
+                        ],
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
+            )
+          : const LoadingScreen(title: 'Please wait. . . '),
     );
   }
 }

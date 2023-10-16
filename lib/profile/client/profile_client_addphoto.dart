@@ -39,7 +39,7 @@ class _ProfileClientAddphotoState extends State<ProfileClientAddphoto> {
   final TextEditingController servicesController = TextEditingController();
   final TextEditingController professionalRoleController =
       TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  // final TextEditingController passwordController = TextEditingController();
 
   String? profileImageUrl;
   String? selectedGender;
@@ -118,7 +118,7 @@ class _ProfileClientAddphotoState extends State<ProfileClientAddphoto> {
         'province': widget.client.province,
         'city': widget.client.city,
         'phoneNo': widget.client.phoneNo,
-        // 'email': widget.client.email,
+        'email': widget.client.email,
         // 'password': widget.client.password,
         'professionalRole': widget.client.professionalrole,
         'profilePhotoUrl': downloadUrl,

@@ -21,6 +21,7 @@ class VerifyIdentity extends StatefulWidget {
 class _VerifyIdentityState extends State<VerifyIdentity> {
   bool isIDSubmitted = false;
   bool isPhotoSubmitted = false;
+  bool isLoading = false;
 
   void pickIDFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(

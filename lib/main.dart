@@ -24,7 +24,6 @@ import 'package:taskmate/profile/client/profile_client.dart';
 import 'package:taskmate/profile/client/profile_client_addphoto.dart';
 import 'package:taskmate/profile/client/user_model1.dart';
 import 'package:taskmate/profile/client/user_repository1.dart';
-import 'package:taskmate/profile/client/verify_identity.dart';
 import 'package:taskmate/profile/freelancer/profile_freelancer_1.dart';
 import 'package:taskmate/profile/freelancer/profile_freelancer_2.dart';
 import 'package:taskmate/profile/freelancer/profile_freelancer_3.dart';
@@ -75,7 +74,7 @@ class Taskmate extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: "Poppins"),
       home: const SafeArea(
-        child: ProfileClient(),
+        child: Login(),
       ),
     );
   }
