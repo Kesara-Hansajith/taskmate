@@ -4,7 +4,7 @@ class UserModel1 {
   final String firstName ;
   final String lastName ;
   final String email;
-  final String password;
+  // final String password;
   final String address ;
   final String zipcode ;
   final String street;
@@ -21,7 +21,7 @@ class UserModel1 {
     required this.firstName,
     required this.lastName,
     required this.email,
-    required this.password,
+    // required this.password,
     required this.address,
     required this.zipcode,
     required this.street,
@@ -40,7 +40,7 @@ class UserModel1 {
       "FirstName": firstName,
       "LastName": lastName,
       "Email": email,
-      "Password": password,
+      // "Password": password,
       "Address": address,
       "ZipCode": zipcode,
       "Street": street,
@@ -61,7 +61,7 @@ class UserModel1 {
       firstName: json['FirstName'] ?? '',
       lastName: json['LastName'] ?? '',
       email: json['Email'] ?? '',
-      password: json['Password'] ?? '',
+      // password: json['Password'] ?? '',
       address: json['Address'] ?? '',
       zipcode: json['ZipCode'] ?? '',
       street: json['Street'] ?? '',

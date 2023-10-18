@@ -69,7 +69,10 @@ class _ClientActiveJobDetailsState extends State<ClientActiveJobDetails> {
         budgetField: widget.budgetField,
         activeJobDoc: widget.activeJobDoc,
       ),
-      const ClientActiveJobReview(),
+       ClientActiveJobReview(
+        activeJobDoc: widget.activeJobDoc,
+
+      ),
     ];
 
     return SafeArea(

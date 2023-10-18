@@ -242,7 +242,7 @@ class _EditClientProfileState extends State<EditClientProfile> {
                         firstName: widget.client.firstName, // Keep existing first name
                         lastName: widget.client.lastName,
                         email: '',
-                        password: '',
+                        // password: '',
                         address: '',
                         zipcode: '',
                         birthday: '', gender: '', province: '',

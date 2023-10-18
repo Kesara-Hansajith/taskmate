@@ -7,7 +7,7 @@ import 'package:taskmate/constants.dart';
 
 class Payments extends StatefulWidget {
   final String budgetField;
-  final QueryDocumentSnapshot activeJobDoc;
+  final QueryDocumentSnapshot activeJobDoc ;
 
   const Payments({
     required this.budgetField,
@@ -26,7 +26,10 @@ void requestPayment(QueryDocumentSnapshot activeJobDoc, BuildContext context) as
     final DocumentReference docRef = activeJobDoc.reference;
 
     // Update the 'payment' field to 'Request'
-    await docRef.update({'payment': 'Request'});
+    await docRef.update({
+      'payment': 'Request'
+
+    });
 
     // Show a success message
     ScaffoldMessenger.of(context).showSnackBar(
@@ -74,7 +77,9 @@ class _PaymentsState extends State<Payments> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children:  <Widget>[
                   Text('Requested'),
-                  Text(widget.budgetField,style: kTextStyle,),
+                  Text(
+                    'LKR. ${widget.budgetField}',
+                    style: kTextStyle,),
                 ],
               ),
             ),
@@ -85,9 +90,9 @@ class _PaymentsState extends State<Payments> {
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const <Widget>[
+                children:  <Widget>[
                   Text('In Progress'),
-                  Text('LKR.  0.00'),
+                  Text('LKR. ${widget.activeJobDoc['Precentage'] ?? 300}'),
                 ],
               ),
             ),
@@ -98,10 +103,10 @@ class _PaymentsState extends State<Payments> {
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const <Widget>[
+                children:  <Widget>[
                   Text('Released to Freelancer'),
                   Text(
-                    'LKR.  0.00',
+                    'LKR. ${widget.activeJobDoc['releaseMoney']} ',
                     textAlign: TextAlign.left,
                   ),
                 ],

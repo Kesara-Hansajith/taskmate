@@ -10,8 +10,23 @@ import 'package:taskmate/authentication/create_my_account_1.dart';
 import 'package:taskmate/components/maintenance_page.dart';
 import 'package:taskmate/components/dark_main_button.dart';
 
-class SignUp extends StatelessWidget {
+class SignUp extends StatefulWidget {
   const SignUp({super.key});
+
+  @override
+  State<SignUp> createState() => _SignUpState();
+}
+
+class _SignUpState extends State<SignUp> {
+  String? imagePath;
+
+  Future<void> loadImages(String imageUrl) async {
+    try {
+      await precacheImage(AssetImage(imagePath!), context);
+    } catch (e) {
+      //Ignored
+    }
+  }
 
   //Method for Google Authentication
   Future<UserCredential> signInWithGoogle() async {
@@ -30,6 +45,14 @@ class SignUp extends StatelessWidget {
 
     // Once signed in, return the UserCredential
     return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadImages('images/background/signup.webp');
+    loadImages('images/taskmate_logo_light.webp');
+    loadImages('images/noise_image.webp');
   }
 
   @override
@@ -132,7 +155,7 @@ class SignUp extends StatelessWidget {
                                             color: kBrilliantWhite,
                                           ),
                                           Text(
-                                            'Continue with Email or Mobile',
+                                            'Continue with Email',
                                             style: TextStyle(
                                                 color: kBrilliantWhite,
                                                 fontSize: 15.0),
@@ -176,132 +199,29 @@ class SignUp extends StatelessWidget {
                                 //"Sign up & Find your next Gig" text goes here
 
                                 //Third Party Auth buttons goes here
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: <Widget>[
-                                    //"Google" Signup Button
-                                    Padding(
+                                Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
                                       padding: const EdgeInsets.symmetric(
-                                          vertical: 8.0),
-                                      child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 12.0, horizontal: 24.0),
-                                          backgroundColor: kLightBlueColor,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(16.0),
-                                          ),
-                                        ),
-                                        onPressed: () {
-                                          signInWithGoogle();
-                                        },
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: <Widget>[
-                                            Image.asset(
-                                              'icons/google.png',
-                                              width: 25.0,
-                                            ),
-                                            const SizedBox(
-                                              width: 8.0,
-                                            ),
-                                            const Text(
-                                              'Google',
-                                              style: TextStyle(
-                                                  color: kDeepBlueColor,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 15.0),
-                                            ),
-                                          ],
-                                        ),
+                                          vertical: 12.0, horizontal: 24.0),
+                                      backgroundColor: kLightBlueColor,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(16.0),
                                       ),
                                     ),
-                                    //"Facebook" Signup Button
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 8.0),
-                                      child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 12.0, horizontal: 24.0),
-                                          backgroundColor: kLightBlueColor,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(16.0),
-                                          ),
-                                        ),
-                                        onPressed: () {
-                                          showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return MaintenancePage(
-                                                [
-                                                  const Image(
-                                                    image: AssetImage(
-                                                        'images/gear.webp'),
-                                                  ),
-                                                  Text(
-                                                    'We’re',
-                                                    style: kSubHeadingTextStyle
-                                                        .copyWith(height: 0.5),
-                                                  ),
-                                                  const Text(
-                                                    'Under Maintenance',
-                                                    style: kSubHeadingTextStyle,
-                                                  ),
-                                                  const Padding(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 8.0),
-                                                    child: Text(
-                                                      'Please check back soon just putting little touch up on some pretty updates.',
-                                                      style: kTextStyle,
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    ),
-                                                  ),
-                                                  DarkMainButton(
-                                                      title: 'Close',
-                                                      process: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                      screenWidth: screenWidth)
-                                                ],
-                                              );
-                                            },
-                                          );
-                                        },
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: <Widget>[
-                                            Image.asset(
-                                              'icons/facebook.png',
-                                              width: 25.0,
-                                            ),
-                                            const SizedBox(
-                                              width: 8.0,
-                                            ),
-                                            const Text(
-                                              'Facebook',
-                                              style: TextStyle(
-                                                  color: kDeepBlueColor,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 15.0),
-                                            ),
-                                          ],
-                                        ),
+                                    onPressed: () {
+                                      signInWithGoogle();
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Image.asset(
+                                        'icons/google.png',
+                                        width: 25.0,
                                       ),
                                     ),
-                                  ],
+                                  ),
                                 ),
                                 //Bottom most row of the screen
                                 Row(

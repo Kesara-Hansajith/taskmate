@@ -31,7 +31,7 @@ class JobCard extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.symmetric(
           vertical: 8.0,
-          horizontal: 4.0,
+          horizontal: 16.0,
         ),
         padding: const EdgeInsets.symmetric(
           vertical: 16.0,
