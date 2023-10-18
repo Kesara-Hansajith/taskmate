@@ -19,6 +19,7 @@ class CompletedJobDetails extends StatefulWidget {
   final String completeJobTime; // Add this parameter
 
 
+
   const CompletedJobDetails({
     super.key,
     required this.jobTitle, // Add this parameter
@@ -29,6 +30,7 @@ class CompletedJobDetails extends StatefulWidget {
     required  this.image2Url,
     required this.createdAt,
     required this.completeJobTime,
+
     // required this.documentID,
   });
 
@@ -61,8 +63,12 @@ class _CompletedJobDetailsState extends State<CompletedJobDetails> {
           // documentID: widget.documentID,
           ),
        Files(completeJobDoc: widget.completeJobDoc),
-       Payments(budgetField: widget.budgetField,),
+       Payments(
+         budgetField: widget.budgetField,
+         completeJobDoc: widget.completeJobDoc,
+       ),
       Reviews(
+        completeJobDoc: widget.completeJobDoc,
         // documentID: widget.documentID,
       ),
     ];

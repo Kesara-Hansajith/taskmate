@@ -36,7 +36,9 @@ class ClientPostJob extends StatefulWidget {
 class _ClientPostJobState extends State<ClientPostJob> {
   final recorder = FlutterSoundRecorder();
   bool isRecorderReady = false;
-  // late final audioFile;
+
+  var audioFile;
+
 
   final audioPlayer = AudioPlayer();
   bool isPlaying = false;
@@ -49,8 +51,7 @@ class _ClientPostJobState extends State<ClientPostJob> {
   // String _skillsText = '';
 
   final TextEditingController jobTitleController = TextEditingController();
-  final TextEditingController jobDescriptionController =
-      TextEditingController();
+  final TextEditingController jobDescriptionController = TextEditingController();
   final TextEditingController dayCountController = TextEditingController();
   final TextEditingController budgetController = TextEditingController();
   final TextEditingController skillController = TextEditingController();
@@ -81,9 +82,13 @@ class _ClientPostJobState extends State<ClientPostJob> {
   Future stop() async {
     if (!isRecorderReady) return;
     final path = await recorder.stopRecorder();
-    final audioFile = File(path!);
-    print('Recorded voice: $audioFile');
+    setState(() {
+      audioFile = File(path!);
+      print('Recorded voice: $audioFile');
+    });
+
   }
+
 
   void selectService(String serviceName) {
     setState(() {
@@ -114,8 +119,8 @@ class _ClientPostJobState extends State<ClientPostJob> {
     String jobTitle,
     String jobDescription,
     int dayCount,
-    int budget,
-  ) async {
+    int budget,)
+  async {
     try {
       // Get the current user's UID from FirebaseAuth
       User? user = FirebaseAuth.instance.currentUser;
@@ -125,10 +130,8 @@ class _ClientPostJobState extends State<ClientPostJob> {
         // Handle the case where the user is not authenticated
         return;
       }
-
       // Get a reference to the Firestore collection
-      CollectionReference jobsCollection =
-          FirebaseFirestore.instance.collection('jobs');
+      CollectionReference jobsCollection = FirebaseFirestore.instance.collection('jobs');
 
       // Generate a unique job ID (e.g., using a timestamp)
       String timestamp = Timestamp.now().millisecondsSinceEpoch.toString();
@@ -140,10 +143,12 @@ class _ClientPostJobState extends State<ClientPostJob> {
       CollectionReference jobsNewCollection = jobDocument.collection('jobsnew');
 
       // Upload images to Firebase Storage and get download URLs
-      String? image1Url =
-          await uploadImageToStorage(_selectedImage1, 'image1_$timestamp');
-      String? image2Url =
-          await uploadImageToStorage(_selectedImage2, 'image2_$timestamp');
+      String? image1Url = await uploadImageToStorage(_selectedImage1, 'image1_$timestamp');
+      String? image2Url = await uploadImageToStorage(_selectedImage2, 'image2_$timestamp');
+
+      // Upload audio to Firebase Storage and get download URL
+      String? audioUrl = await uploadAudioToStorage(audioFile, 'audio_$timestamp');
+
 
       // Add job data to Firestore within the "jobsnew" subcollection
       await jobsNewCollection.doc(timestamp).set({
@@ -155,6 +160,7 @@ class _ClientPostJobState extends State<ClientPostJob> {
         'skills': _skills,
         'image1Url': image1Url,
         'image2Url': image2Url,
+        'audioUrl': audioUrl, // Add the audio URL
         'status': 'new', // Set the status to "active"
         'createdAt': FieldValue.serverTimestamp(), // Add the timestamp field
         // You can add more fields as needed
@@ -419,30 +425,6 @@ class _ClientPostJobState extends State<ClientPostJob> {
                           ),
                         ),
                       ),
-                      // GestureDetector(
-                      //   onTap: () => selectService('Print design'),
-                      //   child: Container(
-                      //     margin: const EdgeInsets.symmetric(horizontal: 0.0),
-                      //     padding: const EdgeInsets.symmetric(
-                      //         horizontal: 16.0,
-                      //         vertical: 8.0), // Adjust the padding
-                      //     decoration: BoxDecoration(
-                      //       color: Colors.transparent,
-                      //       border: Border.all(
-                      //         color: kDarkGreyColor,
-                      //       ),
-                      //       borderRadius: BorderRadius.circular(10),
-                      //     ),
-                      //     child: const Text(
-                      //       'Print design',
-                      //       style: TextStyle(
-                      //         fontSize: 11,
-                      //         fontWeight: FontWeight.bold,
-                      //         color: kDarkGreyColor,
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
                     ],
                   ),
                   const SizedBox(
@@ -588,7 +570,7 @@ class _ClientPostJobState extends State<ClientPostJob> {
                     height: 12.0,
                   ),
                   const UserDataGatherTitle(
-                    title: 'Express your job with Voice',
+                    title: 'Express your Requirements with Voice',
                   ),
                   Align(
                     alignment: Alignment.center,
@@ -764,10 +746,8 @@ class _ClientPostJobState extends State<ClientPostJob> {
     if (image == null) {
       return null;
     }
-
     try {
-      Reference storageReference =
-          FirebaseStorage.instance.ref().child('images/$imageName');
+      Reference storageReference = FirebaseStorage.instance.ref().child('images/$imageName');
       UploadTask uploadTask = storageReference.putFile(image);
       await uploadTask.whenComplete(() async {
         // Wait for the upload to complete and then return the download URL
@@ -785,3 +765,29 @@ class _ClientPostJobState extends State<ClientPostJob> {
     return null;
   }
 }
+
+Future<String?> uploadAudioToStorage(File audioFile, String audioFileName) async {
+  if (audioFile == null) {
+    return null;
+  }
+
+  try {
+    Reference storageReference =
+    FirebaseStorage.instance.ref().child('audio/$audioFileName');
+    UploadTask uploadTask = storageReference.putFile(audioFile);
+    await uploadTask.whenComplete(() async {
+      // Wait for the upload to complete and then return the download URL
+      return await storageReference.getDownloadURL();
+    });
+
+    // If the await inside whenComplete doesn't work as expected,
+    // you can try using await for the whole operation
+    String downloadURL = await storageReference.getDownloadURL();
+    return downloadURL;
+  } catch (e) {
+    // Handle errors
+  }
+
+  return null;
+}
+

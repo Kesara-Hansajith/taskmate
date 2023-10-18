@@ -59,7 +59,7 @@ class _ActiveJobDetailsState extends State<ActiveJobDetails> {
           ),
       Files(activeJobDoc: widget.activeJobDoc), // Pass the activeJobDoc
       Payments( budgetField: widget.budgetField,activeJobDoc: widget.activeJobDoc),
-      const Reviews(),
+      Reviews(activeJobDoc: widget.activeJobDoc),
     ];
 
     return SafeArea(
