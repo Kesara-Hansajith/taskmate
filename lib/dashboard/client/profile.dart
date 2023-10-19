@@ -6,8 +6,17 @@ import 'package:taskmate/components/review_card.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/dashboard/client/edit_profile.dart';
 
+import '../../profile/client/user_model1.dart';
+
 class Profile extends StatefulWidget {
-  const Profile({super.key});
+  final UserModel1 client; // Add this line
+  final String? downloadUrl;
+
+  const Profile({
+    required this.client,
+    this.downloadUrl,
+    super.key
+  });
 
   @override
   State<Profile> createState() => _ProfileState();
@@ -55,15 +64,16 @@ class _ProfileState extends State<Profile> {
                       Container(
                         width: screenWidth,
                         height: screenHeight / 5,
-                        decoration: const BoxDecoration(
+                        decoration: BoxDecoration(
                           image: DecorationImage(
                             fit: BoxFit.cover,
                             image: AssetImage(
-                              'images/cover_photo.webp',
+                              widget.downloadUrl ?? 'images/cover_photo.webp', // Use ?? to provide a default image
                             ),
                           ),
                         ),
                       ),
+
                       Container(
                         width: screenWidth,
                         height: screenHeight / 15,
@@ -114,7 +124,7 @@ class _ProfileState extends State<Profile> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      'Nimali Ihalagama',
+                      '${widget.client.firstName} ${widget.client.lastName}',
                       style: kSubHeadingTextStyle,
                     ),
                   ],

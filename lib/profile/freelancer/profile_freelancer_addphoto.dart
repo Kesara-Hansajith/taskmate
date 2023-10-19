@@ -143,15 +143,15 @@ class _ProfileFreelancerAddphotoState extends State<ProfileFreelancerAddphoto> {
           },
         );
         if (context.mounted) {
-          // Navigator.of(context).push(
-          //   MaterialPageRoute(
-          //     builder: (context) =>
-          //   //       DashboardFreelance(
-          //   //         // user: widget.user,
-          //   //         // profileImageUrl: downloadUrl,
-          //   //       ),
-          //   ),
-          // );
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) =>
+                  DataDetailsScreenFreelancer(
+                     user: widget.user,
+                     profileImageUrl: downloadUrl,
+                  ),
+            ),
+          );
         }
       }
     }

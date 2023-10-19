@@ -6,10 +6,10 @@ import 'package:taskmate/profile/client/user_model1.dart';
 class ClientPosted extends StatefulWidget {
   const ClientPosted({
     super.key,
-    // required this.client,
+     required this.client,
   });
 
-  // final UserModel1 client; // Add this line
+   final UserModel1 client; // Add this line
 
   @override
   State<ClientPosted> createState() => _ClientPostedState();
@@ -46,11 +46,11 @@ class _ClientPostedState extends State<ClientPosted> {
                       style: kJobCardTitleTextStyle,
                     ),
                     Text(
-                      'First Name Last Name',
+                      '${widget.client.firstName} ${widget.client.lastName}',
                       style: kSubHeadingTextStyle,
                     ),
                     PostAJob(
-                        // client: widget.client,
+                         client: widget.client,
                         ),
                   ],
                 ),

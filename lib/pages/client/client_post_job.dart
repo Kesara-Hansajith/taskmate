@@ -18,11 +18,11 @@ import 'package:file_picker/file_picker.dart';
 
 class ClientPostJob extends StatefulWidget {
   const ClientPostJob({
-    // required this.client,
+     required this.client,
     Key? key,
   });
 
-  // final UserModel1 client;
+   final UserModel1 client;
 
   @override
   State<ClientPostJob> createState() => _ClientPostJobState();
@@ -81,6 +81,8 @@ class _ClientPostJobState extends State<ClientPostJob> {
   Future<void> addJobToFirestore(String jobTitle,
       String jobDescription,
       int dayCount,
+      int percentage,
+      int releaseMoney,
       int budget,) async {
     try {
       // Get the current user's UID from FirebaseAuth
@@ -125,6 +127,8 @@ class _ClientPostJobState extends State<ClientPostJob> {
         'image1Url': image1Url,
         'image2Url': image2Url,
         'status': 'new', // Set the status to "active"
+        'releaseMoney': 0,
+        'percentage':0,
         'createdAt': FieldValue.serverTimestamp(), // Add the timestamp field
         // You can add more fields as needed
       });
@@ -526,11 +530,14 @@ class _ClientPostJobState extends State<ClientPostJob> {
                       if (formKey.currentState!.validate()) {
                         String jobTitle = jobTitleController.text;
                         String jobDescription = jobDescriptionController.text;
-                        int dayCount = int.tryParse(dayCountController.text) ??
-                            0;
+                        int dayCount = int.tryParse(dayCountController.text) ?? 0;
                         int budget = int.tryParse(budgetController.text) ?? 0;
+                        int percentage = int.tryParse(budgetController.text) ?? 0;
+                        int releaseMoney = int.tryParse(budgetController.text) ?? 0;
+
                         addJobToFirestore(
-                          jobTitle, jobDescription, dayCount, budget,);
+                          jobTitle, jobDescription, dayCount, budget,releaseMoney,percentage,
+                        );
                         showDialog(
                           context: context,
                           barrierDismissible: false,
@@ -561,7 +568,7 @@ class _ClientPostJobState extends State<ClientPostJob> {
                                           builder: (context) =>
                                               ClientHomePage(
                                                 // selectedIndex: 2,
-                                                // client: widget.client,
+                                                client: widget.client,
                                               ),
                                         ),
                                       );

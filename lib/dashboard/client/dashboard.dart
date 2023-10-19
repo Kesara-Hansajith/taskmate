@@ -9,8 +9,17 @@ import 'package:taskmate/dashboard/client/profile.dart';
 import 'package:taskmate/dashboard/client/terms_conditions.dart';
 import 'package:taskmate/dashboard/client/transaction_history.dart';
 
+import '../../profile/client/user_model1.dart';
+
 class Dashboard extends StatefulWidget {
-  const Dashboard({super.key});
+  final UserModel1 client; // Add this line
+  final String? downloadUrl;
+
+  const Dashboard({
+    required this.client,
+    this.downloadUrl,
+    super.key
+  });
 
   @override
   State<Dashboard> createState() => _DashboardState();
@@ -20,7 +29,9 @@ class _DashboardState extends State<Dashboard> {
   void navigateToProfile() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const Profile(),
+        builder: (context) => Profile(
+            client: widget.client
+        ),
       ),
     );
   }
@@ -28,7 +39,7 @@ class _DashboardState extends State<Dashboard> {
   void navigateToBalance() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const Balance(),
+        builder: (context) =>  Balance(),
       ),
     );
   }
@@ -36,7 +47,7 @@ class _DashboardState extends State<Dashboard> {
   void navigateToTransactionHistory() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const TransactionHistory(),
+        builder: (context) =>  TransactionHistory(),
       ),
     );
   }
@@ -44,7 +55,7 @@ class _DashboardState extends State<Dashboard> {
   void navigateToHelpSupport() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const HelpSupport(),
+        builder: (context) =>  HelpSupport(),
       ),
     );
   }
@@ -52,7 +63,7 @@ class _DashboardState extends State<Dashboard> {
   void navigateToInviteFriends() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const InviteFriends(),
+        builder: (context) =>  InviteFriends(),
       ),
     );
   }
@@ -60,7 +71,7 @@ class _DashboardState extends State<Dashboard> {
   void navigateToTermsConditions() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const TermsConditions(),
+        builder: (context) =>  TermsConditions(),
       ),
     );
   }
@@ -68,7 +79,7 @@ class _DashboardState extends State<Dashboard> {
   void navigateToAboutUs() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const AboutUs(),
+        builder: (context) =>  AboutUs(),
       ),
     );
   }
@@ -130,11 +141,12 @@ class _DashboardState extends State<Dashboard> {
                       ),
                     ),
                     child: CircleAvatar(
-                      backgroundImage: AssetImage(
-                        'images/blank_profile.webp',
-                      ),
+                      backgroundImage: widget.client.profilePhotoUrl != null
+                          ? AssetImage(widget.client.profilePhotoUrl!)
+                          : null, // set to null if profilePhotoUrl is null
                       radius: 40,
                     ),
+
                   ),
                 ],
               ),
@@ -145,7 +157,7 @@ class _DashboardState extends State<Dashboard> {
                     style: kJobCardTitleTextStyle.copyWith(color: kAmberColor),
                   ),
                   Text(
-                    'Nimali Ihalagama',
+                    '${widget.client.firstName} ${widget.client.lastName}',
                     style: kSubHeadingTextStyle,
                   ),
 
