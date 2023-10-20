@@ -284,21 +284,24 @@ class _ProfileFreelancerState extends State<ProfileFreelancer> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Center(
-                    child: Column(
-                      children: [
-                        const Text(
-                          'Set Up Your',
-                          style: kHeadingTextStyle,
-                        ),
-                        Text(
-                          'Freelancer Profile',
-                          style: const TextStyle(
-                            fontSize: 25,
-                            color: kDeepBlueColor,
-                            fontWeight: FontWeight.bold,
-                          ).copyWith(height: 1.0),
-                        ),
-                      ],
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Column(
+                        children: [
+                          const Text(
+                            'Set Up Your',
+                            style: kHeadingTextStyle,
+                          ),
+                          Text(
+                            'Freelancer Profile',
+                            style: const TextStyle(
+                              fontSize: 25,
+                              color: kDeepBlueColor,
+                              fontWeight: FontWeight.bold,
+                            ).copyWith(height: 1.0),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   const UserDataGatherTitle(

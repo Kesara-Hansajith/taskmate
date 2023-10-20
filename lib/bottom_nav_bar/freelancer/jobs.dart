@@ -36,6 +36,8 @@ class _JobsState extends State<Jobs> with SingleTickerProviderStateMixin {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
+          automaticallyImplyLeading: false,
           title: const Center(
             child: Text(
               'Projects',
@@ -84,7 +86,8 @@ class _JobsState extends State<Jobs> with SingleTickerProviderStateMixin {
             children: [
               // StreamBuilder for "Best Match" tab
               StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance.collection('jobs').snapshots(),
+                stream:
+                    FirebaseFirestore.instance.collection('jobs').snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(
@@ -107,16 +110,19 @@ class _JobsState extends State<Jobs> with SingleTickerProviderStateMixin {
                       return StreamBuilder<QuerySnapshot>(
                         stream: doc.reference
                             .collection('jobsnew')
-                            .where('status', isEqualTo: 'new') // Change filter condition
+                            .where('status',
+                                isEqualTo: 'new') // Change filter condition
                             .snapshots(),
                         builder: (context, subSnapshot) {
-                          if (subSnapshot.connectionState == ConnectionState.waiting) {
+                          if (subSnapshot.connectionState ==
+                              ConnectionState.waiting) {
                             return const Center(
                               child: CircularProgressIndicator(),
                             );
                           }
 
-                          if (!subSnapshot.hasData || subSnapshot.data!.docs.isEmpty) {
+                          if (!subSnapshot.hasData ||
+                              subSnapshot.data!.docs.isEmpty) {
                             return const Center(
                               child: Text('No matching jobs found'),
                             );
@@ -128,7 +134,8 @@ class _JobsState extends State<Jobs> with SingleTickerProviderStateMixin {
                           final Set<String> uniqueJobIds = Set();
 
                           // Filter out duplicate jobs
-                          final filteredJobDocs = matchingJobDocs.where((subDoc) {
+                          final filteredJobDocs =
+                              matchingJobDocs.where((subDoc) {
                             final jobId = subDoc.id;
                             if (uniqueJobIds.contains(jobId)) {
                               return false; // Skip duplicate job
@@ -142,9 +149,7 @@ class _JobsState extends State<Jobs> with SingleTickerProviderStateMixin {
                           return Column(
                             children: filteredJobDocs.map<Widget>((subDoc) {
                               return JobCard(
-                                  mostjobDoc: subDoc,
-                                  screenWidth: screenWidth
-                              );
+                                  mostjobDoc: subDoc, screenWidth: screenWidth);
                             }).toList(),
                           );
                         },

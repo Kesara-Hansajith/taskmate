@@ -144,11 +144,14 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
                   children: <Widget>[
                     const Padding(
                       padding:
-                          EdgeInsets.symmetric(vertical: 20.0, horizontal: 8.0),
+                          EdgeInsets.symmetric(vertical: 32.0, horizontal: 8.0),
                       child: Text(
                         'Create My Account',
                         style: kHeadingTextStyle,
                       ),
+                    ),
+                    const SizedBox(
+                      height: 10.0,
                     ),
                     Form(
                       key: _formKey,
@@ -163,6 +166,10 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
                             decoration: BoxDecoration(
                               color: kBrilliantWhite,
                               borderRadius: BorderRadius.circular(20.0),
+                              border: Border.all(
+                                color: kDeepBlueColor,
+                                width: 1.5,
+                              ),
                             ),
                             child: TextFormField(
                               controller: email,
@@ -193,6 +200,10 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 16.0),
                             decoration: BoxDecoration(
+                              border: Border.all(
+                                color: kDeepBlueColor,
+                                width: 1.5,
+                              ),
                               color: kBrilliantWhite,
                               borderRadius: BorderRadius.circular(20.0),
                             ),
@@ -230,6 +241,10 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 16.0),
                             decoration: BoxDecoration(
+                              border: Border.all(
+                                color: kDeepBlueColor,
+                                width: 1.5,
+                              ),
                               color: kBrilliantWhite,
                               borderRadius: BorderRadius.circular(20.0),
                             ),

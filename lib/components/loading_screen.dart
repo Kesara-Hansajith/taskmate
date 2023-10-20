@@ -23,7 +23,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
         children: [
           SpinKitWave(
             type: SpinKitWaveType.start,
-            color: kDeepBlueColor,
+            color: kAmberColor,
             itemCount: 10,
             size: screenWidth / 4,
           ),
@@ -31,7 +31,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
             padding: const EdgeInsets.symmetric(vertical: 20.0),
             child: Text(
               widget.title,
-              style: kSubHeadingTextStyle.copyWith(color: kJetBlack),
+              style: kSubHeadingTextStyle.copyWith(color: kDeepBlueColor),
             ),
           ),
         ],
