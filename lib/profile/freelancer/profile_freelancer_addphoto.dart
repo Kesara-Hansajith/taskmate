@@ -14,6 +14,7 @@ import 'dart:io';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/profile/freelancer/data_details_screen_freelancer.dart';
 import 'package:taskmate/profile/freelancer/user_model.dart';
+import 'package:taskmate/profile/freelancer/verification_pending.dart';
 import 'package:taskmate/profile/freelancer/verify_identity.dart';
 
 class ProfileFreelancerAddphoto extends StatefulWidget {
@@ -109,6 +110,7 @@ class _ProfileFreelancerAddphotoState extends State<ProfileFreelancerAddphoto> {
     }
   }
 
+
   void _submitDetails() async {
     setState(() {
       isLoading = true;
@@ -148,6 +150,7 @@ class _ProfileFreelancerAddphotoState extends State<ProfileFreelancerAddphoto> {
             'password': widget.user.password,
             'professionalRole': widget.user.professionalRole,
             'profilePhotoUrl': downloadUrl,
+            'verify':widget.user.verify,
           },
         );
 
@@ -158,12 +161,13 @@ class _ProfileFreelancerAddphotoState extends State<ProfileFreelancerAddphoto> {
         if (context.mounted) {
           Navigator.of(context).push(
             MaterialPageRoute(
-              // builder: (context) =>
-              //     DataDetailsScreenFreelancer(
-              //        user: widget.user,
-              //        profileImageUrl: downloadUrl,
-              //     ),
-              builder: (context) => const VerifyIdentity(),
+               builder: (context) =>
+                   VerificationPending(
+                      user: widget.user,
+                     userUid: userUid, // Pass the userUid
+                      //profileImageUrl: downloadUrl,
+                  ),
+              //builder: (context) =>  VerifyIdentity(),
             ),
           );
         }

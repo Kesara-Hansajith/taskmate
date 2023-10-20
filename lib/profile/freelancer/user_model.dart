@@ -23,6 +23,7 @@ class UserModel {
   final String professionalRole;
   final String hourlyRate ;
   final String? profilePhotoUrl;
+  final String verify ;
 
    UserModel ({
     this.id,
@@ -45,6 +46,7 @@ class UserModel {
     required this.hourlyRate,
     required this.phoneNo,
     this.profilePhotoUrl,
+     required this.verify,
   });
 
   Map<String, dynamic> toJson(){
@@ -69,6 +71,7 @@ class UserModel {
       "ProfessionalRole" : professionalRole,
       "HourlyRate" : hourlyRate,
       "ProfilePhotoUrl": profilePhotoUrl,
+      "Verify":verify,
     };
   }
 
@@ -96,6 +99,7 @@ class UserModel {
       hourlyRate: json['HourlyRate'] ?? '',
       phoneNo: json['Phone'] ?? '',
       profilePhotoUrl: json['ProfilePhotoUrl'],
+      verify: json['Verify'] ?? '',
     );
   }
 

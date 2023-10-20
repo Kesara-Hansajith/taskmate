@@ -1310,7 +1310,7 @@ class _EditFreelancerProfileState extends State<EditFreelancerProfile> {
                         zipcode: '',
                         birthday: '', gender: '', province: '',
                         city: '', street: '', skills: '', services: '',
-                        sociallink: '', phoneNo: '',
+                        sociallink: '', phoneNo: '', verify: '',
                         // ... other user data fields ...
                       );
 

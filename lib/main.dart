@@ -29,6 +29,8 @@ import 'package:taskmate/profile/freelancer/profile_freelancer_2.dart';
 import 'package:taskmate/profile/freelancer/profile_freelancer_3.dart';
 import 'package:taskmate/profile/freelancer/profile_freelancer_4.dart';
 import 'package:taskmate/profile/freelancer/user_repository.dart';
+import 'package:taskmate/profile/freelancer/verification_faild.dart';
+import 'package:taskmate/profile/freelancer/verification_pending.dart';
 import 'package:taskmate/test_file.dart';
 
 // import 'package:taskmate/verify_identity.dart';
@@ -74,7 +76,7 @@ class Taskmate extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: "Poppins"),
       home: const SafeArea(
-        child: SplashScreen(),
+        child: ProfileFreelancer(),
       ),
     );
   }
