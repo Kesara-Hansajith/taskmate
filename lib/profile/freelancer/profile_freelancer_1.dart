@@ -284,21 +284,24 @@ class _ProfileFreelancerState extends State<ProfileFreelancer> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Center(
-                    child: Column(
-                      children: [
-                        const Text(
-                          'Set Up Your',
-                          style: kHeadingTextStyle,
-                        ),
-                        Text(
-                          'Freelancer Profile',
-                          style: const TextStyle(
-                            fontSize: 25,
-                            color: kDeepBlueColor,
-                            fontWeight: FontWeight.bold,
-                          ).copyWith(height: 1.0),
-                        ),
-                      ],
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Column(
+                        children: [
+                          const Text(
+                            'Set Up Your',
+                            style: kHeadingTextStyle,
+                          ),
+                          Text(
+                            'Freelancer Profile',
+                            style: const TextStyle(
+                              fontSize: 25,
+                              color: kDeepBlueColor,
+                              fontWeight: FontWeight.bold,
+                            ).copyWith(height: 1.0),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   const UserDataGatherTitle(
@@ -407,7 +410,7 @@ class _ProfileFreelancerState extends State<ProfileFreelancer> {
                               padding: const EdgeInsets.only(right: 18.0),
                               child: UserDataGatherFunction(
                                 controller: genderController,
-                                hintText: 'Tap on Arrow',
+                                hintText: 'Tap Here',
                                 validatorText: 'Select Gender',
                                 icon: Icons.arrow_drop_down,
                                 function: () {
@@ -423,113 +426,43 @@ class _ProfileFreelancerState extends State<ProfileFreelancer> {
                   const SizedBox(
                     height: 6.0,
                   ),
-                  Row(
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const UserDataGatherTitle(title: 'Email*'),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 18.0),
-                              child: TextFormField(
-                                controller: emailController,
-                                decoration: InputDecoration(
-                                  contentPadding: const EdgeInsets.all(10.0),
-                                  hintText: 'Email',
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: const BorderSide(
-                                      width: 1.0,
-                                      color: kDarkGreyColor,
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: const BorderSide(
-                                      width: 2.0,
-                                      color: kDeepBlueColor,
-                                    ),
-                                  ),
-                                  filled: true,
-                                ),
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'Please enter your Email';
-                                  } else if (!RegExp(
-                                          r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$')
-                                      .hasMatch(value)) {
-                                    return 'Please enter a valid email address';
-                                  }
-                                  return null;
-                                },
+                      const UserDataGatherTitle(title: 'Email*'),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: TextFormField(
+                          controller: emailController,
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.all(10.0),
+                            hintText: 'Email',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: const BorderSide(
+                                width: 1.0,
+                                color: kDarkGreyColor,
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 10.0,
-                      ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            const UserDataGatherTitle(title: 'Password*'),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 18.0),
-                              child: TextFormField(
-                                  controller: passwordController,
-                                  obscureText: !_isPasswordVisible,
-                                  decoration: InputDecoration(
-                                    contentPadding: const EdgeInsets.all(10.0),
-                                    hintText: 'Password',
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        width: 1.0,
-                                        color: kDarkGreyColor,
-                                      ),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        width: 2.0,
-                                        color: kDeepBlueColor,
-                                      ),
-                                    ),
-                                    filled: true,
-                                    suffixIcon: GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          // Toggle password visibility
-                                          _isPasswordVisible =
-                                              !_isPasswordVisible;
-                                        });
-                                      },
-                                      child: Icon(
-                                        _isPasswordVisible
-                                            ? Icons.lock_open
-                                            : Icons.lock,
-                                        color: Colors.black87,
-                                      ),
-                                    ),
-                                  ),
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'Please enter your Password';
-                                    }
-                                    if (value.length < 8) {
-                                      return 'Password must be at least 8 characters';
-                                    }
-                                    if (!RegExp(r'^(?=.*[A-Za-z])(?=.*\d).+$')
-                                        .hasMatch(value)) {
-                                      return 'Password must include letters and numbers';
-                                    }
-                                    return null;
-                                  }),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: const BorderSide(
+                                width: 2.0,
+                                color: kDeepBlueColor,
+                              ),
                             ),
-                          ],
+                            filled: true,
+                          ),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Please enter your Email';
+                            } else if (!RegExp(
+                                    r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$')
+                                .hasMatch(value)) {
+                              return 'Please enter a valid email address';
+                            }
+                            return null;
+                          },
                         ),
                       ),
                     ],
@@ -613,9 +546,9 @@ class _ProfileFreelancerState extends State<ProfileFreelancer> {
                               padding: const EdgeInsets.only(right: 18.0),
                               child: UserDataGatherFunction(
                                 controller: provinceController,
-                                hintText: 'Tap on Map',
+                                hintText: 'Tap Here',
                                 validatorText: 'Select a Province',
-                                icon: Icons.map,
+                                icon: Icons.arrow_drop_down,
                                 function: () {
                                   _selectProvince();
                                 },

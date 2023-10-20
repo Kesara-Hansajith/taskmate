@@ -10,14 +10,13 @@ import 'package:taskmate/profile/client/user_model1.dart';
 
 class ClientHomePage extends StatefulWidget {
   ClientHomePage({
-     required this.client,
     // required this.selectedIndex,
-     this.downloadUrl,
+    //  this.downloadUrl,
     super.key,
   });
 
-   final UserModel1 client; // Add this line
-   final String? downloadUrl;
+   // final UserModel1 client; // Add this line
+   // final String? downloadUrl;
 
 
   @override
@@ -29,12 +28,12 @@ class _ClientHomePageState extends State<ClientHomePage> {
   late final List _items = [
     const ClientMessaging(),
     ClientPosted(
-       client: widget.client,
+       // client: widget.client,
     ),
     const ClientJobStatus(),
     Dashboard(
-       client: widget.client,
-      downloadUrl: widget.downloadUrl,
+       // client: widget.client,
+      // downloadUrl: widget.downloadUrl,
     ),
   ];
 

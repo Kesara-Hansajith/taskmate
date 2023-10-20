@@ -241,7 +241,7 @@ class _EditClientProfileState extends State<EditClientProfile> {
                         profilePhotoUrl: profileImageUrl,
                         firstName: widget.client.firstName, // Keep existing first name
                         lastName: widget.client.lastName,
-                        // email: '',
+                        email: '',
                         // password: '',
                         address: '',
                         zipcode: '',

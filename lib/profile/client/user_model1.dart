@@ -3,7 +3,7 @@ class UserModel1 {
   final String? id;
   final String firstName ;
   final String lastName ;
-  // final String email;
+  final String email;
   // final String password;
   final String address ;
   final String zipcode ;
@@ -20,7 +20,7 @@ class UserModel1 {
     this.id,
     required this.firstName,
     required this.lastName,
-    // required this.email,
+    required this.email,
     // required this.password,
     required this.address,
     required this.zipcode,
@@ -39,7 +39,7 @@ class UserModel1 {
 
       "FirstName": firstName,
       "LastName": lastName,
-      // "Email": email,
+      "Email": email,
       // "Password": password,
       "Address": address,
       "ZipCode": zipcode,
@@ -60,7 +60,7 @@ class UserModel1 {
       // Use the null-aware operator to provide a default value
       firstName: json['FirstName'] ?? '',
       lastName: json['LastName'] ?? '',
-      // email: json['Email'] ?? '',
+      email: json['Email'] ?? '',
       // password: json['Password'] ?? '',
       address: json['Address'] ?? '',
       zipcode: json['ZipCode'] ?? '',

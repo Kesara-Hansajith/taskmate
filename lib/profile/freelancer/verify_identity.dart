@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:taskmate/components/dark_main_button.dart';
+import 'package:taskmate/components/navigate_before.dart';
 
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/components/verify_identity_card.dart';
@@ -21,6 +22,7 @@ class VerifyIdentity extends StatefulWidget {
 class _VerifyIdentityState extends State<VerifyIdentity> {
   bool isIDSubmitted = false;
   bool isPhotoSubmitted = false;
+  bool isLoading = false;
 
   void pickIDFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -73,15 +75,18 @@ class _VerifyIdentityState extends State<VerifyIdentity> {
               const Image(
                 image: AssetImage('images/clock.webp'),
               ),
-              Text(
-                'Congratulations!',
-                textAlign: TextAlign.center,
-                style: kSubHeadingTextStyle.copyWith(height: 0.5),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 12.0),
+                child: Text(
+                  'Congratulations!',
+                  textAlign: TextAlign.center,
+                  style: kSubHeadingTextStyle.copyWith(height: 0.5),
+                ),
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: 8.0),
                 child: Text(
-                  'Your account will be activated within 1 business day. We will notify you by email after activation.',
+                  'Your account will be activated \nwithin 1 business day. We will notify you by \nemail after activation.',
                   style: kTextStyle,
                   textAlign: TextAlign.center,
                 ),
@@ -114,6 +119,29 @@ class _VerifyIdentityState extends State<VerifyIdentity> {
 
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          elevation: 0.0,
+          backgroundColor: Colors.transparent,
+          centerTitle: true,
+          leading: const NavigateBefore(
+            size: 35.0,
+          ),
+          flexibleSpace: Stack(
+            children: [
+              // Background Image
+              Positioned.fill(
+                child: Image.asset(
+                  'images/noise_image.webp',
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ],
+          ),
+          title: Text(
+            'Verify Your Identity',
+            style: kHeadingTextStyle.copyWith(fontSize: 30),
+          ),
+        ),
         body: Container(
           width: screenWidth,
           height: screenHeight,
@@ -126,16 +154,8 @@ class _VerifyIdentityState extends State<VerifyIdentity> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              const Padding(
-                padding: EdgeInsets.symmetric(
-                  vertical: 16.0,
-                ),
-                child: Text(
-                  'Verify Your Identity',
-                  style: kHeadingTextStyle,
-                ),
-              ),
               Expanded(
+                flex: 2,
                 child: VerifyIdentityCard(
                   bgColor: isIDSubmitted
                       ? (kDeepBlueColor)
@@ -147,11 +167,11 @@ class _VerifyIdentityState extends State<VerifyIdentity> {
                       : (Icons.contact_mail),
                   backCircleColor:
                       isIDSubmitted ? (kAmberColor) : (kDeepBlueColor),
-                  headingText: 'NIC/Driver License',
+                  headingText: 'Government ID',
                   headFontColor:
                       isIDSubmitted ? (kAmberColor) : (kDeepBlueColor),
                   subText:
-                      'Upload a national identity card, driver’s license or passport photo',
+                      'Upload a national identity card, \ndriver’s license or passport photo',
                   subFontColor:
                       isIDSubmitted ? (kBrilliantWhite) : (kDarkGreyColor),
                   docSubmitButton: isIDSubmitted
@@ -161,6 +181,7 @@ class _VerifyIdentityState extends State<VerifyIdentity> {
                 ),
               ),
               Expanded(
+                flex: 2,
                 child: VerifyIdentityCard(
                   bgColor: isPhotoSubmitted
                       ? (kDeepBlueColor)
@@ -176,20 +197,28 @@ class _VerifyIdentityState extends State<VerifyIdentity> {
                   headFontColor:
                       isPhotoSubmitted ? (kAmberColor) : (kDeepBlueColor),
                   subText:
-                      'Take picture of your self to identity and facial verification',
+                      'Take picture of your self to identity and \nfacial verification',
                   subFontColor:
                       isPhotoSubmitted ? (kBrilliantWhite) : (kDarkGreyColor),
                   docSubmitButton: isPhotoSubmitted
                       ? (null)
                       : VerifyIdentityOutlinedButton(
                           function: pickSelfiePhoto,
-                          hyperlinkText: 'Take Photo'),
+                          hyperlinkText: 'Take Photo',
+                        ),
                 ),
               ),
+              const Expanded(
+                flex: 1,
+                child: SizedBox(
+                    // height: 50.0,
+                    ),
+              ),
               DarkMainButton(
-                  title: 'Submit Documents',
-                  process: submitDocuments,
-                  screenWidth: screenWidth),
+                title: 'Submit Documents',
+                process: submitDocuments,
+                screenWidth: screenWidth,
+              ),
               const SizedBox(
                 height: 50.0,
               ),

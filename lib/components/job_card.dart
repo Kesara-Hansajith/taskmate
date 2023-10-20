@@ -31,7 +31,7 @@ class JobCard extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.symmetric(
           vertical: 8.0,
-          horizontal: 4.0,
+          horizontal: 16.0,
         ),
         padding: const EdgeInsets.symmetric(
           vertical: 16.0,
@@ -55,12 +55,13 @@ class JobCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 12.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
                     'Budget LKR.${subData['budget']}',
                     style: kJobCardDescriptionTextStyle,
                   ),
+                  const SizedBox(width: 30.0,),
                   StreamBuilder(
                     stream: FirebaseFirestore.instance
                         .collection('jobs') // Use your actual collection name
@@ -73,7 +74,7 @@ class JobCard extends StatelessWidget {
                       if (snapshot.hasData) {
                         int numBids = snapshot.data!.docs.length;
                         return Text(
-                          'Bids $numBids',
+                          '$numBids Bids ',
                           style: kJobCardDescriptionTextStyle,
                         );
                       } else {

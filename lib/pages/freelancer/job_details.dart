@@ -6,16 +6,13 @@ import 'package:taskmate/components/maintenance_page.dart';
 import 'package:taskmate/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:taskmate/freelancer_home_page.dart';
-import 'package:taskmate/models/job_details_data.dart';
 
 class JobDetails extends StatefulWidget {
   final QueryDocumentSnapshot mostjobDoc;
 
-
   const JobDetails({
     Key? key,
     required this.mostjobDoc,
-
   }) : super(key: key);
 
   @override
@@ -26,7 +23,7 @@ class _JobDetailsState extends State<JobDetails> {
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _bidDescriptionController =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController _bidAmountController = TextEditingController();
   final TextEditingController _deliveryTimeController = TextEditingController();
 
@@ -37,12 +34,22 @@ class _JobDetailsState extends State<JobDetails> {
       builder: (BuildContext context) {
         return MaintenancePage(
           [
-            const Image(
-              image: AssetImage('images/success.webp'),
+            Transform.scale(
+              scale: 1.3,
+              child: const Image(
+                image: AssetImage(
+                  'images/success.webp',
+                ),
+              ),
             ),
-            const Text(
-              'Congratulations!',
-              style: kSubHeadingTextStyle,
+            FittedBox(
+              fit: BoxFit.contain,
+              child: Text(
+                'Congratulations!',
+                style: kSubHeadingTextStyle.copyWith(
+                  fontSize: 30.0,
+                ),
+              ),
             ),
             const Padding(
               padding: EdgeInsets.symmetric(vertical: 8.0),
@@ -52,16 +59,19 @@ class _JobDetailsState extends State<JobDetails> {
                 textAlign: TextAlign.center,
               ),
             ),
-            DarkMainButton(
-              title: 'Try Another Project',
-              process: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const FreelancerHomePage(),
-                  ),
-                );
-              },
-              screenWidth: MediaQuery.of(context).size.width,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: DarkMainButton(
+                title: 'Try Another Project',
+                process: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const FreelancerHomePage(),
+                    ),
+                  );
+                },
+                screenWidth: MediaQuery.of(context).size.width,
+              ),
             ),
           ],
         );
@@ -79,9 +89,9 @@ class _JobDetailsState extends State<JobDetails> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: const Text(
-            'Job Details',
-            style: kHeadingTextStyle,
+          title: Text(
+            subData['jobTitle'],
+            style: kSubHeadingTextStyle,
           ),
           centerTitle: true,
           backgroundColor: Colors.white,
@@ -90,8 +100,9 @@ class _JobDetailsState extends State<JobDetails> {
               Navigator.of(context).pop();
             },
             icon: const Icon(
-              Icons.arrow_back_outlined,
+              Icons.navigate_before,
               color: kDeepBlueColor,
+              size: 40.0,
             ),
           ),
         ),
@@ -99,8 +110,19 @@ class _JobDetailsState extends State<JobDetails> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              UserDataGatherTitle(
-                  title: 'LKR.${subData['budget']}.00'),
+              const SizedBox(
+                height: 20.0,
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 20.0,
+                ),
+                child: Text(
+                  'Budget',
+                  style: TextStyle(fontWeight: FontWeight.w600),
+                ),
+              ),
+              UserDataGatherTitle(title: 'LKR.${subData['budget']}.00'),
               const Padding(
                 padding: EdgeInsets.symmetric(
                   vertical: 10.0,
@@ -118,7 +140,6 @@ class _JobDetailsState extends State<JobDetails> {
                   style: kTextStyle,
                 ),
               ),
-
               const Padding(
                 padding: EdgeInsets.symmetric(
                   vertical: 10.0,
@@ -136,24 +157,23 @@ class _JobDetailsState extends State<JobDetails> {
                     Expanded(
                       child: AttachmentCard(
                         cardChild: Image.network(
-                        subData['image1Url'] ?? '',
+                          subData['image1Url'] ?? '',
+                        ),
                       ),
                     ),
-        ),
-                     SizedBox(
+                    const SizedBox(
                       width: 10.0,
                     ),
                     Expanded(
                       child: AttachmentCard(
                         cardChild: Image.network(
                           subData['image2Url'] ?? '',
-                      ),
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
-
               Align(
                 alignment: Alignment.center,
                 child: Container(
@@ -165,11 +185,20 @@ class _JobDetailsState extends State<JobDetails> {
                   ),
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(
+              Padding(
+                padding: const EdgeInsets.symmetric(
                   vertical: 10.0,
                   horizontal: 20.0,
                 ),
+                child: Text(
+                  'Place a Bid on this project',
+                  style: kSubHeadingTextStyle.copyWith(
+                    fontSize: 18.0,
+                  ),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
                 child: Text(
                   'Describe your Bid',
                   style: TextStyle(fontWeight: FontWeight.w600),
@@ -181,7 +210,6 @@ class _JobDetailsState extends State<JobDetails> {
                   children: <Widget>[
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                        vertical: 10.0,
                         horizontal: 20.0,
                       ),
                       child: TextFormField(
@@ -192,8 +220,7 @@ class _JobDetailsState extends State<JobDetails> {
                           hintStyle: const TextStyle(fontSize: 12.0),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
-                            borderSide: const BorderSide(
-                                color: kDeepBlueColor),
+                            borderSide: const BorderSide(color: kDeepBlueColor),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
@@ -214,31 +241,33 @@ class _JobDetailsState extends State<JobDetails> {
                     const SizedBox(
                       height: 10.0,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'Bid Amount',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              Padding(
-                                padding:
-                                const EdgeInsets.only(top: 8.0, left: 18.0),
-                                child: TextFormField(
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 8.0),
+                                  child: Text(
+                                    'Bid Amount',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w600),
+                                  ),
+                                ),
+                                TextFormField(
                                   controller: _bidAmountController,
                                   keyboardType: TextInputType.number,
                                   decoration: InputDecoration(
-                                    contentPadding:
-                                    const EdgeInsets.symmetric(
+                                    contentPadding: const EdgeInsets.symmetric(
                                         horizontal: 6.0),
                                     hintText: 'LKR',
-                                    hintStyle:
-                                    const TextStyle(fontSize: 12.0),
+                                    hintStyle: const TextStyle(fontSize: 12.0),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),
                                       borderSide: const BorderSide(
@@ -258,35 +287,32 @@ class _JobDetailsState extends State<JobDetails> {
                                     }
                                   },
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                        const SizedBox(
-                          width: 10.0,
-                        ),
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              const Text(
-                                'Delivered within',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 8.0, right: 18.0),
-                                child: TextFormField(
+                          const SizedBox(
+                            width: 10.0,
+                          ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 8.0),
+                                  child: Text(
+                                    'Delivered within',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w600),
+                                  ),
+                                ),
+                                TextFormField(
                                   controller: _deliveryTimeController,
                                   keyboardType: TextInputType.number,
                                   decoration: InputDecoration(
-                                    contentPadding:
-                                    const EdgeInsets.symmetric(
+                                    contentPadding: const EdgeInsets.symmetric(
                                         horizontal: 6.0),
                                     hintText: 'Days',
-                                    hintStyle:
-                                    const TextStyle(fontSize: 12.0),
+                                    hintStyle: const TextStyle(fontSize: 12.0),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),
                                       borderSide: const BorderSide(
@@ -306,16 +332,15 @@ class _JobDetailsState extends State<JobDetails> {
                                     }
                                   },
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ],
                 ),
               ),
-
               Container(
                 width: screenWidth,
                 margin: const EdgeInsets.symmetric(
@@ -323,17 +348,15 @@ class _JobDetailsState extends State<JobDetails> {
                 child: ElevatedButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-
                       Map<String, dynamic> dataToSave = {
-
                         'bidDescription': _bidDescriptionController.text,
                         'bidAmount': _bidAmountController.text,
                         'delivery': _deliveryTimeController.text,
                       };
 
-
                       // Reference to the "jobsnew" subcollection
-                      CollectionReference jobsNewCollection = FirebaseFirestore.instance
+                      CollectionReference jobsNewCollection = FirebaseFirestore
+                          .instance
                           .collection('jobs')
                           .doc('flTmsaTmbVRspfnjf7FnPccq8XK2')
                           .collection('jobsnew')
@@ -341,17 +364,17 @@ class _JobDetailsState extends State<JobDetails> {
                           .collection('bidsjobs');
 
                       // Add the data to the "jobsnew" subcollection
-                      DocumentReference newBidDocRef = await jobsNewCollection.add(dataToSave);
+                      DocumentReference newBidDocRef =
+                          await jobsNewCollection.add(dataToSave);
 
                       // Reference to the "bidsjobs" subcollection
-                      CollectionReference bidsJobsCollection = FirebaseFirestore.instance
+                      CollectionReference bidsJobsCollection = FirebaseFirestore
+                          .instance
                           .collection('jobs') // Use your actual collection name
                           .doc('flTmsaTmbVRspfnjf7FnPccq8XK2')
                           .collection('jobsnew')
                           .doc(widget.mostjobDoc.id)
                           .collection('bidsjobs');
-
-
 
                       // Show a success dialog
 

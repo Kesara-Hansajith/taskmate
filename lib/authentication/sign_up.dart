@@ -118,7 +118,7 @@ class _SignUpState extends State<SignUp> {
                                     horizontal: 16.0,
                                   ),
                                   child: Text(
-                                    'Sign up & Find Your Next Gig',
+                                    'Sign up & Find Your\nNext Gig',
                                     textAlign: TextAlign.center,
                                     style: kHeadingTextStyle,
                                   ),
@@ -199,154 +199,71 @@ class _SignUpState extends State<SignUp> {
                                 //"Sign up & Find your next Gig" text goes here
 
                                 //Third Party Auth buttons goes here
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: <Widget>[
-                                    //"Google" Signup Button
-                                    Padding(
+                                Container(
+                                  width: screenWidth,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 28.0),
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
                                       padding: const EdgeInsets.symmetric(
-                                          vertical: 8.0),
-                                      child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 12.0, horizontal: 24.0),
-                                          backgroundColor: kLightBlueColor,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(16.0),
-                                          ),
-                                        ),
-                                        onPressed: () {
-                                          signInWithGoogle();
-                                        },
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: <Widget>[
-                                            Image.asset(
-                                              'icons/google.png',
-                                              width: 25.0,
-                                            ),
-                                            const SizedBox(
-                                              width: 8.0,
-                                            ),
-                                            const Text(
-                                              'Google',
-                                              style: TextStyle(
-                                                  color: kDeepBlueColor,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 15.0),
-                                            ),
-                                          ],
-                                        ),
+                                        vertical: 6.0,
+                                        horizontal: 24.0,
+                                      ),
+                                      backgroundColor: kLightBlueColor,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(16.0),
                                       ),
                                     ),
-                                    //"Facebook" Signup Button
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 8.0),
-                                      child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 12.0, horizontal: 24.0),
-                                          backgroundColor: kLightBlueColor,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(16.0),
+                                    onPressed: () {
+                                      signInWithGoogle();
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Image.asset(
+                                            'icons/google.png',
+                                            width: 25.0,
                                           ),
-                                        ),
-                                        onPressed: () {
-                                          showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return MaintenancePage(
-                                                [
-                                                  const Image(
-                                                    image: AssetImage(
-                                                        'images/gear.webp'),
-                                                  ),
-                                                  Text(
-                                                    'We’re',
-                                                    style: kSubHeadingTextStyle
-                                                        .copyWith(height: 0.5),
-                                                  ),
-                                                  const Text(
-                                                    'Under Maintenance',
-                                                    style: kSubHeadingTextStyle,
-                                                  ),
-                                                  const Padding(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 8.0),
-                                                    child: Text(
-                                                      'Please check back soon just putting little touch up on some pretty updates.',
-                                                      style: kTextStyle,
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    ),
-                                                  ),
-                                                  DarkMainButton(
-                                                      title: 'Close',
-                                                      process: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                      screenWidth: screenWidth)
-                                                ],
-                                              );
-                                            },
-                                          );
-                                        },
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: <Widget>[
-                                            Image.asset(
-                                              'icons/facebook.png',
-                                              width: 25.0,
-                                            ),
-                                            const SizedBox(
-                                              width: 8.0,
-                                            ),
-                                            const Text(
-                                              'Facebook',
-                                              style: TextStyle(
-                                                  color: kDeepBlueColor,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 15.0),
-                                            ),
-                                          ],
-                                        ),
+                                          const SizedBox(width: 10.0),
+                                          const Text(
+                                            'Google',
+                                            style: TextStyle(
+                                                color: kDeepBlueColor,
+                                                fontSize: 15.0,fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                  ],
+                                  ),
                                 ),
                                 //Bottom most row of the screen
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    const BottomSubText('Already registered?'),
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pushReplacement(
-                                          MaterialPageRoute(
-                                            builder: (context) => const Login(),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      const BottomSubText('Already registered?'),
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pushReplacement(
+                                            MaterialPageRoute(
+                                              builder: (context) => const Login(),
+                                            ),
+                                          );
+                                        },
+                                        child: const Text(
+                                          'Log In',
+                                          style: TextStyle(
+                                            color: kAmberColor,
                                           ),
-                                        );
-                                      },
-                                      child: const Text(
-                                        'Log In',
-                                        style: TextStyle(
-                                          color: kAmberColor,
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),

@@ -12,12 +12,12 @@ import 'package:taskmate/dashboard/client/transaction_history.dart';
 import '../../profile/client/user_model1.dart';
 
 class Dashboard extends StatefulWidget {
-  final UserModel1 client; // Add this line
-  final String? downloadUrl;
+  // final UserModel1 client; // Add this line
+  // final String? downloadUrl;
 
   const Dashboard({
-    required this.client,
-    this.downloadUrl,
+    // required this.client,
+    // this.downloadUrl,
     super.key
   });
 
@@ -30,7 +30,7 @@ class _DashboardState extends State<Dashboard> {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => Profile(
-            client: widget.client
+            // client: widget.client
         ),
       ),
     );
@@ -141,9 +141,11 @@ class _DashboardState extends State<Dashboard> {
                       ),
                     ),
                     child: CircleAvatar(
-                      backgroundImage: widget.client.profilePhotoUrl != null
-                          ? AssetImage(widget.client.profilePhotoUrl!)
-                          : null, // set to null if profilePhotoUrl is null
+                      backgroundImage:
+                      // widget.client.profilePhotoUrl != null
+                      //     ? AssetImage(widget.client.profilePhotoUrl!)
+                      //     :
+                      null, // set to null if profilePhotoUrl is null
                       radius: 40,
                     ),
 
@@ -157,7 +159,7 @@ class _DashboardState extends State<Dashboard> {
                     style: kJobCardTitleTextStyle.copyWith(color: kAmberColor),
                   ),
                   Text(
-                    '${widget.client.firstName} ${widget.client.lastName}',
+                    '${'client'} ${'name'}',
                     style: kSubHeadingTextStyle,
                   ),
 

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/components/freelancer/portfolio_item_box.dart';
+import 'package:taskmate/components/navigate_before.dart';
 import 'package:taskmate/profile/freelancer/profile_freelancer_4.dart';
 import 'package:taskmate/profile/freelancer/profile_freelancer_addphoto.dart';
 import 'package:taskmate/profile/freelancer/user_model.dart';
@@ -38,10 +39,10 @@ class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
   final TextEditingController birthdayController = TextEditingController();
   final TextEditingController genderController = TextEditingController();
   final TextEditingController servicesController = TextEditingController();
-  final TextEditingController professionalRoleController = TextEditingController();
+  final TextEditingController professionalRoleController =
+      TextEditingController();
   final TextEditingController hourlyrateController = TextEditingController();
   final TextEditingController levelController = TextEditingController();
-
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
@@ -60,7 +61,6 @@ class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
   bool isTapped2 = false;
   bool isTapped3 = false;
   bool isTapped4 = false;
-
 
   Future<String> uploadFile(File file, String filename, String fileType) async {
     User? user = _auth.currentUser;
@@ -110,7 +110,6 @@ class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
         password: widget.user.password,
         professionalRole: widget.user.professionalRole,
         sociallink: sociallinkController.text,
-
       );
       final FirebaseAuth _auth = FirebaseAuth.instance;
       final User? firebaseUser = _auth.currentUser;
@@ -156,23 +155,34 @@ class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Center(
-                    child: Column(
-                      children: [
-                        const Text(
-                          'Set Up Your',
-                          style: kHeadingTextStyle,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const NavigateBefore(size: 50.0),
+                      SizedBox(width: screenWidth / 10),
+                      Center(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 14.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                'Set Up Your',
+                                style: kHeadingTextStyle,
+                              ),
+                              Text(
+                                'Freelancer Profile',
+                                style: const TextStyle(
+                                  fontSize: 25,
+                                  color: kDeepBlueColor,
+                                  fontWeight: FontWeight.bold,
+                                ).copyWith(height: 1.0),
+                              ),
+                            ],
+                          ),
                         ),
-                        Text(
-                          'Freelancer Profile',
-                          style: const TextStyle(
-                            fontSize: 25,
-                            color: kDeepBlueColor,
-                            fontWeight: FontWeight.bold,
-                          ).copyWith(height: 1.0),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 10.0),
                   const UserDataGatherTitle(title: 'Add portfolio link'),
@@ -239,13 +249,18 @@ class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
                                 decoration: BoxDecoration(
                                   border: Border.all(color: Color(0xFF4B4646)),
                                   borderRadius: BorderRadius.circular(10),
-                                  color: isTapped1 ? Color(0xFF5696FA) : Colors.transparent, // Set the color based on _isTapped
+                                  color: isTapped1
+                                      ? Color(0xFF5696FA)
+                                      : Colors
+                                          .transparent, // Set the color based on _isTapped
                                 ),
                                 child: GestureDetector(
                                   onTap: () async {
                                     Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) => ProfileFreelancer4()),
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ProfileFreelancer4()),
                                     );
                                     // Set the tapped state to true when tapped
                                     setState(() {
@@ -261,24 +276,29 @@ class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
                                       ),
                                     ),
                                   ),
-
                                 ),
                               ),
                             ),
-                            SizedBox(width: 16), // Adjust the spacing between the boxes
+                            SizedBox(
+                                width:
+                                    16), // Adjust the spacing between the boxes
                             Expanded(
                               child: Container(
                                 height: 120,
                                 decoration: BoxDecoration(
                                   border: Border.all(color: Color(0xFF4B4646)),
                                   borderRadius: BorderRadius.circular(10),
-                                  color: isTapped2 ? Color(0xFF5696FA) : Colors.transparent,
+                                  color: isTapped2
+                                      ? Color(0xFF5696FA)
+                                      : Colors.transparent,
                                 ),
                                 child: GestureDetector(
                                   onTap: () async {
                                     Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) => ProfileFreelancer4()),
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ProfileFreelancer4()),
                                     );
                                     setState(() {
                                       isTapped2 = true;
@@ -311,13 +331,17 @@ class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
                                 decoration: BoxDecoration(
                                   border: Border.all(color: Color(0xFF4B4646)),
                                   borderRadius: BorderRadius.circular(10),
-                                  color: isTapped3 ? Color(0xFF5696FA) : Colors.transparent,
+                                  color: isTapped3
+                                      ? Color(0xFF5696FA)
+                                      : Colors.transparent,
                                 ),
                                 child: GestureDetector(
                                   onTap: () async {
                                     Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) => ProfileFreelancer4()),
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ProfileFreelancer4()),
                                     );
                                     setState(() {
                                       isTapped3 = true;
@@ -332,24 +356,29 @@ class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
                                       ),
                                     ),
                                   ),
-
                                 ),
                               ),
                             ),
-                            SizedBox(width: 16), // Adjust the spacing between the boxes
+                            SizedBox(
+                                width:
+                                    16), // Adjust the spacing between the boxes
                             Expanded(
                               child: Container(
                                 height: 120,
                                 decoration: BoxDecoration(
                                   border: Border.all(color: Color(0xFF4B4646)),
                                   borderRadius: BorderRadius.circular(10),
-                                  color: isTapped4 ? Color(0xFF5696FA) : Colors.transparent,
+                                  color: isTapped4
+                                      ? Color(0xFF5696FA)
+                                      : Colors.transparent,
                                 ),
                                 child: GestureDetector(
                                   onTap: () async {
                                     Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) => ProfileFreelancer4()),
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ProfileFreelancer4()),
                                     );
                                     setState(() {
                                       isTapped4 = true;
@@ -373,7 +402,6 @@ class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
                         const SizedBox(
                           height: 220.0,
                         ),
-
                       ],
                     ),
                   ),

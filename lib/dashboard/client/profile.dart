@@ -9,12 +9,12 @@ import 'package:taskmate/dashboard/client/edit_profile.dart';
 import '../../profile/client/user_model1.dart';
 
 class Profile extends StatefulWidget {
-  final UserModel1 client; // Add this line
-  final String? downloadUrl;
+  // final UserModel1 client; // Add this line
+  // final String? downloadUrl;
 
   const Profile({
-    required this.client,
-    this.downloadUrl,
+    // required this.client,
+    // this.downloadUrl,
     super.key
   });
 
@@ -68,7 +68,8 @@ class _ProfileState extends State<Profile> {
                           image: DecorationImage(
                             fit: BoxFit.cover,
                             image: AssetImage(
-                              widget.downloadUrl ?? 'images/cover_photo.webp', // Use ?? to provide a default image
+                              // widget.downloadUrl ??
+                                  'images/cover_photo.webp', // Use ?? to provide a default image
                             ),
                           ),
                         ),
@@ -124,7 +125,7 @@ class _ProfileState extends State<Profile> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      '${widget.client.firstName} ${widget.client.lastName}',
+                      '${'widget.client.firstName'} ${'widget.client.lastName'}',
                       style: kSubHeadingTextStyle,
                     ),
                   ],

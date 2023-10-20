@@ -96,7 +96,7 @@ class _TakeActionState extends State<TakeAction> {
                                     horizontal: 8.0,
                                   ),
                                   child: Text(
-                                    'Take Action & Open Your Account',
+                                    'Take Action & Open \nYour Account',
                                     textAlign: TextAlign.center,
                                     style: kHeadingTextStyle,
                                   ),
