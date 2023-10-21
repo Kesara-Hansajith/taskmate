@@ -110,7 +110,6 @@ class _ProfileFreelancerAddphotoState extends State<ProfileFreelancerAddphoto> {
     }
   }
 
-
   void _submitDetails() async {
     setState(() {
       isLoading = true;
@@ -150,7 +149,7 @@ class _ProfileFreelancerAddphotoState extends State<ProfileFreelancerAddphoto> {
             'password': widget.user.password,
             'professionalRole': widget.user.professionalRole,
             'profilePhotoUrl': downloadUrl,
-            'verify':widget.user.verify,
+            'verify': widget.user.verify,
           },
         );
 
@@ -161,12 +160,11 @@ class _ProfileFreelancerAddphotoState extends State<ProfileFreelancerAddphoto> {
         if (context.mounted) {
           Navigator.of(context).push(
             MaterialPageRoute(
-               builder: (context) =>
-                   VerificationPending(
-                      user: widget.user,
-                     userUid: userUid, // Pass the userUid
-                      //profileImageUrl: downloadUrl,
-                  ),
+              builder: (context) => VerificationPending(
+                user: widget.user,
+                userUid: userUid, // Pass the userUid
+                //profileImageUrl: downloadUrl,
+              ),
               //builder: (context) =>  VerifyIdentity(),
             ),
           );

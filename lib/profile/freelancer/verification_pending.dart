@@ -12,7 +12,6 @@ class VerificationPending extends StatefulWidget {
   final UserModel user;
   final String userUid; // Add this line
 
-
   const VerificationPending({
     required this.user,
     required this.userUid,
@@ -40,7 +39,9 @@ class _VerificationPendingState extends State<VerificationPending> {
                 title: 'Refresh',
                 process: () async {
                   // Get the current user's document reference
-                  DocumentReference userDoc = FirebaseFirestore.instance.collection('Users').doc(widget.userUid);
+                  DocumentReference userDoc = FirebaseFirestore.instance
+                      .collection('Users')
+                      .doc(widget.userUid);
 
                   try {
                     // Fetch the latest data from Firestore
@@ -49,7 +50,8 @@ class _VerificationPendingState extends State<VerificationPending> {
                     // Check if the document exists
                     if (snapshot.exists) {
                       // Check if the 'verify' field is present
-                      if ((snapshot.data() as Map<String, dynamic>).containsKey('verify')) {
+                      if ((snapshot.data() as Map<String, dynamic>)
+                          .containsKey('verify')) {
                         // Get the value of the 'verify' field
                         bool? isVerified = snapshot['verify'] as bool?;
 
@@ -59,15 +61,19 @@ class _VerificationPendingState extends State<VerificationPending> {
                             // If verified, navigate to FreelancerHomePage
                             Navigator.pushReplacement(
                               context,
-                              MaterialPageRoute(builder: (context) => FreelancerHomePage()),
+                              MaterialPageRoute(
+                                  builder: (context) => FreelancerHomePage()),
                             );
                           } else {
                             // If not verified, update Firestore, then navigate to VerificationFaild
-                            await userDoc.update({'verify': false}); // Update with a boolean value
+                            await userDoc.update({
+                              'verify': false
+                            }); // Update with a boolean value
 
                             Navigator.pushReplacement(
                               context,
-                              MaterialPageRoute(builder: (context) => VerificationFaild()),
+                              MaterialPageRoute(
+                                  builder: (context) => VerificationFaild()),
                             );
                           }
                         } else {
