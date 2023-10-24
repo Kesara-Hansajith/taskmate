@@ -172,8 +172,9 @@ class _ProfileFreelancer4State extends State<ProfileFreelancer4> {
 
           // Update the counter in the user's document
           await userDocRef.update({'portfolio_counter': counter});
-
-          Navigator.pop(context);
+          if (context.mounted) {
+            Navigator.pop(context);
+          }
         }
       }
     }
@@ -304,7 +305,7 @@ class _ProfileFreelancer4State extends State<ProfileFreelancer4> {
                                 Wrap(
                                   crossAxisAlignment: WrapCrossAlignment.center,
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       Icons.radio_button_checked,
                                       size: 9.0,
                                     ),
@@ -317,7 +318,7 @@ class _ProfileFreelancer4State extends State<ProfileFreelancer4> {
                                 Wrap(
                                   crossAxisAlignment: WrapCrossAlignment.center,
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       Icons.radio_button_checked,
                                       size: 9.0,
                                     ),
@@ -347,15 +348,15 @@ class _ProfileFreelancer4State extends State<ProfileFreelancer4> {
                                   showDialog(
                                     context: context,
                                     builder: (context) => AlertDialog(
-                                      title: Text('Delete Image'),
-                                      content: Text(
+                                      title: const Text('Delete Image'),
+                                      content: const Text(
                                           'Are you sure you want to delete this image?'),
                                       actions: <Widget>[
                                         TextButton(
                                           onPressed: () {
                                             Navigator.of(context).pop();
                                           },
-                                          child: Text('Cancel'),
+                                          child: const Text('Cancel'),
                                         ),
                                         TextButton(
                                           onPressed: () {
@@ -364,19 +365,19 @@ class _ProfileFreelancer4State extends State<ProfileFreelancer4> {
                                             });
                                             Navigator.of(context).pop();
                                           },
-                                          child: Text('Delete'),
+                                          child: const Text('Delete'),
                                         ),
                                       ],
                                     ),
                                   );
                                 },
                                 child: Container(
-                                  margin: EdgeInsets.only(bottom: 10),
+                                  margin: const EdgeInsets.only(bottom: 10),
                                   child: Stack(
                                     children: [
                                       Image.file(image, height: 80),
                                       // Add an Icon to represent delete
-                                      Positioned(
+                                      const Positioned(
                                         top: 0,
                                         right: 0,
                                         child: Icon(

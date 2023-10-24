@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:taskmate/bottom_nav_bar/client/client_posted_home_screen_jobs.dart';
 import 'package:taskmate/components/client/post_a_job.dart';
 import 'package:taskmate/constants.dart';
-import 'package:taskmate/profile/client/user_model1.dart';
+// import 'package:taskmate/profile/client/user_model1.dart';
 
 class ClientPosted extends StatefulWidget {
   const ClientPosted({
@@ -16,6 +17,8 @@ class ClientPosted extends StatefulWidget {
 }
 
 class _ClientPostedState extends State<ClientPosted> {
+  final bool isJobsAvailable = true;
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -41,17 +44,20 @@ class _ClientPostedState extends State<ClientPosted> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Welcome Back, ',
-                      style: kJobCardTitleTextStyle,
-                    ),
                     Text(
+                      'Welcome Back, ',
+                      style: kJobCardTitleTextStyle.copyWith(
+                          color: kDarkGreyColor),
+                    ),
+                    const Text(
                       'First Name Last Name',
                       style: kSubHeadingTextStyle,
                     ),
-                    PostAJob(
-                        // client: widget.client,
-                        ),
+                    (isJobsAvailable)
+                        ? const ClientPostedHomeScreenJobs()
+                        : const PostAJob(
+                            // client: widget.client,
+                            ),
                   ],
                 ),
               ),

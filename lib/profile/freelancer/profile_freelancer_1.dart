@@ -298,7 +298,9 @@ class _ProfileFreelancerState extends State<ProfileFreelancer> {
                               fontSize: 25,
                               color: kDeepBlueColor,
                               fontWeight: FontWeight.bold,
-                            ).copyWith(height: 1.0),
+                            ).copyWith(
+                              height: 1.0,
+                            ),
                           ),
                         ],
                       ),

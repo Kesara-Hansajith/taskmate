@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:taskmate/authentication/log_in.dart';
 import 'package:taskmate/authentication/verify_email.dart';
+import 'package:taskmate/classes/cus_snackbar.dart';
 import 'package:taskmate/components/bottom_sub_text.dart';
 import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/constants.dart';
@@ -60,19 +61,31 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
       } else if (enteredPassword != confirmPassword) {
         // Show a snackbar if passwords don't match
         ScaffoldMessenger.of(context).showSnackBar(
-          CustomSnackBar('Password does not match'),
+          CusSnackBar(
+            title: 'Password does not match',
+            backColor: kWarningRedColor,
+            time: 3,
+          ),
         );
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         // The password provided is too weak
         ScaffoldMessenger.of(context).showSnackBar(
-          CustomSnackBar('Weak password'),
+          CusSnackBar(
+            title: 'Weak password',
+            backColor: kWarningRedColor,
+            time: 3,
+          ),
         );
       } else if (e.code == 'email-already-in-use') {
         // The account already exists for that email
         ScaffoldMessenger.of(context).showSnackBar(
-          CustomSnackBar('Email already in use'),
+          CusSnackBar(
+            title: 'Email already in use',
+            backColor: kWarningRedColor,
+            time: 3,
+          ),
         );
       }
     }
@@ -99,7 +112,7 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
   }
 
   void _navigateToVerifyEmail() {
-    Navigator.of(context).push(
+    Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (context) => const VerifyEmail(),
       ),
@@ -166,10 +179,6 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
                             decoration: BoxDecoration(
                               color: kBrilliantWhite,
                               borderRadius: BorderRadius.circular(20.0),
-                              border: Border.all(
-                                color: kDeepBlueColor,
-                                width: 1.5,
-                              ),
                             ),
                             child: TextFormField(
                               controller: email,
@@ -200,10 +209,6 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 16.0),
                             decoration: BoxDecoration(
-                              border: Border.all(
-                                color: kDeepBlueColor,
-                                width: 1.5,
-                              ),
                               color: kBrilliantWhite,
                               borderRadius: BorderRadius.circular(20.0),
                             ),
@@ -241,10 +246,6 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 16.0),
                             decoration: BoxDecoration(
-                              border: Border.all(
-                                color: kDeepBlueColor,
-                                width: 1.5,
-                              ),
                               color: kBrilliantWhite,
                               borderRadius: BorderRadius.circular(20.0),
                             ),
@@ -362,8 +363,11 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
                               createMyAccount();
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                CustomSnackBar(
-                                    'Please agree to Terms & Conditions'),
+                                CusSnackBar(
+                                  title: 'Please agree to Terms & Conditions',
+                                  backColor: kWarningRedColor,
+                                  time: 3,
+                                ),
                               );
                             }
                           }

@@ -12,7 +12,7 @@ import 'package:taskmate/components/navigate_before.dart';
 import 'dart:io';
 
 import 'package:taskmate/constants.dart';
-import 'package:taskmate/profile/freelancer/data_details_screen_freelancer.dart';
+// import 'package:taskmate/profile/freelancer/data_details_screen_freelancer.dart';
 import 'package:taskmate/profile/freelancer/user_model.dart';
 import 'package:taskmate/profile/freelancer/verify_identity.dart';
 
@@ -156,7 +156,7 @@ class _ProfileFreelancerAddphotoState extends State<ProfileFreelancerAddphoto> {
         });
 
         if (context.mounted) {
-          Navigator.of(context).push(
+          Navigator.of(context).pushReplacement(
             MaterialPageRoute(
               builder: (context) => const VerifyIdentity(),
             ),

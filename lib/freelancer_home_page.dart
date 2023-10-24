@@ -6,6 +6,7 @@ import 'package:taskmate/bottom_nav_bar/freelancer/proposals.dart';
 import 'package:taskmate/bottom_nav_bar/freelancer/jobs.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/dashboard/freelancer/dashboard.dart';
+import 'package:taskmate/messaging/Receivemsg.dart';
 
 class FreelancerHomePage extends StatefulWidget {
   const FreelancerHomePage({super.key});
@@ -18,7 +19,7 @@ class _FreelancerHomePageState extends State<FreelancerHomePage> {
   int _selectedIndex = 2;
 
   final List _items = [
-    const Messaging(),
+    Receivemsg(),
     Proposals(),
     const Jobs(),
     const Dashboard(),

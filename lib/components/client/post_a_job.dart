@@ -20,7 +20,6 @@ class _PostAJobState extends State<PostAJob> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 32.0),
       padding: const EdgeInsets.all(8.0),
@@ -55,9 +54,9 @@ class _PostAJobState extends State<PostAJob> {
               process: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) =>  ClientPostJob(
-                      // client: widget.client,
-                    ),
+                    builder: (context) => const ClientPostJob(
+                        // client: widget.client,
+                        ),
                   ),
                 );
               },

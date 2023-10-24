@@ -118,7 +118,7 @@ class _SignUpState extends State<SignUp> {
                                     horizontal: 16.0,
                                   ),
                                   child: Text(
-                                    'Sign up & Find Your\nNext Gig',
+                                    'Sign Up & Find Your\nNext Gig',
                                     textAlign: TextAlign.center,
                                     style: kHeadingTextStyle,
                                   ),
@@ -148,11 +148,14 @@ class _SignUpState extends State<SignUp> {
                                       //Button icon and Text goes here
                                       child: Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
+                                            MainAxisAlignment.center,
                                         children: const <Widget>[
                                           Icon(
                                             Icons.person_add,
                                             color: kBrilliantWhite,
+                                          ),
+                                          SizedBox(
+                                            width: 20.0,
                                           ),
                                           Text(
                                             'Continue with Email',
@@ -228,12 +231,13 @@ class _SignUpState extends State<SignUp> {
                                             'icons/google.png',
                                             width: 25.0,
                                           ),
-                                          const SizedBox(width: 10.0),
+                                          const SizedBox(width: 15.0),
                                           const Text(
                                             'Google',
                                             style: TextStyle(
                                                 color: kDeepBlueColor,
-                                                fontSize: 15.0,fontWeight: FontWeight.bold),
+                                                fontSize: 15.0,
+                                                fontWeight: FontWeight.bold),
                                           ),
                                         ],
                                       ),
@@ -242,16 +246,19 @@ class _SignUpState extends State<SignUp> {
                                 ),
                                 //Bottom most row of the screen
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 16.0),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
-                                      const BottomSubText('Already registered?'),
+                                      const BottomSubText(
+                                          'Already registered?'),
                                       TextButton(
                                         onPressed: () {
                                           Navigator.of(context).pushReplacement(
                                             MaterialPageRoute(
-                                              builder: (context) => const Login(),
+                                              builder: (context) =>
+                                                  const Login(),
                                             ),
                                           );
                                         },

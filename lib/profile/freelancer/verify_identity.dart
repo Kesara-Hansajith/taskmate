@@ -94,7 +94,7 @@ class _VerifyIdentityState extends State<VerifyIdentity> {
               DarkMainButton(
                   title: 'Back To Home',
                   process: () {
-                    Navigator.of(context).push(
+                    Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
                         builder: (context) => const FreelancerHomePage(),
                       ),

@@ -1,21 +1,28 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:taskmate/components/dark_main_button.dart';
+import 'package:taskmate/messaging/Chatscreen.dart';
 import 'package:taskmate/profile/freelancer/EditFreelancerProfile.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/profile/freelancer/user_model.dart';
 
 class DataDetailsScreenFreelancer extends StatefulWidget {
-  late final UserModel user;
-  final String? profileImageUrl;
+  // late final UserModel user;
+  // final String? profileImageUrl;
 
-  DataDetailsScreenFreelancer({required this.user, this.profileImageUrl});
+  // DataDetailsScreenFreelancer({
+  //   // required this.user,
+  //   // this.profileImageUrl,
+  // });
 
   @override
-  _DataDetailsScreenFreelancerState createState() => _DataDetailsScreenFreelancerState();
+  _DataDetailsScreenFreelancerState createState() =>
+      _DataDetailsScreenFreelancerState();
 }
 
-class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelancer> {
+class _DataDetailsScreenFreelancerState
+    extends State<DataDetailsScreenFreelancer> {
   final double coverHeight = 220;
   final double profileHeight = 134;
 
@@ -25,35 +32,39 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
         Container(
           child: Container(
             color: kDeepBlueColor,
-            child: widget.profileImageUrl != null
-                ? Image.network(widget.profileImageUrl!,
-              fit: BoxFit.cover,
-              width: double.infinity,
-              height: coverHeight,
-            )
-                : Placeholder(),
+            child:
+                // widget.profileImageUrl != null
+                //     ? Image.network(
+                //         widget.profileImageUrl!,
+                //         fit: BoxFit.cover,
+                //         width: double.infinity,
+                //         height: coverHeight,
+                //       )
+                //     :
+                Placeholder(),
             // You can replace Placeholder with a loading indicator
           ),
         ),
-
       ],
     );
   }
 
   Widget buildProfileImage() => CircleAvatar(
-    radius: profileHeight / 2,
-    backgroundImage: const AssetImage('images/noise_image.webp'),
-    child: Stack(
-      alignment: Alignment.center,
-      children: [
-        CircleAvatar(
-          radius: profileHeight / 2 - 6,
-          backgroundColor: Colors.white,
-          backgroundImage: NetworkImage(widget.profileImageUrl ?? ''),
+        radius: profileHeight / 2,
+        backgroundImage: const AssetImage('images/noise_image.webp'),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            CircleAvatar(
+              radius: profileHeight / 2 - 6,
+              backgroundColor: Colors.white,
+              backgroundImage: NetworkImage(
+                  // widget.profileImageUrl ??
+                  ''),
+            ),
+          ],
         ),
-      ],
-    ),
-  );
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -88,14 +99,16 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
                 child: Column(
                   children: [
                     Text(
-                      '${widget.user.firstName} ${widget.user.lastName}',
+                      '${'widget.user.firstNam'} ${'widget.user.lastName'}',
                       style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
                         color: Colors.grey.shade800,
                       ),
                     ),
-                    SizedBox(height: 5), // Add some spacing between the name and the level
+                    SizedBox(
+                        height:
+                            5), // Add some spacing between the name and the level
                     Text(
                       'Top Level Freelancer',
                       style: TextStyle(
@@ -103,7 +116,12 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF5696FA),
                       ),
-                    )
+                    ),
+                    DarkMainButton(
+                        title: 'Message',
+                        process: () {
+                          Chatscreen();
+                        })
                   ],
                 ),
               ),
@@ -119,7 +137,8 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(5.0),
-                      child: Text('ProfessionalRole: ${widget.user.professionalRole}',
+                      child: Text(
+                        'ProfessionalRole: ${'widget.user.professionalRole'}',
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w500,
@@ -142,13 +161,12 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
                     child: Padding(
                       padding: const EdgeInsets.all(4.0),
                       child: Text(
-                        'Hourly Rate: ${widget.user.hourlyRate}.00 LKR/hour',
+                        'Hourly Rate: ${'widget.user.hourlyRate'}.00 LKR/hour',
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w500,
                           color: Colors.grey.shade800,
                         ),
-
                       ),
                     ),
                   ),
@@ -156,7 +174,8 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
               ),
               Padding(
                 padding: EdgeInsets.fromLTRB(4.0, 0, 0.0, 0.0),
-                child: SizedBox(width: 390, // Adjust the width as needed
+                child: SizedBox(
+                  width: 390, // Adjust the width as needed
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12.0),
@@ -164,7 +183,8 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(15.0),
-                      child: Text('Bio: ${widget.user.bio}',
+                      child: Text(
+                        'Bio: ${'widget.user.bio'}',
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w500,
@@ -190,7 +210,8 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
               ),
               Padding(
                 padding: EdgeInsets.fromLTRB(25.0, 10.0, 10.0, 10.0),
-                child: Text('Portfolio',
+                child: Text(
+                  'Portfolio',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.grey.shade700,
@@ -215,9 +236,9 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
 
                             // Create a reference to the user's document
                             final DocumentReference userDocRef =
-                            FirebaseFirestore.instance
-                                .collection('Users')
-                                .doc(userUid);
+                                FirebaseFirestore.instance
+                                    .collection('Users')
+                                    .doc(userUid);
 
                             // Fetch document with ID '1' from the subcollection 'portfolio_items'
                             userDocRef
@@ -227,13 +248,13 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
                                 .then((DocumentSnapshot documentSnapshot) {
                               if (documentSnapshot.exists) {
                                 final Map<String, dynamic>? data =
-                                documentSnapshot.data()
-                                as Map<String, dynamic>?;
+                                    documentSnapshot.data()
+                                        as Map<String, dynamic>?;
                                 final String title = data?['title'] ?? '';
                                 final String itemDescription =
                                     data?['item_description'] ?? '';
                                 final List<dynamic>? imageUrls =
-                                data?['image_urls'];
+                                    data?['image_urls'];
 
                                 // Check if imageUrls is not empty
                                 if (imageUrls != null && imageUrls.isNotEmpty) {
@@ -243,9 +264,12 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
                                   // Loop through the image URLs and add them to the list
                                   for (var imageUrl in imageUrls) {
                                     images.add(
-                                      Image.network(imageUrl,
-                                        width: 100, // Adjust the width as needed
-                                        height: 100, // Adjust the height as needed
+                                      Image.network(
+                                        imageUrl,
+                                        width:
+                                            100, // Adjust the width as needed
+                                        height:
+                                            100, // Adjust the height as needed
                                         fit: BoxFit.cover,
                                       ),
                                     );
@@ -255,19 +279,20 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
                                   List<Widget> imageRows = [];
 
                                   // Calculate the number of images per row
-                                  int imagesPerRow = 2; // You can change this value to the desired number
+                                  int imagesPerRow =
+                                      2; // You can change this value to the desired number
 
                                   // Create rows of images with spacing
                                   for (int i = 0;
-                                  i < images.length;
-                                  i += imagesPerRow) {
+                                      i < images.length;
+                                      i += imagesPerRow) {
                                     List<Widget> rowChildren = [];
 
                                     // Add images to the current row
                                     for (int j = i;
-                                    j < i + imagesPerRow &&
-                                        j < images.length;
-                                    j++) {
+                                        j < i + imagesPerRow &&
+                                            j < images.length;
+                                        j++) {
                                       rowChildren.add(
                                         Column(
                                           children: [
@@ -289,7 +314,7 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
                                     imageRows.add(
                                       Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                            MainAxisAlignment.center,
                                         children: rowChildren,
                                       ),
                                     );
@@ -301,17 +326,19 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
                                     builder: (BuildContext context) {
                                       return Dialog(
                                         child: Container(
-                                          width: 600, // Adjust the width as needed
+                                          width:
+                                              600, // Adjust the width as needed
                                           padding: EdgeInsets.all(16.0),
                                           decoration: BoxDecoration(
                                             image: DecorationImage(
-                                              image: AssetImage('images/noise_image.webp'), // Add your background image here
+                                              image: AssetImage(
+                                                  'images/noise_image.webp'), // Add your background image here
                                               fit: BoxFit.cover,
                                             ),
                                           ),
                                           child: Column(
                                             crossAxisAlignment:
-                                            CrossAxisAlignment.center,
+                                                CrossAxisAlignment.center,
                                             children: [
                                               Text(
                                                 title,
@@ -321,7 +348,8 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
                                                 ),
                                               ),
                                               SizedBox(height: 8.0),
-                                              Text('Description: $itemDescription'),
+                                              Text(
+                                                  'Description: $itemDescription'),
                                               SizedBox(height: 16.0),
                                               // Display the rows of images
                                               Column(
@@ -333,20 +361,27 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
                                                   Navigator.of(context).pop();
                                                 },
                                                 style: ElevatedButton.styleFrom(
-                                                  backgroundColor: kDeepBlueColor,
+                                                  backgroundColor:
+                                                      kDeepBlueColor,
                                                   shape: RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.circular(20.0),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20.0),
                                                   ),
                                                 ),
                                                 child: Padding(
-                                                  padding: const EdgeInsets.all(15.0),
+                                                  padding: const EdgeInsets.all(
+                                                      15.0),
                                                   child: Row(
-                                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
                                                     children: const <Widget>[
                                                       Text(
                                                         'Close',
                                                         style: TextStyle(
-                                                          color: kBrilliantWhite,
+                                                          color:
+                                                              kBrilliantWhite,
                                                           fontSize: 15.0,
                                                         ),
                                                       ),
@@ -375,7 +410,7 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
                               decoration: BoxDecoration(
                                 shape: BoxShape.rectangle,
                                 border:
-                                Border.all(color: Colors.white, width: 2.0),
+                                    Border.all(color: Colors.white, width: 2.0),
                                 borderRadius: BorderRadius.circular(10.0),
                                 // You can set a placeholder image here
                                 // This will be shown until the actual image is loaded
@@ -388,7 +423,8 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
                                     Image.asset(
                                       'images/taskmate_logo_light.webp', // Replace with your image URL
                                       width: 80, // Adjust the width as needed
-                                      height: 100, // Adjust the height as needed
+                                      height:
+                                          100, // Adjust the height as needed
                                       fit: BoxFit.cover,
                                     ),
                                   ],
@@ -396,7 +432,8 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
                               ),
                             ),
                             SizedBox(
-                                height: 8.0), // Add spacing between the box and text
+                                height:
+                                    8.0), // Add spacing between the box and text
                             Text(
                               'Project 1',
                               style: TextStyle(
@@ -421,9 +458,9 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
 
                             // Create a reference to the user's document
                             final DocumentReference userDocRef =
-                            FirebaseFirestore.instance
-                                .collection('Users')
-                                .doc(userUid);
+                                FirebaseFirestore.instance
+                                    .collection('Users')
+                                    .doc(userUid);
 
                             // Fetch document with ID '1' from the subcollection 'portfolio_items'
                             userDocRef
@@ -433,13 +470,13 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
                                 .then((DocumentSnapshot documentSnapshot) {
                               if (documentSnapshot.exists) {
                                 final Map<String, dynamic>? data =
-                                documentSnapshot.data()
-                                as Map<String, dynamic>?;
+                                    documentSnapshot.data()
+                                        as Map<String, dynamic>?;
                                 final String title = data?['title'] ?? '';
                                 final String itemDescription =
                                     data?['item_description'] ?? '';
                                 final List<dynamic>? imageUrls =
-                                data?['image_urls'];
+                                    data?['image_urls'];
 
                                 // Check if imageUrls is not empty
                                 if (imageUrls != null && imageUrls.isNotEmpty) {
@@ -451,8 +488,10 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
                                     images.add(
                                       Image.network(
                                         imageUrl,
-                                        width: 100, // Adjust the width as needed
-                                        height: 100, // Adjust the height as needed
+                                        width:
+                                            100, // Adjust the width as needed
+                                        height:
+                                            100, // Adjust the height as needed
                                         fit: BoxFit.cover,
                                       ),
                                     );
@@ -462,19 +501,20 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
                                   List<Widget> imageRows = [];
 
                                   // Calculate the number of images per row
-                                  int imagesPerRow = 2; // You can change this value to the desired number
+                                  int imagesPerRow =
+                                      2; // You can change this value to the desired number
 
                                   // Create rows of images with spacing
                                   for (int i = 0;
-                                  i < images.length;
-                                  i += imagesPerRow) {
+                                      i < images.length;
+                                      i += imagesPerRow) {
                                     List<Widget> rowChildren = [];
 
                                     // Add images to the current row
                                     for (int j = i;
-                                    j < i + imagesPerRow &&
-                                        j < images.length;
-                                    j++) {
+                                        j < i + imagesPerRow &&
+                                            j < images.length;
+                                        j++) {
                                       rowChildren.add(
                                         Column(
                                           children: [
@@ -496,7 +536,7 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
                                     imageRows.add(
                                       Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                            MainAxisAlignment.center,
                                         children: rowChildren,
                                       ),
                                     );
@@ -508,19 +548,22 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
                                     builder: (BuildContext context) {
                                       return Dialog(
                                         child: Container(
-                                          width: 600, // Adjust the width as needed
+                                          width:
+                                              600, // Adjust the width as needed
                                           padding: EdgeInsets.all(16.0),
                                           decoration: BoxDecoration(
                                             image: DecorationImage(
-                                              image: AssetImage('images/noise_image.webp'), // Add your background image here
+                                              image: AssetImage(
+                                                  'images/noise_image.webp'), // Add your background image here
                                               fit: BoxFit.cover,
                                             ),
                                           ),
                                           child: Column(
                                             crossAxisAlignment:
-                                            CrossAxisAlignment.center,
+                                                CrossAxisAlignment.center,
                                             children: [
-                                              Text(title,
+                                              Text(
+                                                title,
                                                 style: TextStyle(
                                                   fontSize: 18.0,
                                                   fontWeight: FontWeight.bold,
@@ -540,20 +583,27 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
                                                   Navigator.of(context).pop();
                                                 },
                                                 style: ElevatedButton.styleFrom(
-                                                  backgroundColor: kDeepBlueColor,
+                                                  backgroundColor:
+                                                      kDeepBlueColor,
                                                   shape: RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.circular(20.0),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20.0),
                                                   ),
                                                 ),
                                                 child: Padding(
-                                                  padding: const EdgeInsets.all(15.0),
+                                                  padding: const EdgeInsets.all(
+                                                      15.0),
                                                   child: Row(
-                                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
                                                     children: const <Widget>[
                                                       Text(
                                                         'Close',
                                                         style: TextStyle(
-                                                          color: kBrilliantWhite,
+                                                          color:
+                                                              kBrilliantWhite,
                                                           fontSize: 15.0,
                                                         ),
                                                       ),
@@ -582,7 +632,7 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
                               decoration: BoxDecoration(
                                 shape: BoxShape.rectangle,
                                 border:
-                                Border.all(color: Colors.white, width: 2.0),
+                                    Border.all(color: Colors.white, width: 2.0),
                                 borderRadius: BorderRadius.circular(10.0),
                                 // You can set a placeholder image here
                                 // This will be shown until the actual image is loaded
@@ -596,7 +646,7 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
                                       'images/taskmate_logo_light.webp', // Replace with your image URL
                                       width: 80, // Adjust the width as needed
                                       height:
-                                      100, // Adjust the height as needed
+                                          100, // Adjust the height as needed
                                       fit: BoxFit.cover,
                                     ),
                                   ],
@@ -604,7 +654,8 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
                               ),
                             ),
                             SizedBox(
-                                height: 8.0), // Add spacing between the box and text
+                                height:
+                                    8.0), // Add spacing between the box and text
                             Text(
                               'Project 2',
                               style: TextStyle(
@@ -629,9 +680,9 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
 
                             // Create a reference to the user's document
                             final DocumentReference userDocRef =
-                            FirebaseFirestore.instance
-                                .collection('Users')
-                                .doc(userUid);
+                                FirebaseFirestore.instance
+                                    .collection('Users')
+                                    .doc(userUid);
 
                             // Fetch document with ID '1' from the subcollection 'portfolio_items'
                             userDocRef
@@ -641,13 +692,13 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
                                 .then((DocumentSnapshot documentSnapshot) {
                               if (documentSnapshot.exists) {
                                 final Map<String, dynamic>? data =
-                                documentSnapshot.data()
-                                as Map<String, dynamic>?;
+                                    documentSnapshot.data()
+                                        as Map<String, dynamic>?;
                                 final String title = data?['title'] ?? '';
                                 final String itemDescription =
                                     data?['item_description'] ?? '';
                                 final List<dynamic>? imageUrls =
-                                data?['image_urls'];
+                                    data?['image_urls'];
 
                                 // Check if imageUrls is not empty
                                 if (imageUrls != null && imageUrls.isNotEmpty) {
@@ -659,8 +710,10 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
                                     images.add(
                                       Image.network(
                                         imageUrl,
-                                        width: 100, // Adjust the width as needed
-                                        height: 100, // Adjust the height as needed
+                                        width:
+                                            100, // Adjust the width as needed
+                                        height:
+                                            100, // Adjust the height as needed
                                         fit: BoxFit.cover,
                                       ),
                                     );
@@ -671,19 +724,19 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
 
                                   // Calculate the number of images per row
                                   int imagesPerRow =
-                                  2; // You can change this value to the desired number
+                                      2; // You can change this value to the desired number
 
                                   // Create rows of images with spacing
                                   for (int i = 0;
-                                  i < images.length;
-                                  i += imagesPerRow) {
+                                      i < images.length;
+                                      i += imagesPerRow) {
                                     List<Widget> rowChildren = [];
 
                                     // Add images to the current row
                                     for (int j = i;
-                                    j < i + imagesPerRow &&
-                                        j < images.length;
-                                    j++) {
+                                        j < i + imagesPerRow &&
+                                            j < images.length;
+                                        j++) {
                                       rowChildren.add(
                                         Column(
                                           children: [
@@ -705,7 +758,7 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
                                     imageRows.add(
                                       Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                            MainAxisAlignment.center,
                                         children: rowChildren,
                                       ),
                                     );
@@ -718,19 +771,21 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
                                       return Dialog(
                                         child: Container(
                                           width:
-                                          600, // Adjust the width as needed
+                                              600, // Adjust the width as needed
                                           padding: EdgeInsets.all(16.0),
                                           decoration: BoxDecoration(
                                             image: DecorationImage(
-                                              image: AssetImage('images/noise_image.webp'), // Add your background image here
+                                              image: AssetImage(
+                                                  'images/noise_image.webp'), // Add your background image here
                                               fit: BoxFit.cover,
                                             ),
                                           ),
                                           child: Column(
                                             crossAxisAlignment:
-                                            CrossAxisAlignment.center,
+                                                CrossAxisAlignment.center,
                                             children: [
-                                              Text(title,
+                                              Text(
+                                                title,
                                                 style: TextStyle(
                                                   fontSize: 18.0,
                                                   fontWeight: FontWeight.bold,
@@ -750,20 +805,27 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
                                                   Navigator.of(context).pop();
                                                 },
                                                 style: ElevatedButton.styleFrom(
-                                                  backgroundColor: kDeepBlueColor,
+                                                  backgroundColor:
+                                                      kDeepBlueColor,
                                                   shape: RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.circular(20.0),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20.0),
                                                   ),
                                                 ),
                                                 child: Padding(
-                                                  padding: const EdgeInsets.all(15.0),
+                                                  padding: const EdgeInsets.all(
+                                                      15.0),
                                                   child: Row(
-                                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
                                                     children: const <Widget>[
                                                       Text(
                                                         'Close',
                                                         style: TextStyle(
-                                                          color: kBrilliantWhite,
+                                                          color:
+                                                              kBrilliantWhite,
                                                           fontSize: 15.0,
                                                         ),
                                                       ),
@@ -792,7 +854,7 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
                               decoration: BoxDecoration(
                                 shape: BoxShape.rectangle,
                                 border:
-                                Border.all(color: Colors.white, width: 2.0),
+                                    Border.all(color: Colors.white, width: 2.0),
                                 borderRadius: BorderRadius.circular(10.0),
                                 // You can set a placeholder image here
                                 // This will be shown until the actual image is loaded
@@ -806,7 +868,7 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
                                       'images/taskmate_logo_light.webp', // Replace with your image URL
                                       width: 80, // Adjust the width as needed
                                       height:
-                                      100, // Adjust the height as needed
+                                          100, // Adjust the height as needed
                                       fit: BoxFit.cover,
                                     ),
                                   ],
@@ -815,7 +877,7 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
                             ),
                             SizedBox(
                                 height:
-                                8.0), // Add spacing between the box and text
+                                    8.0), // Add spacing between the box and text
                             Text(
                               'Project 3',
                               style: TextStyle(
@@ -840,9 +902,9 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
 
                             // Create a reference to the user's document
                             final DocumentReference userDocRef =
-                            FirebaseFirestore.instance
-                                .collection('Users')
-                                .doc(userUid);
+                                FirebaseFirestore.instance
+                                    .collection('Users')
+                                    .doc(userUid);
 
                             // Fetch document with ID '1' from the subcollection 'portfolio_items'
                             userDocRef
@@ -852,13 +914,13 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
                                 .then((DocumentSnapshot documentSnapshot) {
                               if (documentSnapshot.exists) {
                                 final Map<String, dynamic>? data =
-                                documentSnapshot.data()
-                                as Map<String, dynamic>?;
+                                    documentSnapshot.data()
+                                        as Map<String, dynamic>?;
                                 final String title = data?['title'] ?? '';
                                 final String itemDescription =
                                     data?['item_description'] ?? '';
                                 final List<dynamic>? imageUrls =
-                                data?['image_urls'];
+                                    data?['image_urls'];
 
                                 // Check if imageUrls is not empty
                                 if (imageUrls != null && imageUrls.isNotEmpty) {
@@ -871,9 +933,9 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
                                       Image.network(
                                         imageUrl,
                                         width:
-                                        100, // Adjust the width as needed
+                                            100, // Adjust the width as needed
                                         height:
-                                        100, // Adjust the height as needed
+                                            100, // Adjust the height as needed
                                         fit: BoxFit.cover,
                                       ),
                                     );
@@ -884,19 +946,19 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
 
                                   // Calculate the number of images per row
                                   int imagesPerRow =
-                                  2; // You can change this value to the desired number
+                                      2; // You can change this value to the desired number
 
                                   // Create rows of images with spacing
                                   for (int i = 0;
-                                  i < images.length;
-                                  i += imagesPerRow) {
+                                      i < images.length;
+                                      i += imagesPerRow) {
                                     List<Widget> rowChildren = [];
 
                                     // Add images to the current row
                                     for (int j = i;
-                                    j < i + imagesPerRow &&
-                                        j < images.length;
-                                    j++) {
+                                        j < i + imagesPerRow &&
+                                            j < images.length;
+                                        j++) {
                                       rowChildren.add(
                                         Column(
                                           children: [
@@ -918,7 +980,7 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
                                     imageRows.add(
                                       Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                            MainAxisAlignment.center,
                                         children: rowChildren,
                                       ),
                                     );
@@ -930,17 +992,19 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
                                     builder: (BuildContext context) {
                                       return Dialog(
                                         child: Container(
-                                          width: 600, // Adjust the width as needed
+                                          width:
+                                              600, // Adjust the width as needed
                                           padding: EdgeInsets.all(16.0),
                                           decoration: BoxDecoration(
                                             image: DecorationImage(
-                                              image: AssetImage('images/noise_image.webp'), // Add your background image here
+                                              image: AssetImage(
+                                                  'images/noise_image.webp'), // Add your background image here
                                               fit: BoxFit.cover,
                                             ),
                                           ),
                                           child: Column(
                                             crossAxisAlignment:
-                                            CrossAxisAlignment.center,
+                                                CrossAxisAlignment.center,
                                             children: [
                                               Text(
                                                 title,
@@ -950,7 +1014,8 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
                                                 ),
                                               ),
                                               SizedBox(height: 8.0),
-                                              Text('Description: $itemDescription'),
+                                              Text(
+                                                  'Description: $itemDescription'),
 
                                               SizedBox(height: 16.0),
                                               // Display the rows of images
@@ -963,20 +1028,27 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
                                                   Navigator.of(context).pop();
                                                 },
                                                 style: ElevatedButton.styleFrom(
-                                                  backgroundColor: kDeepBlueColor,
+                                                  backgroundColor:
+                                                      kDeepBlueColor,
                                                   shape: RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.circular(20.0),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20.0),
                                                   ),
                                                 ),
                                                 child: Padding(
-                                                  padding: const EdgeInsets.all(15.0),
+                                                  padding: const EdgeInsets.all(
+                                                      15.0),
                                                   child: Row(
-                                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
                                                     children: const <Widget>[
                                                       Text(
                                                         'Close',
                                                         style: TextStyle(
-                                                          color: kBrilliantWhite,
+                                                          color:
+                                                              kBrilliantWhite,
                                                           fontSize: 15.0,
                                                         ),
                                                       ),
@@ -1005,7 +1077,7 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
                               decoration: BoxDecoration(
                                 shape: BoxShape.rectangle,
                                 border:
-                                Border.all(color: Colors.white, width: 2.0),
+                                    Border.all(color: Colors.white, width: 2.0),
                                 borderRadius: BorderRadius.circular(10.0),
                                 // You can set a placeholder image here
                                 // This will be shown until the actual image is loaded
@@ -1019,7 +1091,7 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
                                       'images/taskmate_logo_light.webp', // Replace with your image URL
                                       width: 80, // Adjust the width as needed
                                       height:
-                                      100, // Adjust the height as needed
+                                          100, // Adjust the height as needed
                                       fit: BoxFit.cover,
                                     ),
                                   ],
@@ -1028,7 +1100,7 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
                             ),
                             SizedBox(
                                 height:
-                                8.0), // Add spacing between the box and text
+                                    8.0), // Add spacing between the box and text
                             Text(
                               'Project 4',
                               style: TextStyle(
@@ -1100,16 +1172,16 @@ class _DataDetailsScreenFreelancerState extends State<DataDetailsScreenFreelance
                         .push(
                       MaterialPageRoute(
                         builder: (context) => EditFreelancerProfile(
-                          user: widget.user,
-                          profileImageUrl: widget.profileImageUrl,
-                        ),
+                            // user: widget.user,
+                            // profileImageUrl: widget.profileImageUrl,
+                            ),
                       ),
                     )
                         .then((updatedUser) {
                       if (updatedUser != null) {
                         setState(() {
                           // Update the widget's user data with the updatedUser data
-                          widget.user = updatedUser;
+                          // widget.user = updatedUser;
                         });
                       }
                     });

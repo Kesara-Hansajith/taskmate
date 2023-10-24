@@ -12,10 +12,13 @@ import 'package:taskmate/constants.dart';
 import 'package:path/path.dart' as path;
 
 class EditFreelancerProfile extends StatefulWidget {
-  final UserModel user;
-  final String? profileImageUrl;
+  // final UserModel user;
+  // final String? profileImageUrl;
 
-  EditFreelancerProfile({required this.user, this.profileImageUrl});
+  // EditFreelancerProfile({
+  //   // required this.user,
+  //   // this.profileImageUrl,
+  // });
 
   @override
   _EditFreelancerProfileState createState() => _EditFreelancerProfileState();
@@ -23,7 +26,8 @@ class EditFreelancerProfile extends StatefulWidget {
 
 class _EditFreelancerProfileState extends State<EditFreelancerProfile> {
   final TextEditingController bioController = TextEditingController();
-  final TextEditingController professionalRoleController = TextEditingController();
+  final TextEditingController professionalRoleController =
+      TextEditingController();
   final TextEditingController hourlyRateController = TextEditingController();
 
   String? profileImageUrl;
@@ -39,7 +43,8 @@ class _EditFreelancerProfileState extends State<EditFreelancerProfile> {
           backgroundColor: Colors.white,
           child: CircleAvatar(
             radius: profileHeight / 2 - 6,
-            backgroundImage: NetworkImage(profileImageUrl ?? 'YOUR_DEFAULT_IMAGE_URL_HERE'), // Replace 'YOUR_DEFAULT_IMAGE_URL_HERE' with your default image URL or set it to null for no image
+            backgroundImage: NetworkImage(profileImageUrl ??
+                'YOUR_DEFAULT_IMAGE_URL_HERE'), // Replace 'YOUR_DEFAULT_IMAGE_URL_HERE' with your default image URL or set it to null for no image
           ),
         ),
         Positioned(
@@ -66,36 +71,44 @@ class _EditFreelancerProfileState extends State<EditFreelancerProfile> {
     );
   }
 
-
   Widget buildCoverImage() {
     return Stack(
       children: [
         Container(
           color: kDeepBlueColor,
-          child: widget.profileImageUrl != null
-              ? Image.network(widget.profileImageUrl!,
-            fit: BoxFit.cover,
-            width: double.infinity,
-            height: coverHeight,
-          )
-              : Placeholder(),
+          child:
+              // widget.profileImageUrl != null
+              //     ? Image.network(
+              //         widget.profileImageUrl!,
+              //         fit: BoxFit.cover,
+              //         width: double.infinity,
+              //         height: coverHeight,
+              //       )
+              //     :
+              Placeholder(),
           // You can replace Placeholder with a loading indicator
         ),
-
       ],
     );
   }
-
-
 
   @override
   void initState() {
     super.initState();
     // Initialize the text fields with the existing user data
-    bioController.text = widget.user.bio ?? ''; // Use user's bio or an empty string if it's null
-    professionalRoleController.text = widget.user.professionalRole ?? ''; // Use user's role or an empty string if it's null
-    hourlyRateController.text = widget.user.hourlyRate ?? '';
-    profileImageUrl = widget.user.profilePhotoUrl;
+    // bioController.text =
+    //     // widget.user.bio
+    //     //     ??
+    // ''; // Use user's bio or an empty string if it's null
+    // professionalRoleController.text =
+    //     // widget.user.professionalRole ??
+    //     ''; // Use user's role or an empty string if it's null
+    // hourlyRateController.text =
+    //     // widget.user.hourlyRate ??
+    //         '';
+    // profileImageUrl =
+    //     // widget.user.profilePhotoUrl
+    // );
   }
 
   @override
@@ -132,7 +145,7 @@ class _EditFreelancerProfileState extends State<EditFreelancerProfile> {
                   child: Column(
                     children: [
                       Text(
-                        '${widget.user.firstName} ${widget.user.lastName}',
+                        '${'widget.user.firstName'} ${'widget.user.lastName'}',
                         style: TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.bold,
@@ -141,7 +154,7 @@ class _EditFreelancerProfileState extends State<EditFreelancerProfile> {
                       ),
                       SizedBox(
                           height:
-                          10), // Add some spacing between the name and the level
+                              10), // Add some spacing between the name and the level
                       Text(
                         'Top Level Freelancer',
                         style: TextStyle(
@@ -164,7 +177,7 @@ class _EditFreelancerProfileState extends State<EditFreelancerProfile> {
                       //    child: Text("Professional Roles"),
                       //   ),
                       contentPadding:
-                      EdgeInsets.fromLTRB(40.0, 24.0, 40.0, 16.0),
+                          EdgeInsets.fromLTRB(40.0, 24.0, 40.0, 16.0),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
                         borderSide: BorderSide(width: 2.0),
@@ -179,14 +192,16 @@ class _EditFreelancerProfileState extends State<EditFreelancerProfile> {
                     style: TextStyle(fontSize: 13),
                     decoration: InputDecoration(
                       contentPadding:
-                      EdgeInsets.fromLTRB(30.0, 10.0, 60.0, 16.0),
+                          EdgeInsets.fromLTRB(30.0, 10.0, 60.0, 16.0),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(40.0),
                         borderSide: BorderSide(width: 2.0),
                       ),
-                      suffix: Text('.00 LKR/hour',
+                      suffix: Text(
+                        '.00 LKR/hour',
                         style: TextStyle(
-                          color: Colors.black, // Change the color to your desired color
+                          color: Colors
+                              .black, // Change the color to your desired color
                         ),
                       ),
                     ),
@@ -201,7 +216,7 @@ class _EditFreelancerProfileState extends State<EditFreelancerProfile> {
                       maxLines: 10,
                       decoration: InputDecoration(
                         contentPadding:
-                        EdgeInsets.fromLTRB(20.0, 10.0, 10.0, 5.0),
+                            EdgeInsets.fromLTRB(20.0, 10.0, 10.0, 5.0),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
                           borderSide: BorderSide(width: 10.0),
@@ -285,13 +300,13 @@ class _EditFreelancerProfileState extends State<EditFreelancerProfile> {
 
                               // Create a reference to the user's document
                               final DocumentReference userDocRef =
-                              FirebaseFirestore.instance
-                                  .collection('Users')
-                                  .doc(userUid);
+                                  FirebaseFirestore.instance
+                                      .collection('Users')
+                                      .doc(userUid);
                               final DocumentReference portfolioItemDocRef =
-                              userDocRef
-                                  .collection('portfolio_items')
-                                  .doc('1');
+                                  userDocRef
+                                      .collection('portfolio_items')
+                                      .doc('1');
 
                               // Show a confirmation dialog before deleting
                               showDialog(
@@ -340,13 +355,13 @@ class _EditFreelancerProfileState extends State<EditFreelancerProfile> {
                                   .then((DocumentSnapshot documentSnapshot) {
                                 if (documentSnapshot.exists) {
                                   final Map<String, dynamic>? data =
-                                  documentSnapshot.data()
-                                  as Map<String, dynamic>?;
+                                      documentSnapshot.data()
+                                          as Map<String, dynamic>?;
                                   final String title = data?['title'] ?? '';
                                   final String itemDescription =
                                       data?['item_description'] ?? '';
                                   final List<dynamic>? imageUrls =
-                                  data?['image_urls'];
+                                      data?['image_urls'];
 
                                   // Check if imageUrls is not empty
                                   if (imageUrls != null &&
@@ -359,8 +374,10 @@ class _EditFreelancerProfileState extends State<EditFreelancerProfile> {
                                       images.add(
                                         Image.network(
                                           imageUrl,
-                                          width: 100, // Adjust the width as needed
-                                          height: 100, // Adjust the height as needed
+                                          width:
+                                              100, // Adjust the width as needed
+                                          height:
+                                              100, // Adjust the height as needed
                                           fit: BoxFit.cover,
                                         ),
                                       );
@@ -370,19 +387,20 @@ class _EditFreelancerProfileState extends State<EditFreelancerProfile> {
                                     List<Widget> imageRows = [];
 
                                     // Calculate the number of images per row
-                                    int imagesPerRow = 2; // You can change this value to the desired number
+                                    int imagesPerRow =
+                                        2; // You can change this value to the desired number
 
                                     // Create rows of images with spacing
                                     for (int i = 0;
-                                    i < images.length;
-                                    i += imagesPerRow) {
+                                        i < images.length;
+                                        i += imagesPerRow) {
                                       List<Widget> rowChildren = [];
 
                                       // Add images to the current row
                                       for (int j = i;
-                                      j < i + imagesPerRow &&
-                                          j < images.length;
-                                      j++) {
+                                          j < i + imagesPerRow &&
+                                              j < images.length;
+                                          j++) {
                                         rowChildren.add(
                                           Column(
                                             children: [
@@ -404,7 +422,7 @@ class _EditFreelancerProfileState extends State<EditFreelancerProfile> {
                                       imageRows.add(
                                         Row(
                                           mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                              MainAxisAlignment.center,
                                           children: rowChildren,
                                         ),
                                       );
@@ -417,26 +435,29 @@ class _EditFreelancerProfileState extends State<EditFreelancerProfile> {
                                         return Dialog(
                                           child: Container(
                                             width:
-                                            600, // Adjust the width as needed
+                                                600, // Adjust the width as needed
                                             padding: EdgeInsets.all(16.0),
                                             decoration: BoxDecoration(
                                               image: DecorationImage(
-                                                image: AssetImage('images/noise_image.webp'), // Add your background image here
+                                                image: AssetImage(
+                                                    'images/noise_image.webp'), // Add your background image here
                                                 fit: BoxFit.cover,
                                               ),
                                             ),
                                             child: Column(
                                               crossAxisAlignment:
-                                              CrossAxisAlignment.center,
+                                                  CrossAxisAlignment.center,
                                               children: [
-                                                Text(title,
+                                                Text(
+                                                  title,
                                                   style: TextStyle(
                                                     fontSize: 18.0,
                                                     fontWeight: FontWeight.bold,
                                                   ),
                                                 ),
                                                 SizedBox(height: 8.0),
-                                                Text('Description: $itemDescription'),
+                                                Text(
+                                                    'Description: $itemDescription'),
                                                 SizedBox(height: 16.0),
                                                 // Display the rows of images
                                                 Column(
@@ -447,21 +468,31 @@ class _EditFreelancerProfileState extends State<EditFreelancerProfile> {
                                                   onPressed: () {
                                                     Navigator.of(context).pop();
                                                   },
-                                                  style: ElevatedButton.styleFrom(
-                                                    backgroundColor: kDeepBlueColor,
-                                                    shape: RoundedRectangleBorder(
-                                                      borderRadius: BorderRadius.circular(20.0),
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                        kDeepBlueColor,
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20.0),
                                                     ),
                                                   ),
                                                   child: Padding(
-                                                    padding: const EdgeInsets.all(15.0),
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            15.0),
                                                     child: Row(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
                                                       children: const <Widget>[
                                                         Text(
                                                           'Close',
                                                           style: TextStyle(
-                                                            color: kBrilliantWhite,
+                                                            color:
+                                                                kBrilliantWhite,
                                                             fontSize: 15.0,
                                                           ),
                                                         ),
@@ -504,7 +535,7 @@ class _EditFreelancerProfileState extends State<EditFreelancerProfile> {
                                         'images/taskmate_logo_light.webp', // Replace with your image URL
                                         width: 80, // Adjust the width as needed
                                         height:
-                                        100, // Adjust the height as needed
+                                            100, // Adjust the height as needed
                                         fit: BoxFit.cover,
                                       ),
                                     ],
@@ -513,8 +544,9 @@ class _EditFreelancerProfileState extends State<EditFreelancerProfile> {
                               ),
                               SizedBox(
                                   height:
-                                  8.0), // Add spacing between the box and text
-                              Text('Project 1',
+                                      8.0), // Add spacing between the box and text
+                              Text(
+                                'Project 1',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.grey.shade700,
@@ -537,13 +569,13 @@ class _EditFreelancerProfileState extends State<EditFreelancerProfile> {
 
                               // Create a reference to the user's document
                               final DocumentReference userDocRef =
-                              FirebaseFirestore.instance
-                                  .collection('Users')
-                                  .doc(userUid);
+                                  FirebaseFirestore.instance
+                                      .collection('Users')
+                                      .doc(userUid);
                               final DocumentReference portfolioItemDocRef =
-                              userDocRef
-                                  .collection('portfolio_items')
-                                  .doc('2');
+                                  userDocRef
+                                      .collection('portfolio_items')
+                                      .doc('2');
 
                               // Show a confirmation dialog before deleting
                               showDialog(
@@ -565,8 +597,10 @@ class _EditFreelancerProfileState extends State<EditFreelancerProfile> {
                                         onPressed: () async {
                                           // Delete the document
                                           await portfolioItemDocRef.delete();
-                                          Navigator.of(context).pop(); // Close the confirmation dialog
-                                          Navigator.of(context).pop(); // Close the portfolio item dialog
+                                          Navigator.of(context)
+                                              .pop(); // Close the confirmation dialog
+                                          Navigator.of(context)
+                                              .pop(); // Close the portfolio item dialog
                                           // Now, navigate to "ProfileFreelancer4"
                                           Navigator.push(
                                             context,
@@ -590,13 +624,13 @@ class _EditFreelancerProfileState extends State<EditFreelancerProfile> {
                                   .then((DocumentSnapshot documentSnapshot) {
                                 if (documentSnapshot.exists) {
                                   final Map<String, dynamic>? data =
-                                  documentSnapshot.data()
-                                  as Map<String, dynamic>?;
+                                      documentSnapshot.data()
+                                          as Map<String, dynamic>?;
                                   final String title = data?['title'] ?? '';
                                   final String itemDescription =
                                       data?['item_description'] ?? '';
                                   final List<dynamic>? imageUrls =
-                                  data?['image_urls'];
+                                      data?['image_urls'];
 
                                   // Check if imageUrls is not empty
                                   if (imageUrls != null &&
@@ -609,8 +643,10 @@ class _EditFreelancerProfileState extends State<EditFreelancerProfile> {
                                       images.add(
                                         Image.network(
                                           imageUrl,
-                                          width: 100, // Adjust the width as needed
-                                          height: 100, // Adjust the height as needed
+                                          width:
+                                              100, // Adjust the width as needed
+                                          height:
+                                              100, // Adjust the height as needed
                                           fit: BoxFit.cover,
                                         ),
                                       );
@@ -621,19 +657,19 @@ class _EditFreelancerProfileState extends State<EditFreelancerProfile> {
 
                                     // Calculate the number of images per row
                                     int imagesPerRow =
-                                    2; // You can change this value to the desired number
+                                        2; // You can change this value to the desired number
 
                                     // Create rows of images with spacing
                                     for (int i = 0;
-                                    i < images.length;
-                                    i += imagesPerRow) {
+                                        i < images.length;
+                                        i += imagesPerRow) {
                                       List<Widget> rowChildren = [];
 
                                       // Add images to the current row
                                       for (int j = i;
-                                      j < i + imagesPerRow &&
-                                          j < images.length;
-                                      j++) {
+                                          j < i + imagesPerRow &&
+                                              j < images.length;
+                                          j++) {
                                         rowChildren.add(
                                           Column(
                                             children: [
@@ -655,7 +691,7 @@ class _EditFreelancerProfileState extends State<EditFreelancerProfile> {
                                       imageRows.add(
                                         Row(
                                           mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                              MainAxisAlignment.center,
                                           children: rowChildren,
                                         ),
                                       );
@@ -668,17 +704,18 @@ class _EditFreelancerProfileState extends State<EditFreelancerProfile> {
                                         return Dialog(
                                           child: Container(
                                             width:
-                                            600, // Adjust the width as needed
+                                                600, // Adjust the width as needed
                                             padding: EdgeInsets.all(16.0),
                                             decoration: BoxDecoration(
                                               image: DecorationImage(
-                                                image: AssetImage('images/noise_image.webp'), // Add your background image here
+                                                image: AssetImage(
+                                                    'images/noise_image.webp'), // Add your background image here
                                                 fit: BoxFit.cover,
                                               ),
                                             ),
                                             child: Column(
                                               crossAxisAlignment:
-                                              CrossAxisAlignment.center,
+                                                  CrossAxisAlignment.center,
                                               children: [
                                                 Text(
                                                   title,
@@ -700,21 +737,31 @@ class _EditFreelancerProfileState extends State<EditFreelancerProfile> {
                                                   onPressed: () {
                                                     Navigator.of(context).pop();
                                                   },
-                                                  style: ElevatedButton.styleFrom(
-                                                    backgroundColor: kDeepBlueColor,
-                                                    shape: RoundedRectangleBorder(
-                                                      borderRadius: BorderRadius.circular(20.0),
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                        kDeepBlueColor,
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20.0),
                                                     ),
                                                   ),
                                                   child: Padding(
-                                                    padding: const EdgeInsets.all(15.0),
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            15.0),
                                                     child: Row(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
                                                       children: const <Widget>[
                                                         Text(
                                                           'Close',
                                                           style: TextStyle(
-                                                            color: kBrilliantWhite,
+                                                            color:
+                                                                kBrilliantWhite,
                                                             fontSize: 15.0,
                                                           ),
                                                         ),
@@ -756,7 +803,8 @@ class _EditFreelancerProfileState extends State<EditFreelancerProfile> {
                                       Image.asset(
                                         'images/taskmate_logo_light.webp', // Replace with your image URL
                                         width: 80, // Adjust the width as needed
-                                        height: 100, // Adjust the height as needed
+                                        height:
+                                            100, // Adjust the height as needed
                                         fit: BoxFit.cover,
                                       ),
                                     ],
@@ -764,7 +812,8 @@ class _EditFreelancerProfileState extends State<EditFreelancerProfile> {
                                 ),
                               ),
                               SizedBox(
-                                  height: 8.0), // Add spacing between the box and text
+                                  height:
+                                      8.0), // Add spacing between the box and text
                               Text(
                                 'Project 2',
                                 style: TextStyle(
@@ -789,13 +838,13 @@ class _EditFreelancerProfileState extends State<EditFreelancerProfile> {
 
                               // Create a reference to the user's document
                               final DocumentReference userDocRef =
-                              FirebaseFirestore.instance
-                                  .collection('Users')
-                                  .doc(userUid);
+                                  FirebaseFirestore.instance
+                                      .collection('Users')
+                                      .doc(userUid);
                               final DocumentReference portfolioItemDocRef =
-                              userDocRef
-                                  .collection('portfolio_items')
-                                  .doc('3');
+                                  userDocRef
+                                      .collection('portfolio_items')
+                                      .doc('3');
 
                               // Show a confirmation dialog before deleting
                               showDialog(
@@ -817,8 +866,10 @@ class _EditFreelancerProfileState extends State<EditFreelancerProfile> {
                                         onPressed: () async {
                                           // Delete the document
                                           await portfolioItemDocRef.delete();
-                                          Navigator.of(context).pop(); // Close the confirmation dialog
-                                          Navigator.of(context).pop(); // Close the portfolio item dialog
+                                          Navigator.of(context)
+                                              .pop(); // Close the confirmation dialog
+                                          Navigator.of(context)
+                                              .pop(); // Close the portfolio item dialog
                                           // Now, navigate to "ProfileFreelancer4"
                                           Navigator.push(
                                             context,
@@ -842,13 +893,13 @@ class _EditFreelancerProfileState extends State<EditFreelancerProfile> {
                                   .then((DocumentSnapshot documentSnapshot) {
                                 if (documentSnapshot.exists) {
                                   final Map<String, dynamic>? data =
-                                  documentSnapshot.data()
-                                  as Map<String, dynamic>?;
+                                      documentSnapshot.data()
+                                          as Map<String, dynamic>?;
                                   final String title = data?['title'] ?? '';
                                   final String itemDescription =
                                       data?['item_description'] ?? '';
                                   final List<dynamic>? imageUrls =
-                                  data?['image_urls'];
+                                      data?['image_urls'];
 
                                   // Check if imageUrls is not empty
                                   if (imageUrls != null &&
@@ -861,8 +912,10 @@ class _EditFreelancerProfileState extends State<EditFreelancerProfile> {
                                       images.add(
                                         Image.network(
                                           imageUrl,
-                                          width: 100, // Adjust the width as needed
-                                          height: 100, // Adjust the height as needed
+                                          width:
+                                              100, // Adjust the width as needed
+                                          height:
+                                              100, // Adjust the height as needed
                                           fit: BoxFit.cover,
                                         ),
                                       );
@@ -872,19 +925,20 @@ class _EditFreelancerProfileState extends State<EditFreelancerProfile> {
                                     List<Widget> imageRows = [];
 
                                     // Calculate the number of images per row
-                                    int imagesPerRow = 2; // You can change this value to the desired number
+                                    int imagesPerRow =
+                                        2; // You can change this value to the desired number
 
                                     // Create rows of images with spacing
                                     for (int i = 0;
-                                    i < images.length;
-                                    i += imagesPerRow) {
+                                        i < images.length;
+                                        i += imagesPerRow) {
                                       List<Widget> rowChildren = [];
 
                                       // Add images to the current row
                                       for (int j = i;
-                                      j < i + imagesPerRow &&
-                                          j < images.length;
-                                      j++) {
+                                          j < i + imagesPerRow &&
+                                              j < images.length;
+                                          j++) {
                                         rowChildren.add(
                                           Column(
                                             children: [
@@ -906,7 +960,7 @@ class _EditFreelancerProfileState extends State<EditFreelancerProfile> {
                                       imageRows.add(
                                         Row(
                                           mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                              MainAxisAlignment.center,
                                           children: rowChildren,
                                         ),
                                       );
@@ -919,17 +973,18 @@ class _EditFreelancerProfileState extends State<EditFreelancerProfile> {
                                         return Dialog(
                                           child: Container(
                                             width:
-                                            600, // Adjust the width as needed
+                                                600, // Adjust the width as needed
                                             padding: EdgeInsets.all(16.0),
                                             decoration: BoxDecoration(
                                               image: DecorationImage(
-                                                image: AssetImage('images/noise_image.webp'), // Add your background image here
+                                                image: AssetImage(
+                                                    'images/noise_image.webp'), // Add your background image here
                                                 fit: BoxFit.cover,
                                               ),
                                             ),
                                             child: Column(
                                               crossAxisAlignment:
-                                              CrossAxisAlignment.center,
+                                                  CrossAxisAlignment.center,
                                               children: [
                                                 Text(
                                                   title,
@@ -951,268 +1006,31 @@ class _EditFreelancerProfileState extends State<EditFreelancerProfile> {
                                                   onPressed: () {
                                                     Navigator.of(context).pop();
                                                   },
-                                                  style: ElevatedButton.styleFrom(
-                                                    backgroundColor: kDeepBlueColor,
-                                                    shape: RoundedRectangleBorder(
-                                                      borderRadius: BorderRadius.circular(20.0),
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                        kDeepBlueColor,
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20.0),
                                                     ),
                                                   ),
                                                   child: Padding(
-                                                    padding: const EdgeInsets.all(15.0),
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            15.0),
                                                     child: Row(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
                                                       children: const <Widget>[
                                                         Text(
                                                           'Close',
                                                           style: TextStyle(
-                                                            color: kBrilliantWhite,
-                                                            fontSize: 15.0,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  }
-                                } else {
-                                  // Handle the case where the document with ID '1' does not exist
-                                }
-                              });
-                            }
-                          },
-                          child: Column(
-                            children: [
-                              Container(
-                                width: 100,
-                                height: 150,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.rectangle,
-                                  border: Border.all(
-                                      color: Colors.white, width: 2.0),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  // You can set a placeholder image here
-                                  // This will be shown until the actual image is loaded
-                                  // You can also check if 'imageUrls' is not empty and use the first URL
-                                ),
-                                child: Center(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Image.asset('images/taskmate_logo_light.webp', // Replace with your image URL
-                                        width: 80, // Adjust the width as needed
-                                        height: 100, // Adjust the height as needed
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                  height: 8.0), // Add spacing between the box and text
-                              Text(
-                                'Project 3',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.grey.shade700,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(35.0, 10.0, 10.0, 10.0),
-                        child: GestureDetector(
-                          onTap: () {
-                            // Get the current user
-                            final FirebaseAuth _auth = FirebaseAuth.instance;
-                            final User? firebaseUser = _auth.currentUser;
-
-                            if (firebaseUser != null) {
-                              final String userUid = firebaseUser.uid;
-
-                              // Create a reference to the user's document
-                              final DocumentReference userDocRef =
-                              FirebaseFirestore.instance
-                                  .collection('Users')
-                                  .doc(userUid);
-                              final DocumentReference portfolioItemDocRef =
-                              userDocRef
-                                  .collection('portfolio_items')
-                                  .doc('4');
-
-                              // Show a confirmation dialog before deleting
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: Text('Delete Portfolio Item'),
-                                    content: Text(
-                                        'Are you sure you want to delete this project 4'),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop(); // Close the confirmation dialog
-                                        },
-                                        child: Text('Cancel'),
-                                      ),
-                                      TextButton(
-                                        onPressed: () async {
-                                          // Delete the document
-                                          await portfolioItemDocRef.delete();
-                                          Navigator.of(context).pop(); // Close the confirmation dialog
-                                          Navigator.of(context).pop(); // Close the portfolio item dialog
-                                          // Now, navigate to "ProfileFreelancer4"
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ProfileFreelancer4()),
-                                          );
-                                        },
-                                        child: Text('Delete'),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-
-                              // Fetch document with ID '1' from the subcollection 'portfolio_items'
-                              userDocRef
-                                  .collection('portfolio_items')
-                                  .doc('4') // Use '4' as the document ID
-                                  .get()
-                                  .then((DocumentSnapshot documentSnapshot) {
-                                if (documentSnapshot.exists) {
-                                  final Map<String, dynamic>? data =
-                                  documentSnapshot.data()
-                                  as Map<String, dynamic>?;
-                                  final String title = data?['title'] ?? '';
-                                  final String itemDescription =
-                                      data?['item_description'] ?? '';
-                                  final List<dynamic>? imageUrls =
-                                  data?['image_urls'];
-
-                                  // Check if imageUrls is not empty
-                                  if (imageUrls != null &&
-                                      imageUrls.isNotEmpty) {
-                                    // Create a list of images for this portfolio item
-                                    List<Widget> images = [];
-
-                                    // Loop through the image URLs and add them to the list
-                                    for (var imageUrl in imageUrls) {
-                                      images.add(
-                                        Image.network(
-                                          imageUrl,
-                                          width: 100, // Adjust the width as needed
-                                          height: 100, // Adjust the height as needed
-                                          fit: BoxFit.cover,
-                                        ),
-                                      );
-                                    }
-
-                                    // Display the portfolio item in a dialog
-                                    List<Widget> imageRows = [];
-
-                                    // Calculate the number of images per row
-                                    int imagesPerRow = 2; // You can change this value to the desired number
-
-                                    // Create rows of images with spacing
-                                    for (int i = 0;
-                                    i < images.length;
-                                    i += imagesPerRow) {
-                                      List<Widget> rowChildren = [];
-
-                                      // Add images to the current row
-                                      for (int j = i;
-                                      j < i + imagesPerRow &&
-                                          j < images.length;
-                                      j++) {
-                                        rowChildren.add(
-                                          Column(
-                                            children: [
-                                              images[j],
-                                              SizedBox(height: 8.0),
-                                            ],
-                                          ),
-                                        );
-
-                                        if (j < i + imagesPerRow - 1) {
-                                          // Add spacing between images in the same row
-                                          rowChildren.add(
-                                            SizedBox(width: 16.0),
-                                          );
-                                        }
-                                      }
-
-                                      // Create a row with images and spacing
-                                      imageRows.add(
-                                        Row(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                          children: rowChildren,
-                                        ),
-                                      );
-                                    }
-
-                                    // Display the portfolio item in a dialog
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return Dialog(
-                                          child: Container(
-                                            width: 600, // Adjust the width as needed
-                                            padding: EdgeInsets.all(16.0),
-                                            decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                image: AssetImage('images/noise_image.webp'), // Add your background image here
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  title,
-                                                  style: TextStyle(
-                                                    fontSize: 18.0,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                                SizedBox(height: 8.0),
-                                                Text('Description: $itemDescription'),
-                                                SizedBox(height: 16.0),
-                                                // Display the rows of images
-                                                Column(
-                                                  children: imageRows,
-                                                ),
-                                                SizedBox(height: 16.0),
-                                                ElevatedButton(
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                  style: ElevatedButton.styleFrom(
-                                                    backgroundColor: kDeepBlueColor,
-                                                    shape: RoundedRectangleBorder(
-                                                      borderRadius: BorderRadius.circular(20.0),
-                                                    ),
-                                                  ),
-                                                  child: Padding(
-                                                    padding: const EdgeInsets.all(15.0),
-                                                    child: Row(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                      children: const <Widget>[
-                                                        Text(
-                                                          'Close',
-                                                          style: TextStyle(
-                                                            color: kBrilliantWhite,
+                                                            color:
+                                                                kBrilliantWhite,
                                                             fontSize: 15.0,
                                                           ),
                                                         ),
@@ -1254,15 +1072,288 @@ class _EditFreelancerProfileState extends State<EditFreelancerProfile> {
                                       Image.asset(
                                         'images/taskmate_logo_light.webp', // Replace with your image URL
                                         width: 80, // Adjust the width as needed
-                                        height: 100, // Adjust the height as needed
+                                        height:
+                                            100, // Adjust the height as needed
                                         fit: BoxFit.cover,
                                       ),
                                     ],
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 8.0), // Add spacing between the box and text
-                              Text('Project 4',
+                              SizedBox(
+                                  height:
+                                      8.0), // Add spacing between the box and text
+                              Text(
+                                'Project 3',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.grey.shade700,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(35.0, 10.0, 10.0, 10.0),
+                        child: GestureDetector(
+                          onTap: () {
+                            // Get the current user
+                            final FirebaseAuth _auth = FirebaseAuth.instance;
+                            final User? firebaseUser = _auth.currentUser;
+
+                            if (firebaseUser != null) {
+                              final String userUid = firebaseUser.uid;
+
+                              // Create a reference to the user's document
+                              final DocumentReference userDocRef =
+                                  FirebaseFirestore.instance
+                                      .collection('Users')
+                                      .doc(userUid);
+                              final DocumentReference portfolioItemDocRef =
+                                  userDocRef
+                                      .collection('portfolio_items')
+                                      .doc('4');
+
+                              // Show a confirmation dialog before deleting
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text('Delete Portfolio Item'),
+                                    content: Text(
+                                        'Are you sure you want to delete this project 4'),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context)
+                                              .pop(); // Close the confirmation dialog
+                                        },
+                                        child: Text('Cancel'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () async {
+                                          // Delete the document
+                                          await portfolioItemDocRef.delete();
+                                          Navigator.of(context)
+                                              .pop(); // Close the confirmation dialog
+                                          Navigator.of(context)
+                                              .pop(); // Close the portfolio item dialog
+                                          // Now, navigate to "ProfileFreelancer4"
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ProfileFreelancer4()),
+                                          );
+                                        },
+                                        child: Text('Delete'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+
+                              // Fetch document with ID '1' from the subcollection 'portfolio_items'
+                              userDocRef
+                                  .collection('portfolio_items')
+                                  .doc('4') // Use '4' as the document ID
+                                  .get()
+                                  .then((DocumentSnapshot documentSnapshot) {
+                                if (documentSnapshot.exists) {
+                                  final Map<String, dynamic>? data =
+                                      documentSnapshot.data()
+                                          as Map<String, dynamic>?;
+                                  final String title = data?['title'] ?? '';
+                                  final String itemDescription =
+                                      data?['item_description'] ?? '';
+                                  final List<dynamic>? imageUrls =
+                                      data?['image_urls'];
+
+                                  // Check if imageUrls is not empty
+                                  if (imageUrls != null &&
+                                      imageUrls.isNotEmpty) {
+                                    // Create a list of images for this portfolio item
+                                    List<Widget> images = [];
+
+                                    // Loop through the image URLs and add them to the list
+                                    for (var imageUrl in imageUrls) {
+                                      images.add(
+                                        Image.network(
+                                          imageUrl,
+                                          width:
+                                              100, // Adjust the width as needed
+                                          height:
+                                              100, // Adjust the height as needed
+                                          fit: BoxFit.cover,
+                                        ),
+                                      );
+                                    }
+
+                                    // Display the portfolio item in a dialog
+                                    List<Widget> imageRows = [];
+
+                                    // Calculate the number of images per row
+                                    int imagesPerRow =
+                                        2; // You can change this value to the desired number
+
+                                    // Create rows of images with spacing
+                                    for (int i = 0;
+                                        i < images.length;
+                                        i += imagesPerRow) {
+                                      List<Widget> rowChildren = [];
+
+                                      // Add images to the current row
+                                      for (int j = i;
+                                          j < i + imagesPerRow &&
+                                              j < images.length;
+                                          j++) {
+                                        rowChildren.add(
+                                          Column(
+                                            children: [
+                                              images[j],
+                                              SizedBox(height: 8.0),
+                                            ],
+                                          ),
+                                        );
+
+                                        if (j < i + imagesPerRow - 1) {
+                                          // Add spacing between images in the same row
+                                          rowChildren.add(
+                                            SizedBox(width: 16.0),
+                                          );
+                                        }
+                                      }
+
+                                      // Create a row with images and spacing
+                                      imageRows.add(
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: rowChildren,
+                                        ),
+                                      );
+                                    }
+
+                                    // Display the portfolio item in a dialog
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return Dialog(
+                                          child: Container(
+                                            width:
+                                                600, // Adjust the width as needed
+                                            padding: EdgeInsets.all(16.0),
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                image: AssetImage(
+                                                    'images/noise_image.webp'), // Add your background image here
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  title,
+                                                  style: TextStyle(
+                                                    fontSize: 18.0,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                SizedBox(height: 8.0),
+                                                Text(
+                                                    'Description: $itemDescription'),
+                                                SizedBox(height: 16.0),
+                                                // Display the rows of images
+                                                Column(
+                                                  children: imageRows,
+                                                ),
+                                                SizedBox(height: 16.0),
+                                                ElevatedButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                        kDeepBlueColor,
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20.0),
+                                                    ),
+                                                  ),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            15.0),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      children: const <Widget>[
+                                                        Text(
+                                                          'Close',
+                                                          style: TextStyle(
+                                                            color:
+                                                                kBrilliantWhite,
+                                                            fontSize: 15.0,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  }
+                                } else {
+                                  // Handle the case where the document with ID '1' does not exist
+                                }
+                              });
+                            }
+                          },
+                          child: Column(
+                            children: [
+                              Container(
+                                width: 100,
+                                height: 150,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.rectangle,
+                                  border: Border.all(
+                                      color: Colors.white, width: 2.0),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  // You can set a placeholder image here
+                                  // This will be shown until the actual image is loaded
+                                  // You can also check if 'imageUrls' is not empty and use the first URL
+                                ),
+                                child: Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image.asset(
+                                        'images/taskmate_logo_light.webp', // Replace with your image URL
+                                        width: 80, // Adjust the width as needed
+                                        height:
+                                            100, // Adjust the height as needed
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                  height:
+                                      8.0), // Add spacing between the box and text
+                              Text(
+                                'Project 4',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.grey.shade700,
@@ -1292,8 +1383,8 @@ class _EditFreelancerProfileState extends State<EditFreelancerProfile> {
 
                 SizedBox(height: 20),
                 Container(
-                  width:300,
-                  child:ElevatedButton(
+                  width: 300,
+                  child: ElevatedButton(
                     onPressed: () async {
                       // Update Firestore data with the new bio and professional role
                       await updateFirestoreData();
@@ -1302,8 +1393,9 @@ class _EditFreelancerProfileState extends State<EditFreelancerProfile> {
                         professionalRole: professionalRoleController.text,
                         hourlyRate: hourlyRateController.text,
                         profilePhotoUrl: profileImageUrl,
-                        firstName: widget.user.firstName, // Keep existing first name
-                        lastName: widget.user.lastName,
+                        firstName:
+                            'widget.user.firstName', // Keep existing first name
+                        lastName: 'widget.user.lastName',
                         email: '',
                         password: '',
                         address: '',
@@ -1318,8 +1410,8 @@ class _EditFreelancerProfileState extends State<EditFreelancerProfile> {
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
                           builder: (context) => DataDetailsScreenFreelancer(
-                            user: updatedUser,
-                            profileImageUrl: profileImageUrl,
+                            // user: updatedUser,
+                            // profileImageUrl: profileImageUrl,
                           ),
                         ),
                       );
@@ -1370,7 +1462,8 @@ class _EditFreelancerProfileState extends State<EditFreelancerProfile> {
             .update(
           {
             'bio': bioController.text, // Updated bio
-            'professionalRole': professionalRoleController.text, // Updated professional role
+            'professionalRole':
+                professionalRoleController.text, // Updated professional role
             'hourlyRate': hourlyRateController.text,
             'profilePhotoUrl': profileImageUrl,
           },
@@ -1387,12 +1480,15 @@ class _EditFreelancerProfileState extends State<EditFreelancerProfile> {
     final ImagePicker _picker = ImagePicker();
 
     try {
-      final XFile? pickedImage = await _picker.pickImage(source: ImageSource.gallery);
+      final XFile? pickedImage =
+          await _picker.pickImage(source: ImageSource.gallery);
       if (pickedImage != null) {
         String fileName = path.basename(pickedImage.path);
-        Reference firebaseStorageRef = FirebaseStorage.instance.ref().child('profile_images/$fileName');
+        Reference firebaseStorageRef =
+            FirebaseStorage.instance.ref().child('profile_images/$fileName');
 
-        UploadTask uploadTask = firebaseStorageRef.putFile(File(pickedImage.path));
+        UploadTask uploadTask =
+            firebaseStorageRef.putFile(File(pickedImage.path));
 
         await uploadTask.whenComplete(() async {
           String updatedImageUrl = await firebaseStorageRef.getDownloadURL();

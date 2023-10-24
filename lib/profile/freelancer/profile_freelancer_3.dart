@@ -119,13 +119,15 @@ class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
 
         // Use the user's UID as the Firestore document ID
         await UserRepository.instance.createUser(updatedUser, userUid);
-
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ProfileFreelancerAddphoto(user: updatedUser),
-          ),
-        );
+        if (context.mounted) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  ProfileFreelancerAddphoto(user: updatedUser),
+            ),
+          );
+        }
       } else {
         // Handle the case where the user is not authenticated
         // You may want to display an error message or redirect the user to the login page

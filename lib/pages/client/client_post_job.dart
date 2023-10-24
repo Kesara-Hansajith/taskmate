@@ -444,7 +444,7 @@ class _ClientPostJobState extends State<ClientPostJob> {
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.all(10.0),
-                              hintText: '1-7 Days',
+                              hintText: '1-12',
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide: const BorderSide(
@@ -718,6 +718,7 @@ class _ClientPostJobState extends State<ClientPostJob> {
                                       Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
                                           builder: (context) => ClientHomePage(
+                                            passedIndex: 2,
                                               // selectedIndex: 2,
                                               // client: widget.client,
                                               ),

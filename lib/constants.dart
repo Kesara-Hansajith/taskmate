@@ -16,10 +16,17 @@ const kWarningRedColor = Color(0xFFbb2124);
 
 //TextStyles for Text Patterns
 const kHeadingTextStyle = TextStyle(
-    color: kDeepBlueColor, fontSize: 32.0, fontWeight: FontWeight.bold);
+  height: 1.4,
+  color: kDeepBlueColor,
+  fontSize: 32.0,
+  fontWeight: FontWeight.bold,
+);
 
 const kSubHeadingTextStyle = TextStyle(
-    color: kDeepBlueColor, fontSize: 25.0, fontWeight: FontWeight.bold);
+  color: kDeepBlueColor,
+  fontSize: 25.0,
+  fontWeight: FontWeight.bold,
+);
 
 const kTextStyle = TextStyle(
   color: kDarkGreyColor,
