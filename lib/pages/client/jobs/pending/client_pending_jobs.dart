@@ -12,9 +12,6 @@ class ClientPendingJobs extends StatefulWidget {
 }
 
 class _ClientPendingJobsState extends State<ClientPendingJobs> {
-
-
-
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -24,7 +21,7 @@ class _ClientPendingJobsState extends State<ClientPendingJobs> {
 
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4.0,horizontal: 16.0),
+        padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
         child: SizedBox(
           width: screenWidth,
           child: StreamBuilder<QuerySnapshot>(
@@ -35,15 +32,12 @@ class _ClientPendingJobsState extends State<ClientPendingJobs> {
                   child: CircularProgressIndicator(),
                 );
               }
-
               if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
                 return const Center(
                   child: Text('No documents found.'),
                 );
               }
-
               final jobDocs = snapshot.data!.docs;
-
               return Column(
                 children: jobDocs.map<Widget>((doc) {
                   // Check if the job belongs to the current user

@@ -8,6 +8,7 @@ import 'package:taskmate/dashboard/client/invite_friends.dart';
 import 'package:taskmate/dashboard/client/profile.dart';
 import 'package:taskmate/dashboard/client/terms_conditions.dart';
 import 'package:taskmate/dashboard/client/transaction_history.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -17,6 +18,8 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  final user = FirebaseAuth.instance.currentUser;
+
   void navigateToProfile() {
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -71,6 +74,10 @@ class _DashboardState extends State<Dashboard> {
         builder: (context) => const AboutUs(),
       ),
     );
+  }
+
+  void signOut() {
+    FirebaseAuth.instance.signOut();
   }
 
   @override
@@ -129,7 +136,7 @@ class _DashboardState extends State<Dashboard> {
                         width: 5.0, // Set the border width
                       ),
                     ),
-                    child: CircleAvatar(
+                    child: const CircleAvatar(
                       backgroundImage: AssetImage(
                         'images/blank_profile.webp',
                       ),
@@ -144,11 +151,10 @@ class _DashboardState extends State<Dashboard> {
                     'Good Morning!',
                     style: kJobCardTitleTextStyle.copyWith(color: kAmberColor),
                   ),
-                  Text(
+                  const Text(
                     'Nimali Ihalagama',
                     style: kSubHeadingTextStyle,
                   ),
-
                 ],
               ),
               DashboardItem(
@@ -195,9 +201,7 @@ class _DashboardState extends State<Dashboard> {
                 function: navigateToAboutUs,
               ),
               TextButton(
-                onPressed: () {
-                  //TODO Implement streams and sign out process
-                },
+                onPressed: signOut,
                 child: Text(
                   'Logout',
                   style: kJobCardTitleTextStyle.copyWith(

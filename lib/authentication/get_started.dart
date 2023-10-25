@@ -43,7 +43,7 @@ class _GetStartedState extends State<GetStarted> {
       if (context.mounted) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (context) => const RootPage(),
+            builder: (context) => const SignUp(),
           ),
         );
       }
@@ -161,7 +161,7 @@ class _GetStartedState extends State<GetStarted> {
                                 //"Sign Up" button will goes here
                                 TextButton(
                                   onPressed: () {
-                                    Navigator.of(context).pushReplacement(
+                                    Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) => const SignUp(),
                                       ),

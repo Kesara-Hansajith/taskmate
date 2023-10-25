@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:taskmate/bottom_nav_bar/client/client_posted_home_screen_jobs.dart';
 import 'package:taskmate/components/client/post_a_job.dart';
 import 'package:taskmate/constants.dart';
 // import 'package:taskmate/profile/client/user_model1.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:taskmate/pages/client/jobs/pending/client_pending_job_card.dart';
 
 class ClientPosted extends StatefulWidget {
   const ClientPosted({
@@ -21,6 +23,7 @@ class _ClientPostedState extends State<ClientPosted> {
 
   @override
   Widget build(BuildContext context) {
+    String? userUid = FirebaseAuth.instance.currentUser?.uid;
     double screenWidth = MediaQuery.of(context).size.width;
 
     return SafeArea(
@@ -53,11 +56,7 @@ class _ClientPostedState extends State<ClientPosted> {
                       'First Name Last Name',
                       style: kSubHeadingTextStyle,
                     ),
-                    (isJobsAvailable)
-                        ? const ClientPostedHomeScreenJobs()
-                        : const PostAJob(
-                            // client: widget.client,
-                            ),
+                    PostAJob(),
                   ],
                 ),
               ),

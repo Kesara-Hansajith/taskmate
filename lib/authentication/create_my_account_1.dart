@@ -5,9 +5,12 @@ import 'package:taskmate/authentication/verify_email.dart';
 import 'package:taskmate/classes/cus_snackbar.dart';
 import 'package:taskmate/components/bottom_sub_text.dart';
 import 'package:taskmate/components/dark_main_button.dart';
+import 'package:taskmate/components/maintenance_page.dart';
 import 'package:taskmate/constants.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:taskmate/components/snackbar.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
 class CreateMyAccount1 extends StatefulWidget {
   const CreateMyAccount1({super.key});
@@ -130,6 +133,21 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
     } catch (e) {
       //Ignored catch block
     }
+  }
+
+  Future<void> _showMarkdownDialog(BuildContext context) async {
+    String markdownContent = await rootBundle.loadString('assets/11.md');
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Terms and Conditions'),
+          content: SingleChildScrollView(
+            child: Markdown(data: markdownContent),
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -288,42 +306,85 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
                           },
                           activeColor: kDeepBlueColor,
                         ),
-                        title: RichText(
-                          text: TextSpan(
-                            children: <TextSpan>[
-                              TextSpan(
-                                text: 'I have read and agree to TaskMate’s',
-                                style: kTextStyle.copyWith(
-                                  fontFamily: 'Poppins',
-                                  fontSize: 15,
-                                ),
+                        title: Wrap(
+                          children: [
+                            Text(
+                              'I have read and agree to TaskMate’s',
+                              style: kTextStyle.copyWith(
+                                fontFamily: 'Poppins',
+                                fontSize: 15,
                               ),
-                              TextSpan(
-                                text: ' Term of Service ',
-                                style: kTextStyle.copyWith(
-                                  color: kDeepBlueColor,
-                                  fontFamily: 'Poppins',
-                                  fontSize: 15,
-                                ),
-                              ),
-                              TextSpan(
-                                text: 'and ',
-                                style: kTextStyle.copyWith(
-                                  fontFamily: 'Poppins',
-                                  fontSize: 15,
-                                ),
-                              ),
-                              TextSpan(
-                                text: 'Privacy Policy.',
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                _showMarkdownDialog(context);
+                              },
+                              child: Text(
+                                'Term of Service',
                                 style: kTextStyle.copyWith(
                                   color: kDeepBlueColor,
                                   fontFamily: 'Poppins',
                                   fontSize: 15,
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                            Text(
+                              ' and',
+                              style: kTextStyle.copyWith(
+                                fontFamily: 'Poppins',
+                                fontSize: 15,
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {},
+                              child: Text(
+                                ' Privacy Policy',
+                                style: kTextStyle.copyWith(
+                                  color: kDeepBlueColor,
+                                  fontFamily: 'Poppins',
+                                  fontSize: 15,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
+                        // RichText(
+                        //   text: TextSpan(
+                        //     children: [
+                        //       TextSpan(
+                        //         text: 'I have read and agree to TaskMate’s',
+                        //         style: kTextStyle.copyWith(
+                        //           fontFamily: 'Poppins',
+                        //           fontSize: 15,
+                        //         ),
+                        //       ),
+                        //       TextButton(onPressed: (){}, child: Text('Term of Service'),),
+                        //       // TextSpan(
+                        //       //   text: ' Term of Service ',
+                        //       //   style: kTextStyle.copyWith(
+                        //       //     color: kDeepBlueColor,
+                        //       //     fontFamily: 'Poppins',
+                        //       //     fontSize: 15,
+                        //       //   ),
+                        //       // ),
+                        //       TextSpan(
+                        //         text: 'and ',
+                        //         style: kTextStyle.copyWith(
+                        //           fontFamily: 'Poppins',
+                        //           fontSize: 15,
+                        //         ),
+                        //       ),
+                        //       TextSpan(
+                        //         text: 'Privacy Policy.',
+                        //         style: kTextStyle.copyWith(
+                        //           color: kDeepBlueColor,
+                        //           fontFamily: 'Poppins',
+                        //           fontSize: 15,
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
                       ),
                     ),
                     Padding(

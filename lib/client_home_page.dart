@@ -3,9 +3,9 @@ import 'package:taskmate/bottom_nav_bar/client/client_account.dart';
 // import 'package:taskmate/client_dashboard/Dashboard.dart';
 import 'package:taskmate/bottom_nav_bar/client/client_job_status.dart';
 import 'package:taskmate/bottom_nav_bar/client/client_messaging.dart';
-import 'package:taskmate/bottom_nav_bar/client/client_posted.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:taskmate/dashboard/client/dashboard.dart';
+import 'package:taskmate/bottom_nav_bar/client/client_posted.dart';
 
 class ClientHomePage extends StatefulWidget {
   int passedIndex;
@@ -40,10 +40,12 @@ class _ClientHomePageState extends State<ClientHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth=MediaQuery.of(context).size.width;
     // int selectedIndex=widget.passedIndex;
     return SafeArea(
       child: Scaffold(
         bottomNavigationBar: Container(
+          width: screenWidth,
           decoration: const BoxDecoration(
             image: DecorationImage(
               fit: BoxFit.cover,
