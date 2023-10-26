@@ -27,6 +27,7 @@ class _ClientPendingJobsState extends State<ClientPendingJobs> {
           child: StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance.collection('jobs').snapshots(),
             builder: (context, snapshot) {
+
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(
                   child: CircularProgressIndicator(),
@@ -38,6 +39,7 @@ class _ClientPendingJobsState extends State<ClientPendingJobs> {
                 );
               }
               final jobDocs = snapshot.data!.docs;
+
               return Column(
                 children: jobDocs.map<Widget>((doc) {
                   // Check if the job belongs to the current user

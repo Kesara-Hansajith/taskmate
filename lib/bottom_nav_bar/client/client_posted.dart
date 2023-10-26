@@ -20,6 +20,28 @@ class ClientPosted extends StatefulWidget {
 
 class _ClientPostedState extends State<ClientPosted> {
   final bool isJobsAvailable = true;
+  // String fName='';
+  // String lName='';
+
+  Future<Map<String,dynamic>> fetchData() async {
+    // Define the Firestore collection, document ID, and fields you want to retrieve.
+    final DocumentSnapshot document = await FirebaseFirestore.instance
+        .collection('Clients') // Replace with your collection name
+        .doc('NBZQvJP2WGW4egCxUkT5U6sLsOh1') // Replace with the ID of the specific document
+        .get();
+
+    // Access the data within the document.
+    final Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+    // print('isDocumentexit ${data['firstName'].toString()}');
+    // Retrieve specific fields and store them in your variables.
+
+    // setState(() {
+    //   fName = data['firstName'].toString();
+    //   lName = data['lastName'].toString();
+    // });
+   return data;
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -52,10 +74,18 @@ class _ClientPostedState extends State<ClientPosted> {
                       style: kJobCardTitleTextStyle.copyWith(
                           color: kDarkGreyColor),
                     ),
-                    const Text(
-                      'First Name Last Name',
-                      style: kSubHeadingTextStyle,
-                    ),
+                     FutureBuilder(future:fetchData() ,builder: (context,snapshot){
+                       if(snapshot.hasData){
+                         return Text(
+                           '${snapshot.data?['firstName']}',
+                           style: kSubHeadingTextStyle,
+                         );
+                       }else{
+                         return CircularProgressIndicator()
+;                       }
+
+                     }),
+
                     PostAJob(),
                   ],
                 ),

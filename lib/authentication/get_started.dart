@@ -41,7 +41,7 @@ class _GetStartedState extends State<GetStarted> {
     if (connectivityResult == ConnectivityResult.mobile ||
         connectivityResult == ConnectivityResult.wifi) {
       if (context.mounted) {
-        Navigator.of(context).pushReplacement(
+        Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => const SignUp(),
           ),

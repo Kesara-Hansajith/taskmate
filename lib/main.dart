@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/services.dart';
+import 'package:taskmate/constants.dart';
 import 'package:get/get.dart';
 import 'package:taskmate/bottom_nav_bar/freelancer/proposals.dart';
 
@@ -53,6 +55,12 @@ import 'pages/freelancer/proposals/active_jobs_pages/active_job_details.dart';
 //import 'package:taskmate/verify_identity.dart';
 
 void main() async {
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle(
+      //systemNavigationBarColor: Colors.blue, // navigation bar color
+      statusBarColor: kDeepBlueColor, //
+    ),
+  );
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

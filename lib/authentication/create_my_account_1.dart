@@ -143,7 +143,9 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
         return AlertDialog(
           title: Text('Terms and Conditions'),
           content: SingleChildScrollView(
-            child: Markdown(data: markdownContent),
+            child: Markdown(
+              data: markdownContent,
+            ),
           ),
         );
       },
