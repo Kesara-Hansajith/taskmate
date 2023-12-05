@@ -8,7 +8,25 @@ import 'package:taskmate/dashboard/freelancer/dashboard.dart';
 import 'package:taskmate/dashboard/freelancer/edit_profile.dart';
 
 class BiddedFreelancerProfile extends StatefulWidget {
-  const BiddedFreelancerProfile({super.key});
+  final String freelancerName;
+  final String skills;
+  final String profilePhotoUrl;
+  final String Level;
+  final String professionalRole;
+  final String bio;
+  final String hourlyRate;
+
+   BiddedFreelancerProfile({
+    Key? key,
+    required this.freelancerName,
+    required this.skills,
+    required this.profilePhotoUrl,
+     required this.Level,
+     required this.professionalRole,
+     required this.bio,
+     required this.hourlyRate,
+  }) : super(key: key);
+
 
   @override
   State<BiddedFreelancerProfile> createState() =>
@@ -131,9 +149,9 @@ class _BiddedFreelancerProfileState extends State<BiddedFreelancerProfile> {
                       ),
                     ),
                     child: CircleAvatar(
-                      backgroundImage: AssetImage(
-                        'images/blank_profile.webp',
-                      ),
+                      backgroundImage: widget.profilePhotoUrl.isNotEmpty
+                          ? NetworkImage(widget.profilePhotoUrl) as ImageProvider<Object> // Explicitly specify the type
+                          : AssetImage('images/blank_profile.webp') as ImageProvider<Object>, // Explicitly specify the type
                       radius: 40,
                     ),
                   ),
@@ -142,17 +160,17 @@ class _BiddedFreelancerProfileState extends State<BiddedFreelancerProfile> {
               Column(
                 children: [
                   Text(
-                    'Kesara Hansajith',
+                    widget.freelancerName,
                     style: kSubHeadingTextStyle,
                   ),
                   Text(
-                    'Top Level Freelancer',
+                    widget.Level,
                     style: kTextStyle.copyWith(color: kOceanBlueColor),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: Text(
-                      'Professional Role - Logo Designer | Digital Artist | Graphic Designer ',
+                      'Professional Role - ${widget.professionalRole}',
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -166,15 +184,15 @@ class _BiddedFreelancerProfileState extends State<BiddedFreelancerProfile> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 10.0),
-                          child: const UserDataGatherTitle(
-                            title: 'Hourly Rate : LKR. 1000',
+                          child:  UserDataGatherTitle(
+                            title: 'Hourly Rate : LKR.${widget.hourlyRate}',
                           ),
                         ),
                         const UserDataGatherTitle(title: 'Overview'),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20.0),
                           child: Text(
-                            'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. ',
+                            widget.bio,
                             style: kTextStyle,
                           ),
                         ),

@@ -358,7 +358,7 @@ class _JobDetailsState extends State<JobDetails> {
                       CollectionReference jobsNewCollection = FirebaseFirestore
                           .instance
                           .collection('jobs')
-                          .doc('flTmsaTmbVRspfnjf7FnPccq8XK2')
+                          .doc('b6BxxPQonXNOBYQRDSMtn2Rkqyc2')
                           .collection('jobsnew')
                           .doc(widget.mostjobDoc.id)
                           .collection('bidsjobs');
@@ -371,7 +371,7 @@ class _JobDetailsState extends State<JobDetails> {
                       CollectionReference bidsJobsCollection = FirebaseFirestore
                           .instance
                           .collection('jobs') // Use your actual collection name
-                          .doc('flTmsaTmbVRspfnjf7FnPccq8XK2')
+                          .doc('b6BxxPQonXNOBYQRDSMtn2Rkqyc2')
                           .collection('jobsnew')
                           .doc(widget.mostjobDoc.id)
                           .collection('bidsjobs');

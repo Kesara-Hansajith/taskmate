@@ -40,10 +40,19 @@ class BiddedFreelancerCard extends StatelessWidget {
 
         if (userData == null) {
           // Handle the case where user data is null (document doesn't exist)
-          return Text('User not found');
+          return Text('');
         }
 
-        final String freelancerName = userData['firstName'] ?? 'Freelancer Name'; // Provide a default value
+        final String firstName = userData['firstName'] ?? '';
+        final String lastName = userData['lastName'] ?? '';
+        final String freelancerName = (firstName + ' ' + lastName).trim().isEmpty ? 'Freelancer Name' : (firstName + ' ' + lastName).trim();
+
+        final String skills = userData['skills'] ?? '';
+        final String profilePhotoUrl = userData['profilePhotoUrl'] ?? ''; // Add this line to get the profile photo URL
+        final String Level = userData['Level'] ?? '';
+        final String professionalRole = userData['professionalRole'] ?? '';
+        final String bio = userData['bio'] ?? '';
+        final String hourlyRate = userData['hourlyRate'] ?? '';
 
         return InkWell(
           onTap: () {
@@ -55,6 +64,13 @@ class BiddedFreelancerCard extends StatelessWidget {
                   delivery: bidData['delivery'] ?? 'delivery',
                   jobTitle: jobTitle,
                   pendingJobDoc: pendingjobDoc,
+                  freelancerName: freelancerName, // Pass freelancerName
+                  skills: skills,
+                  profilePhotoUrl: profilePhotoUrl,
+                  Level: Level,
+                  professionalRole: professionalRole,
+                  bio: bio,
+                  hourlyRate: hourlyRate,
                 ),
               ),
             );
@@ -74,7 +90,9 @@ class BiddedFreelancerCard extends StatelessWidget {
                     Expanded(
                       flex: 2,
                       child: CircleAvatar(
-                        backgroundImage: AssetImage('images/blank_profile.webp'),
+                        backgroundImage: profilePhotoUrl.isNotEmpty
+                            ? NetworkImage(profilePhotoUrl) as ImageProvider<Object> // Explicitly specify the type
+                            : AssetImage('images/blank_profile.webp') as ImageProvider<Object>, // Explicitly specify the type
                         radius: 35.0,
                       ),
                     ),
