@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:taskmate/components/attachment_card.dart';
 import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/components/freelancer/user_data_gather_title.dart';
@@ -7,7 +9,8 @@ import 'package:taskmate/constants.dart';
 import 'package:taskmate/dashboard/client/edit_profile.dart';
 
 class Profile extends StatefulWidget {
-  const Profile({super.key});
+  const Profile({super.key,});
+
 
   @override
   State<Profile> createState() => _ProfileState();
@@ -24,6 +27,17 @@ class _ProfileState extends State<Profile> {
 
   void _navigateToBackward() {
     Navigator.of(context).pop();
+  }
+
+  Future<Map<String, dynamic>> fetchData() async {
+    // Define the Firestore collection, document ID, and fields you want to retrieve.
+    final DocumentSnapshot document = await FirebaseFirestore.instance
+        .collection('Clients')
+        .doc('NBZQvJP2WGW4egCxUkT5U6sLsOh1')
+        .get();
+
+    final Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+    return data;
   }
 
   @override
@@ -100,11 +114,23 @@ class _ProfileState extends State<Profile> {
                         width: 5.0, // Set the border width
                       ),
                     ),
-                    child: CircleAvatar(
-                      backgroundImage: AssetImage(
-                        'images/blank_profile.webp',
-                      ),
-                      radius: 40,
+                    child: FutureBuilder(
+                      future: fetchData(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return CircleAvatar(
+                            backgroundImage: NetworkImage(
+                              '${snapshot.data?['profilePhotoUrl']}',
+                            ),
+                            radius: 40,
+                          );
+                        } else {
+                          return const SpinKitFadingCircle(
+                            color: kDeepBlueColor,
+                            size: 30.0,
+                          );
+                        }
+                      },
                     ),
                   ),
                 ],
@@ -113,9 +139,21 @@ class _ProfileState extends State<Profile> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      'Nimali Ihalagama',
-                      style: kSubHeadingTextStyle,
+                    FutureBuilder(
+                      future: fetchData(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return Text(
+                            '${snapshot.data?['firstName']} ${snapshot.data?['lastName']}',
+                            style: kSubHeadingTextStyle,
+                          );
+                        } else {
+                          return SpinKitThreeBounce(
+                            color: kDeepBlueColor,
+                            size: 30.0,
+                          );
+                        }
+                      },
                     ),
                   ],
                 ),

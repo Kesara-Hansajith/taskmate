@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:taskmate/authentication/get_started.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/components/dashboard_item.dart';
 import 'package:taskmate/dashboard/client/about_us.dart';
@@ -19,6 +22,7 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   final user = FirebaseAuth.instance.currentUser;
+  late String compliment;
 
   void navigateToProfile() {
     Navigator.of(context).push(
@@ -77,7 +81,48 @@ class _DashboardState extends State<Dashboard> {
   }
 
   void signOut() {
-    FirebaseAuth.instance.signOut();
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const GetStarted(),
+      ),
+    );
+  }
+
+  void updateCompliment() {
+    final currentTime = DateTime.now();
+    final hour = currentTime.hour;
+    // final dayFormat = DateFormat('EEEE');
+    // final dateFormat = DateFormat('MMM dd, yyyy');
+    setState(() {
+      compliment = getCompliment(hour);
+    });
+  }
+
+  String getCompliment(int hour) {
+    if (hour >= 5 && hour < 12) {
+      return 'Good Morning!';
+    } else if (hour >= 12 && hour < 17) {
+      return 'Good Afternoon!';
+    } else {
+      return 'Good Evening!';
+    }
+  }
+
+  Future<Map<String, dynamic>> fetchData() async {
+    // Define the Firestore collection, document ID, and fields you want to retrieve.
+    final DocumentSnapshot document = await FirebaseFirestore.instance
+        .collection('Clients')
+        .doc('NBZQvJP2WGW4egCxUkT5U6sLsOh1')
+        .get();
+
+    final Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+    return data;
+  }
+
+  @override
+  void initState() {
+    updateCompliment();
+    super.initState();
   }
 
   @override
@@ -136,24 +181,48 @@ class _DashboardState extends State<Dashboard> {
                         width: 5.0, // Set the border width
                       ),
                     ),
-                    child: const CircleAvatar(
-                      backgroundImage: AssetImage(
-                        'images/blank_profile.webp',
-                      ),
-                      radius: 40,
+                    child: FutureBuilder(
+                      future: fetchData(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return CircleAvatar(
+                            backgroundImage: NetworkImage(
+                              '${snapshot.data?['profilePhotoUrl']}',
+                            ),
+                            radius: 40,
+                          );
+                        } else {
+                          return const SpinKitFadingCircle(
+                            color: kDeepBlueColor,
+                            size: 30.0,
+                          );
+                        }
+                      },
                     ),
                   ),
                 ],
               ),
               Column(
-                children: <Text>[
+                children: [
                   Text(
-                    'Good Morning!',
+                    compliment,
                     style: kJobCardTitleTextStyle.copyWith(color: kAmberColor),
                   ),
-                  const Text(
-                    'Nimali Ihalagama',
-                    style: kSubHeadingTextStyle,
+                  FutureBuilder(
+                    future: fetchData(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Text(
+                          '${snapshot.data?['firstName']} ${snapshot.data?['lastName']}',
+                          style: kSubHeadingTextStyle,
+                        );
+                      } else {
+                        return const SpinKitThreeBounce(
+                          color: kDeepBlueColor,
+                          size: 30.0,
+                        );
+                      }
+                    },
                   ),
                 ],
               ),

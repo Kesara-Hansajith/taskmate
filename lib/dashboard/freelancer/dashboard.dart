@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:taskmate/authentication/get_started.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/components/dashboard_item.dart';
 import 'package:taskmate/dashboard/freelancer/about_us.dart';
@@ -69,6 +70,14 @@ class _DashboardState extends State<Dashboard> {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => const AboutUs(),
+      ),
+    );
+  }
+
+  void signOut() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const GetStarted(),
       ),
     );
   }
@@ -198,9 +207,7 @@ class _DashboardState extends State<Dashboard> {
                 function: navigateToAboutUs,
               ),
               TextButton(
-                onPressed: () {
-                  //TODO Implement streams and sign out process
-                },
+                onPressed: signOut,
                 child: Text(
                   'Logout',
                   style: kJobCardTitleTextStyle.copyWith(

@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/components/freelancer/user_data_gather_title.dart';
 import 'package:taskmate/components/light_main_button.dart';
@@ -47,6 +49,17 @@ class _EditProfileState extends State<EditProfile> {
   //   professionalRoleController.dispose();
   //   super.dispose();
   // }
+
+  Future<Map<String, dynamic>> fetchData() async {
+    // Define the Firestore collection, document ID, and fields you want to retrieve.
+    final DocumentSnapshot document = await FirebaseFirestore.instance
+        .collection('Clients')
+        .doc('NBZQvJP2WGW4egCxUkT5U6sLsOh1')
+        .get();
+
+    final Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+    return data;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -127,11 +140,23 @@ class _EditProfileState extends State<EditProfile> {
                             width: 5.0, // Set the border width
                           ),
                         ),
-                        child: CircleAvatar(
-                          backgroundImage: AssetImage(
-                            'images/blank_profile.webp',
-                          ),
-                          radius: 40,
+                        child: FutureBuilder(
+                          future: fetchData(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return CircleAvatar(
+                                backgroundImage: NetworkImage(
+                                  '${snapshot.data?['profilePhotoUrl']}',
+                                ),
+                                radius: 40,
+                              );
+                            } else {
+                              return const SpinKitFadingCircle(
+                                color: kDeepBlueColor,
+                                size: 30.0,
+                              );
+                            }
+                          },
                         ),
                       ),
                       Positioned(
@@ -165,9 +190,21 @@ class _EditProfileState extends State<EditProfile> {
                     //   style:
                     //       kJobCardTitleTextStyle.copyWith(color: kAmberColor),
                     // ),
-                    Text(
-                      'Nimali Ihalagama',
-                      style: kSubHeadingTextStyle,
+                    FutureBuilder(
+                      future: fetchData(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return Text(
+                            '${snapshot.data?['firstName']} ${snapshot.data?['lastName']}',
+                            style: kSubHeadingTextStyle,
+                          );
+                        } else {
+                          return SpinKitThreeBounce(
+                            color: kDeepBlueColor,
+                            size: 30.0,
+                          );
+                        }
+                      },
                     ),
 
                     const SizedBox(

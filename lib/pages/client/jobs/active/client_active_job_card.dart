@@ -6,15 +6,13 @@ import 'package:taskmate/constants.dart';
 import 'package:taskmate/pages/client/jobs/active/client_active_job_details.dart';
 
 class ClientActiveJobCard extends StatefulWidget {
-
-   ClientActiveJobCard({
+  ClientActiveJobCard({
     // required this.documentID,
-     Key? key,
-     required this.activeJobDoc,
-   }) : super(key: key);
+    Key? key,
+    required this.activeJobDoc,
+  }) : super(key: key);
 
-
-   final QueryDocumentSnapshot activeJobDoc;
+  final QueryDocumentSnapshot activeJobDoc;
   // final String documentID;
 
   @override
@@ -22,8 +20,6 @@ class ClientActiveJobCard extends StatefulWidget {
 }
 
 class _ClientActiveJobCardState extends State<ClientActiveJobCard> {
-
-
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -51,26 +47,28 @@ class _ClientActiveJobCardState extends State<ClientActiveJobCard> {
       DateTime createdAtDateTime = createdAtTimestamp.toDate();
       createdAt = DateFormat('yyyy-MM-dd HH:mm:ss').format(createdAtDateTime);
     }
-    String imageUrl1 = subData['imageUrl1'] ?? ''; // Replace 'imageUrl1' with the actual field name
-    String imageUrl2 = subData['imageUrl2'] ?? ''; // Replace 'imageUrl2' with the actual field name
+    String imageUrl1 = subData['imageUrl1'] ??
+        ''; // Replace 'imageUrl1' with the actual field name
+    String imageUrl2 = subData['imageUrl2'] ??
+        ''; // Replace 'imageUrl2' with the actual field name
     String imageUrl3 = subData['imageUrl3'] ?? '';
     String imageUrl4 = subData['imageUrl4'] ?? '';
-
 
     return InkWell(
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => ClientActiveJobDetails(jobTitle: jobTitle, // Pass the jobTitle
+            builder: (context) => ClientActiveJobDetails(
+              jobTitle: jobTitle, // Pass the jobTitle
               budgetField: budget, // Pass the budget
-              jobDescription : jobDescription,
-              activeJobDoc : widget.activeJobDoc,
+              jobDescription: jobDescription,
+              activeJobDoc: widget.activeJobDoc,
               image1Url: imageUrl1, // Pass the URL of image1
               image2Url: imageUrl2, // Pass the URL of image2),
               image3Url: imageUrl3,
               image4Url: imageUrl4,
               createdAt: createdAt, // Pass the createdAt value
-          ),
+            ),
           ),
         );
       },
@@ -113,7 +111,7 @@ class _ClientActiveJobCardState extends State<ClientActiveJobCard> {
                   'Budget LKR.${budget.toString()}',
                   style: kJobCardDescriptionTextStyle,
                 ),
-                 Text(
+                Text(
                   createdAt,
                   style: kJobCardDescriptionTextStyle,
                 ),
@@ -123,6 +121,5 @@ class _ClientActiveJobCardState extends State<ClientActiveJobCard> {
         ),
       ),
     );
-    
   }
 }
