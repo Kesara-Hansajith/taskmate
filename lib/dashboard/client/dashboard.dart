@@ -31,6 +31,7 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   final user = FirebaseAuth.instance.currentUser;
+  final userUid=FirebaseAuth.instance.currentUser.uid;
   late String compliment;
 
   void navigateToProfile() {
