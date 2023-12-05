@@ -86,7 +86,6 @@ class _BiddedFreelancersState extends State<BiddedFreelancers> {
                     if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
                     }
-
                     // Process and display your data here
                     List<QueryDocumentSnapshot> bidDocuments = snapshot.data!.docs;
 
