@@ -12,6 +12,7 @@ import 'package:taskmate/dashboard/client/profile.dart';
 import 'package:taskmate/dashboard/client/terms_conditions.dart';
 import 'package:taskmate/dashboard/client/transaction_history.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:kommunicate_flutter/kommunicate_flutter.dart';
 
 import '../../profile/client/user_model1.dart';
 
@@ -30,7 +31,9 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  // final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  final user = FirebaseAuth.instance.currentUser;
+  // final userUid=FirebaseAuth.instance.currentUser.uid;
   late String compliment;
   String userId = '';
 
@@ -302,7 +305,16 @@ class _DashboardState extends State<Dashboard> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            //TODO AI Chatbot
+            dynamic conversationObject = {
+              'appId': '47c5588bfd2fbc504ad1b4d294b8a375',// The [APP_ID](https://dashboard.kommunicate.io/settings/install) obtained from kommunicate dashboard.
+            };
+
+            KommunicateFlutterPlugin.buildConversation(conversationObject)
+                .then((clientConversationId) {
+              print("Conversation builder success : " + clientConversationId.toString());
+            }).catchError((error) {
+              print("Conversation builder error : " + error.toString());
+            });
           },
           backgroundColor: kDeepBlueColor,
           child: const Icon(Icons.help),
