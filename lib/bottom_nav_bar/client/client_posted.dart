@@ -10,7 +10,11 @@ import 'package:taskmate/pages/client/jobs/pending/client_pending_job_card.dart'
 class ClientPosted extends StatefulWidget {
   const ClientPosted({
     super.key,
+
+     // required this.client,
   });
+
+   // final UserModel1 client; // Add this line
 
   @override
   State<ClientPosted> createState() => _ClientPostedState();
@@ -153,6 +157,7 @@ class _ClientPostedState extends State<ClientPosted> {
                               ),
                             ),
                           ],
+
                         ),
                       )
                     : const PostAJob(),

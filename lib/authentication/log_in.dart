@@ -16,8 +16,14 @@ import 'package:taskmate/freelancer_home_page.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../profile/client/user_model1.dart';
+
 class Login extends StatefulWidget {
-  const Login({super.key});
+  // final UserModel1 client;
+
+  const Login({
+    super.key,
+  });
 
   @override
   State<Login> createState() => _LoginState();

@@ -20,6 +20,8 @@ class VerifyIdentity extends StatefulWidget {
 }
 
 class _VerifyIdentityState extends State<VerifyIdentity> {
+
+
   bool isIDSubmitted = false;
   bool isPhotoSubmitted = false;
   bool isLoading = false;

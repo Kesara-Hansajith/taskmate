@@ -37,6 +37,8 @@ class _ProfileFreelancer2State extends State<ProfileFreelancer2> {
   final TextEditingController servicesController = TextEditingController();
   final TextEditingController hourlyrateController = TextEditingController();
   final TextEditingController levelController = TextEditingController();
+  final TextEditingController verifyController = TextEditingController();
+
 
   String? profileImageUrl;
   String? selectedGender;
@@ -77,6 +79,7 @@ class _ProfileFreelancer2State extends State<ProfileFreelancer2> {
         email: widget.user.email,
         password: widget.user.password,
         professionalRole: widget.user.professionalRole,
+        verify: widget.user.verify,
       );
       final FirebaseAuth _auth = FirebaseAuth.instance;
       final User? firebaseUser = _auth.currentUser;

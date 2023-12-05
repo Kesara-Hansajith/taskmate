@@ -133,6 +133,7 @@ class _ProfileClientAddphotoState extends State<ProfileClientAddphoto> {
           MaterialPageRoute(
             builder: (context) => ClientHomePage(
               passedIndex: 1,
+
                 // client: widget.client,
                 // downloadUrl: downloadUrl,
                 // selectedIndex: 1,

@@ -34,8 +34,7 @@ class _ProfileFreelancerState extends State<ProfileFreelancer> {
   final TextEditingController birthdayController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController professionalroleController =
-      TextEditingController();
+  final TextEditingController professionalroleController = TextEditingController();
   final TextEditingController genderController = TextEditingController();
   final TextEditingController servicesController = TextEditingController();
   final TextEditingController hourlyrateController = TextEditingController();
@@ -44,6 +43,7 @@ class _ProfileFreelancerState extends State<ProfileFreelancer> {
   final TextEditingController imageurl3Controller = TextEditingController();
   final TextEditingController titleController = TextEditingController();
   final TextEditingController itemdesController = TextEditingController();
+  final TextEditingController verifyController = TextEditingController();
 
   String existingUserId = 'your_existing_user_id';
   String? profileImageUrl;
@@ -236,6 +236,7 @@ class _ProfileFreelancerState extends State<ProfileFreelancer> {
         city: cityController.text.trim(),
         phoneNo: phoneController.text.trim(),
         profilePhotoUrl: profileImageUrl,
+        verify: '',
       );
       // Get the authenticated user's UID
       final FirebaseAuth _auth = FirebaseAuth.instance;

@@ -110,6 +110,7 @@ class _ProfileFreelancer3State extends State<ProfileFreelancer3> {
         password: widget.user.password,
         professionalRole: widget.user.professionalRole,
         sociallink: sociallinkController.text,
+        verify: widget.user.verify,
       );
       final FirebaseAuth _auth = FirebaseAuth.instance;
       final User? firebaseUser = _auth.currentUser;

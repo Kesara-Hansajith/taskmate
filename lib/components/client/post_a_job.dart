@@ -6,11 +6,11 @@ import 'package:taskmate/profile/client/user_model1.dart';
 
 class PostAJob extends StatefulWidget {
   const PostAJob({
-    // required this.client,
+     // required this.client,
     super.key,
   });
 
-  // final UserModel1 client;
+   // final UserModel1 client;
 
   @override
   State<PostAJob> createState() => _PostAJobState();
@@ -63,6 +63,7 @@ class _PostAJobState extends State<PostAJob> {
             },
             screenWidth: screenWidth,
           ),
+
         ],
       ),
     );
