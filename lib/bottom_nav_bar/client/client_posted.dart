@@ -11,10 +11,10 @@ class ClientPosted extends StatefulWidget {
   const ClientPosted({
     super.key,
 
-     // required this.client,
+    // required this.client,
   });
 
-   // final UserModel1 client; // Add this line
+  // final UserModel1 client; // Add this line
 
   @override
   State<ClientPosted> createState() => _ClientPostedState();
@@ -22,15 +22,17 @@ class ClientPosted extends StatefulWidget {
 
 class _ClientPostedState extends State<ClientPosted> {
   bool isJobsAvailable = true;
+  String userId = '';
 
   Future<Map<String, dynamic>> fetchData() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    userId = user!.uid;
     // Define the Firestore collection, document ID, and fields you want to retrieve.
     final DocumentSnapshot document = await FirebaseFirestore.instance
         .collection('Clients')
-        .doc('NBZQvJP2WGW4egCxUkT5U6sLsOh1')
+        .doc(userId)
         .get();
 
-    // Access the data within the document.
     final Map<String, dynamic> data = document.data() as Map<String, dynamic>;
     return data;
   }
@@ -52,17 +54,17 @@ class _ClientPostedState extends State<ClientPosted> {
 
   @override
   void initState() {
-    if (FirebaseFirestore.instance
-            .collection('jobs')
-            .doc('49tc6QmGVxgxZGxwjk8ArXJkPnw1')
-            .collection('jobsnew')
-            .where('status', isEqualTo: 'new')
-            .get() ==
-        0) {
-      setState(() {
-        isJobsAvailable = false;
-      });
-    }
+    // if (FirebaseFirestore.instance
+    //         .collection('jobs')
+    //         .doc(userId)
+    //         .collection('jobsnew')
+    //         .where('status', isEqualTo: 'new')
+    //         .get() ==
+    //     0) {
+    //   setState(() {
+    //     isJobsAvailable = false;
+    //   });
+    // }
     super.initState;
   }
 
@@ -109,58 +111,60 @@ class _ClientPostedState extends State<ClientPosted> {
                     }
                   },
                 ),
-                isJobsAvailable == true
-                    ? Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text('Your Posting'),
-                            const Divider(),
-                            Expanded(
-                              child: StreamBuilder<
-                                  QuerySnapshot<Map<String, dynamic>>>(
-                                stream: FirebaseFirestore.instance
-                                    .collection('jobs')
-                                    .doc('49tc6QmGVxgxZGxwjk8ArXJkPnw1')
-                                    .collection('jobsnew')
-                                    .where('status', isEqualTo: 'new')
-                                    .snapshots(),
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return const Center(
-                                      child: CircularProgressIndicator(),
-                                    );
-                                  }
-                                  if (!snapshot.hasData ||
-                                      snapshot.data!.docs.isEmpty) {
-                                    setState(() {
-                                      isJobsAvailable = false;
-                                    });
-                                    //   const Center(
-                                    //   child: Text('Hmm! You\'ve no any pending Jobs!'),
-                                    // );
-                                  }
-                                  final jobDocs = snapshot.data!.docs;
-                                  return ListView.builder(
-                                    itemCount: jobDocs.length,
-                                    itemBuilder: (context, index) {
-                                      final document = jobDocs[index];
-                                      final docId = document.id;
-                                      final data = document.data()
-                                          as Map<String, dynamic>;
-                                      return ClientPendingJobCard(
-                                          pendingjobDoc: jobDocs[index]);
-                                    },
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
-
-                        ),
-                      )
-                    : const PostAJob(),
+                // isJobsAvailable == true
+                //     ?
+                // Expanded(
+                //         child: Column(
+                //           crossAxisAlignment: CrossAxisAlignment.start,
+                //           children: [
+                //             const Text('Your Posting'),
+                //             const Divider(),
+                //             Expanded(
+                //               child: StreamBuilder<
+                //                   QuerySnapshot<Map<String, dynamic>>>(
+                //                 stream: FirebaseFirestore.instance
+                //                     .collection('jobs')
+                //                     .doc('49tc6QmGVxgxZGxwjk8ArXJkPnw1')
+                //                     .collection('jobsnew')
+                //                     .where('status', isEqualTo: 'new')
+                //                     .snapshots(),
+                //                 builder: (context, snapshot) {
+                //                   if (snapshot.connectionState ==
+                //                       ConnectionState.waiting) {
+                //                     return const Center(
+                //                       child: CircularProgressIndicator(),
+                //                     );
+                //                   }
+                //                   if (!snapshot.hasData ||
+                //                       snapshot.data!.docs.isEmpty) {
+                //                     setState(() {
+                //                       isJobsAvailable = false;
+                //                     });
+                //                     //   const Center(
+                //                     //   child: Text('Hmm! You\'ve no any pending Jobs!'),
+                //                     // );
+                //                   }
+                //                   final jobDocs = snapshot.data!.docs;
+                //                   return ListView.builder(
+                //                     itemCount: jobDocs.length,
+                //                     itemBuilder: (context, index) {
+                //                       final document = jobDocs[index];
+                //                       final docId = document.id;
+                //                       final data = document.data()
+                //                           as Map<String, dynamic>;
+                //                       return ClientPendingJobCard(
+                //                           pendingjobDoc: jobDocs[index]);
+                //                     },
+                //                   );
+                //                 },
+                //               ),
+                //             ),
+                //           ],
+                //
+                //         ),
+                //       )
+                //     :
+                const PostAJob(),
               ],
             ),
           ),

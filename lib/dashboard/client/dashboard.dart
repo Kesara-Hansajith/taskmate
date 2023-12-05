@@ -19,27 +19,27 @@ class Dashboard extends StatefulWidget {
   // final UserModel1 client; // Add this line
   // final String? downloadUrl;
 
-  const Dashboard({
-    // required this.client,
-    // this.downloadUrl,
-    super.key
-  });
+  const Dashboard(
+      {
+      // required this.client,
+      // this.downloadUrl,
+      super.key});
 
   @override
   State<Dashboard> createState() => _DashboardState();
 }
 
 class _DashboardState extends State<Dashboard> {
-  final user = FirebaseAuth.instance.currentUser;
-  final userUid=FirebaseAuth.instance.currentUser.uid;
+  // final FirebaseAuth _auth = FirebaseAuth.instance;
   late String compliment;
+  String userId = '';
 
   void navigateToProfile() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => Profile(
+        builder: (context) => const Profile(
             // client: widget.client
-        ),
+            ),
       ),
     );
   }
@@ -47,7 +47,7 @@ class _DashboardState extends State<Dashboard> {
   void navigateToBalance() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) =>  Balance(),
+        builder: (context) => Balance(),
       ),
     );
   }
@@ -55,7 +55,7 @@ class _DashboardState extends State<Dashboard> {
   void navigateToTransactionHistory() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) =>  TransactionHistory(),
+        builder: (context) => TransactionHistory(),
       ),
     );
   }
@@ -63,7 +63,7 @@ class _DashboardState extends State<Dashboard> {
   void navigateToHelpSupport() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) =>  HelpSupport(),
+        builder: (context) => HelpSupport(),
       ),
     );
   }
@@ -71,7 +71,7 @@ class _DashboardState extends State<Dashboard> {
   void navigateToInviteFriends() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) =>  InviteFriends(),
+        builder: (context) => InviteFriends(),
       ),
     );
   }
@@ -79,7 +79,7 @@ class _DashboardState extends State<Dashboard> {
   void navigateToTermsConditions() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) =>  TermsConditions(),
+        builder: (context) => TermsConditions(),
       ),
     );
   }
@@ -87,7 +87,7 @@ class _DashboardState extends State<Dashboard> {
   void navigateToAboutUs() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) =>  AboutUs(),
+        builder: (context) => AboutUs(),
       ),
     );
   }
@@ -121,10 +121,12 @@ class _DashboardState extends State<Dashboard> {
   }
 
   Future<Map<String, dynamic>> fetchData() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    userId = user!.uid;
     // Define the Firestore collection, document ID, and fields you want to retrieve.
     final DocumentSnapshot document = await FirebaseFirestore.instance
         .collection('Clients')
-        .doc('NBZQvJP2WGW4egCxUkT5U6sLsOh1')
+        .doc(userId)
         .get();
 
     final Map<String, dynamic> data = document.data() as Map<String, dynamic>;
@@ -134,7 +136,6 @@ class _DashboardState extends State<Dashboard> {
   @override
   void initState() {
     updateCompliment();
-    super.initState();
   }
 
   @override
@@ -210,9 +211,7 @@ class _DashboardState extends State<Dashboard> {
                           );
                         }
                       },
-
                     ),
-
                   ),
                 ],
               ),
@@ -222,7 +221,6 @@ class _DashboardState extends State<Dashboard> {
                     compliment,
                     style: kJobCardTitleTextStyle.copyWith(color: kAmberColor),
                   ),
-
                   FutureBuilder(
                     future: fetchData(),
                     builder: (context, snapshot) {
@@ -238,7 +236,6 @@ class _DashboardState extends State<Dashboard> {
                         );
                       }
                     },
-
                   ),
                 ],
               ),
