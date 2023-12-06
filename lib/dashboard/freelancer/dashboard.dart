@@ -49,7 +49,7 @@ class _DashboardState extends State<Dashboard> {
     userId = user!.uid;
     // Define the Firestore collection, document ID, and fields you want to retrieve.
     final DocumentSnapshot document = await FirebaseFirestore.instance
-        .collection('Clients')
+        .collection('Users')
         .doc(userId)
         .get();
 

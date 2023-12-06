@@ -26,7 +26,7 @@ class _ProfileState extends State<Profile> {
     userId = user!.uid;
     // Define the Firestore collection, document ID, and fields you want to retrieve.
     final DocumentSnapshot document = await FirebaseFirestore.instance
-        .collection('Clients')
+        .collection('Users')
         .doc(userId)
         .get();
 
@@ -143,23 +143,56 @@ class _ProfileState extends State<Profile> {
               ),
               Column(
                 children: [
-                  Text(
-                    'Good Morning!',
-                    style: kJobCardTitleTextStyle.copyWith(color: kAmberColor),
+                  FutureBuilder(
+                    future: fetchData(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Center(
+                          child: Text(
+                            '${snapshot.data?['firstName']} ${snapshot.data?['lastName']}',
+                            style: kSubHeadingTextStyle,
+                          ),
+                        );
+                      } else {
+                        return const SpinKitThreeBounce(
+                          color: kDeepBlueColor,
+                          size: 30.0,
+                        );
+                      }
+                    },
                   ),
-                  Text(
-                    'Kesara Hansajith',
-                    style: kSubHeadingTextStyle,
-                  ),
-                  Text(
-                    'Top Level Freelancer',
-                    style: kTextStyle.copyWith(color: kOceanBlueColor),
+                  FutureBuilder(
+                    future: fetchData(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Text(
+                          '${snapshot.data?['Level']} Level Freelancer',
+                          style: kTextStyle.copyWith(color: kOceanBlueColor),
+                        );
+                      } else {
+                        return const SpinKitThreeBounce(
+                          color: kDeepBlueColor,
+                          size: 30.0,
+                        );
+                      }
+                    },
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Text(
-                      'Professional Role - Logo Designer | Digital Artist | Graphic Designer ',
-                      textAlign: TextAlign.center,
+                    child: FutureBuilder(
+                      future: fetchData(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return Text(
+                            'Professional Role-${snapshot.data?['professionalRole']}',
+                          );
+                        } else {
+                          return const SpinKitThreeBounce(
+                            color: kDeepBlueColor,
+                            size: 30.0,
+                          );
+                        }
+                      },
                     ),
                   ),
                 ],
@@ -172,16 +205,44 @@ class _ProfileState extends State<Profile> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 10.0),
-                          child: const UserDataGatherTitle(
-                            title: 'Hourly Rate : LKR. 1000',
+                          child: FutureBuilder(
+                            future: fetchData(),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                                  child: Text(
+                                    'Hourly Rate: LKR.${snapshot.data?['hourlyRate']}',
+                                    style: kUserDataGatherTitleTextStyle,
+                                  ),
+                                );
+                              } else {
+                                return const SpinKitThreeBounce(
+                                  color: kDeepBlueColor,
+                                  size: 30.0,
+                                );
+                              }
+                            },
                           ),
                         ),
                         const UserDataGatherTitle(title: 'Overview'),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: Text(
-                            'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. ',
-                            style: kTextStyle,
+                          child: FutureBuilder(
+                            future: fetchData(),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return Text(
+                                  '${snapshot.data?['bio']}',
+                                  style: kTextStyle,
+                                );
+                              } else {
+                                return const SpinKitThreeBounce(
+                                  color: kDeepBlueColor,
+                                  size: 30.0,
+                                );
+                              }
+                            },
                           ),
                         ),
                         Align(

@@ -1,7 +1,12 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:taskmate/classes/cus_snackbar.dart';
 import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/components/freelancer/user_data_gather_title.dart';
 import 'package:taskmate/components/light_main_button.dart';
@@ -22,24 +27,81 @@ class _EditProfileState extends State<EditProfile> {
   //     TextEditingController();
 
   String userId = '';
+  final picker = ImagePicker();
+  late String _imageUrl;
 
-  Future<void> openFilePicker() async {
+  // Future<void> openFilePicker() async {
+  //   try {
+  //     FilePickerResult? result = await FilePicker.platform.pickFiles(
+  //       type: FileType
+  //           .any, // You can specify the file types to allow (e.g., FileType.image, FileType.pdf, etc.)
+  //       allowMultiple:
+  //           true, // Set to true if you want to allow multiple file selection
+  //     );
+  //
+  //     if (result != null) {
+  //       List<String> filePaths = result.paths.map((path) => path!).toList();
+  //       // You now have the selected file paths in the `filePaths` list
+  //     } else {
+  //       // User canceled the file picker
+  //     }
+  //   } catch (e) {
+  //     // Handle any exceptions that may occur during file picking
+  //   }
+  // }
+
+  Future<void> fetchImageURL() async {
     try {
-      FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType
-            .any, // You can specify the file types to allow (e.g., FileType.image, FileType.pdf, etc.)
-        allowMultiple:
-            true, // Set to true if you want to allow multiple file selection
-      );
+      // Fetch the user document from Firestore
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('Clients')
+          .doc(userId)
+          .get();
 
-      if (result != null) {
-        List<String> filePaths = result.paths.map((path) => path!).toList();
-        // You now have the selected file paths in the `filePaths` list
-      } else {
-        // User canceled the file picker
-      }
+      // Get the current image URL
+      setState(() {
+        _imageUrl = userDoc['photoUrl'] ??
+            ''; // If 'photoUrl' doesn't exist, set it to an empty string
+      });
     } catch (e) {
-      // Handle any exceptions that may occur during file picking
+      //Ignored
+    }
+  }
+
+  Future<void> updateImage() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+    if (result != null) {
+      PlatformFile file = result.files.first;
+
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          CusSnackBar(
+            backColor: kSuccessGreenColor,
+            time: 5,
+            title: 'Uploading...',
+            icon: Icons.upload,
+          ),
+        );
+      }
+
+      // Upload the selected file to Firebase Storage
+      Reference ref =
+          FirebaseStorage.instance.ref().child('profile_images/$userId.jpg');
+      UploadTask uploadTask = ref.putData(File(file.path!).readAsBytesSync());
+
+      TaskSnapshot storageTaskSnapshot = await uploadTask;
+      String downloadUrl = await storageTaskSnapshot.ref.getDownloadURL();
+
+      // Update the Firestore document with the new image URL
+      await FirebaseFirestore.instance
+          .collection('Clients')
+          .doc(userId)
+          .update({'profilePhotoUrl': downloadUrl});
+
+      setState(() {
+        _imageUrl = downloadUrl; // Update the image URL in the UI
+      });
     }
   }
 
@@ -105,21 +167,21 @@ class _EditProfileState extends State<EditProfile> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           crossAxisAlignment: CrossAxisAlignment.end,
-                          children: <Widget>[
-                            Container(
-                              margin: const EdgeInsets.all(8.0),
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: kBrilliantWhite,
-                              ),
-                              child: IconButton(
-                                onPressed: openFilePicker,
-                                icon: const Icon(
-                                  Icons.add_photo_alternate,
-                                  size: 25.0,
-                                ),
-                              ),
-                            ),
+                          children: const <Widget>[
+                            // Container(
+                            //   margin: const EdgeInsets.all(8.0),
+                            //   decoration: const BoxDecoration(
+                            //     shape: BoxShape.circle,
+                            //     color: kBrilliantWhite,
+                            //   ),
+                            //   child: IconButton(
+                            //     onPressed: openFilePicker,
+                            //     icon: const Icon(
+                            //       Icons.add_photo_alternate,
+                            //       size: 25.0,
+                            //     ),
+                            //   ),
+                            // ),
                           ],
                         ),
                       ),
@@ -174,7 +236,7 @@ class _EditProfileState extends State<EditProfile> {
                             color: kBrilliantWhite,
                           ),
                           child: IconButton(
-                            onPressed: openFilePicker,
+                            onPressed: updateImage,
                             icon: const Icon(
                               Icons.add_photo_alternate,
                               size: 20.0,
@@ -204,7 +266,7 @@ class _EditProfileState extends State<EditProfile> {
                             style: kSubHeadingTextStyle,
                           );
                         } else {
-                          return SpinKitThreeBounce(
+                          return const SpinKitThreeBounce(
                             color: kDeepBlueColor,
                             size: 30.0,
                           );
@@ -235,10 +297,10 @@ class _EditProfileState extends State<EditProfile> {
                             ),
                           ),
                         ),
-                        UserDataGatherTitle(
+                        const UserDataGatherTitle(
                           title: 'Reviews',
                         ),
-                        ReviewCard(
+                        const ReviewCard(
                           imagePath: 'images/blank_profile.webp',
                           jobTitle: 'Graphic designer for family care product',
                           feedback:

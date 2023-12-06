@@ -54,6 +54,18 @@ class _TransactionHistoryState extends State<TransactionHistory> {
               image: AssetImage('images/noise_image.webp'),
             ),
           ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              Image(
+                image: AssetImage('gifs/transaction.gif'),
+              ),
+              Text(
+                'Connecting with Payment gateway . . .',
+                style: kJobCardTitleTextStyle,
+              ),
+            ],
+          ),
         ),
       ),
     );

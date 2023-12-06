@@ -13,6 +13,7 @@ const kDarkGreyColor = Color(0xFF4B4646);
 const kBrilliantWhite = Color(0xFFFFFFFF);
 const kJetBlack = Color(0xFF000000);
 const kWarningRedColor = Color(0xFFbb2124);
+const kSuccessGreenColor = Color(0xFF4BB543);
 
 //TextStyles for Text Patterns
 const kHeadingTextStyle = TextStyle(

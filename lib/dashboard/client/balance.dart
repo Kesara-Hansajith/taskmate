@@ -54,6 +54,65 @@ class _BalanceState extends State<Balance> {
               image: AssetImage('images/noise_image.webp'),
             ),
           ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20.0,
+              vertical: 16.0,
+            ),
+            child: ListView(
+              children: [
+                const SizedBox(
+                  height: 20.0,
+                ),
+                Container(
+                  width: screenWidth,
+                  height: 100.0,
+                  decoration: BoxDecoration(
+                    color: kLowOpacityLightBlueColor,
+                    borderRadius: BorderRadius.circular(16.0),
+                    border: Border.all(
+                      color: kOceanBlueColor,
+                      width: 1.5,
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Poster Design',
+                            style: kJobCardTitleTextStyle.copyWith(
+                              fontSize: 20.0,
+                            ),
+                          ),
+                          const Text(
+                            'Net Cost',
+                            style: kJobCardTitleTextStyle,
+                          ),
+                        ],
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(30.0),
+                        decoration: BoxDecoration(
+                          color: kLightBlueColor,
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        child: Text(
+                          'LKR 1000',
+                          style: kJobCardTitleTextStyle.copyWith(
+                            fontSize: 16.0,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
