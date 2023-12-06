@@ -11,6 +11,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:taskmate/components/snackbar.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:taskmate/dashboard/privacy_policy.dart';
+import 'package:taskmate/dashboard/terms_conditions.dart';
+import 'package:taskmate/dashboard/terms_conditions.dart';
 
 class CreateMyAccount1 extends StatefulWidget {
   const CreateMyAccount1({super.key});
@@ -318,8 +321,12 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
                               ),
                             ),
                             GestureDetector(
-                              onTap: () {
-                                _showMarkdownDialog(context);
+                              onTap: (){
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => const TermsConditions(),
+                                  ),
+                                );
                               },
                               child: Text(
                                 'Term of Service',
@@ -338,7 +345,13 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
                               ),
                             ),
                             GestureDetector(
-                              onTap: () {},
+                              onTap: (){
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => const PrivacyPolicy(),
+                                  ),
+                                );
+                              },
                               child: Text(
                                 ' Privacy Policy',
                                 style: kTextStyle.copyWith(

@@ -9,7 +9,7 @@ import 'package:taskmate/dashboard/client/balance.dart';
 import 'package:taskmate/dashboard/client/help_support.dart';
 import 'package:taskmate/dashboard/client/invite_friends.dart';
 import 'package:taskmate/dashboard/client/profile.dart';
-import 'package:taskmate/dashboard/client/terms_conditions.dart';
+import 'package:taskmate/dashboard/terms_conditions.dart';
 import 'package:taskmate/dashboard/client/transaction_history.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kommunicate_flutter/kommunicate_flutter.dart';

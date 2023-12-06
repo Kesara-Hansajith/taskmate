@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:taskmate/components/dark_main_button.dart';
@@ -19,6 +20,8 @@ class _EditProfileState extends State<EditProfile> {
   // final _formKey = GlobalKey<FormState>();
   // final TextEditingController professionalRoleController =
   //     TextEditingController();
+
+  String userId = '';
 
   Future<void> openFilePicker() async {
     try {
@@ -51,10 +54,12 @@ class _EditProfileState extends State<EditProfile> {
   // }
 
   Future<Map<String, dynamic>> fetchData() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    userId = user!.uid;
     // Define the Firestore collection, document ID, and fields you want to retrieve.
     final DocumentSnapshot document = await FirebaseFirestore.instance
         .collection('Clients')
-        .doc('NBZQvJP2WGW4egCxUkT5U6sLsOh1')
+        .doc(userId)
         .get();
 
     final Map<String, dynamic> data = document.data() as Map<String, dynamic>;

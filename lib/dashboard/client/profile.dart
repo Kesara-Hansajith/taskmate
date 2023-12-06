@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:taskmate/components/attachment_card.dart';
@@ -26,6 +27,9 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  String userId = '';
+
+
   void _navigateToEditProfile() {
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -39,10 +43,12 @@ class _ProfileState extends State<Profile> {
   }
 
   Future<Map<String, dynamic>> fetchData() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    userId = user!.uid;
     // Define the Firestore collection, document ID, and fields you want to retrieve.
     final DocumentSnapshot document = await FirebaseFirestore.instance
         .collection('Clients')
-        .doc('NBZQvJP2WGW4egCxUkT5U6sLsOh1')
+        .doc(userId)
         .get();
 
     final Map<String, dynamic> data = document.data() as Map<String, dynamic>;

@@ -63,8 +63,8 @@ dependencies:
   audioplayers: ^4.1.0
   flutter_spinkit: ^5.2.0
   quickalert: ^1.0.2
-  flutter_markdown: ^0.6.15
   kommunicate_flutter: ^1.7.2
+  flutter_markdown: ^0.6.15
 
 
 
