@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:taskmate/components/attachment_card.dart';
 import 'package:taskmate/components/dark_main_button.dart';
@@ -348,37 +349,39 @@ class _JobDetailsState extends State<JobDetails> {
                 child: ElevatedButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      Map<String, dynamic> dataToSave = {
-                        'bidDescription': _bidDescriptionController.text,
-                        'bidAmount': _bidAmountController.text,
-                        'delivery': _deliveryTimeController.text,
-                      };
+                      // Get the current user
+                      User? currentUser = FirebaseAuth.instance.currentUser;
 
-                      // Reference to the "jobsnew" subcollection
-                      CollectionReference jobsNewCollection = FirebaseFirestore
-                          .instance
-                          .collection('jobs')
-                          .doc('D6alLWiIA0TwQiHf2QRXctJE6523')
-                          .collection('jobsnew')
-                          .doc(widget.mostjobDoc.id)
-                          .collection('bidsjobs');
 
-                      // Add the data to the "jobsnew" subcollection
-                      DocumentReference newBidDocRef =
-                          await jobsNewCollection.add(dataToSave);
+                      if (currentUser != null) {
+                        String userUID = currentUser.uid;
 
-                      // Reference to the "bidsjobs" subcollection
-                      CollectionReference bidsJobsCollection = FirebaseFirestore
-                          .instance
-                          .collection('jobs') // Use your actual collection name
-                          .doc('D6alLWiIA0TwQiHf2QRXctJE6523')
-                          .collection('jobsnew')
-                          .doc(widget.mostjobDoc.id)
-                          .collection('bidsjobs');
+                        // Reference to the "bidsjobs" subcollection
+                        CollectionReference bidsJobsCollection = FirebaseFirestore
+                            .instance
+                            .collection('jobs') // Use your actual collection name
+                            .doc('b6BxxPQonXNOBYQRDSMtn2Rkqyc2')
+                            .collection('jobsnew')
+                            .doc(widget.mostjobDoc.id)
+                            .collection('bidsjobs');
 
-                      // Show a success dialog
+                        // Use the user's UID as the document ID
+                        DocumentReference newBidDocRef = bidsJobsCollection.doc(userUID);
 
-                      congratulateOnPlaceBid();
+                        // Data to be saved, including userUID
+                        Map<String, dynamic> dataToSave = {
+                          'bidDescription': _bidDescriptionController.text,
+                          'bidAmount': _bidAmountController.text,
+                          'delivery': _deliveryTimeController.text,
+                          'UserUID': userUID,
+                        };
+
+                        // Set the data to the document in the "bidsjobs" subcollection
+                        await newBidDocRef.set(dataToSave);
+
+                        // Show a success dialog
+                        congratulateOnPlaceBid();
+                      }
                     }
                   },
                   style: ElevatedButton.styleFrom(
@@ -396,6 +399,7 @@ class _JobDetailsState extends State<JobDetails> {
                     ),
                   ),
                 ),
+
               ),
             ],
           ),

@@ -12,6 +12,15 @@ class BiddedFreelancerDetails extends StatefulWidget {
   final String delivery;
   final String jobTitle;
   final QueryDocumentSnapshot pendingJobDoc;
+  final String freelancerName; // Include freelancerName in the parameters
+  final String skills;
+  final String profilePhotoUrl;
+  final String Level;
+  final String professionalRole;
+  final String bio;
+  final String hourlyRate;
+
+
 
   const BiddedFreelancerDetails({ Key? key,
     required this.bidDescription,
@@ -19,6 +28,13 @@ class BiddedFreelancerDetails extends StatefulWidget {
     required this.delivery,
     required this.jobTitle,
     required this.pendingJobDoc,
+    required this.freelancerName, // Add freelancerName to the constructor
+    required this.skills,
+    required this.profilePhotoUrl,
+    required this.Level,
+    required this.professionalRole,
+    required this.bio,
+    required this.hourlyRate,
   }) : super(key: key);
 
 
@@ -31,7 +47,15 @@ class _BiddedFreelancerDetailsState extends State<BiddedFreelancerDetails> {
   void navigateToFreelancerProfile() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const BiddedFreelancerProfile(),
+        builder: (context) => BiddedFreelancerProfile(
+            freelancerName: widget.freelancerName,
+            skills: widget.skills,
+            profilePhotoUrl: widget.profilePhotoUrl,
+            Level: widget.Level,
+            professionalRole: widget.professionalRole,
+            bio: widget.bio,
+            hourlyRate: widget.hourlyRate,
+        ),
       ),
     );
   }
@@ -91,16 +115,18 @@ class _BiddedFreelancerDetailsState extends State<BiddedFreelancerDetails> {
                     padding: const EdgeInsets.symmetric(vertical: 30.0),
                     child: ListTile(
                       leading: CircleAvatar(
-                        backgroundImage:
-                            AssetImage('images/blank_profile.webp'),
+                        backgroundImage: widget.profilePhotoUrl.isNotEmpty
+                            ? NetworkImage(widget.profilePhotoUrl) as ImageProvider<Object> // Explicitly specify the type
+                            : AssetImage('images/blank_profile.webp') as ImageProvider<Object>, // Explicitly specify the type
+                        radius: 35.0,
                       ),
                       title: Text(
-                        'Kesara Hansajith',
+                        widget.freelancerName, // Use freelancerName
                         style:
                             kJobCardTitleTextStyle.copyWith(color: kJetBlack),
                       ),
                       subtitle: Text(
-                        'Logo Designer, Digital Artist, Graphic Designer',
+                        widget.skills,
                         style: kTextStyle,
                       ),
                     ),

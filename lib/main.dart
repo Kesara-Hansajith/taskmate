@@ -87,6 +87,7 @@ class Taskmate extends StatelessWidget {
 
       home: const SafeArea(
         child: SplashScreen(),
+
       ),
     );
   }
