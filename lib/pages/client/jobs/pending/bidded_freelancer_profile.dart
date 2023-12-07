@@ -1080,11 +1080,17 @@ class _BiddedFreelancerProfileState extends State<BiddedFreelancerProfile> {
                           title: 'Reviews',
                         ),
                         ReviewCard(
-                          imagePath: 'images/blank_profile.webp',
-                          jobTitle: 'Graphic designer for family care product',
-                          feedback:
-                              'Great! Very creative and had great ideas! ',
-                          username: 'Nugera Gomez',
+                          imagePath: 'images/woman.jpg',
+                          jobTitle: 'My face edited into a picture',
+                          feedback: 'Great! Very creative and had great ideas! ',
+                          username: 'Nimali de Zoysa',
+                        ),
+                        ReviewCard(
+                          imagePath: 'images/41bde2fdf20f4375ad5e353ff96daedd.jpg',
+                          jobTitle: 'A Logo for my Investing Club',
+                          feedback: 'He was able to take some general ideas of what I wanted and turn '
+                              'them into an easily recognizable logo.',
+                          username: 'Kapila Silva',
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 12.0),

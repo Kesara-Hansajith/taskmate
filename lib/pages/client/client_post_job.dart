@@ -110,7 +110,7 @@ class _ClientPostJobState extends State<ClientPostJob> {
     String jobTitle,
     String jobDescription,
     int dayCount,
-    int percentage,
+    int Percentage,
     int releaseMoney,
     int budget,
   ) async {
@@ -155,7 +155,7 @@ class _ClientPostJobState extends State<ClientPostJob> {
         'image2Url': image2Url,
         'status': 'new', // Set the status to "active"
         'releaseMoney': 0,
-        'percentage': 0,
+        'Precentage': 0,
         'createdAt': FieldValue.serverTimestamp(), // Add the timestamp field
         // You can add more fields as needed
       });
