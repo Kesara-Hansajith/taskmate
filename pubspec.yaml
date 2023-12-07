@@ -65,6 +65,7 @@ dependencies:
   quickalert: ^1.0.2
   kommunicate_flutter: ^1.7.2
   flutter_markdown: ^0.6.15
+  share_plus: ^7.2.1
 
 
 

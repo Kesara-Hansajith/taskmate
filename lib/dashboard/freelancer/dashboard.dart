@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:kommunicate_flutter/kommunicate_flutter.dart';
 import 'package:taskmate/authentication/get_started.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/components/dashboard_item.dart';
@@ -229,7 +230,7 @@ class _DashboardState extends State<Dashboard> {
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         return Text(
-                          '${snapshot.data?['Level']} Level Freelancer',
+                          '${snapshot.data?['Level']} Freelancer',
                           style: kTextStyle.copyWith(color: kOceanBlueColor),
                         );
                       } else {
@@ -305,10 +306,23 @@ class _DashboardState extends State<Dashboard> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            //TODO AI Chatbot
+            dynamic conversationObject = {
+              'appId':
+                  '47c5588bfd2fbc504ad1b4d294b8a375', // The [APP_ID](https://dashboard.kommunicate.io/settings/install) obtained from kommunicate dashboard.
+            };
+
+            KommunicateFlutterPlugin.buildConversation(conversationObject)
+                .then((clientConversationId) {
+              print("Conversation builder success : " +
+                  clientConversationId.toString());
+            }).catchError((error) {
+              print("Conversation builder error : " + error.toString());
+            });
           },
           backgroundColor: kDeepBlueColor,
-          child: const Icon(Icons.help),
+          child: const Image(
+            image: AssetImage('images/chatbot.png'),
+          ),
         ),
       ),
     );
