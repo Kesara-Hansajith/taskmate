@@ -110,7 +110,7 @@ class _ClientPostJobState extends State<ClientPostJob> {
     String jobTitle,
     String jobDescription,
     int dayCount,
-    int percentage,
+    int Percentage,
     int releaseMoney,
     int budget,
   ) async {

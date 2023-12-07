@@ -22,20 +22,19 @@ class BiddedFreelancerProfile extends StatefulWidget {
   final String bio;
   final String hourlyRate;
 
-   BiddedFreelancerProfile({
+  BiddedFreelancerProfile({
     Key? key,
-     required this.jobTitle,
+    required this.jobTitle,
     required this.freelancerName,
     required this.skills,
     required this.profilePhotoUrl,
-     required this.Level,
-     required this.pendingJobDoc,
-     required this.professionalRole,
-     required this.reviewdesfreelancer,
-     required this.bio,
-     required this.hourlyRate,
+    required this.Level,
+    required this.pendingJobDoc,
+    required this.professionalRole,
+    required this.reviewdesfreelancer,
+    required this.bio,
+    required this.hourlyRate,
   }) : super(key: key);
-
 
   @override
   State<BiddedFreelancerProfile> createState() =>
@@ -102,7 +101,7 @@ class _BiddedFreelancerProfileState extends State<BiddedFreelancerProfile> {
                                 onPressed: () {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
-                                      builder: (context) =>  Chatscreen(),
+                                      builder: (context) => Chatscreen(),
                                     ),
                                   );
                                 },
@@ -163,8 +162,12 @@ class _BiddedFreelancerProfileState extends State<BiddedFreelancerProfile> {
                     ),
                     child: CircleAvatar(
                       backgroundImage: widget.profilePhotoUrl.isNotEmpty
-                          ? NetworkImage(widget.profilePhotoUrl) as ImageProvider<Object> // Explicitly specify the type
-                          : AssetImage('images/blank_profile.webp') as ImageProvider<Object>, // Explicitly specify the type
+                          ? NetworkImage(widget.profilePhotoUrl)
+                              as ImageProvider<
+                                  Object> // Explicitly specify the type
+                          : AssetImage('images/blank_profile.webp')
+                              as ImageProvider<
+                                  Object>, // Explicitly specify the type
                       radius: 40,
                     ),
                   ),
@@ -197,7 +200,7 @@ class _BiddedFreelancerProfileState extends State<BiddedFreelancerProfile> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 10.0),
-                          child:  UserDataGatherTitle(
+                          child: UserDataGatherTitle(
                             title: 'Hourly Rate : LKR.${widget.hourlyRate}',
                           ),
                         ),
@@ -223,253 +226,53 @@ class _BiddedFreelancerProfileState extends State<BiddedFreelancerProfile> {
                         UserDataGatherTitle(
                           title: 'Portfolio',
                         ),
-
                         SingleChildScrollView(
                           // Wrap this part
                           scrollDirection: Axis.horizontal,
                           child: Row(
                             children: [
                               Padding(
-                                padding: EdgeInsets.fromLTRB(35.0, 10.0, 10.0, 10.0),
+                                padding:
+                                    EdgeInsets.fromLTRB(35.0, 10.0, 10.0, 10.0),
                                 child: GestureDetector(
                                   onTap: () {
                                     // Get the current user
-                                    final FirebaseAuth _auth = FirebaseAuth.instance;
-                                    final User? firebaseUser = _auth.currentUser;
+                                    final FirebaseAuth _auth =
+                                        FirebaseAuth.instance;
+                                    final User? firebaseUser =
+                                        _auth.currentUser;
 
                                     if (firebaseUser != null) {
                                       final String userUid = firebaseUser.uid;
 
                                       // Create a reference to the user's document
                                       final DocumentReference userDocRef =
-                                      FirebaseFirestore.instance
-                                          .collection('Users')
-                                          .doc(userUid);
+                                          FirebaseFirestore.instance
+                                              .collection('Users')
+                                              .doc(userUid);
 
                                       // Fetch document with ID '1' from the subcollection 'portfolio_items'
                                       userDocRef
                                           .collection('portfolio_items')
-                                          .doc('1') // Use '1' as the document ID
+                                          .doc(
+                                              '1') // Use '1' as the document ID
                                           .get()
-                                          .then((DocumentSnapshot documentSnapshot) {
+                                          .then((DocumentSnapshot
+                                              documentSnapshot) {
                                         if (documentSnapshot.exists) {
                                           final Map<String, dynamic>? data =
-                                          documentSnapshot.data()
-                                          as Map<String, dynamic>?;
-                                          final String title = data?['title'] ?? '';
+                                              documentSnapshot.data()
+                                                  as Map<String, dynamic>?;
+                                          final String title =
+                                              data?['title'] ?? '';
                                           final String itemDescription =
                                               data?['item_description'] ?? '';
                                           final List<dynamic>? imageUrls =
-                                          data?['image_urls'];
+                                              data?['image_urls'];
 
                                           // Check if imageUrls is not empty
-                                          if (imageUrls != null && imageUrls.isNotEmpty) {
-                                            // Create a list of images for this portfolio item
-                                            List<Widget> images = [];
-
-                                            // Loop through the image URLs and add them to the list
-                                            for (var imageUrl in imageUrls) {
-                                              images.add(
-                                                Image.network(imageUrl,
-                                                  width: 100, // Adjust the width as needed
-                                                  height: 100, // Adjust the height as needed
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              );
-                                            }
-
-                                            // Display the portfolio item in a dialog
-                                            List<Widget> imageRows = [];
-
-                                            // Calculate the number of images per row
-                                            int imagesPerRow = 2; // You can change this value to the desired number
-
-                                            // Create rows of images with spacing
-                                            for (int i = 0;
-                                            i < images.length;
-                                            i += imagesPerRow) {
-                                              List<Widget> rowChildren = [];
-
-                                              // Add images to the current row
-                                              for (int j = i;
-                                              j < i + imagesPerRow &&
-                                                  j < images.length;
-                                              j++) {
-                                                rowChildren.add(
-                                                  Column(
-                                                    children: [
-                                                      images[j],
-                                                      SizedBox(height: 8.0),
-                                                    ],
-                                                  ),
-                                                );
-
-                                                if (j < i + imagesPerRow - 1) {
-                                                  // Add spacing between images in the same row
-                                                  rowChildren.add(
-                                                    SizedBox(width: 16.0),
-                                                  );
-                                                }
-                                              }
-
-                                              // Create a row with images and spacing
-                                              imageRows.add(
-                                                Row(
-                                                  mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                                  children: rowChildren,
-                                                ),
-                                              );
-                                            }
-
-                                            // Display the portfolio item in a dialog
-                                            showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return Dialog(
-                                                  child: Container(
-                                                    width: 600, // Adjust the width as needed
-                                                    padding: EdgeInsets.all(16.0),
-                                                    decoration: BoxDecoration(
-                                                      image: DecorationImage(
-                                                        image: AssetImage('images/noise_image.webp'), // Add your background image here
-                                                        fit: BoxFit.cover,
-                                                      ),
-                                                    ),
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                      children: [
-                                                        Text(
-                                                          title,
-                                                          style: TextStyle(
-                                                            fontSize: 18.0,
-                                                            fontWeight: FontWeight.bold,
-                                                          ),
-                                                        ),
-                                                        SizedBox(height: 8.0),
-                                                        Text('Description: $itemDescription'),
-                                                        SizedBox(height: 16.0),
-                                                        // Display the rows of images
-                                                        Column(
-                                                          children: imageRows,
-                                                        ),
-                                                        SizedBox(height: 16.0),
-                                                        ElevatedButton(
-                                                          onPressed: () {
-                                                            Navigator.of(context).pop();
-                                                          },
-                                                          style: ElevatedButton.styleFrom(
-                                                            backgroundColor: kDeepBlueColor,
-                                                            shape: RoundedRectangleBorder(
-                                                              borderRadius: BorderRadius.circular(20.0),
-                                                            ),
-                                                          ),
-                                                          child: Padding(
-                                                            padding: const EdgeInsets.all(15.0),
-                                                            child: Row(
-                                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                              children: const <Widget>[
-                                                                Text(
-                                                                  'Close',
-                                                                  style: TextStyle(
-                                                                    color: kBrilliantWhite,
-                                                                    fontSize: 15.0,
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                            );
-                                          }
-                                        } else {
-                                          // Handle the case where the document with ID '1' does not exist
-                                        }
-                                      });
-                                    }
-                                  },
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        width: 100,
-                                        height: 150,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.rectangle,
-                                          border:
-                                          Border.all(color: Colors.white, width: 2.0),
-                                          borderRadius: BorderRadius.circular(10.0),
-                                          // You can set a placeholder image here
-                                          // This will be shown until the actual image is loaded
-                                          // You can also check if 'imageUrls' is not empty and use the first URL
-                                        ),
-                                        child: Center(
-                                          child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: [
-                                              Image.asset(
-                                                'images/taskmate_logo_light.webp', // Replace with your image URL
-                                                width: 80, // Adjust the width as needed
-                                                height: 100, // Adjust the height as needed
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                          height: 8.0), // Add spacing between the box and text
-                                      Text(
-                                        'Project 1',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.grey.shade700,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(35.0, 10.0, 10.0, 10.0),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    // Get the current user
-                                    final FirebaseAuth _auth = FirebaseAuth.instance;
-                                    final User? firebaseUser = _auth.currentUser;
-
-                                    if (firebaseUser != null) {
-                                      final String userUid = firebaseUser.uid;
-
-                                      // Create a reference to the user's document
-                                      final DocumentReference userDocRef =
-                                      FirebaseFirestore.instance
-                                          .collection('Users')
-                                          .doc(userUid);
-
-                                      // Fetch document with ID '1' from the subcollection 'portfolio_items'
-                                      userDocRef
-                                          .collection('portfolio_items')
-                                          .doc('2') // Use '2' as the document ID
-                                          .get()
-                                          .then((DocumentSnapshot documentSnapshot) {
-                                        if (documentSnapshot.exists) {
-                                          final Map<String, dynamic>? data =
-                                          documentSnapshot.data()
-                                          as Map<String, dynamic>?;
-                                          final String title = data?['title'] ?? '';
-                                          final String itemDescription =
-                                              data?['item_description'] ?? '';
-                                          final List<dynamic>? imageUrls =
-                                          data?['image_urls'];
-
-                                          // Check if imageUrls is not empty
-                                          if (imageUrls != null && imageUrls.isNotEmpty) {
+                                          if (imageUrls != null &&
+                                              imageUrls.isNotEmpty) {
                                             // Create a list of images for this portfolio item
                                             List<Widget> images = [];
 
@@ -478,216 +281,10 @@ class _BiddedFreelancerProfileState extends State<BiddedFreelancerProfile> {
                                               images.add(
                                                 Image.network(
                                                   imageUrl,
-                                                  width: 100, // Adjust the width as needed
-                                                  height: 100, // Adjust the height as needed
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              );
-                                            }
-
-                                            // Display the portfolio item in a dialog
-                                            List<Widget> imageRows = [];
-
-                                            // Calculate the number of images per row
-                                            int imagesPerRow = 2; // You can change this value to the desired number
-
-                                            // Create rows of images with spacing
-                                            for (int i = 0;
-                                            i < images.length;
-                                            i += imagesPerRow) {
-                                              List<Widget> rowChildren = [];
-
-                                              // Add images to the current row
-                                              for (int j = i;
-                                              j < i + imagesPerRow &&
-                                                  j < images.length;
-                                              j++) {
-                                                rowChildren.add(
-                                                  Column(
-                                                    children: [
-                                                      images[j],
-                                                      SizedBox(height: 8.0),
-                                                    ],
-                                                  ),
-                                                );
-
-                                                if (j < i + imagesPerRow - 1) {
-                                                  // Add spacing between images in the same row
-                                                  rowChildren.add(
-                                                    SizedBox(width: 16.0),
-                                                  );
-                                                }
-                                              }
-
-                                              // Create a row with images and spacing
-                                              imageRows.add(
-                                                Row(
-                                                  mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                                  children: rowChildren,
-                                                ),
-                                              );
-                                            }
-
-                                            // Display the portfolio item in a dialog
-                                            showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return Dialog(
-                                                  child: Container(
-                                                    width: 600, // Adjust the width as needed
-                                                    padding: EdgeInsets.all(16.0),
-                                                    decoration: BoxDecoration(
-                                                      image: DecorationImage(
-                                                        image: AssetImage('images/noise_image.webp'), // Add your background image here
-                                                        fit: BoxFit.cover,
-                                                      ),
-                                                    ),
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                      children: [
-                                                        Text(title,
-                                                          style: TextStyle(
-                                                            fontSize: 18.0,
-                                                            fontWeight: FontWeight.bold,
-                                                          ),
-                                                        ),
-                                                        SizedBox(height: 8.0),
-                                                        Text(
-                                                            'Description: $itemDescription'),
-                                                        SizedBox(height: 16.0),
-                                                        // Display the rows of images
-                                                        Column(
-                                                          children: imageRows,
-                                                        ),
-                                                        SizedBox(height: 16.0),
-                                                        ElevatedButton(
-                                                          onPressed: () {
-                                                            Navigator.of(context).pop();
-                                                          },
-                                                          style: ElevatedButton.styleFrom(
-                                                            backgroundColor: kDeepBlueColor,
-                                                            shape: RoundedRectangleBorder(
-                                                              borderRadius: BorderRadius.circular(20.0),
-                                                            ),
-                                                          ),
-                                                          child: Padding(
-                                                            padding: const EdgeInsets.all(15.0),
-                                                            child: Row(
-                                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                              children: const <Widget>[
-                                                                Text(
-                                                                  'Close',
-                                                                  style: TextStyle(
-                                                                    color: kBrilliantWhite,
-                                                                    fontSize: 15.0,
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                            );
-                                          }
-                                        } else {
-                                          // Handle the case where the document with ID '1' does not exist
-                                        }
-                                      });
-                                    }
-                                  },
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        width: 100,
-                                        height: 150,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.rectangle,
-                                          border:
-                                          Border.all(color: Colors.white, width: 2.0),
-                                          borderRadius: BorderRadius.circular(10.0),
-                                          // You can set a placeholder image here
-                                          // This will be shown until the actual image is loaded
-                                          // You can also check if 'imageUrls' is not empty and use the first URL
-                                        ),
-                                        child: Center(
-                                          child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: [
-                                              Image.asset(
-                                                'images/taskmate_logo_light.webp', // Replace with your image URL
-                                                width: 80, // Adjust the width as needed
-                                                height:
-                                                100, // Adjust the height as needed
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                          height: 8.0), // Add spacing between the box and text
-                                      Text(
-                                        'Project 2',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.grey.shade700,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(35.0, 10.0, 10.0, 10.0),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    // Get the current user
-                                    final FirebaseAuth _auth = FirebaseAuth.instance;
-                                    final User? firebaseUser = _auth.currentUser;
-
-                                    if (firebaseUser != null) {
-                                      final String userUid = firebaseUser.uid;
-
-                                      // Create a reference to the user's document
-                                      final DocumentReference userDocRef =
-                                      FirebaseFirestore.instance
-                                          .collection('Users')
-                                          .doc(userUid);
-
-                                      // Fetch document with ID '1' from the subcollection 'portfolio_items'
-                                      userDocRef
-                                          .collection('portfolio_items')
-                                          .doc('3') // Use '3' as the document ID
-                                          .get()
-                                          .then((DocumentSnapshot documentSnapshot) {
-                                        if (documentSnapshot.exists) {
-                                          final Map<String, dynamic>? data =
-                                          documentSnapshot.data()
-                                          as Map<String, dynamic>?;
-                                          final String title = data?['title'] ?? '';
-                                          final String itemDescription =
-                                              data?['item_description'] ?? '';
-                                          final List<dynamic>? imageUrls =
-                                          data?['image_urls'];
-
-                                          // Check if imageUrls is not empty
-                                          if (imageUrls != null && imageUrls.isNotEmpty) {
-                                            // Create a list of images for this portfolio item
-                                            List<Widget> images = [];
-
-                                            // Loop through the image URLs and add them to the list
-                                            for (var imageUrl in imageUrls) {
-                                              images.add(
-                                                Image.network(
-                                                  imageUrl,
-                                                  width: 100, // Adjust the width as needed
-                                                  height: 100, // Adjust the height as needed
+                                                  width:
+                                                      100, // Adjust the width as needed
+                                                  height:
+                                                      100, // Adjust the height as needed
                                                   fit: BoxFit.cover,
                                                 ),
                                               );
@@ -698,19 +295,19 @@ class _BiddedFreelancerProfileState extends State<BiddedFreelancerProfile> {
 
                                             // Calculate the number of images per row
                                             int imagesPerRow =
-                                            2; // You can change this value to the desired number
+                                                2; // You can change this value to the desired number
 
                                             // Create rows of images with spacing
                                             for (int i = 0;
-                                            i < images.length;
-                                            i += imagesPerRow) {
+                                                i < images.length;
+                                                i += imagesPerRow) {
                                               List<Widget> rowChildren = [];
 
                                               // Add images to the current row
                                               for (int j = i;
-                                              j < i + imagesPerRow &&
-                                                  j < images.length;
-                                              j++) {
+                                                  j < i + imagesPerRow &&
+                                                      j < images.length;
+                                                  j++) {
                                                 rowChildren.add(
                                                   Column(
                                                     children: [
@@ -732,7 +329,7 @@ class _BiddedFreelancerProfileState extends State<BiddedFreelancerProfile> {
                                               imageRows.add(
                                                 Row(
                                                   mainAxisAlignment:
-                                                  MainAxisAlignment.center,
+                                                      MainAxisAlignment.center,
                                                   children: rowChildren,
                                                 ),
                                               );
@@ -745,22 +342,27 @@ class _BiddedFreelancerProfileState extends State<BiddedFreelancerProfile> {
                                                 return Dialog(
                                                   child: Container(
                                                     width:
-                                                    600, // Adjust the width as needed
-                                                    padding: EdgeInsets.all(16.0),
+                                                        600, // Adjust the width as needed
+                                                    padding:
+                                                        EdgeInsets.all(16.0),
                                                     decoration: BoxDecoration(
                                                       image: DecorationImage(
-                                                        image: AssetImage('images/noise_image.webp'), // Add your background image here
+                                                        image: AssetImage(
+                                                            'images/noise_image.webp'), // Add your background image here
                                                         fit: BoxFit.cover,
                                                       ),
                                                     ),
                                                     child: Column(
                                                       crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
+                                                          CrossAxisAlignment
+                                                              .center,
                                                       children: [
-                                                        Text(title,
+                                                        Text(
+                                                          title,
                                                           style: TextStyle(
                                                             fontSize: 18.0,
-                                                            fontWeight: FontWeight.bold,
+                                                            fontWeight:
+                                                                FontWeight.bold,
                                                           ),
                                                         ),
                                                         SizedBox(height: 8.0),
@@ -774,24 +376,40 @@ class _BiddedFreelancerProfileState extends State<BiddedFreelancerProfile> {
                                                         SizedBox(height: 16.0),
                                                         ElevatedButton(
                                                           onPressed: () {
-                                                            Navigator.of(context).pop();
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
                                                           },
-                                                          style: ElevatedButton.styleFrom(
-                                                            backgroundColor: kDeepBlueColor,
-                                                            shape: RoundedRectangleBorder(
-                                                              borderRadius: BorderRadius.circular(20.0),
+                                                          style: ElevatedButton
+                                                              .styleFrom(
+                                                            backgroundColor:
+                                                                kDeepBlueColor,
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          20.0),
                                                             ),
                                                           ),
                                                           child: Padding(
-                                                            padding: const EdgeInsets.all(15.0),
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(15.0),
                                                             child: Row(
-                                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                              children: const <Widget>[
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceEvenly,
+                                                              children: const <
+                                                                  Widget>[
                                                                 Text(
                                                                   'Close',
-                                                                  style: TextStyle(
-                                                                    color: kBrilliantWhite,
-                                                                    fontSize: 15.0,
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color:
+                                                                        kBrilliantWhite,
+                                                                    fontSize:
+                                                                        15.0,
                                                                   ),
                                                                 ),
                                                               ],
@@ -818,22 +436,25 @@ class _BiddedFreelancerProfileState extends State<BiddedFreelancerProfile> {
                                         height: 150,
                                         decoration: BoxDecoration(
                                           shape: BoxShape.rectangle,
-                                          border:
-                                          Border.all(color: Colors.white, width: 2.0),
-                                          borderRadius: BorderRadius.circular(10.0),
+                                          border: Border.all(
+                                              color: Colors.white, width: 2.0),
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
                                           // You can set a placeholder image here
                                           // This will be shown until the actual image is loaded
                                           // You can also check if 'imageUrls' is not empty and use the first URL
                                         ),
                                         child: Center(
                                           child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
                                             children: [
                                               Image.asset(
                                                 'images/taskmate_logo_light.webp', // Replace with your image URL
-                                                width: 80, // Adjust the width as needed
+                                                width:
+                                                    80, // Adjust the width as needed
                                                 height:
-                                                100, // Adjust the height as needed
+                                                    100, // Adjust the height as needed
                                                 fit: BoxFit.cover,
                                               ),
                                             ],
@@ -842,9 +463,9 @@ class _BiddedFreelancerProfileState extends State<BiddedFreelancerProfile> {
                                       ),
                                       SizedBox(
                                           height:
-                                          8.0), // Add spacing between the box and text
+                                              8.0), // Add spacing between the box and text
                                       Text(
-                                        'Project 3',
+                                        'Project 1',
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: Colors.grey.shade700,
@@ -855,40 +476,47 @@ class _BiddedFreelancerProfileState extends State<BiddedFreelancerProfile> {
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsets.fromLTRB(35.0, 10.0, 10.0, 10.0),
+                                padding:
+                                    EdgeInsets.fromLTRB(35.0, 10.0, 10.0, 10.0),
                                 child: GestureDetector(
                                   onTap: () {
                                     // Get the current user
-                                    final FirebaseAuth _auth = FirebaseAuth.instance;
-                                    final User? firebaseUser = _auth.currentUser;
+                                    final FirebaseAuth _auth =
+                                        FirebaseAuth.instance;
+                                    final User? firebaseUser =
+                                        _auth.currentUser;
 
                                     if (firebaseUser != null) {
                                       final String userUid = firebaseUser.uid;
 
                                       // Create a reference to the user's document
                                       final DocumentReference userDocRef =
-                                      FirebaseFirestore.instance
-                                          .collection('Users')
-                                          .doc(userUid);
+                                          FirebaseFirestore.instance
+                                              .collection('Users')
+                                              .doc(userUid);
 
                                       // Fetch document with ID '1' from the subcollection 'portfolio_items'
                                       userDocRef
                                           .collection('portfolio_items')
-                                          .doc('4') // Use '4' as the document ID
+                                          .doc(
+                                              '2') // Use '2' as the document ID
                                           .get()
-                                          .then((DocumentSnapshot documentSnapshot) {
+                                          .then((DocumentSnapshot
+                                              documentSnapshot) {
                                         if (documentSnapshot.exists) {
                                           final Map<String, dynamic>? data =
-                                          documentSnapshot.data()
-                                          as Map<String, dynamic>?;
-                                          final String title = data?['title'] ?? '';
+                                              documentSnapshot.data()
+                                                  as Map<String, dynamic>?;
+                                          final String title =
+                                              data?['title'] ?? '';
                                           final String itemDescription =
                                               data?['item_description'] ?? '';
                                           final List<dynamic>? imageUrls =
-                                          data?['image_urls'];
+                                              data?['image_urls'];
 
                                           // Check if imageUrls is not empty
-                                          if (imageUrls != null && imageUrls.isNotEmpty) {
+                                          if (imageUrls != null &&
+                                              imageUrls.isNotEmpty) {
                                             // Create a list of images for this portfolio item
                                             List<Widget> images = [];
 
@@ -898,9 +526,9 @@ class _BiddedFreelancerProfileState extends State<BiddedFreelancerProfile> {
                                                 Image.network(
                                                   imageUrl,
                                                   width:
-                                                  100, // Adjust the width as needed
+                                                      100, // Adjust the width as needed
                                                   height:
-                                                  100, // Adjust the height as needed
+                                                      100, // Adjust the height as needed
                                                   fit: BoxFit.cover,
                                                 ),
                                               );
@@ -911,19 +539,19 @@ class _BiddedFreelancerProfileState extends State<BiddedFreelancerProfile> {
 
                                             // Calculate the number of images per row
                                             int imagesPerRow =
-                                            2; // You can change this value to the desired number
+                                                2; // You can change this value to the desired number
 
                                             // Create rows of images with spacing
                                             for (int i = 0;
-                                            i < images.length;
-                                            i += imagesPerRow) {
+                                                i < images.length;
+                                                i += imagesPerRow) {
                                               List<Widget> rowChildren = [];
 
                                               // Add images to the current row
                                               for (int j = i;
-                                              j < i + imagesPerRow &&
-                                                  j < images.length;
-                                              j++) {
+                                                  j < i + imagesPerRow &&
+                                                      j < images.length;
+                                                  j++) {
                                                 rowChildren.add(
                                                   Column(
                                                     children: [
@@ -945,7 +573,7 @@ class _BiddedFreelancerProfileState extends State<BiddedFreelancerProfile> {
                                               imageRows.add(
                                                 Row(
                                                   mainAxisAlignment:
-                                                  MainAxisAlignment.center,
+                                                      MainAxisAlignment.center,
                                                   children: rowChildren,
                                                 ),
                                               );
@@ -957,28 +585,33 @@ class _BiddedFreelancerProfileState extends State<BiddedFreelancerProfile> {
                                               builder: (BuildContext context) {
                                                 return Dialog(
                                                   child: Container(
-                                                    width: 600, // Adjust the width as needed
-                                                    padding: EdgeInsets.all(16.0),
+                                                    width:
+                                                        600, // Adjust the width as needed
+                                                    padding:
+                                                        EdgeInsets.all(16.0),
                                                     decoration: BoxDecoration(
                                                       image: DecorationImage(
-                                                        image: AssetImage('images/noise_image.webp'), // Add your background image here
+                                                        image: AssetImage(
+                                                            'images/noise_image.webp'), // Add your background image here
                                                         fit: BoxFit.cover,
                                                       ),
                                                     ),
                                                     child: Column(
                                                       crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
+                                                          CrossAxisAlignment
+                                                              .center,
                                                       children: [
                                                         Text(
                                                           title,
                                                           style: TextStyle(
                                                             fontSize: 18.0,
-                                                            fontWeight: FontWeight.bold,
+                                                            fontWeight:
+                                                                FontWeight.bold,
                                                           ),
                                                         ),
                                                         SizedBox(height: 8.0),
-                                                        Text('Description: $itemDescription'),
-
+                                                        Text(
+                                                            'Description: $itemDescription'),
                                                         SizedBox(height: 16.0),
                                                         // Display the rows of images
                                                         Column(
@@ -987,24 +620,40 @@ class _BiddedFreelancerProfileState extends State<BiddedFreelancerProfile> {
                                                         SizedBox(height: 16.0),
                                                         ElevatedButton(
                                                           onPressed: () {
-                                                            Navigator.of(context).pop();
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
                                                           },
-                                                          style: ElevatedButton.styleFrom(
-                                                            backgroundColor: kDeepBlueColor,
-                                                            shape: RoundedRectangleBorder(
-                                                              borderRadius: BorderRadius.circular(20.0),
+                                                          style: ElevatedButton
+                                                              .styleFrom(
+                                                            backgroundColor:
+                                                                kDeepBlueColor,
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          20.0),
                                                             ),
                                                           ),
                                                           child: Padding(
-                                                            padding: const EdgeInsets.all(15.0),
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(15.0),
                                                             child: Row(
-                                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                              children: const <Widget>[
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceEvenly,
+                                                              children: const <
+                                                                  Widget>[
                                                                 Text(
                                                                   'Close',
-                                                                  style: TextStyle(
-                                                                    color: kBrilliantWhite,
-                                                                    fontSize: 15.0,
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color:
+                                                                        kBrilliantWhite,
+                                                                    fontSize:
+                                                                        15.0,
                                                                   ),
                                                                 ),
                                                               ],
@@ -1031,22 +680,25 @@ class _BiddedFreelancerProfileState extends State<BiddedFreelancerProfile> {
                                         height: 150,
                                         decoration: BoxDecoration(
                                           shape: BoxShape.rectangle,
-                                          border:
-                                          Border.all(color: Colors.white, width: 2.0),
-                                          borderRadius: BorderRadius.circular(10.0),
+                                          border: Border.all(
+                                              color: Colors.white, width: 2.0),
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
                                           // You can set a placeholder image here
                                           // This will be shown until the actual image is loaded
                                           // You can also check if 'imageUrls' is not empty and use the first URL
                                         ),
                                         child: Center(
                                           child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
                                             children: [
                                               Image.asset(
                                                 'images/taskmate_logo_light.webp', // Replace with your image URL
-                                                width: 80, // Adjust the width as needed
+                                                width:
+                                                    80, // Adjust the width as needed
                                                 height:
-                                                100, // Adjust the height as needed
+                                                    100, // Adjust the height as needed
                                                 fit: BoxFit.cover,
                                               ),
                                             ],
@@ -1055,7 +707,496 @@ class _BiddedFreelancerProfileState extends State<BiddedFreelancerProfile> {
                                       ),
                                       SizedBox(
                                           height:
-                                          8.0), // Add spacing between the box and text
+                                              8.0), // Add spacing between the box and text
+                                      Text(
+                                        'Project 2',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.grey.shade700,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    EdgeInsets.fromLTRB(35.0, 10.0, 10.0, 10.0),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    // Get the current user
+                                    final FirebaseAuth _auth =
+                                        FirebaseAuth.instance;
+                                    final User? firebaseUser =
+                                        _auth.currentUser;
+
+                                    if (firebaseUser != null) {
+                                      final String userUid = firebaseUser.uid;
+
+                                      // Create a reference to the user's document
+                                      final DocumentReference userDocRef =
+                                          FirebaseFirestore.instance
+                                              .collection('Users')
+                                              .doc(userUid);
+
+                                      // Fetch document with ID '1' from the subcollection 'portfolio_items'
+                                      userDocRef
+                                          .collection('portfolio_items')
+                                          .doc(
+                                              '3') // Use '3' as the document ID
+                                          .get()
+                                          .then((DocumentSnapshot
+                                              documentSnapshot) {
+                                        if (documentSnapshot.exists) {
+                                          final Map<String, dynamic>? data =
+                                              documentSnapshot.data()
+                                                  as Map<String, dynamic>?;
+                                          final String title =
+                                              data?['title'] ?? '';
+                                          final String itemDescription =
+                                              data?['item_description'] ?? '';
+                                          final List<dynamic>? imageUrls =
+                                              data?['image_urls'];
+
+                                          // Check if imageUrls is not empty
+                                          if (imageUrls != null &&
+                                              imageUrls.isNotEmpty) {
+                                            // Create a list of images for this portfolio item
+                                            List<Widget> images = [];
+
+                                            // Loop through the image URLs and add them to the list
+                                            for (var imageUrl in imageUrls) {
+                                              images.add(
+                                                Image.network(
+                                                  imageUrl,
+                                                  width:
+                                                      100, // Adjust the width as needed
+                                                  height:
+                                                      100, // Adjust the height as needed
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              );
+                                            }
+
+                                            // Display the portfolio item in a dialog
+                                            List<Widget> imageRows = [];
+
+                                            // Calculate the number of images per row
+                                            int imagesPerRow =
+                                                2; // You can change this value to the desired number
+
+                                            // Create rows of images with spacing
+                                            for (int i = 0;
+                                                i < images.length;
+                                                i += imagesPerRow) {
+                                              List<Widget> rowChildren = [];
+
+                                              // Add images to the current row
+                                              for (int j = i;
+                                                  j < i + imagesPerRow &&
+                                                      j < images.length;
+                                                  j++) {
+                                                rowChildren.add(
+                                                  Column(
+                                                    children: [
+                                                      images[j],
+                                                      SizedBox(height: 8.0),
+                                                    ],
+                                                  ),
+                                                );
+
+                                                if (j < i + imagesPerRow - 1) {
+                                                  // Add spacing between images in the same row
+                                                  rowChildren.add(
+                                                    SizedBox(width: 16.0),
+                                                  );
+                                                }
+                                              }
+
+                                              // Create a row with images and spacing
+                                              imageRows.add(
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: rowChildren,
+                                                ),
+                                              );
+                                            }
+
+                                            // Display the portfolio item in a dialog
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return Dialog(
+                                                  child: Container(
+                                                    width:
+                                                        600, // Adjust the width as needed
+                                                    padding:
+                                                        EdgeInsets.all(16.0),
+                                                    decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                        image: AssetImage(
+                                                            'images/noise_image.webp'), // Add your background image here
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                    ),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Text(
+                                                          title,
+                                                          style: TextStyle(
+                                                            fontSize: 18.0,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                        SizedBox(height: 8.0),
+                                                        Text(
+                                                            'Description: $itemDescription'),
+                                                        SizedBox(height: 16.0),
+                                                        // Display the rows of images
+                                                        Column(
+                                                          children: imageRows,
+                                                        ),
+                                                        SizedBox(height: 16.0),
+                                                        ElevatedButton(
+                                                          onPressed: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                          style: ElevatedButton
+                                                              .styleFrom(
+                                                            backgroundColor:
+                                                                kDeepBlueColor,
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          20.0),
+                                                            ),
+                                                          ),
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(15.0),
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceEvenly,
+                                                              children: const <
+                                                                  Widget>[
+                                                                Text(
+                                                                  'Close',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color:
+                                                                        kBrilliantWhite,
+                                                                    fontSize:
+                                                                        15.0,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                            );
+                                          }
+                                        } else {
+                                          // Handle the case where the document with ID '1' does not exist
+                                        }
+                                      });
+                                    }
+                                  },
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        width: 100,
+                                        height: 150,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.rectangle,
+                                          border: Border.all(
+                                              color: Colors.white, width: 2.0),
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          // You can set a placeholder image here
+                                          // This will be shown until the actual image is loaded
+                                          // You can also check if 'imageUrls' is not empty and use the first URL
+                                        ),
+                                        child: Center(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Image.asset(
+                                                'images/taskmate_logo_light.webp', // Replace with your image URL
+                                                width:
+                                                    80, // Adjust the width as needed
+                                                height:
+                                                    100, // Adjust the height as needed
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                          height:
+                                              8.0), // Add spacing between the box and text
+                                      Text(
+                                        'Project 3',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.grey.shade700,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    EdgeInsets.fromLTRB(35.0, 10.0, 10.0, 10.0),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    // Get the current user
+                                    final FirebaseAuth _auth =
+                                        FirebaseAuth.instance;
+                                    final User? firebaseUser =
+                                        _auth.currentUser;
+
+                                    if (firebaseUser != null) {
+                                      final String userUid = firebaseUser.uid;
+
+                                      // Create a reference to the user's document
+                                      final DocumentReference userDocRef =
+                                          FirebaseFirestore.instance
+                                              .collection('Users')
+                                              .doc(userUid);
+
+                                      // Fetch document with ID '1' from the subcollection 'portfolio_items'
+                                      userDocRef
+                                          .collection('portfolio_items')
+                                          .doc(
+                                              '4') // Use '4' as the document ID
+                                          .get()
+                                          .then((DocumentSnapshot
+                                              documentSnapshot) {
+                                        if (documentSnapshot.exists) {
+                                          final Map<String, dynamic>? data =
+                                              documentSnapshot.data()
+                                                  as Map<String, dynamic>?;
+                                          final String title =
+                                              data?['title'] ?? '';
+                                          final String itemDescription =
+                                              data?['item_description'] ?? '';
+                                          final List<dynamic>? imageUrls =
+                                              data?['image_urls'];
+
+                                          // Check if imageUrls is not empty
+                                          if (imageUrls != null &&
+                                              imageUrls.isNotEmpty) {
+                                            // Create a list of images for this portfolio item
+                                            List<Widget> images = [];
+
+                                            // Loop through the image URLs and add them to the list
+                                            for (var imageUrl in imageUrls) {
+                                              images.add(
+                                                Image.network(
+                                                  imageUrl,
+                                                  width:
+                                                      100, // Adjust the width as needed
+                                                  height:
+                                                      100, // Adjust the height as needed
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              );
+                                            }
+
+                                            // Display the portfolio item in a dialog
+                                            List<Widget> imageRows = [];
+
+                                            // Calculate the number of images per row
+                                            int imagesPerRow =
+                                                2; // You can change this value to the desired number
+
+                                            // Create rows of images with spacing
+                                            for (int i = 0;
+                                                i < images.length;
+                                                i += imagesPerRow) {
+                                              List<Widget> rowChildren = [];
+
+                                              // Add images to the current row
+                                              for (int j = i;
+                                                  j < i + imagesPerRow &&
+                                                      j < images.length;
+                                                  j++) {
+                                                rowChildren.add(
+                                                  Column(
+                                                    children: [
+                                                      images[j],
+                                                      SizedBox(height: 8.0),
+                                                    ],
+                                                  ),
+                                                );
+
+                                                if (j < i + imagesPerRow - 1) {
+                                                  // Add spacing between images in the same row
+                                                  rowChildren.add(
+                                                    SizedBox(width: 16.0),
+                                                  );
+                                                }
+                                              }
+
+                                              // Create a row with images and spacing
+                                              imageRows.add(
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: rowChildren,
+                                                ),
+                                              );
+                                            }
+
+                                            // Display the portfolio item in a dialog
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return Dialog(
+                                                  child: Container(
+                                                    width:
+                                                        600, // Adjust the width as needed
+                                                    padding:
+                                                        EdgeInsets.all(16.0),
+                                                    decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                        image: AssetImage(
+                                                            'images/noise_image.webp'), // Add your background image here
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                    ),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Text(
+                                                          title,
+                                                          style: TextStyle(
+                                                            fontSize: 18.0,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                        SizedBox(height: 8.0),
+                                                        Text(
+                                                            'Description: $itemDescription'),
+
+                                                        SizedBox(height: 16.0),
+                                                        // Display the rows of images
+                                                        Column(
+                                                          children: imageRows,
+                                                        ),
+                                                        SizedBox(height: 16.0),
+                                                        ElevatedButton(
+                                                          onPressed: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                          style: ElevatedButton
+                                                              .styleFrom(
+                                                            backgroundColor:
+                                                                kDeepBlueColor,
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          20.0),
+                                                            ),
+                                                          ),
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(15.0),
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceEvenly,
+                                                              children: const <
+                                                                  Widget>[
+                                                                Text(
+                                                                  'Close',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color:
+                                                                        kBrilliantWhite,
+                                                                    fontSize:
+                                                                        15.0,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                            );
+                                          }
+                                        } else {
+                                          // Handle the case where the document with ID '1' does not exist
+                                        }
+                                      });
+                                    }
+                                  },
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        width: 100,
+                                        height: 150,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.rectangle,
+                                          border: Border.all(
+                                              color: Colors.white, width: 2.0),
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          // You can set a placeholder image here
+                                          // This will be shown until the actual image is loaded
+                                          // You can also check if 'imageUrls' is not empty and use the first URL
+                                        ),
+                                        child: Center(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Image.asset(
+                                                'images/taskmate_logo_light.webp', // Replace with your image URL
+                                                width:
+                                                    80, // Adjust the width as needed
+                                                height:
+                                                    100, // Adjust the height as needed
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                          height:
+                                              8.0), // Add spacing between the box and text
                                       Text(
                                         'Project 4',
                                         style: TextStyle(
@@ -1070,7 +1211,6 @@ class _BiddedFreelancerProfileState extends State<BiddedFreelancerProfile> {
                             ],
                           ),
                         ),
-
                         Align(
                           alignment: Alignment.center,
                           child: Container(
@@ -1082,14 +1222,24 @@ class _BiddedFreelancerProfileState extends State<BiddedFreelancerProfile> {
                             ),
                           ),
                         ),
-                        UserDataGatherTitle(
+                        const UserDataGatherTitle(
                           title: 'Reviews',
                         ),
-                        ReviewCard(
-                          imagePath: 'images/blank_profile.webp',
-                          jobTitle: ' ',
-                          feedback: '',
-                          username: 'Nugera Gomez',
+                        const ReviewCard(
+                          imagePath: 'images/woman.jpg',
+                          jobTitle: 'My face edited into a picture',
+                          feedback:
+                              'Great! Very creative and had great ideas! ',
+                          username: 'Nimali de Zoysa',
+                        ),
+                        const ReviewCard(
+                          imagePath:
+                              'images/41bde2fdf20f4375ad5e353ff96daedd.jpg',
+                          jobTitle: 'A Logo for my Investing Club',
+                          feedback:
+                              'He was able to take some general ideas of what I wanted and turn '
+                              'them into an easily recognizable logo.',
+                          username: 'Kapila Silva',
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 12.0),

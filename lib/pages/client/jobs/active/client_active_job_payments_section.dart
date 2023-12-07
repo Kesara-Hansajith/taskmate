@@ -31,6 +31,7 @@ void requestPayment(QueryDocumentSnapshot activeJobDoc, BuildContext context) as
     // Update the 'paymentclient' field to 'release payment' and store the release time
     await docRef.update({
       'paymentclient': 'release payment',
+
       'CompleteJobTime': releaseDateTime,
     });
 
