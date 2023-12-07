@@ -10,6 +10,7 @@ import 'package:taskmate/client_home_page.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:taskmate/authentication/root_page.dart';
 import 'package:taskmate/components/client/post_a_job.dart';
+import 'package:taskmate/dashboard/client/invite_friends.dart';
 import 'package:taskmate/dashboard/freelancer/dashboard.dart';
 import 'package:taskmate/dashboard/freelancer/edit_profile.dart';
 import 'package:taskmate/dashboard/freelancer/profile.dart';
@@ -84,10 +85,8 @@ class Taskmate extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: "Poppins"),
-
       home: const SafeArea(
-
-        child: ProfileClient(),
+        child: InviteFriends(),
       ),
     );
   }
