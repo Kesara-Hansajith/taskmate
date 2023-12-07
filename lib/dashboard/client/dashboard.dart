@@ -31,7 +31,6 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-
   final user = FirebaseAuth.instance.currentUser;
   // final userUid=FirebaseAuth.instance.currentUser.uid;
   late String compliment;
@@ -306,18 +305,22 @@ class _DashboardState extends State<Dashboard> {
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             dynamic conversationObject = {
-              'appId': '47c5588bfd2fbc504ad1b4d294b8a375',// The [APP_ID](https://dashboard.kommunicate.io/settings/install) obtained from kommunicate dashboard.
+              'appId':
+                  '47c5588bfd2fbc504ad1b4d294b8a375', // The [APP_ID](https://dashboard.kommunicate.io/settings/install) obtained from kommunicate dashboard.
             };
 
             KommunicateFlutterPlugin.buildConversation(conversationObject)
                 .then((clientConversationId) {
-              print("Conversation builder success : " + clientConversationId.toString());
+              print("Conversation builder success : " +
+                  clientConversationId.toString());
             }).catchError((error) {
               print("Conversation builder error : " + error.toString());
             });
           },
           backgroundColor: kDeepBlueColor,
-          child: const Icon(Icons.help),
+          child: const Image(
+            image: AssetImage('images/chatbot.png'),
+          ),
         ),
       ),
     );

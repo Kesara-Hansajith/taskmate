@@ -27,6 +27,7 @@ class _ChatscreenState extends State<Chatscreen> {
   final messageController = TextEditingController();
   bool isOdd = true;
   DateTime now = DateTime.now();
+
   final CollectionReference collRef =
       FirebaseFirestore.instance.collection("inbox");
   final CollectionReference coll =
