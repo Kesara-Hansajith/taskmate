@@ -10,6 +10,9 @@ import 'package:taskmate/dashboard/freelancer/dashboard.dart';
 import 'package:taskmate/dashboard/freelancer/edit_profile.dart';
 
 class BiddedFreelancerProfile extends StatefulWidget {
+  final QueryDocumentSnapshot pendingJobDoc;
+  final String jobTitle;
+  final String reviewdesfreelancer;
   final String freelancerName;
   final String skills;
   final String profilePhotoUrl;
@@ -20,11 +23,14 @@ class BiddedFreelancerProfile extends StatefulWidget {
 
    BiddedFreelancerProfile({
     Key? key,
+     required this.jobTitle,
     required this.freelancerName,
     required this.skills,
     required this.profilePhotoUrl,
      required this.Level,
+     required this.pendingJobDoc,
      required this.professionalRole,
+     required this.reviewdesfreelancer,
      required this.bio,
      required this.hourlyRate,
   }) : super(key: key);
@@ -1076,9 +1082,8 @@ class _BiddedFreelancerProfileState extends State<BiddedFreelancerProfile> {
                         ),
                         ReviewCard(
                           imagePath: 'images/blank_profile.webp',
-                          jobTitle: 'Graphic designer for family care product',
-                          feedback:
-                              'Great! Very creative and had great ideas! ',
+                          jobTitle: ' ',
+                          feedback: '',
                           username: 'Nugera Gomez',
                         ),
                         Padding(

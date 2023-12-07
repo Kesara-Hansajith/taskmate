@@ -66,7 +66,7 @@ class JobCard extends StatelessWidget {
                     stream: FirebaseFirestore.instance
                         .collection('jobs') // Use your actual collection name
 
-                        .doc('b6BxxPQonXNOBYQRDSMtn2Rkqyc2')
+                        .doc('2ayy7BwXAbNtWhilcMzwgUKnmQy2')
                         .collection('jobsnew')
                         .doc(mostjobDoc.id)
                         .collection('bidsjobs')
