@@ -7,9 +7,9 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:taskmate/dashboard/client/dashboard.dart';
 
 import 'package:taskmate/bottom_nav_bar/client/client_posted.dart';
+import 'package:taskmate/messaging/Receivemsg.dart';
 
 import 'package:taskmate/profile/client/user_model1.dart';
-
 
 class ClientHomePage extends StatefulWidget {
   int passedIndex;
@@ -24,8 +24,8 @@ class ClientHomePage extends StatefulWidget {
     super.key,
   });
 
-   // final UserModel1 client; // Add this line
-   // final String? downloadUrl;
+  // final UserModel1 client; // Add this line
+  // final String? downloadUrl;
 
   @override
   State<ClientHomePage> createState() => _ClientHomePageState();
@@ -33,22 +33,18 @@ class ClientHomePage extends StatefulWidget {
 
 class _ClientHomePageState extends State<ClientHomePage> {
   late final List _items = [
-    const ClientMessaging(),
-    ClientPosted(
-
-        // client: widget.client,
-        ),
+    Receivemsg(),
+    const ClientPosted(),
     const ClientJobStatus(),
     Dashboard(
         // client: widget.client,
         // profileImageUrl: widget.downloadUrl,
         ),
-
   ];
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth=MediaQuery.of(context).size.width;
+    double screenWidth = MediaQuery.of(context).size.width;
     // int selectedIndex=widget.passedIndex;
     return SafeArea(
       child: Scaffold(

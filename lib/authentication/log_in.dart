@@ -78,19 +78,19 @@ class _LoginState extends State<Login> {
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
-  Future<void> handleSignIn(BuildContext context) async {
-    UserCredential user = await signInWithGoogle();
-
-    if (user != null) {
-      if (context.mounted) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => const Jobs(),
-          ),
-        );
-      }
-    } else {}
-  }
+  // Future<void> handleSignIn(BuildContext context) async {
+  //   UserCredential user = await signInWithGoogle();
+  //
+  //   if (user != null) {
+  //     if (context.mounted) {
+  //       Navigator.of(context).pushReplacement(
+  //         MaterialPageRoute(
+  //           builder: (context) => const Jobs(),
+  //         ),
+  //       );
+  //     }
+  //   } else {}
+  // }
 
 //Method for Sign in with email and password
   void signInWithEmailAndPassword(String email, String password) async {

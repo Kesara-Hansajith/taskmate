@@ -163,7 +163,7 @@ class _ProfileFreelancerAddphotoState extends State<ProfileFreelancerAddphoto> {
               builder: (context) => VerificationPending(
                 user: widget.user,
                 userUid: userUid, // Pass the userUid
-                //profileImageUrl: downloadUrl,
+                // profileImageUrl: downloadUrl,
               ),
               //builder: (context) =>  VerifyIdentity(),
             ),

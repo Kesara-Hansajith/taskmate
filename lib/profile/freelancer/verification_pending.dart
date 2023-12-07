@@ -25,73 +25,88 @@ class VerificationPending extends StatefulWidget {
 class _VerificationPendingState extends State<VerificationPending> {
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return SafeArea(
       child: Scaffold(
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                'We are working on it',
-                style: kSubHeadingTextStyle,
+              const Image(
+                image: AssetImage('gifs/verifying.gif'),
               ),
-              DarkMainButton(
-                title: 'Refresh',
-                process: () async {
-                  // Get the current user's document reference
-                  DocumentReference userDoc = FirebaseFirestore.instance
-                      .collection('Users')
-                      .doc(widget.userUid);
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 16.0),
+                child: Text(
+                  'Please Wait!\nWe\'re verifying you . . .',
+                  textAlign: TextAlign.center,
+                  style: kSubHeadingTextStyle,
+                ),
+              ),
+              SizedBox(
+                width: screenWidth,
+                child: DarkMainButton(
+                  title: 'Refresh',
+                  process: () async {
+                    // Get the current user's document reference
+                    DocumentReference userDoc = FirebaseFirestore.instance
+                        .collection('Users')
+                        .doc(widget.userUid);
 
-                  try {
-                    // Fetch the latest data from Firestore
-                    DocumentSnapshot snapshot = await userDoc.get();
+                    try {
+                      // Fetch the latest data from Firestore
+                      DocumentSnapshot snapshot = await userDoc.get();
 
-                    // Check if the document exists
-                    if (snapshot.exists) {
-                      // Check if the 'verify' field is present
-                      if ((snapshot.data() as Map<String, dynamic>)
-                          .containsKey('verify')) {
-                        // Get the value of the 'verify' field
-                        bool? isVerified = snapshot['verify'] as bool?;
+                      // Check if the document exists
+                      if (snapshot.exists) {
+                        // Check if the 'verify' field is present
+                        if ((snapshot.data() as Map<String, dynamic>)
+                            .containsKey('verify')) {
+                          // Get the value of the 'verify' field
+                          bool? isVerified = snapshot['verify'] as bool?;
 
-                        if (isVerified != null) {
-                          // Navigate based on the value of the verify field
-                          if (isVerified) {
-                            // If verified, navigate to FreelancerHomePage
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => FreelancerHomePage()),
-                            );
+                          if (isVerified != null) {
+                            // Navigate based on the value of the verify field
+                            if (isVerified) {
+                              // If verified, navigate to FreelancerHomePage
+                              if (context.mounted) {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const FreelancerHomePage()),
+                                );
+                              }
+                            } else {
+                              // If not verified, update Firestore, then navigate to VerificationFaild
+                              await userDoc.update({
+                                'verify': false
+                              }); // Update with a boolean value
+
+                              if (context.mounted) {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const VerificationFailed()),
+                                );
+                              }
+                            }
                           } else {
-                            // If not verified, update Firestore, then navigate to VerificationFaild
-                            await userDoc.update({
-                              'verify': false
-                            }); // Update with a boolean value
-
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => VerificationFaild()),
-                            );
+                            // Handle the case where 'verify' field is null
                           }
                         } else {
-                          // Handle the case where 'verify' field is null
-                          print("'verify' field is null");
+                          // Handle the case where 'verify' field doesn't exist
                         }
                       } else {
-                        // Handle the case where 'verify' field doesn't exist
-                        print("'verify' field not found");
+                        // Handle the case where the document doesn't exist
                       }
-                    } else {
-                      // Handle the case where the document doesn't exist
-                      print("Document not found");
+                    } catch (e) {
+                      //Ignored
                     }
-                  } catch (e) {
-                    print("Error fetching document: $e");
-                  }
-                },
+                  },
+                ),
               ),
             ],
           ),

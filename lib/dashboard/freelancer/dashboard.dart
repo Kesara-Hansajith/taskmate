@@ -48,10 +48,8 @@ class _DashboardState extends State<Dashboard> {
     User? user = FirebaseAuth.instance.currentUser;
     userId = user!.uid;
     // Define the Firestore collection, document ID, and fields you want to retrieve.
-    final DocumentSnapshot document = await FirebaseFirestore.instance
-        .collection('Users')
-        .doc(userId)
-        .get();
+    final DocumentSnapshot document =
+        await FirebaseFirestore.instance.collection('Users').doc(userId).get();
 
     final Map<String, dynamic> data = document.data() as Map<String, dynamic>;
     return data;
@@ -231,8 +229,8 @@ class _DashboardState extends State<Dashboard> {
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         return Text(
-                          '${snapshot.data?['Level']}',
-                          style: kSubHeadingTextStyle,
+                          '${snapshot.data?['Level']} Level Freelancer',
+                          style: kTextStyle.copyWith(color: kOceanBlueColor),
                         );
                       } else {
                         return const SpinKitThreeBounce(

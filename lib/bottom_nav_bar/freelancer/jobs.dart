@@ -123,9 +123,9 @@ class _JobsState extends State<Jobs> with SingleTickerProviderStateMixin {
 
                           if (!subSnapshot.hasData ||
                               subSnapshot.data!.docs.isEmpty) {
-                            return const Center(
-                              child: Text('No matching jobs found'),
-                            );
+                            // return const Center(
+                            //   child: Text('No matching jobs found'),
+                            // );
                           }
 
                           final matchingJobDocs = subSnapshot.data!.docs;

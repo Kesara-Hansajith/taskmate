@@ -19,6 +19,17 @@ class _ReceivemsgState extends State<Receivemsg> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          flexibleSpace: Stack(
+            children: [
+              // Background Image
+              Positioned.fill(
+                child: Image.asset(
+                  'images/noise_image.webp',
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ],
+          ),
           automaticallyImplyLeading: false,
           elevation: 0,
           toolbarHeight: 120,
