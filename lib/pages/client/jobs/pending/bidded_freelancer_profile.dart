@@ -8,6 +8,7 @@ import 'package:taskmate/components/review_card.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/dashboard/freelancer/dashboard.dart';
 import 'package:taskmate/dashboard/freelancer/edit_profile.dart';
+import 'package:taskmate/messaging/Chatscreen.dart';
 
 class BiddedFreelancerProfile extends StatefulWidget {
   final QueryDocumentSnapshot pendingJobDoc;
@@ -99,7 +100,11 @@ class _BiddedFreelancerProfileState extends State<BiddedFreelancerProfile> {
                               padding: const EdgeInsets.all(8.0),
                               child: ElevatedButton(
                                 onPressed: () {
-                                  //TODO Messaging to Freelancer
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>  Chatscreen(),
+                                    ),
+                                  );
                                 },
                                 style: ElevatedButton.styleFrom(
                                   elevation: 6.0,

@@ -3,7 +3,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/pages/freelancer/proposals/pending_jobs_pages/pending_job_card.dart';
 
-class PendingJobs extends StatelessWidget {
+class PendingJobs extends StatefulWidget {
+  @override
+  State<PendingJobs> createState() => _PendingJobsState();
+}
+
+class _PendingJobsState extends State<PendingJobs> {
+  int noJobCount = 0;
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -47,9 +54,10 @@ class PendingJobs extends StatelessWidget {
                         );
                       }
 
-                      if (!subSnapshot.hasData || subSnapshot.data!.docs.isEmpty) {
+                      if (!subSnapshot.hasData ||
+                          subSnapshot.data!.docs.isEmpty) {
                         return const Center(
-                          child: Text('No pending jobs found'),
+                          child: Text('No data'),
                         );
                       }
 

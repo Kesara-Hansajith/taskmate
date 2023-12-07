@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:taskmate/components/dark_main_button.dart';
@@ -7,29 +6,23 @@ import 'package:taskmate/constants.dart';
 
 class Payments extends StatefulWidget {
   final String budgetField;
-  final QueryDocumentSnapshot activeJobDoc ;
+  final QueryDocumentSnapshot activeJobDoc;
 
-  const Payments({
-    required this.budgetField,
-    required this.activeJobDoc,
-    super.key
-  });
+  const Payments(
+      {required this.budgetField, required this.activeJobDoc, super.key});
 
   @override
   State<Payments> createState() => _PaymentsState();
 }
 
-
-void requestPayment(QueryDocumentSnapshot activeJobDoc, BuildContext context) async {
+void requestPayment(
+    QueryDocumentSnapshot activeJobDoc, BuildContext context) async {
   try {
     // Reference to Firestore document
     final DocumentReference docRef = activeJobDoc.reference;
 
     // Update the 'payment' field to 'Request'
-    await docRef.update({
-      'payment': 'Request'
-
-    });
+    await docRef.update({'payment': 'Request'});
 
     // Show a success message
     ScaffoldMessenger.of(context).showSnackBar(
@@ -47,8 +40,6 @@ void requestPayment(QueryDocumentSnapshot activeJobDoc, BuildContext context) as
     );
   }
 }
-
-
 
 class _PaymentsState extends State<Payments> {
   @override
@@ -75,11 +66,12 @@ class _PaymentsState extends State<Payments> {
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children:  <Widget>[
+                children: <Widget>[
                   Text('Requested'),
                   Text(
                     'LKR. ${widget.budgetField}',
-                    style: kTextStyle,),
+                    style: kTextStyle,
+                  ),
                 ],
               ),
             ),
@@ -90,7 +82,7 @@ class _PaymentsState extends State<Payments> {
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children:  <Widget>[
+                children: <Widget>[
                   Text('In Progress'),
                   Text('LKR. ${widget.activeJobDoc['Precentage'] ?? 300}'),
                 ],
@@ -103,7 +95,7 @@ class _PaymentsState extends State<Payments> {
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children:  <Widget>[
+                children: <Widget>[
                   Text('Released to Freelancer'),
                   Text(
                     'LKR. ${widget.activeJobDoc['releaseMoney']} ',
@@ -118,16 +110,11 @@ class _PaymentsState extends State<Payments> {
             DarkMainButton(
               title: 'Request Payment',
               process: () {
-                requestPayment(widget.activeJobDoc, context); // Call the method to request payment
+                requestPayment(widget.activeJobDoc,
+                    context); // Call the method to request payment
               },
               screenWidth: screenWidth,
             ),
-            LightMainButton(
-                title: 'Message',
-                process: () {
-                  //TODO Forward to messaging functionality
-                },
-                screenWidth: screenWidth)
           ],
         ),
       ),

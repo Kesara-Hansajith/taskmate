@@ -14,7 +14,6 @@ class Details extends StatefulWidget {
   final String createdAt;
   final String completeJobTime; // Add this parameter
 
-
   const Details({
     Key? key,
     required this.jobTitle,
@@ -25,7 +24,6 @@ class Details extends StatefulWidget {
     required this.image2Url,
     required this.createdAt,
     required this.completeJobTime,
-
   });
 
   @override
@@ -44,7 +42,6 @@ class _DetailsState extends State<Details> {
   }
 
   /// Custom method to display an image in full-screen with a black background
-
 
   @override
   Widget build(BuildContext context) {
@@ -74,13 +71,13 @@ class _DetailsState extends State<Details> {
               ],
             ),
             Text(
-              widget.jobTitle,
+              'Title',
               style: kJobCardTitleTextStyle.copyWith(
                 color: kJetBlack,
               ),
             ),
             Text(
-              'Title goes here...',
+              widget.jobTitle,
               style: kTextStyle,
             ),
             const SizedBox(
@@ -124,15 +121,17 @@ class _DetailsState extends State<Details> {
                 children: <Widget>[
                   Expanded(
                     child: AttachmentCard(
-                      cardChild: Image.network(imageUrl1), // Display image1 using its URL
+                      cardChild: Image.network(
+                          imageUrl1), // Display image1 using its URL
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 15.0,
                   ),
                   Expanded(
                     child: AttachmentCard(
-                      cardChild: Image.network(imageUrl2), // Display image2 using its URL
+                      cardChild: Image.network(
+                          imageUrl2), // Display image2 using its URL
                     ),
                   ),
                 ],

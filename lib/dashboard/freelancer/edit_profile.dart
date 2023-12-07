@@ -327,7 +327,7 @@ class _EditProfileState extends State<EditProfile> {
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         return Text(
-                          '${snapshot.data?['Level']} Level Freelancer',
+                          '${snapshot.data?['Level']} Freelancer',
                           style: kTextStyle.copyWith(color: kOceanBlueColor),
                         );
                       } else {
@@ -545,27 +545,6 @@ class _EditProfileState extends State<EditProfile> {
                               ),
                             ],
                           ),
-                        ),
-                        Align(
-                          alignment: Alignment.center,
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(vertical: 4.0),
-                            width: screenWidth / 1.2,
-                            child: const Divider(
-                              color: kDarkGreyColor,
-                              thickness: 1.0,
-                            ),
-                          ),
-                        ),
-                        const UserDataGatherTitle(
-                          title: 'Reviews',
-                        ),
-                        const ReviewCard(
-                          imagePath: 'images/blank_profile.webp',
-                          jobTitle: 'Graphic designer for family care product',
-                          feedback:
-                              'Great! Very creative and had great ideas! ',
-                          username: 'Nugera Gomez',
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(
