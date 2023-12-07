@@ -15,7 +15,6 @@ class TakeAction extends StatefulWidget {
 class _TakeActionState extends State<TakeAction> {
   String? imagePath;
 
-
   Future<void> loadImages(String imageUrl) async {
     try {
       await precacheImage(AssetImage(imagePath!), context);
@@ -96,7 +95,7 @@ class _TakeActionState extends State<TakeAction> {
                                     horizontal: 8.0,
                                   ),
                                   child: Text(
-                                    'Take Action & Open Your Account',
+                                    'Take Action & Open \nYour Account',
                                     textAlign: TextAlign.center,
                                     style: kHeadingTextStyle,
                                   ),
@@ -106,7 +105,7 @@ class _TakeActionState extends State<TakeAction> {
                                     setState(() {
                                       isWork = true;
                                       isHire = false;
-                                      Navigator.of(context).push(
+                                      Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               const ProfileFreelancer(),
@@ -183,10 +182,10 @@ class _TakeActionState extends State<TakeAction> {
                                     setState(() {
                                       isWork = false;
                                       isHire = true;
-                                      Navigator.of(context).push(
+                                      Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                          const ProfileClient(),
+                                              const ProfileClient(),
                                         ),
                                       );
                                     });

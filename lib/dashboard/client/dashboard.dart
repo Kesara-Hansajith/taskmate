@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:taskmate/authentication/get_started.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/components/dashboard_item.dart';
 import 'package:taskmate/dashboard/client/about_us.dart';
@@ -6,21 +9,39 @@ import 'package:taskmate/dashboard/client/balance.dart';
 import 'package:taskmate/dashboard/client/help_support.dart';
 import 'package:taskmate/dashboard/client/invite_friends.dart';
 import 'package:taskmate/dashboard/client/profile.dart';
-import 'package:taskmate/dashboard/client/terms_conditions.dart';
+import 'package:taskmate/dashboard/terms_conditions.dart';
 import 'package:taskmate/dashboard/client/transaction_history.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:kommunicate_flutter/kommunicate_flutter.dart';
+
+import '../../profile/client/user_model1.dart';
 
 class Dashboard extends StatefulWidget {
-  const Dashboard({super.key});
+  // final UserModel1 client; // Add this line
+  // final String? downloadUrl;
+
+  const Dashboard(
+      {
+      // required this.client,
+      // this.downloadUrl,
+      super.key});
 
   @override
   State<Dashboard> createState() => _DashboardState();
 }
 
 class _DashboardState extends State<Dashboard> {
+  final user = FirebaseAuth.instance.currentUser;
+  // final userUid=FirebaseAuth.instance.currentUser.uid;
+  late String compliment;
+  String userId = '';
+
   void navigateToProfile() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const Profile(),
+        builder: (context) => const Profile(
+            // client: widget.client
+            ),
       ),
     );
   }
@@ -28,7 +49,7 @@ class _DashboardState extends State<Dashboard> {
   void navigateToBalance() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const Balance(),
+        builder: (context) => Balance(),
       ),
     );
   }
@@ -36,7 +57,7 @@ class _DashboardState extends State<Dashboard> {
   void navigateToTransactionHistory() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const TransactionHistory(),
+        builder: (context) => TransactionHistory(),
       ),
     );
   }
@@ -44,7 +65,7 @@ class _DashboardState extends State<Dashboard> {
   void navigateToHelpSupport() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const HelpSupport(),
+        builder: (context) => HelpSupport(),
       ),
     );
   }
@@ -52,7 +73,7 @@ class _DashboardState extends State<Dashboard> {
   void navigateToInviteFriends() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const InviteFriends(),
+        builder: (context) => InviteFriends(),
       ),
     );
   }
@@ -60,7 +81,7 @@ class _DashboardState extends State<Dashboard> {
   void navigateToTermsConditions() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const TermsConditions(),
+        builder: (context) => TermsConditions(),
       ),
     );
   }
@@ -68,9 +89,55 @@ class _DashboardState extends State<Dashboard> {
   void navigateToAboutUs() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const AboutUs(),
+        builder: (context) => AboutUs(),
       ),
     );
+  }
+
+  void signOut() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const GetStarted(),
+      ),
+    );
+  }
+
+  void updateCompliment() {
+    final currentTime = DateTime.now();
+    final hour = currentTime.hour;
+    // final dayFormat = DateFormat('EEEE');
+    // final dateFormat = DateFormat('MMM dd, yyyy');
+    setState(() {
+      compliment = getCompliment(hour);
+    });
+  }
+
+  String getCompliment(int hour) {
+    if (hour >= 5 && hour < 12) {
+      return 'Good Morning!';
+    } else if (hour >= 12 && hour < 17) {
+      return 'Good Afternoon!';
+    } else {
+      return 'Good Evening!';
+    }
+  }
+
+  Future<Map<String, dynamic>> fetchData() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    userId = user!.uid;
+    // Define the Firestore collection, document ID, and fields you want to retrieve.
+    final DocumentSnapshot document = await FirebaseFirestore.instance
+        .collection('Clients')
+        .doc(userId)
+        .get();
+
+    final Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+    return data;
+  }
+
+  @override
+  void initState() {
+    updateCompliment();
   }
 
   @override
@@ -129,26 +196,49 @@ class _DashboardState extends State<Dashboard> {
                         width: 5.0, // Set the border width
                       ),
                     ),
-                    child: CircleAvatar(
-                      backgroundImage: AssetImage(
-                        'images/blank_profile.webp',
-                      ),
-                      radius: 40,
+                    child: FutureBuilder(
+                      future: fetchData(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return CircleAvatar(
+                            backgroundImage: NetworkImage(
+                              '${snapshot.data?['profilePhotoUrl']}',
+                            ),
+                            radius: 40,
+                          );
+                        } else {
+                          return const SpinKitFadingCircle(
+                            color: kDeepBlueColor,
+                            size: 30.0,
+                          );
+                        }
+                      },
                     ),
                   ),
                 ],
               ),
               Column(
-                children: <Text>[
+                children: [
                   Text(
-                    'Good Morning!',
+                    compliment,
                     style: kJobCardTitleTextStyle.copyWith(color: kAmberColor),
                   ),
-                  Text(
-                    'Nimali Ihalagama',
-                    style: kSubHeadingTextStyle,
+                  FutureBuilder(
+                    future: fetchData(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Text(
+                          '${snapshot.data?['firstName']} ${snapshot.data?['lastName']}',
+                          style: kSubHeadingTextStyle,
+                        );
+                      } else {
+                        return const SpinKitThreeBounce(
+                          color: kDeepBlueColor,
+                          size: 30.0,
+                        );
+                      }
+                    },
                   ),
-
                 ],
               ),
               DashboardItem(
@@ -195,9 +285,7 @@ class _DashboardState extends State<Dashboard> {
                 function: navigateToAboutUs,
               ),
               TextButton(
-                onPressed: () {
-                  //TODO Implement streams and sign out process
-                },
+                onPressed: signOut,
                 child: Text(
                   'Logout',
                   style: kJobCardTitleTextStyle.copyWith(
@@ -216,10 +304,23 @@ class _DashboardState extends State<Dashboard> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            //TODO AI Chatbot
+            dynamic conversationObject = {
+              'appId':
+                  '47c5588bfd2fbc504ad1b4d294b8a375', // The [APP_ID](https://dashboard.kommunicate.io/settings/install) obtained from kommunicate dashboard.
+            };
+
+            KommunicateFlutterPlugin.buildConversation(conversationObject)
+                .then((clientConversationId) {
+              print("Conversation builder success : " +
+                  clientConversationId.toString());
+            }).catchError((error) {
+              print("Conversation builder error : " + error.toString());
+            });
           },
           backgroundColor: kDeepBlueColor,
-          child: const Icon(Icons.help),
+          child: const Image(
+            image: AssetImage('images/chatbot.png'),
+          ),
         ),
       ),
     );

@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:taskmate/components/attachment_card.dart';
 import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/components/freelancer/user_data_gather_title.dart';
@@ -15,6 +18,22 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+
+  String userId = '';
+
+  Future<Map<String, dynamic>> fetchData() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    userId = user!.uid;
+    // Define the Firestore collection, document ID, and fields you want to retrieve.
+    final DocumentSnapshot document = await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(userId)
+        .get();
+
+    final Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+    return data;
+  }
+
   void _navigateToEditProfile() {
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -101,34 +120,79 @@ class _ProfileState extends State<Profile> {
                         width: 5.0, // Set the border width
                       ),
                     ),
-                    child: CircleAvatar(
-                      backgroundImage: AssetImage(
-                        'images/blank_profile.webp',
-                      ),
-                      radius: 40,
+                    child: FutureBuilder(
+                      future: fetchData(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return CircleAvatar(
+                            backgroundImage: NetworkImage(
+                              '${snapshot.data?['profilePhotoUrl']}',
+                            ),
+                            radius: 40,
+                          );
+                        } else {
+                          return const SpinKitFadingCircle(
+                            color: kDeepBlueColor,
+                            size: 30.0,
+                          );
+                        }
+                      },
                     ),
                   ),
                 ],
               ),
               Column(
                 children: [
-                  Text(
-                    'Good Morning!',
-                    style: kJobCardTitleTextStyle.copyWith(color: kAmberColor),
+                  FutureBuilder(
+                    future: fetchData(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Center(
+                          child: Text(
+                            '${snapshot.data?['firstName']} ${snapshot.data?['lastName']}',
+                            style: kSubHeadingTextStyle,
+                          ),
+                        );
+                      } else {
+                        return const SpinKitThreeBounce(
+                          color: kDeepBlueColor,
+                          size: 30.0,
+                        );
+                      }
+                    },
                   ),
-                  Text(
-                    'Kesara Hansajith',
-                    style: kSubHeadingTextStyle,
-                  ),
-                  Text(
-                    'Top Level Freelancer',
-                    style: kTextStyle.copyWith(color: kOceanBlueColor),
+                  FutureBuilder(
+                    future: fetchData(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Text(
+                          '${snapshot.data?['Level']} Level Freelancer',
+                          style: kTextStyle.copyWith(color: kOceanBlueColor),
+                        );
+                      } else {
+                        return const SpinKitThreeBounce(
+                          color: kDeepBlueColor,
+                          size: 30.0,
+                        );
+                      }
+                    },
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Text(
-                      'Professional Role - Logo Designer | Digital Artist | Graphic Designer ',
-                      textAlign: TextAlign.center,
+                    child: FutureBuilder(
+                      future: fetchData(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return Text(
+                            'Professional Role-${snapshot.data?['professionalRole']}',
+                          );
+                        } else {
+                          return const SpinKitThreeBounce(
+                            color: kDeepBlueColor,
+                            size: 30.0,
+                          );
+                        }
+                      },
                     ),
                   ),
                 ],
@@ -141,16 +205,44 @@ class _ProfileState extends State<Profile> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 10.0),
-                          child: const UserDataGatherTitle(
-                            title: 'Hourly Rate : LKR. 1000',
+                          child: FutureBuilder(
+                            future: fetchData(),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                                  child: Text(
+                                    'Hourly Rate: LKR.${snapshot.data?['hourlyRate']}',
+                                    style: kUserDataGatherTitleTextStyle,
+                                  ),
+                                );
+                              } else {
+                                return const SpinKitThreeBounce(
+                                  color: kDeepBlueColor,
+                                  size: 30.0,
+                                );
+                              }
+                            },
                           ),
                         ),
                         const UserDataGatherTitle(title: 'Overview'),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: Text(
-                            'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. ',
-                            style: kTextStyle,
+                          child: FutureBuilder(
+                            future: fetchData(),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return Text(
+                                  '${snapshot.data?['bio']}',
+                                  style: kTextStyle,
+                                );
+                              } else {
+                                return const SpinKitThreeBounce(
+                                  color: kDeepBlueColor,
+                                  size: 30.0,
+                                );
+                              }
+                            },
                           ),
                         ),
                         Align(

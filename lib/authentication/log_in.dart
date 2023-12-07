@@ -16,8 +16,14 @@ import 'package:taskmate/freelancer_home_page.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../profile/client/user_model1.dart';
+
 class Login extends StatefulWidget {
-  const Login({super.key});
+  // final UserModel1 client;
+
+  const Login({
+    super.key,
+  });
 
   @override
   State<Login> createState() => _LoginState();
@@ -72,19 +78,19 @@ class _LoginState extends State<Login> {
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
-  Future<void> handleSignIn(BuildContext context) async {
-    UserCredential user = await signInWithGoogle();
-
-    if (user != null) {
-      if (context.mounted) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => const Jobs(),
-          ),
-        );
-      }
-    } else {}
-  }
+  // Future<void> handleSignIn(BuildContext context) async {
+  //   UserCredential user = await signInWithGoogle();
+  //
+  //   if (user != null) {
+  //     if (context.mounted) {
+  //       Navigator.of(context).pushReplacement(
+  //         MaterialPageRoute(
+  //           builder: (context) => const Jobs(),
+  //         ),
+  //       );
+  //     }
+  //   } else {}
+  // }
 
 //Method for Sign in with email and password
   void signInWithEmailAndPassword(String email, String password) async {
@@ -102,7 +108,9 @@ class _LoginState extends State<Login> {
               )
             : Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (context) => ClientHomePage(),
+                  builder: (context) => ClientHomePage(
+                    passedIndex: 1,
+                  ),
                 ),
               );
       }
@@ -112,20 +120,35 @@ class _LoginState extends State<Login> {
         passwordController.clear();
         //Visit the snackbar class for further details
         ScaffoldMessenger.of(context).showSnackBar(
-          CustomSnackBar('Enter a valid email address'),
+          CusSnackBar(
+            backColor: kAmberColor,
+            time: 3,
+            title: 'Enter a valid email address',
+            icon: Icons.mail,
+          ),
         );
       } else if (e.code == 'user-not-found') {
         emailController.clear();
         passwordController.clear();
         //Visit the snackbar class for further details
         ScaffoldMessenger.of(context).showSnackBar(
-          CustomSnackBar('Incorrect Email and Password'),
+          CusSnackBar(
+            backColor: kAmberColor,
+            time: 3,
+            title: 'Incorrect Email and Password',
+            icon: Icons.mail,
+          ),
         );
       } else if (e.code == 'wrong-password') {
         passwordController.clear();
         //Visit the snackbar class for further details
         ScaffoldMessenger.of(context).showSnackBar(
-          CustomSnackBar('Incorrect Password'),
+          CusSnackBar(
+            backColor: kAmberColor,
+            time: 3,
+            title: 'Incorrect Password',
+            icon: Icons.lock,
+          ),
         );
       }
     }
@@ -204,45 +227,48 @@ class _LoginState extends State<Login> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: <Widget>[
-                                      const Padding(
-                                        padding:
-                                            EdgeInsets.symmetric(vertical: 8.0),
-                                        child: Text(
-                                          'Welcome Back!',
-                                          style: kHeadingTextStyle,
-                                        ),
+                                      const SizedBox(
+                                        height: 30.0,
+                                      ),
+                                      Text(
+                                        'Welcome Back!',
+                                        style: kHeadingTextStyle,
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.symmetric(
-                                            vertical: 8.0),
-                                        child: ToggleSwitch(
-                                          activeBgColor: const [
-                                            kOceanBlueColor
-                                          ],
-                                          activeFgColor: kDeepBlueColor,
-                                          inactiveBgColor: kLightBlueColor,
-                                          inactiveFgColor: kOceanBlueColor,
-                                          cornerRadius: 10.0,
-                                          radiusStyle: true,
-                                          minWidth: screenWidth,
-                                          minHeight: 45.0,
-                                          initialLabelIndex: currentUserRole,
-                                          totalSwitches: 2,
-                                          customTextStyles: const [
-                                            TextStyle(
-                                                fontSize: 15.0,
-                                                fontWeight: FontWeight.w600),
-                                            TextStyle(
-                                                fontSize: 15.0,
-                                                fontWeight: FontWeight.w600),
-                                          ],
-                                          animate: true,
-                                          curve: Curves.ease,
-                                          labels: const [
-                                            'Freelancer',
-                                            'Client'
-                                          ],
-                                          onToggle: _onToggle,
+                                            vertical: 16.0),
+                                        child: Container(
+                                          // margin: EdgeInsets.symmetric(horizontal: 20.0),
+                                          // width: screenWidth,
+                                          child: ToggleSwitch(
+                                            activeBgColor: const [
+                                              kOceanBlueColor
+                                            ],
+                                            activeFgColor: kDeepBlueColor,
+                                            inactiveBgColor: kLightBlueColor,
+                                            inactiveFgColor: kOceanBlueColor,
+                                            cornerRadius: 10.0,
+                                            radiusStyle: true,
+                                            minWidth: screenWidth / 2,
+                                            minHeight: 45.0,
+                                            initialLabelIndex: currentUserRole,
+                                            totalSwitches: 2,
+                                            customTextStyles: const [
+                                              TextStyle(
+                                                  fontSize: 15.0,
+                                                  fontWeight: FontWeight.w600),
+                                              TextStyle(
+                                                  fontSize: 15.0,
+                                                  fontWeight: FontWeight.w600),
+                                            ],
+                                            animate: true,
+                                            curve: Curves.ease,
+                                            labels: const [
+                                              'Freelancer',
+                                              'Client'
+                                            ],
+                                            onToggle: _onToggle,
+                                          ),
                                         ),
                                       ),
                                       Form(
@@ -436,13 +462,16 @@ class _LoginState extends State<Login> {
                                           ],
                                         ),
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(4.0),
+                                      Container(
+                                        width: screenWidth,
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 8.0, horizontal: 28.0),
                                         child: ElevatedButton(
                                           style: ElevatedButton.styleFrom(
                                             padding: const EdgeInsets.symmetric(
-                                                vertical: 12.0,
-                                                horizontal: 24.0),
+                                              vertical: 6.0,
+                                              horizontal: 24.0,
+                                            ),
                                             backgroundColor: kLightBlueColor,
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
@@ -450,13 +479,28 @@ class _LoginState extends State<Login> {
                                             ),
                                           ),
                                           onPressed: () {
-                                            handleSignIn(context);
+                                            signInWithGoogle();
                                           },
                                           child: Padding(
                                             padding: const EdgeInsets.all(8.0),
-                                            child: Image.asset(
-                                              'icons/google.png',
-                                              width: 25.0,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Image.asset(
+                                                  'icons/google.png',
+                                                  width: 25.0,
+                                                ),
+                                                const SizedBox(width: 15.0),
+                                                const Text(
+                                                  'Google',
+                                                  style: TextStyle(
+                                                      color: kDeepBlueColor,
+                                                      fontSize: 15.0,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         ),

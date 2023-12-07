@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/services.dart';
+import 'package:taskmate/constants.dart';
 import 'package:get/get.dart';
 import 'package:taskmate/bottom_nav_bar/freelancer/proposals.dart';
 
@@ -24,11 +26,14 @@ import 'package:taskmate/profile/client/profile_client.dart';
 import 'package:taskmate/profile/client/profile_client_addphoto.dart';
 import 'package:taskmate/profile/client/user_model1.dart';
 import 'package:taskmate/profile/client/user_repository1.dart';
+import 'package:taskmate/profile/freelancer/data_details_screen_freelancer.dart';
 import 'package:taskmate/profile/freelancer/profile_freelancer_1.dart';
 import 'package:taskmate/profile/freelancer/profile_freelancer_2.dart';
 import 'package:taskmate/profile/freelancer/profile_freelancer_3.dart';
 import 'package:taskmate/profile/freelancer/profile_freelancer_4.dart';
 import 'package:taskmate/profile/freelancer/user_repository.dart';
+import 'package:taskmate/profile/freelancer/verification_faild.dart';
+import 'package:taskmate/profile/freelancer/verification_pending.dart';
 import 'package:taskmate/test_file.dart';
 
 // import 'package:taskmate/verify_identity.dart';
@@ -52,6 +57,12 @@ import 'pages/freelancer/proposals/active_jobs_pages/active_job_details.dart';
 //import 'package:taskmate/verify_identity.dart';
 
 void main() async {
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle(
+      //systemNavigationBarColor: Colors.blue, // navigation bar color
+      statusBarColor: kDeepBlueColor, //
+    ),
+  );
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -73,8 +84,10 @@ class Taskmate extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: "Poppins"),
+
       home: const SafeArea(
-        child: ProfileClient(),
+        child: SplashScreen(),
+
       ),
     );
   }

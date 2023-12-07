@@ -5,8 +5,10 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:taskmate/client_home_page.dart';
 import 'package:taskmate/components/attachment_card.dart';
 
@@ -16,10 +18,8 @@ import 'package:taskmate/components/freelancer/user_data_gather_title.dart';
 import 'package:taskmate/components/maintenance_page.dart';
 import 'package:taskmate/components/snackbar.dart';
 import 'package:taskmate/constants.dart';
-// import 'package:taskmate/profile/client/user_model1.dart';
+import 'package:taskmate/profile/client/user_model1.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:audioplayers/audioplayers.dart';
 
 class ClientPostJob extends StatefulWidget {
   const ClientPostJob({
@@ -39,28 +39,23 @@ class _ClientPostJobState extends State<ClientPostJob> {
 
   var audioFile;
 
-
-  final audioPlayer = AudioPlayer();
-  bool isPlaying = false;
+  // final audioPlayer = AudioPlayer();
+  // bool isPlaying = false;
   // Duration duration = Duration.zero;
   // Duration position = Duration.zero;
 
   final formKey = GlobalKey<FormState>();
-
-  final List<String> _skills = [];
-  // String _skillsText = '';
+  List<String> _skills = [];
+  String _skillsText = '';
 
   final TextEditingController jobTitleController = TextEditingController();
-  final TextEditingController jobDescriptionController = TextEditingController();
+  final TextEditingController jobDescriptionController =
+      TextEditingController();
   final TextEditingController dayCountController = TextEditingController();
   final TextEditingController budgetController = TextEditingController();
   final TextEditingController skillController = TextEditingController();
   File? _selectedImage1;
   File? _selectedImage2;
-
-  // Future<void> playAudioFromUrl(String url)async{
-  //   await audioPlayer.play(UrlSource(url));
-  // }
 
   @override
   void dispose() {
@@ -69,8 +64,6 @@ class _ClientPostJobState extends State<ClientPostJob> {
     jobDescriptionController.dispose();
     dayCountController.dispose();
     budgetController.dispose();
-    recorder.closeRecorder();
-    // recorder.dispose();
     super.dispose();
   }
 
@@ -86,9 +79,7 @@ class _ClientPostJobState extends State<ClientPostJob> {
       audioFile = File(path!);
       print('Recorded voice: $audioFile');
     });
-
   }
-
 
   void selectService(String serviceName) {
     setState(() {
@@ -119,8 +110,10 @@ class _ClientPostJobState extends State<ClientPostJob> {
     String jobTitle,
     String jobDescription,
     int dayCount,
-    int budget,)
-  async {
+    int percentage,
+    int releaseMoney,
+    int budget,
+  ) async {
     try {
       // Get the current user's UID from FirebaseAuth
       User? user = FirebaseAuth.instance.currentUser;
@@ -130,8 +123,10 @@ class _ClientPostJobState extends State<ClientPostJob> {
         // Handle the case where the user is not authenticated
         return;
       }
+
       // Get a reference to the Firestore collection
-      CollectionReference jobsCollection = FirebaseFirestore.instance.collection('jobs');
+      CollectionReference jobsCollection =
+          FirebaseFirestore.instance.collection('jobs');
 
       // Generate a unique job ID (e.g., using a timestamp)
       String timestamp = Timestamp.now().millisecondsSinceEpoch.toString();
@@ -143,12 +138,10 @@ class _ClientPostJobState extends State<ClientPostJob> {
       CollectionReference jobsNewCollection = jobDocument.collection('jobsnew');
 
       // Upload images to Firebase Storage and get download URLs
-      String? image1Url = await uploadImageToStorage(_selectedImage1, 'image1_$timestamp');
-      String? image2Url = await uploadImageToStorage(_selectedImage2, 'image2_$timestamp');
-
-      // Upload audio to Firebase Storage and get download URL
-      String? audioUrl = await uploadAudioToStorage(audioFile, 'audio_$timestamp');
-
+      String? image1Url =
+          await uploadImageToStorage(_selectedImage1, 'image1_$timestamp');
+      String? image2Url =
+          await uploadImageToStorage(_selectedImage2, 'image2_$timestamp');
 
       // Add job data to Firestore within the "jobsnew" subcollection
       await jobsNewCollection.doc(timestamp).set({
@@ -160,8 +153,9 @@ class _ClientPostJobState extends State<ClientPostJob> {
         'skills': _skills,
         'image1Url': image1Url,
         'image2Url': image2Url,
-        'audioUrl': audioUrl, // Add the audio URL
         'status': 'new', // Set the status to "active"
+        'releaseMoney': 0,
+        'percentage': 0,
         'createdAt': FieldValue.serverTimestamp(), // Add the timestamp field
         // You can add more fields as needed
       });
@@ -198,7 +192,6 @@ class _ClientPostJobState extends State<ClientPostJob> {
 
   @override
   Widget build(BuildContext context) {
-    // final isRecording = recorder.isRecording;
     double screenWidth = MediaQuery.of(context).size.width;
 
     return SafeArea(
@@ -425,6 +418,30 @@ class _ClientPostJobState extends State<ClientPostJob> {
                           ),
                         ),
                       ),
+                      // GestureDetector(
+                      //   onTap: () => selectService('Print design'),
+                      //   child: Container(
+                      //     margin: const EdgeInsets.symmetric(horizontal: 0.0),
+                      //     padding: const EdgeInsets.symmetric(
+                      //         horizontal: 16.0,
+                      //         vertical: 8.0), // Adjust the padding
+                      //     decoration: BoxDecoration(
+                      //       color: Colors.transparent,
+                      //       border: Border.all(
+                      //         color: kDarkGreyColor,
+                      //       ),
+                      //       borderRadius: BorderRadius.circular(10),
+                      //     ),
+                      //     child: const Text(
+                      //       'Print design',
+                      //       style: TextStyle(
+                      //         fontSize: 11,
+                      //         fontWeight: FontWeight.bold,
+                      //         color: kDarkGreyColor,
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                   const SizedBox(
@@ -444,7 +461,7 @@ class _ClientPostJobState extends State<ClientPostJob> {
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.all(10.0),
-                              hintText: '1-7 Days',
+                              hintText: '1-12',
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide: const BorderSide(
@@ -521,52 +538,42 @@ class _ClientPostJobState extends State<ClientPostJob> {
                   const UserDataGatherTitle(
                     title: 'Attachments',
                   ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 16.0),
-                          child: InkWell(
-                            onTap: () {
-                              uploadFile(1);
-                            },
-                            child: AttachmentCard(
-                              cardChild: _selectedImage1 != null
-                                  ? Image.file(
-                                      _selectedImage1!,
-                                      fit: BoxFit
-                                          .cover, // Adjust the fit as needed
-                                    )
-                                  : Container(), // Empty container if _selectedImage2 is null
-                            ),
-                          ),
-                        ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: InkWell(
+                      onTap: () {
+                        uploadFile(1);
+                      },
+                      child: AttachmentCard(
+                        cardChild: _selectedImage1 != null
+                            ? Image.file(
+                                _selectedImage1!,
+                                fit: BoxFit.cover, // Adjust the fit as needed
+                              )
+                            : Container(), // Empty container if _selectedImage2 is null
                       ),
-                      const SizedBox(
-                        width: 8.0,
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 16.0),
-                          child: InkWell(
-                            onTap: () {
-                              uploadFile(2);
-                            },
-                            child: AttachmentCard(
-                              cardChild: _selectedImage2 != null
-                                  ? Image.file(
-                                      _selectedImage2!,
-                                      fit: BoxFit
-                                          .cover, // Adjust the fit as needed
-                                    )
-                                  : Container(), // Empty container if _selectedImage2 is null
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                  const SizedBox(
+                  SizedBox(
+                    height: 12,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: InkWell(
+                      onTap: () {
+                        uploadFile(2);
+                      },
+                      child: AttachmentCard(
+                        cardChild: _selectedImage2 != null
+                            ? Image.file(
+                                _selectedImage2!,
+                                fit: BoxFit.cover, // Adjust the fit as needed
+                              )
+                            : Container(), // Empty container if _selectedImage2 is null
+                      ),
+                    ),
+                  ),
+                  SizedBox(
                     height: 12.0,
                   ),
                   const UserDataGatherTitle(
@@ -646,24 +653,24 @@ class _ClientPostJobState extends State<ClientPostJob> {
                               const SizedBox(
                                 width: 10.0,
                               ),
-                              Container(
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: kDeepBlueColor,
-                                ),
-                                child: IconButton(
-                                  onPressed: () async {
-                                    await audioPlayer.play(UrlSource('https://file-examples.com/storage/feaade38c1651bd01984236/2017/11/file_example_MP3_700KB.mp3'));
-                                    setState(() {
-
-                                    });
-                                  },
-                                  icon: Icon(
-                                    isPlaying ? Icons.stop : Icons.play_arrow,
-                                    color: kBrilliantWhite,
-                                  ),
-                                ),
-                              ),
+                              // Container(
+                              //   decoration: BoxDecoration(
+                              //     shape: BoxShape.circle,
+                              //     color: kDeepBlueColor,
+                              //   ),
+                              //   child: IconButton(
+                              //     onPressed: () async {
+                              //       // await audioPlayer.play(UrlSource('https://file-examples.com/storage/feaade38c1651bd01984236/2017/11/file_example_MP3_700KB.mp3'));
+                              //       // setState(() {
+                              //       //
+                              //       // });
+                              //     },
+                              //     icon: Icon(
+                              //       isPlaying ? Icons.stop : Icons.play_arrow,
+                              //       color: kBrilliantWhite,
+                              //     ),
+                              //   ),
+                              // ),
                             ],
                           ),
                           Padding(
@@ -684,11 +691,18 @@ class _ClientPostJobState extends State<ClientPostJob> {
                         int dayCount =
                             int.tryParse(dayCountController.text) ?? 0;
                         int budget = int.tryParse(budgetController.text) ?? 0;
+                        int percentage =
+                            int.tryParse(budgetController.text) ?? 0;
+                        int releaseMoney =
+                            int.tryParse(budgetController.text) ?? 0;
+
                         addJobToFirestore(
                           jobTitle,
                           jobDescription,
                           dayCount,
                           budget,
+                          releaseMoney,
+                          percentage,
                         );
                         showDialog(
                           context: context,
@@ -718,6 +732,7 @@ class _ClientPostJobState extends State<ClientPostJob> {
                                       Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
                                           builder: (context) => ClientHomePage(
+                                            passedIndex: 2,
                                               // selectedIndex: 2,
                                               // client: widget.client,
                                               ),
@@ -746,8 +761,10 @@ class _ClientPostJobState extends State<ClientPostJob> {
     if (image == null) {
       return null;
     }
+
     try {
-      Reference storageReference = FirebaseStorage.instance.ref().child('images/$imageName');
+      Reference storageReference =
+          FirebaseStorage.instance.ref().child('images/$imageName');
       UploadTask uploadTask = storageReference.putFile(image);
       await uploadTask.whenComplete(() async {
         // Wait for the upload to complete and then return the download URL
@@ -760,34 +777,9 @@ class _ClientPostJobState extends State<ClientPostJob> {
       return downloadURL;
     } catch (e) {
       // Handle errors
+      print("Error uploading image: $e");
     }
 
     return null;
   }
 }
-
-Future<String?> uploadAudioToStorage(File audioFile, String audioFileName) async {
-  if (audioFile == null) {
-    return null;
-  }
-
-  try {
-    Reference storageReference =
-    FirebaseStorage.instance.ref().child('audio/$audioFileName');
-    UploadTask uploadTask = storageReference.putFile(audioFile);
-    await uploadTask.whenComplete(() async {
-      // Wait for the upload to complete and then return the download URL
-      return await storageReference.getDownloadURL();
-    });
-
-    // If the await inside whenComplete doesn't work as expected,
-    // you can try using await for the whole operation
-    String downloadURL = await storageReference.getDownloadURL();
-    return downloadURL;
-  } catch (e) {
-    // Handle errors
-  }
-
-  return null;
-}
-

@@ -12,9 +12,6 @@ class ClientPendingJobs extends StatefulWidget {
 }
 
 class _ClientPendingJobsState extends State<ClientPendingJobs> {
-
-
-
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -24,63 +21,36 @@ class _ClientPendingJobsState extends State<ClientPendingJobs> {
 
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4.0,horizontal: 16.0),
+        padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
         child: SizedBox(
           width: screenWidth,
-          child: StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance.collection('jobs').snapshots(),
+          child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+            stream: FirebaseFirestore.instance
+                .collection('jobs')
+                .doc('D6alLWiIA0TwQiHf2QRXctJE6523')
+                .collection('jobsnew')
+                .where('status', isEqualTo: 'new')
+                .snapshots(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
               }
-
               if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
                 return const Center(
-                  child: Text('No documents found.'),
+                  child: Text('Hmm! You\'ve no any pending Jobs!'),
                 );
               }
-
               final jobDocs = snapshot.data!.docs;
-
-              return Column(
-                children: jobDocs.map<Widget>((doc) {
-                  // Check if the job belongs to the current user
-                  if (doc.id == userUid) {
-                    return StreamBuilder<QuerySnapshot>(
-                      stream: doc.reference
-                          .collection('jobsnew')
-                          .where('status', isEqualTo: 'new')
-                          .snapshots(),
-                      builder: (context, subSnapshot) {
-                        if (subSnapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-
-                        if (!subSnapshot.hasData ||
-                            subSnapshot.data!.docs.isEmpty) {
-                          return const Center(
-                            child: Text('No jobs found'),
-                          );
-                        }
-
-                        final activeJobDocs = subSnapshot.data!.docs;
-
-                        return Column(
-                          children: activeJobDocs.map<Widget>((subDoc) {
-                            return ClientPendingJobCard(pendingjobDoc: subDoc);
-                          }).toList(),
-                        );
-                      },
-                    );
-                  } else {
-                    return Container(); // If the job doesn't belong to the current user
-                  }
-                }).toList(),
+              return ListView.builder(
+                itemCount: jobDocs.length,
+                itemBuilder: (context, index) {
+                  final document = jobDocs[index];
+                  final docId = document.id;
+                  final data = document.data() as Map<String, dynamic>;
+                  return ClientPendingJobCard(pendingjobDoc: jobDocs[index]);
+                },
               );
             },
           ),

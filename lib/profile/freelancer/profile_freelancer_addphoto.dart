@@ -8,11 +8,13 @@ import 'package:image_picker/image_picker.dart';
 import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/components/light_main_button.dart';
 import 'package:taskmate/components/loading_screen.dart';
+import 'package:taskmate/components/navigate_before.dart';
 import 'dart:io';
 
 import 'package:taskmate/constants.dart';
-import 'package:taskmate/profile/freelancer/data_details_screen_freelancer.dart';
+// import 'package:taskmate/profile/freelancer/data_details_screen_freelancer.dart';
 import 'package:taskmate/profile/freelancer/user_model.dart';
+import 'package:taskmate/profile/freelancer/verification_pending.dart';
 import 'package:taskmate/profile/freelancer/verify_identity.dart';
 
 class ProfileFreelancerAddphoto extends StatefulWidget {
@@ -147,6 +149,7 @@ class _ProfileFreelancerAddphotoState extends State<ProfileFreelancerAddphoto> {
             'password': widget.user.password,
             'professionalRole': widget.user.professionalRole,
             'profilePhotoUrl': downloadUrl,
+            'verify': widget.user.verify,
           },
         );
 
@@ -155,9 +158,14 @@ class _ProfileFreelancerAddphotoState extends State<ProfileFreelancerAddphoto> {
         });
 
         if (context.mounted) {
-          Navigator.of(context).push(
+          Navigator.of(context).pushReplacement(
             MaterialPageRoute(
-              builder: (context) => const VerifyIdentity(),
+              builder: (context) => VerificationPending(
+                user: widget.user,
+                userUid: userUid, // Pass the userUid
+                // profileImageUrl: downloadUrl,
+              ),
+              //builder: (context) =>  VerifyIdentity(),
             ),
           );
         }
@@ -173,6 +181,29 @@ class _ProfileFreelancerAddphotoState extends State<ProfileFreelancerAddphoto> {
     return SafeArea(
       child: !isLoading
           ? Scaffold(
+              appBar: AppBar(
+                elevation: 0.0,
+                backgroundColor: Colors.transparent,
+                centerTitle: true,
+                leading: const NavigateBefore(
+                  size: 35.0,
+                ),
+                flexibleSpace: Stack(
+                  children: [
+                    // Background Image
+                    Positioned.fill(
+                      child: Image.asset(
+                        'images/noise_image.webp',
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ],
+                ),
+                title: Text(
+                  'Add Profile Photo',
+                  style: kHeadingTextStyle.copyWith(fontSize: 30),
+                ),
+              ),
               body: Container(
                 height: screenHeight,
                 width: screenWidth,
@@ -185,18 +216,9 @@ class _ProfileFreelancerAddphotoState extends State<ProfileFreelancerAddphoto> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Center(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 16.0),
-                        child: Text(
-                          'Add a Profile Photo',
-                          style: kHeadingTextStyle,
-                        ),
-                      ),
-                    ),
                     Expanded(
                       child: CircleAvatar(
-                        radius: 150,
+                        radius: 175,
                         backgroundColor: Colors.transparent,
                         backgroundImage: selectedImage != null
                             ? FileImage(

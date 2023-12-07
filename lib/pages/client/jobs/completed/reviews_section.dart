@@ -62,7 +62,7 @@ class _ReviewsState extends State<Reviews> {
                   '${widget.completeJobDoc['reviewdesfreelancer']}',
                   style: kTextStyle,
                 ),
-                 SizedBox(
+                SizedBox(
                   height: 16.0,
                 ),
                 RatingBar.builder(
@@ -81,7 +81,7 @@ class _ReviewsState extends State<Reviews> {
                   },
                   onRatingUpdate: (rating) {},
                 ),
-                 Divider(
+                Divider(
                   thickness: 1.0,
                 ),
                 Padding(

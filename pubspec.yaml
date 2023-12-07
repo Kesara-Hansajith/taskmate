@@ -62,6 +62,11 @@ dependencies:
   permission_handler: ^11.0.1
   audioplayers: ^4.1.0
   flutter_spinkit: ^5.2.0
+  quickalert: ^1.0.2
+  kommunicate_flutter: ^1.7.2
+  flutter_markdown: ^0.6.15
+  share_plus: ^7.2.1
+
 
 
 
@@ -106,6 +111,7 @@ flutter:
     - icons/
     - gifs/
     - audio/
+    - assets/
   #   - images/a_dot_ham.jpeg
 
 

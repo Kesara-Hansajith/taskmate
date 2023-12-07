@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:taskmate/components/dark_main_button.dart';
+import 'package:taskmate/components/navigate_before.dart';
 import 'package:taskmate/profile/freelancer/profile_freelancer_3.dart';
 import 'package:taskmate/profile/freelancer/user_model.dart';
 import 'package:taskmate/profile/freelancer/user_repository.dart';
@@ -36,6 +37,8 @@ class _ProfileFreelancer2State extends State<ProfileFreelancer2> {
   final TextEditingController servicesController = TextEditingController();
   final TextEditingController hourlyrateController = TextEditingController();
   final TextEditingController levelController = TextEditingController();
+  final TextEditingController verifyController = TextEditingController();
+
 
   String? profileImageUrl;
   String? selectedGender;
@@ -76,6 +79,7 @@ class _ProfileFreelancer2State extends State<ProfileFreelancer2> {
         email: widget.user.email,
         password: widget.user.password,
         professionalRole: widget.user.professionalRole,
+        verify: widget.user.verify,
       );
       final FirebaseAuth _auth = FirebaseAuth.instance;
       final User? firebaseUser = _auth.currentUser;
@@ -85,20 +89,20 @@ class _ProfileFreelancer2State extends State<ProfileFreelancer2> {
 
         // Use the user's UID as the Firestore document ID
         await UserRepository.instance.createUser(updatedUser, userUid);
-
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ProfileFreelancer3(user: updatedUser),
-          ),
-        );
+        if (context.mounted) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ProfileFreelancer3(user: updatedUser),
+            ),
+          );
+        }
       } else {
         // Handle the case where the user is not authenticated
         // You may want to display an error message or redirect the user to the login page
       }
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -122,23 +126,34 @@ class _ProfileFreelancer2State extends State<ProfileFreelancer2> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Center(
-                    child: Column(
-                      children: [
-                        const Text(
-                          'Set Up Your',
-                          style: kHeadingTextStyle,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const NavigateBefore(size: 50.0),
+                      SizedBox(width: screenWidth / 10),
+                      Center(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 14.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                'Set Up Your',
+                                style: kHeadingTextStyle,
+                              ),
+                              Text(
+                                'Freelancer Profile',
+                                style: const TextStyle(
+                                  fontSize: 25,
+                                  color: kDeepBlueColor,
+                                  fontWeight: FontWeight.bold,
+                                ).copyWith(height: 1.0),
+                              ),
+                            ],
+                          ),
                         ),
-                        Text(
-                          'Freelancer Profile',
-                          style: const TextStyle(
-                            fontSize: 25,
-                            color: kDeepBlueColor,
-                            fontWeight: FontWeight.bold,
-                          ).copyWith(height: 1.0),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
