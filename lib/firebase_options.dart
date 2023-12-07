@@ -47,33 +47,29 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBsvIGfOA6JUE28katk6F2nwLrqatC_abg',
-    appId: '1:681609208614:web:caf8b182c702b6fb3dd7e7',
-    messagingSenderId: '681609208614',
-    projectId: 'taskmate-8ab5f',
-    authDomain: 'taskmate-8ab5f.firebaseapp.com',
-    databaseURL: 'https://taskmate-8ab5f-default-rtdb.firebaseio.com',
-    storageBucket: 'taskmate-8ab5f.appspot.com',
-    measurementId: 'G-E69JHKB68V',
+    apiKey: 'AIzaSyBAANpKupM2a1jEQDCEVuyuc2kxCSPaYdI',
+    appId: '1:143442704256:web:83303839155b9bf594f365',
+    messagingSenderId: '143442704256',
+    projectId: 'taskmate-d603f',
+    authDomain: 'taskmate-d603f.firebaseapp.com',
+    storageBucket: 'taskmate-d603f.appspot.com',
+    measurementId: 'G-XLKY0L36PR',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDrikKfirMjNKmy4KPM2OrLLIajlyyrY7w',
-    appId: '1:681609208614:android:27758562f8f0c0dd3dd7e7',
-    messagingSenderId: '681609208614',
-    projectId: 'taskmate-8ab5f',
-    databaseURL: 'https://taskmate-8ab5f-default-rtdb.firebaseio.com',
-    storageBucket: 'taskmate-8ab5f.appspot.com',
+    apiKey: 'AIzaSyBTUSKEtNOPvKxhcTzDP6GKHWPmOYxwn6g',
+    appId: '1:143442704256:android:a92db3dd4116d3f194f365',
+    messagingSenderId: '143442704256',
+    projectId: 'taskmate-d603f',
+    storageBucket: 'taskmate-d603f.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAUbHKcDvDL7W72WlpjwbwJCxVlV6co6_c',
-    appId: '1:681609208614:ios:bdf54e73d625f06c3dd7e7',
-    messagingSenderId: '681609208614',
-    projectId: 'taskmate-8ab5f',
-    databaseURL: 'https://taskmate-8ab5f-default-rtdb.firebaseio.com',
-    storageBucket: 'taskmate-8ab5f.appspot.com',
-    iosClientId: '681609208614-9f6miom5v6leeed7peq4u1k7asapiulv.apps.googleusercontent.com',
+    apiKey: 'AIzaSyBZ7GDVWfveQ0zOginQENRwGpuzw8E_Wng',
+    appId: '1:143442704256:ios:48c5b0329a9acd3894f365',
+    messagingSenderId: '143442704256',
+    projectId: 'taskmate-d603f',
+    storageBucket: 'taskmate-d603f.appspot.com',
     iosBundleId: 'com.taskmateapp.taskmate',
   );
 }
