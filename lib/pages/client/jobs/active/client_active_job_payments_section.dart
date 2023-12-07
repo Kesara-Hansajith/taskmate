@@ -1,15 +1,56 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/components/light_main_button.dart';
 import 'package:taskmate/components/maintenance_page.dart';
 import 'package:taskmate/constants.dart';
 
 class ClientActiveJobPayment extends StatefulWidget {
-  const ClientActiveJobPayment({super.key});
+  final String budgetField;
+  final QueryDocumentSnapshot activeJobDoc;
+
+  const ClientActiveJobPayment({required this.budgetField,
+    required this.activeJobDoc,
+    super.key
+  });
 
   @override
   State<ClientActiveJobPayment> createState() => _ClientActiveJobPaymentState();
 }
+
+void requestPayment(QueryDocumentSnapshot activeJobDoc, BuildContext context) async {
+  try {
+    // Reference to Firestore document
+    final DocumentReference docRef = activeJobDoc.reference;
+
+    // Get the current time and date
+    DateTime now = DateTime.now();
+    String releaseDateTime = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
+
+    // Update the 'paymentclient' field to 'release payment' and store the release time
+    await docRef.update({
+      'paymentclient': 'release payment',
+      'CompleteJobTime': releaseDateTime,
+    });
+
+    // Show a success message
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Payment released successfully.'),
+      ),
+    );
+  } catch (e) {
+    print('Error releasing payment: $e');
+    // Handle errors here, e.g., show an error message
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Error releasing payment: $e'),
+      ),
+    );
+  }
+}
+
 
 class _ClientActiveJobPaymentState extends State<ClientActiveJobPayment> {
   @override
@@ -36,9 +77,9 @@ class _ClientActiveJobPaymentState extends State<ClientActiveJobPayment> {
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const <Widget>[
+                children:  <Widget>[
                   Text('Requested'),
-                  Text('LKR. 1500.00'),
+                  Text('LKR.${widget.budgetField}'),
                 ],
               ),
             ),
@@ -49,9 +90,9 @@ class _ClientActiveJobPaymentState extends State<ClientActiveJobPayment> {
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const <Widget>[
+                children:  <Widget>[
                   Text('In Progress'),
-                  Text('LKR.  0.00'),
+                  Text('LKR. ${widget.activeJobDoc['Precentage']}'),
                 ],
               ),
             ),
@@ -62,10 +103,10 @@ class _ClientActiveJobPaymentState extends State<ClientActiveJobPayment> {
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const <Widget>[
+                children: <Widget>[
                   Text('Released to Freelancer'),
                   Text(
-                    'LKR.  0.00',
+                    'LKR. ${widget.activeJobDoc['releaseMoney']}',
                     textAlign: TextAlign.left,
                   ),
                 ],
@@ -101,6 +142,7 @@ class _ClientActiveJobPaymentState extends State<ClientActiveJobPayment> {
                           DarkMainButton(
                             title: 'Yes, I ‘m Sure',
                             process: () {
+                              requestPayment(widget.activeJobDoc, context); // Call the method to request payment
                               Navigator.of(context).pop();
                             },
                             screenWidth: screenWidth,

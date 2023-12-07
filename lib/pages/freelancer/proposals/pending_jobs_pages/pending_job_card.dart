@@ -16,8 +16,21 @@ class PendingJobCard extends StatelessWidget {
 
     final subData = jobNewDoc.data() as Map<String, dynamic>;
     final jobTitle = subData['jobTitle'] as String;
-    final budget = int.tryParse(subData['budget'] ?? '0') ?? 0;
+    final budgetField = subData['budget'];
     final bidsCollection = jobNewDoc.reference.collection('bidsjobs');
+
+    String budget = '0.0'; // Initialize with a default value
+
+    if (budgetField is int) {
+      budget = budgetField.toString(); // Convert int to string
+    } else if (budgetField is double) {
+      budget = budgetField.toString(); // Convert double to string
+    } else if (budgetField is String) {
+      double? parsedBudget = double.tryParse(budgetField);
+      if (parsedBudget != null) {
+        budget = parsedBudget.toString();
+      }
+    }
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4.0),

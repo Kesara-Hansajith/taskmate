@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:taskmate/authentication/get_started.dart';
+import 'package:taskmate/authentication/root_page.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -11,14 +12,25 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  final String image = 'images/TaskMateLogo_Dark.webp';
+
+  Future<void> loadImage(String imageUrl) async {
+    try {
+      await precacheImage(AssetImage(image), context);
+    } catch (e) {
+      //Ignored
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    loadImage(image);
 
     Timer(const Duration(seconds: 4), () {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => const GetStarted(),
+          builder: (context) => const RootPage(),
         ),
       );
     });
@@ -26,12 +38,12 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const SafeArea(
-      child:  Scaffold(
-        backgroundColor: Color(0xFFF4F7F9),
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: const Color(0xFFF4F7F9),
         body: Center(
           child: Image(
-            image: AssetImage('images/TaskMateLogo_Dark.webp'),
+            image: AssetImage(image),
           ),
         ),
       ),

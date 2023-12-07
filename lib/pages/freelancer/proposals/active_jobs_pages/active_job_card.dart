@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/pages/freelancer/proposals/active_jobs_pages/active_job_details.dart';
 
@@ -17,13 +18,46 @@ class ActiveJobCard extends StatelessWidget {
 
     final subData = activeJobDoc.data() as Map<String, dynamic>;
     final jobTitle = subData['jobTitle'] as String;
-    final budget = subData['budget']; // Remove the parsing
+    Timestamp? createdAtTimestamp = subData['createdAt'] as Timestamp?;
+    String createdAt = '';
+    final jobDescription = subData['jobDescription'] as String;
+    final budgetField = subData['budget'];
+    String budget = '0.0'; // Initialize with a default value
+
+    if (budgetField is int) {
+      budget = budgetField.toString(); // Convert int to string
+    } else if (budgetField is double) {
+      budget = budgetField.toString(); // Convert double to string
+    } else if (budgetField is String) {
+      double? parsedBudget = double.tryParse(budgetField);
+      if (parsedBudget != null) {
+        budget = parsedBudget.toString();
+      }
+    }
+    String imageUrl1 = subData['imageUrl1'] ?? ''; // Replace 'imageUrl1' with the actual field name
+    String imageUrl2 = subData['imageUrl2'] ?? ''; // Replace 'imageUrl2' with the actual field name
+
+    if (createdAtTimestamp != null) {
+      DateTime createdAtDateTime = createdAtTimestamp.toDate();
+      createdAt = DateFormat('yyyy-MM-dd HH:mm:ss').format(createdAtDateTime);
+    }
+
 
     return InkWell(
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => ActiveJobDetails(
+              jobTitle: jobTitle, // Pass the jobTitle
+              budgetField: budget, // Pass the budget
+              jobDescription : jobDescription,
+              activeJobDoc : activeJobDoc,
+              image1Url: imageUrl1, // Pass the URL of image1
+              image2Url: imageUrl2, // Pass the URL of image2
+              createdAt: createdAt,
+
+
+
                   // Pass budget to ActiveJobDetails
             ),
           ),

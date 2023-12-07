@@ -15,14 +15,35 @@ class GetStarted extends StatefulWidget {
 }
 
 class _GetStartedState extends State<GetStarted> {
+  String? imagePath;
+
+
+  Future<void> loadImages(String imageUrl) async {
+    try {
+      await precacheImage(AssetImage(imagePath!), context);
+    } catch (e) {
+      //Ignored
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadImages('images/background/get_started.webp');
+    loadImages('images/taskmate_logo_light.webp');
+    loadImages('images/noise_image.webp');
+    loadImages('images/rocket_man.webp');
+  }
+
+
   void _checkConnectivity() async {
     final connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.mobile ||
         connectivityResult == ConnectivityResult.wifi) {
       if (context.mounted) {
-        Navigator.of(context).pushReplacement(
+        Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => const RootPage(),
+            builder: (context) => const SignUp(),
           ),
         );
       }
@@ -140,7 +161,7 @@ class _GetStartedState extends State<GetStarted> {
                                 //"Sign Up" button will goes here
                                 TextButton(
                                   onPressed: () {
-                                    Navigator.of(context).pushReplacement(
+                                    Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) => const SignUp(),
                                       ),

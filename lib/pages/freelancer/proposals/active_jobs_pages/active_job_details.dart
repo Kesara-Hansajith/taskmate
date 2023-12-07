@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/pages/freelancer/proposals/active_jobs_pages/details_section.dart';
@@ -8,8 +9,24 @@ import 'package:toggle_switch/toggle_switch.dart';
 
 class ActiveJobDetails extends StatefulWidget {
   // final String documentID;
-  const ActiveJobDetails({
+  final String jobTitle; // Add this parameter
+  final String jobDescription;
+  final String budgetField;
+  final QueryDocumentSnapshot activeJobDoc;
+  final String image1Url; // URL for image1
+  final String image2Url; // URL for image2
+  final String createdAt; // Add this parameter
+
+
+  ActiveJobDetails({
     super.key,
+    required this.jobTitle, // Add this parameter
+     required this.jobDescription,
+    required this.budgetField,
+     required this.activeJobDoc,
+    required this.image1Url,
+    required  this.image2Url,
+    required this.createdAt,
     // required this.documentID,
   });
 
@@ -31,11 +48,18 @@ class _ActiveJobDetailsState extends State<ActiveJobDetails> {
     double screenWidth = MediaQuery.of(context).size.width;
     final List activeJobItems = [
       Details(
-          //documentID: widget.documentID,
+        jobTitle: widget.jobTitle,
+        jobDescription : widget.jobDescription,
+        budgetField: widget.budgetField,
+        activeJobDoc: widget.activeJobDoc,
+        image1Url: widget.image1Url, // Pass the URL of image1
+        image2Url: widget.image2Url, // Pass the URL of image2
+        //documentID: widget.documentID,
+        createdAt:widget.createdAt,
           ),
-      const Files(),
-      const Payments(),
-      const Reviews(),
+      Files(activeJobDoc: widget.activeJobDoc), // Pass the activeJobDoc
+      Payments( budgetField: widget.budgetField,activeJobDoc: widget.activeJobDoc),
+      Reviews(activeJobDoc: widget.activeJobDoc),
     ];
 
     return SafeArea(
@@ -119,3 +143,4 @@ class _ActiveJobDetailsState extends State<ActiveJobDetails> {
     );
   }
 }
+

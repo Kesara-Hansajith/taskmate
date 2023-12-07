@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/models/completed_job_details_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Reviews extends StatefulWidget {
+  final QueryDocumentSnapshot completeJobDoc;
+
+
   const Reviews({
+    required this.completeJobDoc,
+
     // required this.documentID,
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
   // final String documentID;
 
   @override
@@ -15,24 +21,27 @@ class Reviews extends StatefulWidget {
 }
 
 class _ReviewsState extends State<Reviews> {
-  // Future<List<CompletedJobDetailsData>> fetchData(String documentId) async {
-  //   final DocumentSnapshot docSnapshot = await FirebaseFirestore.instance
-  //       .collection('completed_jobs')
-  //       .doc(documentId)
-  //       .get();
-  //
-  //   return [
-  //     CompletedJobDetailsData(
-  //       clientReview: docSnapshot['clientReview'] as String,
-  //       freelancerReview: docSnapshot['freelancerReview'] as String,
-  //       username: docSnapshot['userName'] as String,
-  //     )
-  //   ];
-  // }
+  late double clientRating;
+  late double freelancerRating;
+
+  @override
+  void initState() {
+    super.initState();
+    clientRating = widget.completeJobDoc['starclient']?.toDouble() ?? 0.0;
+    clientRating = clientRating.roundToDouble();
+
+    freelancerRating = widget.completeJobDoc['starfreelancer']?.toDouble() ?? 0.0;
+    freelancerRating = freelancerRating.roundToDouble();
+  }
+
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+
+    // Extract review data from the document snapshot
+    String clientReview = widget.completeJobDoc['reviewdesclient'] ?? '';
+
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,20 +52,36 @@ class _ReviewsState extends State<Reviews> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  padding:  EdgeInsets.symmetric(vertical: 16.0),
                   child: Text(
                     'Review from @FreelancerName',
                     style: kJobCardTitleTextStyle.copyWith(color: kJetBlack),
                   ),
                 ),
                 Text(
-                  'Kesara was great on the project, delivered what I wanted quickly. Recommend!',
+                  '${widget.completeJobDoc['reviewdesfreelancer']}',
                   style: kTextStyle,
                 ),
-                const SizedBox(
+                SizedBox(
                   height: 16.0,
                 ),
-                const Divider(
+                RatingBar.builder(
+                  initialRating: freelancerRating,
+                  minRating: 1,
+                  direction: Axis.horizontal,
+                  allowHalfRating: false,
+                  itemCount: 5, // Fixed total number of stars
+                  itemSize: 30.0,
+                  itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  itemBuilder: (context, index) {
+                    return Icon(
+                      Icons.star,
+                      color: index < freelancerRating ? Colors.amber : Colors.grey, // Color based on the rating
+                    );
+                  },
+                  onRatingUpdate: (rating) {},
+                ),
+                Divider(
                   thickness: 1.0,
                 ),
                 Padding(
@@ -69,78 +94,32 @@ class _ReviewsState extends State<Reviews> {
                   ),
                 ),
                 Text(
-                  'He is a very good client. The job was well described. Hope we can work together.',
+                  clientReview,
                   style: kTextStyle,
+                ),
+                const SizedBox(
+                  height: 16.0,
+                ),
+                // Display colored stars based on the actual rating value
+                RatingBar.builder(
+                  initialRating: clientRating,
+                  minRating: 1,
+                  direction: Axis.horizontal,
+                  allowHalfRating: false,
+                  itemCount: 5, // Fixed total number of stars
+                  itemSize: 30.0,
+                  itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  itemBuilder: (context, index) {
+                    return Icon(
+                      Icons.star,
+                      color: index < clientRating ? Colors.amber : Colors.grey, // Color based on the rating
+                    );
+                  },
+                  onRatingUpdate: (rating) {},
                 ),
               ],
             ),
           ),
-          // FutureBuilder<List<CompletedJobDetailsData>>(
-          //   future: fetchData(widget.documentID),
-          //   builder: (context, snapshot) {
-          //     if (snapshot.connectionState == ConnectionState.waiting) {
-          //       return const Center(
-          //         child: CircularProgressIndicator(),
-          //       );
-          //     } else if (snapshot.hasError) {
-          //       return Text('Error: ${snapshot.error}');
-          //     } else if (!snapshot.hasData) {
-          //       return const Text('No data available.');
-          //     } else if (snapshot.hasData) {
-          //       List<CompletedJobDetailsData> data = snapshot.data!;
-          //       return Padding(
-          //         padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          //         child: SizedBox(
-          //           width: screenWidth,
-          //           child: Column(
-          //             crossAxisAlignment: CrossAxisAlignment.start,
-          //             children: [
-          //               const SizedBox(
-          //                 height: 20.0,
-          //               ),
-          //               Padding(
-          //                 padding: const EdgeInsets.symmetric(
-          //                   vertical: 16.0,
-          //                 ),
-          //                 child: Text(
-          //                   'Review from @${data[0].username}',
-          //                   style: kJobCardTitleTextStyle.copyWith(
-          //                       color: kJetBlack),
-          //                 ),
-          //               ),
-          //               Text(
-          //                 'Kesara was great on the project, delivered what I wanted quickly. Recommend!',
-          //                 style: kTextStyle,
-          //               ),
-          //               const SizedBox(
-          //                 height: 16.0,
-          //               ),
-          //               const Divider(
-          //                 thickness: 1.0,
-          //               ),
-          //               Padding(
-          //                 padding: const EdgeInsets.symmetric(
-          //                   vertical: 16.0,
-          //                 ),
-          //                 child: Text(
-          //                   'Your Review',
-          //                   style: kJobCardTitleTextStyle.copyWith(
-          //                       color: kJetBlack),
-          //                 ),
-          //               ),
-          //               Text(
-          //                 'He is a very good client. The job was well described. Hope we can work together.',
-          //                 style: kTextStyle,
-          //               ),
-          //             ],
-          //           ),
-          //         ),
-          //       );
-          //     } else {
-          //       return const Text('');
-          //     }
-          //   },
-          // ),
         ],
       ),
     );

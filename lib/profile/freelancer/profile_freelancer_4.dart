@@ -9,6 +9,8 @@ import 'package:path/path.dart' as path;
 import 'package:intl/intl.dart';
 import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/components/freelancer/user_data_gather_textfield.dart';
+import 'package:taskmate/components/light_main_button.dart';
+import 'package:taskmate/components/navigate_before.dart';
 import '../../constants.dart';
 import 'package:taskmate/components/freelancer/user_data_gather_title.dart';
 
@@ -80,11 +82,11 @@ class _ProfileFreelancer4State extends State<ProfileFreelancer4> {
       //Ignored catch block
     }
   }
+
   List<String> uploadedImageUrls = [];
 
   Future<void> savePortfolioItemToFirestore() async {
     try {
-
       for (int i = 0; i < selectedImages.length; i++) {
         final imageFile = selectedImages[i];
         final imageName = path.basename(imageFile.path);
@@ -148,16 +150,20 @@ class _ProfileFreelancer4State extends State<ProfileFreelancer4> {
 
           // Create a reference to the user's document
           final DocumentReference userDocRef =
-          FirebaseFirestore.instance.collection('Users').doc(userUid);
+              FirebaseFirestore.instance.collection('Users').doc(userUid);
 
           // Fetch the current counter value and increment it
           final DocumentSnapshot userDocSnapshot = await userDocRef.get();
-          final Map<String, dynamic>? userData = userDocSnapshot.data() as Map<String, dynamic>?;
+          final Map<String, dynamic>? userData =
+              userDocSnapshot.data() as Map<String, dynamic>?;
           int counter = userData?['portfolio_counter'] ?? 0;
           counter++;
 
           // Add the portfolio item with the custom ID
-          await userDocRef.collection('portfolio_items').doc(counter.toString()).set({
+          await userDocRef
+              .collection('portfolio_items')
+              .doc(counter.toString())
+              .set({
             'title': titleController.text.trim(),
             'item_description': itemdesController.text.trim(),
             'image_urls': uploadedImageUrls,
@@ -166,14 +172,13 @@ class _ProfileFreelancer4State extends State<ProfileFreelancer4> {
 
           // Update the counter in the user's document
           await userDocRef.update({'portfolio_counter': counter});
-
-          Navigator.pop(context);
+          if (context.mounted) {
+            Navigator.pop(context);
+          }
         }
       }
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -182,6 +187,29 @@ class _ProfileFreelancer4State extends State<ProfileFreelancer4> {
 
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          elevation: 0.0,
+          backgroundColor: Colors.transparent,
+          centerTitle: true,
+          leading: const NavigateBefore(
+            size: 35.0,
+          ),
+          flexibleSpace: Stack(
+            children: [
+              // Background Image
+              Positioned.fill(
+                child: Image.asset(
+                  'images/noise_image.webp',
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ],
+          ),
+          title: Text(
+            'Add Portfolio Items',
+            style: kHeadingTextStyle.copyWith(fontSize: 30),
+          ),
+        ),
         body: Container(
           width: screenWidth,
           height: screenHeight,
@@ -197,12 +225,6 @@ class _ProfileFreelancer4State extends State<ProfileFreelancer4> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  const Center(
-                    child: Text(
-                      'Add Portfolio Item',
-                      style: kHeadingTextStyle,
-                    ),
-                  ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -267,81 +289,131 @@ class _ProfileFreelancer4State extends State<ProfileFreelancer4> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const UserDataGatherTitle(title: 'Upload files'),
-                      SizedBox(
-                        width: screenWidth / 2,
-                        child: DarkMainButton(
-                            title: 'Add',
-                            process: pickImages,
-                            screenWidth: screenWidth),
-                      ),
-                      const SizedBox(height: 10),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                        child: Wrap(
-                          spacing: 10,
-                          children: selectedImages.asMap().entries.map((entry) {
-                            final index = entry.key;
-                            final image = entry.value;
-                            return MouseRegion(
-                              onHover: (event) {
-                                // Show delete icon when hovering
-                                showDialog(
-                                  context: context,
-                                  builder: (context) => AlertDialog(
-                                    title: Text('Delete Image'),
-                                    content: Text('Are you sure you want to delete this image?'),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: Text('Cancel'),
-                                      ),
-                                      TextButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            selectedImages.removeAt(index);
-                                          });
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: Text('Delete'),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                margin: EdgeInsets.only(bottom: 10),
-                                child: Stack(
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: DarkMainButton(
+                                title: '+ Add',
+                                process: pickImages,
+                                screenWidth: screenWidth),
+                          ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Wrap(
+                                  crossAxisAlignment: WrapCrossAlignment.center,
                                   children: [
-                                    Image.file(image, height: 80),
-                                    // Add an Icon to represent delete
-                                    Positioned(
-                                      top: 0,
-                                      right: 0,
-                                      child: Icon(
-                                        Icons.delete_outlined,
-                                        color: Colors.black54,
-                                        size: 20,
-                                      ),
+                                    const Icon(
+                                      Icons.radio_button_checked,
+                                      size: 9.0,
+                                    ),
+                                    Text(
+                                      ' Allowed formats -JPG, PNG',
+                                      style: kTextStyle.copyWith(fontSize: 12),
                                     ),
                                   ],
                                 ),
-                              ),
-                            );
-                          }).toList(),
-                        )
-
+                                Wrap(
+                                  crossAxisAlignment: WrapCrossAlignment.center,
+                                  children: [
+                                    const Icon(
+                                      Icons.radio_button_checked,
+                                      size: 9.0,
+                                    ),
+                                    Text(
+                                      ' Maximum file size 10MB',
+                                      style: kTextStyle.copyWith(fontSize: 12),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
                       ),
+                      const SizedBox(height: 10),
+                      Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                          child: Wrap(
+                            spacing: 10,
+                            children:
+                                selectedImages.asMap().entries.map((entry) {
+                              final index = entry.key;
+                              final image = entry.value;
+                              return MouseRegion(
+                                onHover: (event) {
+                                  // Show delete icon when hovering
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      title: const Text('Delete Image'),
+                                      content: const Text(
+                                          'Are you sure you want to delete this image?'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: const Text('Cancel'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              selectedImages.removeAt(index);
+                                            });
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: const Text('Delete'),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  margin: const EdgeInsets.only(bottom: 10),
+                                  child: Stack(
+                                    children: [
+                                      Image.file(image, height: 80),
+                                      // Add an Icon to represent delete
+                                      const Positioned(
+                                        top: 0,
+                                        right: 0,
+                                        child: Icon(
+                                          Icons.delete_outlined,
+                                          color: Colors.black54,
+                                          size: 20,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          )),
                     ],
                   ),
                   const SizedBox(
                     height: 50,
                   ),
-                  DarkMainButton(
-                      title: 'Save & Next',
-                      process: _routeToNextPage,
-                      screenWidth: screenWidth),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: LightMainButton(
+                            title: 'Cancel',
+                            process: () {
+                              Navigator.of(context).pop();
+                            }),
+                      ),
+                      Expanded(
+                        child: DarkMainButton(
+                            title: 'Save & Next',
+                            process: _routeToNextPage,
+                            screenWidth: screenWidth),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),

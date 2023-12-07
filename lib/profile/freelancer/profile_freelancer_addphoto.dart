@@ -7,11 +7,14 @@ import 'package:image_picker/image_picker.dart';
 // import 'package:taskmate/FreelancerDashboard/Dashboard.dart';
 import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/components/light_main_button.dart';
+import 'package:taskmate/components/loading_screen.dart';
+import 'package:taskmate/components/navigate_before.dart';
 import 'dart:io';
 
 import 'package:taskmate/constants.dart';
-import 'package:taskmate/profile/freelancer/data_details_screen_freelancer.dart';
+// import 'package:taskmate/profile/freelancer/data_details_screen_freelancer.dart';
 import 'package:taskmate/profile/freelancer/user_model.dart';
+import 'package:taskmate/profile/freelancer/verification_pending.dart';
 import 'package:taskmate/profile/freelancer/verify_identity.dart';
 
 class ProfileFreelancerAddphoto extends StatefulWidget {
@@ -21,7 +24,8 @@ class ProfileFreelancerAddphoto extends StatefulWidget {
       : super(key: key);
 
   @override
-  _ProfileFreelancerAddphotoState createState() => _ProfileFreelancerAddphotoState();
+  _ProfileFreelancerAddphotoState createState() =>
+      _ProfileFreelancerAddphotoState();
 }
 
 class _ProfileFreelancerAddphotoState extends State<ProfileFreelancerAddphoto> {
@@ -41,15 +45,17 @@ class _ProfileFreelancerAddphotoState extends State<ProfileFreelancerAddphoto> {
   final TextEditingController birthdayController = TextEditingController();
   final TextEditingController genderController = TextEditingController();
   final TextEditingController servicesController = TextEditingController();
-  final TextEditingController professionalRoleController = TextEditingController();
+  final TextEditingController professionalRoleController =
+      TextEditingController();
   final TextEditingController hourlyrateController = TextEditingController();
-
 
   String? profileImageUrl;
   String? selectedGender;
   String? selectedProvince;
   String? selectedSkills;
   bool dataSubmitted = false;
+
+  bool isLoading = false;
 
   List<String> selectedServices = [];
   File? selectedImage;
@@ -105,10 +111,13 @@ class _ProfileFreelancerAddphotoState extends State<ProfileFreelancerAddphoto> {
   }
 
   void _submitDetails() async {
+    setState(() {
+      isLoading = true;
+    });
     if (selectedImage != null) {
       // Upload image to Firebase Storage and get the download URL
-      final String downloadUrl = await uploadImageToFirebaseStorage(
-          selectedImage!);
+      final String downloadUrl =
+          await uploadImageToFirebaseStorage(selectedImage!);
 
       // Get the current user's UID from Firebase Authentication
       final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -140,22 +149,29 @@ class _ProfileFreelancerAddphotoState extends State<ProfileFreelancerAddphoto> {
             'password': widget.user.password,
             'professionalRole': widget.user.professionalRole,
             'profilePhotoUrl': downloadUrl,
+            'verify': widget.user.verify,
           },
         );
+
+        setState(() {
+          isLoading = false;
+        });
+
         if (context.mounted) {
-          // Navigator.of(context).push(
-          //   MaterialPageRoute(
-          //     builder: (context) =>
-          //   //       DashboardFreelance(
-          //   //         // user: widget.user,
-          //   //         // profileImageUrl: downloadUrl,
-          //   //       ),
-          //   ),
-          // );
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => VerificationPending(
+                user: widget.user,
+                userUid: userUid, // Pass the userUid
+                // profileImageUrl: downloadUrl,
+              ),
+              //builder: (context) =>  VerifyIdentity(),
+            ),
+          );
         }
       }
     }
-    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -163,64 +179,83 @@ class _ProfileFreelancerAddphotoState extends State<ProfileFreelancerAddphoto> {
     double screenHeight = MediaQuery.of(context).size.height;
 
     return SafeArea(
-      child: Scaffold(
-        body: Container(
-          height: screenHeight,
-          width: screenWidth,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('images/noise_image.webp'),
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const Center(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 16.0),
-                  child: Text(
-                    'Add a Profile Photo',
-                    style: kHeadingTextStyle,
+      child: !isLoading
+          ? Scaffold(
+              appBar: AppBar(
+                elevation: 0.0,
+                backgroundColor: Colors.transparent,
+                centerTitle: true,
+                leading: const NavigateBefore(
+                  size: 35.0,
+                ),
+                flexibleSpace: Stack(
+                  children: [
+                    // Background Image
+                    Positioned.fill(
+                      child: Image.asset(
+                        'images/noise_image.webp',
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ],
+                ),
+                title: Text(
+                  'Add Profile Photo',
+                  style: kHeadingTextStyle.copyWith(fontSize: 30),
+                ),
+              ),
+              body: Container(
+                height: screenHeight,
+                width: screenWidth,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('images/noise_image.webp'),
+                    fit: BoxFit.cover,
                   ),
                 ),
-              ),
-              Expanded(
-                child: CircleAvatar(
-                  radius: 150,
-                  backgroundColor: Colors.transparent,
-                  backgroundImage: selectedImage != null
-                      ? FileImage(selectedImage!) // Display selected/captured image
-                      : profileImageUrl != null
-                          ? NetworkImage(profileImageUrl!)
-                          : const AssetImage('images/iconamoon_profile-circle-thin.png') as ImageProvider<Object>,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: CircleAvatar(
+                        radius: 175,
+                        backgroundColor: Colors.transparent,
+                        backgroundImage: selectedImage != null
+                            ? FileImage(
+                                selectedImage!) // Display selected/captured image
+                            : profileImageUrl != null
+                                ? NetworkImage(profileImageUrl!)
+                                : const AssetImage(
+                                        'images/iconamoon_profile-circle-thin.png')
+                                    as ImageProvider<Object>,
+                      ),
+                    ),
+                    DarkMainButton(
+                      title: 'Choose a Photo from Gallery',
+                      process: _chooseAPhoto,
+                      screenWidth: screenWidth,
+                    ),
+                    LightMainButton(
+                      title: 'Take a Photo',
+                      process: _takeAPhoto,
+                      screenWidth: screenWidth,
+                    ),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+                    DarkMainButton(
+                      title: 'Submit',
+                      process: _submitDetails,
+                      screenWidth: screenWidth,
+                    ),
+                    const SizedBox(
+                      height: 15.0,
+                    ),
+                  ],
                 ),
               ),
-              DarkMainButton(
-                title: 'Choose a Photo from Gallery',
-                process: _chooseAPhoto,
-                screenWidth: screenWidth,
-              ),
-              LightMainButton(
-                title: 'Take a Photo',
-                process: _takeAPhoto,
-                screenWidth: screenWidth,
-              ),
-              const SizedBox(
-                height: 20.0,
-              ),
-              DarkMainButton(
-                title: 'Submit',
-                process: _submitDetails,
-                screenWidth: screenWidth,
-              ),
-              const SizedBox(
-                height: 15.0,
-              ),
-            ],
-          ),
-        ),
-      ),
+            )
+          : const LoadingScreen(title: 'Uploading Photo . . .'),
     );
   }
 }

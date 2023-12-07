@@ -15,6 +15,16 @@ class VerifyEmail extends StatefulWidget {
 }
 
 class _VerifyEmailState extends State<VerifyEmail> {
+  String? imagePath;
+
+  Future<void> loadImages(String imageUrl) async {
+    try {
+      await precacheImage(AssetImage(imagePath!), context);
+    } catch (e) {
+      //Ignored
+    }
+  }
+
   String? _email;
 
   @override
@@ -25,6 +35,8 @@ class _VerifyEmailState extends State<VerifyEmail> {
     if (user != null) {
       _email = user.email!;
     }
+    loadImages('images/background/signup.webp');
+    loadImages('images/mailbox.webp');
     super.initState();
   }
 
@@ -95,7 +107,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
                 padding:
                     const EdgeInsets.symmetric(vertical: 24.0, horizontal: 8.0),
                 child: Text(
-                  'Verify Your Email Address',
+                  'Verify Your Email \nAddress',
                   textAlign: TextAlign.center,
                   style: kHeadingTextStyle.copyWith(height: 1.2),
                 ),
@@ -122,7 +134,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
                       height: 10.0,
                     ),
                     const Text(
-                      'Please check email and click on the link provided to verify your address.',
+                      'Please check email and click on the link provided to \nverify your address.',
                       textAlign: TextAlign.center,
                       style: kTextStyle,
                     ),
@@ -143,7 +155,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: 8.0),
                 child: Text(
-                  'If you haven’t received the link yet, please click on resend button',
+                  'If you haven’t received the link yet, \nPlease click on resend button',
                   style: kTextStyle,
                   textAlign: TextAlign.center,
                 ),

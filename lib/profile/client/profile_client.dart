@@ -23,7 +23,7 @@ class _ProfileClientState extends State<ProfileClient> {
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  // final TextEditingController passwordController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
   final TextEditingController streetController = TextEditingController();
   final TextEditingController zipCodeController = TextEditingController();
@@ -214,7 +214,7 @@ class _ProfileClientState extends State<ProfileClient> {
         phoneNo: phoneController.text.trim(),
         profilePhotoUrl: profileImageUrl,
         email: emailController.text.trim(),
-        password: passwordController.text.trim(),
+        // password: passwordController.text.trim(),
         professionalrole: professionalroleController.text.trim(),
       );
       // Get the authenticated user's UID
@@ -387,7 +387,7 @@ class _ProfileClientState extends State<ProfileClient> {
                               padding: const EdgeInsets.only(right: 18.0),
                               child: UserDataGatherFunction(
                                 controller: genderController,
-                                hintText: 'Tap on Arrow',
+                                hintText: 'Tap Here',
                                 validatorText: 'Select Gender',
                                 icon: Icons.arrow_drop_down,
                                 function: () {
@@ -403,113 +403,43 @@ class _ProfileClientState extends State<ProfileClient> {
                   const SizedBox(
                     height: 6.0,
                   ),
-                  Row(
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const UserDataGatherTitle(title: 'Email*'),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 18.0),
-                              child: TextFormField(
-                                controller: emailController,
-                                decoration: InputDecoration(
-                                  contentPadding: const EdgeInsets.all(10.0),
-                                  hintText: 'Email',
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: const BorderSide(
-                                      width: 1.0,
-                                      color: kDarkGreyColor,
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: const BorderSide(
-                                      width: 2.0,
-                                      color: kDeepBlueColor,
-                                    ),
-                                  ),
-                                  filled: true,
-                                ),
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'Please enter your Email';
-                                  } else if (!RegExp(
-                                          r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$')
-                                      .hasMatch(value)) {
-                                    return 'Please enter a valid email address';
-                                  }
-                                  return null;
-                                },
+                      const UserDataGatherTitle(title: 'Email*'),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: TextFormField(
+                          controller: emailController,
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.all(10.0),
+                            hintText: 'Email',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: const BorderSide(
+                                width: 1.0,
+                                color: kDarkGreyColor,
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 10.0,
-                      ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            const UserDataGatherTitle(title: 'Password*'),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 18.0),
-                              child: TextFormField(
-                                  controller: passwordController,
-                                  obscureText: !_isPasswordVisible,
-                                  decoration: InputDecoration(
-                                    contentPadding: const EdgeInsets.all(10.0),
-                                    hintText: 'Password',
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        width: 1.0,
-                                        color: kDarkGreyColor,
-                                      ),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        width: 2.0,
-                                        color: kDeepBlueColor,
-                                      ),
-                                    ),
-                                    filled: true,
-                                    suffixIcon: GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          // Toggle password visibility
-                                          _isPasswordVisible =
-                                              !_isPasswordVisible;
-                                        });
-                                      },
-                                      child: Icon(
-                                        _isPasswordVisible
-                                            ? Icons.lock_open
-                                            : Icons.lock,
-                                        color: Colors.black87,
-                                      ),
-                                    ),
-                                  ),
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'Please enter your Password';
-                                    }
-                                    if (value.length < 8) {
-                                      return 'Password must be at least 8 characters';
-                                    }
-                                    if (!RegExp(r'^(?=.*[A-Za-z])(?=.*\d).+$')
-                                        .hasMatch(value)) {
-                                      return 'Password must include letters and numbers';
-                                    }
-                                    return null;
-                                  }),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: const BorderSide(
+                                width: 2.0,
+                                color: kDeepBlueColor,
+                              ),
                             ),
-                          ],
+                            filled: true,
+                          ),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Please enter your Email';
+                            } else if (!RegExp(
+                                    r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$')
+                                .hasMatch(value)) {
+                              return 'Please enter a valid email address';
+                            }
+                            return null;
+                          },
                         ),
                       ),
                     ],
@@ -593,9 +523,9 @@ class _ProfileClientState extends State<ProfileClient> {
                               padding: const EdgeInsets.only(right: 18.0),
                               child: UserDataGatherFunction(
                                 controller: provinceController,
-                                hintText: 'Tap on Map',
+                                hintText: 'Tap Here',
                                 validatorText: 'Select a Province',
-                                icon: Icons.map,
+                                icon: Icons.arrow_drop_down,
                                 function: () {
                                   _selectProvince();
                                 },

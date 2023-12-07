@@ -2,11 +2,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:taskmate/authentication/log_in.dart';
 import 'package:taskmate/authentication/verify_email.dart';
+import 'package:taskmate/classes/cus_snackbar.dart';
 import 'package:taskmate/components/bottom_sub_text.dart';
 import 'package:taskmate/components/dark_main_button.dart';
+import 'package:taskmate/components/maintenance_page.dart';
 import 'package:taskmate/constants.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:taskmate/components/snackbar.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:taskmate/dashboard/privacy_policy.dart';
+import 'package:taskmate/dashboard/terms_conditions.dart';
+import 'package:taskmate/dashboard/terms_conditions.dart';
 
 class CreateMyAccount1 extends StatefulWidget {
   const CreateMyAccount1({super.key});
@@ -60,19 +67,31 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
       } else if (enteredPassword != confirmPassword) {
         // Show a snackbar if passwords don't match
         ScaffoldMessenger.of(context).showSnackBar(
-          CustomSnackBar('Password does not match'),
+          CusSnackBar(
+            title: 'Password does not match',
+            backColor: kWarningRedColor,
+            time: 3,
+          ),
         );
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         // The password provided is too weak
         ScaffoldMessenger.of(context).showSnackBar(
-          CustomSnackBar('Weak password'),
+          CusSnackBar(
+            title: 'Weak password',
+            backColor: kWarningRedColor,
+            time: 3,
+          ),
         );
       } else if (e.code == 'email-already-in-use') {
         // The account already exists for that email
         ScaffoldMessenger.of(context).showSnackBar(
-          CustomSnackBar('Email already in use'),
+          CusSnackBar(
+            title: 'Email already in use',
+            backColor: kWarningRedColor,
+            time: 3,
+          ),
         );
       }
     }
@@ -99,7 +118,7 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
   }
 
   void _navigateToVerifyEmail() {
-    Navigator.of(context).push(
+    Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (context) => const VerifyEmail(),
       ),
@@ -117,6 +136,23 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
     } catch (e) {
       //Ignored catch block
     }
+  }
+
+  Future<void> _showMarkdownDialog(BuildContext context) async {
+    String markdownContent = await rootBundle.loadString('assets/11.md');
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Terms and Conditions'),
+          content: SingleChildScrollView(
+            child: Markdown(
+              data: markdownContent,
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -144,11 +180,14 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
                   children: <Widget>[
                     const Padding(
                       padding:
-                          EdgeInsets.symmetric(vertical: 20.0, horizontal: 8.0),
+                          EdgeInsets.symmetric(vertical: 32.0, horizontal: 8.0),
                       child: Text(
                         'Create My Account',
                         style: kHeadingTextStyle,
                       ),
+                    ),
+                    const SizedBox(
+                      height: 10.0,
                     ),
                     Form(
                       key: _formKey,
@@ -272,42 +311,95 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
                           },
                           activeColor: kDeepBlueColor,
                         ),
-                        title: RichText(
-                          text: TextSpan(
-                            children: <TextSpan>[
-                              TextSpan(
-                                text: 'I have read and agree to TaskMate’s',
-                                style: kTextStyle.copyWith(
-                                  fontFamily: 'Poppins',
-                                  fontSize: 15,
-                                ),
+                        title: Wrap(
+                          children: [
+                            Text(
+                              'I have read and agree to TaskMate’s',
+                              style: kTextStyle.copyWith(
+                                fontFamily: 'Poppins',
+                                fontSize: 15,
                               ),
-                              TextSpan(
-                                text: ' Term of Service ',
-                                style: kTextStyle.copyWith(
-                                  color: kDeepBlueColor,
-                                  fontFamily: 'Poppins',
-                                  fontSize: 15,
-                                ),
-                              ),
-                              TextSpan(
-                                text: 'and ',
-                                style: kTextStyle.copyWith(
-                                  fontFamily: 'Poppins',
-                                  fontSize: 15,
-                                ),
-                              ),
-                              TextSpan(
-                                text: 'Privacy Policy.',
+                            ),
+                            GestureDetector(
+                              onTap: (){
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => const TermsConditions(),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                'Term of Service',
                                 style: kTextStyle.copyWith(
                                   color: kDeepBlueColor,
                                   fontFamily: 'Poppins',
                                   fontSize: 15,
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                            Text(
+                              ' and',
+                              style: kTextStyle.copyWith(
+                                fontFamily: 'Poppins',
+                                fontSize: 15,
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: (){
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => const PrivacyPolicy(),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                ' Privacy Policy',
+                                style: kTextStyle.copyWith(
+                                  color: kDeepBlueColor,
+                                  fontFamily: 'Poppins',
+                                  fontSize: 15,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
+                        // RichText(
+                        //   text: TextSpan(
+                        //     children: [
+                        //       TextSpan(
+                        //         text: 'I have read and agree to TaskMate’s',
+                        //         style: kTextStyle.copyWith(
+                        //           fontFamily: 'Poppins',
+                        //           fontSize: 15,
+                        //         ),
+                        //       ),
+                        //       TextButton(onPressed: (){}, child: Text('Term of Service'),),
+                        //       // TextSpan(
+                        //       //   text: ' Term of Service ',
+                        //       //   style: kTextStyle.copyWith(
+                        //       //     color: kDeepBlueColor,
+                        //       //     fontFamily: 'Poppins',
+                        //       //     fontSize: 15,
+                        //       //   ),
+                        //       // ),
+                        //       TextSpan(
+                        //         text: 'and ',
+                        //         style: kTextStyle.copyWith(
+                        //           fontFamily: 'Poppins',
+                        //           fontSize: 15,
+                        //         ),
+                        //       ),
+                        //       TextSpan(
+                        //         text: 'Privacy Policy.',
+                        //         style: kTextStyle.copyWith(
+                        //           color: kDeepBlueColor,
+                        //           fontFamily: 'Poppins',
+                        //           fontSize: 15,
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
                       ),
                     ),
                     Padding(
@@ -347,8 +439,11 @@ class _CreateMyAccount1State extends State<CreateMyAccount1> {
                               createMyAccount();
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                CustomSnackBar(
-                                    'Please agree to Terms & Conditions'),
+                                CusSnackBar(
+                                  title: 'Please agree to Terms & Conditions',
+                                  backColor: kWarningRedColor,
+                                  time: 3,
+                                ),
                               );
                             }
                           }
