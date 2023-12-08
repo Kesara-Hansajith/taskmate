@@ -35,66 +35,35 @@ class ActiveJobs extends StatelessWidget {
                 itemCount: jobDocs.length,
                 itemBuilder: (context, index) {
                   final doc = jobDocs[index];
-                  return
-                  //   StreamBuilder<QuerySnapshot>(
-                  //   stream: doc.reference
-                  //       .collection('jobsnew')
-                  //       .where('status', isEqualTo: 'active') // Filter active jobs
-                  //       .snapshots(),
-                  //   builder: (context, subSnapshot) {
-                  //     if (subSnapshot.connectionState ==
-                  //         ConnectionState.waiting) {
-                  //       return const Center(
-                  //         child: CircularProgressIndicator(),
-                  //       );
-                  //     }
-                  //
-                  //     if (!subSnapshot.hasData ||
-                  //         subSnapshot.data!.docs.isEmpty) {
-                  //       return const Center(
-                  //         child: Text('No active jobs found'),
-                  //       );
-                  //     }
-                  //
-                  //     final activeJobDocs = subSnapshot.data!.docs;
-                  //     final data = doc.data() as Map<String, dynamic>;
-                  //
-                  //     return Column(
-                  //       children: activeJobDocs.map<Widget>((subDoc) {
-                  //         return ActiveJobCard(activeJobDoc: subDoc);
-                  //       }).toList(),
-                  //     );
-                  //   },
-                  // );
-                    StreamBuilder<QuerySnapshot>(
-                      stream: doc.reference
-                          .collection('jobsnew')
-                          .where('status', isEqualTo: 'active')
-                          .snapshots(),
-                      builder: (context, subSnapshot) {
-                        if (subSnapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-
-                        if (!subSnapshot.hasData ||
-                            subSnapshot.data!.docs.isEmpty) {
-                          return const Center(
-                            child: Text(''),
-                          );
-                        }
-
-                        final activeJobDocs = subSnapshot.data!.docs;
-
-                        return Column(
-                          children: activeJobDocs.map<Widget>((subDoc) {
-                            return ActiveJobCard(activeJobDoc: subDoc);
-                          }).toList(),
+                  return StreamBuilder<QuerySnapshot>(
+                    stream: doc.reference
+                        .collection('jobsnew')
+                        .where('status', isEqualTo: 'active')
+                        .snapshots(),
+                    builder: (context, subSnapshot) {
+                      if (subSnapshot.connectionState ==
+                          ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
                         );
-                      },
-                    );
+                      }
+
+                      if (!subSnapshot.hasData ||
+                          subSnapshot.data!.docs.isEmpty) {
+                        return const Center(
+                          child: Text('Hmm! You\'ve no any pending Jobs!'),
+                        );
+                      }
+
+                      final activeJobDocs = subSnapshot.data!.docs;
+
+                      return Column(
+                        children: activeJobDocs.map<Widget>((subDoc) {
+                          return ActiveJobCard(activeJobDoc: subDoc);
+                        }).toList(),
+                      );
+                    },
+                  );
                 },
               );
             },

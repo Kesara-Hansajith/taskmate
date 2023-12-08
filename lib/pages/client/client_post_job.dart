@@ -576,112 +576,112 @@ class _ClientPostJobState extends State<ClientPostJob> {
                   SizedBox(
                     height: 12.0,
                   ),
-                  const UserDataGatherTitle(
-                    title: 'Express your Requirements with Voice',
-                  ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 16.0,
-                      ),
-                      padding: const EdgeInsets.all(
-                        8.0,
-                      ),
-                      width: screenWidth,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: kDeepBlueColor, width: 2.0),
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      child: Column(
-                        children: [
-                          StreamBuilder<RecordingDisposition>(
-                              stream: recorder.onProgress,
-                              builder: (context, snapshot) {
-                                final duration = snapshot.hasData
-                                    ? snapshot.data!.duration
-                                    : Duration.zero;
-                                String twoDigits(int n) =>
-                                    n.toString().padLeft(2, '0');
-                                final twoDigitMinutes =
-                                    twoDigits(duration.inMinutes.remainder(60));
-                                final twoDigitSeconds =
-                                    twoDigits(duration.inSeconds.remainder(60));
-
-                                return Text(
-                                  '$twoDigitMinutes:$twoDigitSeconds',
-                                  style: kHeadingTextStyle,
-                                );
-                              }),
-                          // ElevatedButton.icon(
-                          //   onPressed: () async {
-                          //     recorder.toggleRecording();
-                          //     setState(() {});
-                          //   },
-                          //   icon:
-                          //       isRecording ? Icon(Icons.stop) : Icon(Icons.mic),
-                          //   label: isRecording ? Text('Stop') : Text('Record'),
-                          // ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: kDeepBlueColor,
-                                ),
-                                child: IconButton(
-                                  tooltip: recorder.isRecording
-                                      ? 'Tap here to Stop'
-                                      : 'Tap here to record',
-                                  onPressed: () async {
-                                    if (recorder.isRecording) {
-                                      await stop();
-                                    } else {
-                                      await record();
-                                    }
-                                    setState(() {});
-                                  },
-                                  icon: Icon(
-                                    recorder.isRecording
-                                        ? Icons.stop
-                                        : Icons.mic,
-                                    color: kBrilliantWhite,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 10.0,
-                              ),
-                              // Container(
-                              //   decoration: BoxDecoration(
-                              //     shape: BoxShape.circle,
-                              //     color: kDeepBlueColor,
-                              //   ),
-                              //   child: IconButton(
-                              //     onPressed: () async {
-                              //       // await audioPlayer.play(UrlSource('https://file-examples.com/storage/feaade38c1651bd01984236/2017/11/file_example_MP3_700KB.mp3'));
-                              //       // setState(() {
-                              //       //
-                              //       // });
-                              //     },
-                              //     icon: Icon(
-                              //       isPlaying ? Icons.stop : Icons.play_arrow,
-                              //       color: kBrilliantWhite,
-                              //     ),
-                              //   ),
-                              // ),
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8.0),
-                            child: Text(
-                                recorder.isRecording ? 'Recording...' : ''),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  // const UserDataGatherTitle(
+                  //   title: 'Express your Requirements with Voice',
+                  // ),
+                  // Align(
+                  //   alignment: Alignment.center,
+                  //   child: Container(
+                  //     margin: const EdgeInsets.symmetric(
+                  //       horizontal: 16.0,
+                  //     ),
+                  //     padding: const EdgeInsets.all(
+                  //       8.0,
+                  //     ),
+                  //     width: screenWidth,
+                  //     decoration: BoxDecoration(
+                  //       border: Border.all(color: kDeepBlueColor, width: 2.0),
+                  //       borderRadius: BorderRadius.circular(20.0),
+                  //     ),
+                  //     child: Column(
+                  //       children: [
+                  //         StreamBuilder<RecordingDisposition>(
+                  //             stream: recorder.onProgress,
+                  //             builder: (context, snapshot) {
+                  //               final duration = snapshot.hasData
+                  //                   ? snapshot.data!.duration
+                  //                   : Duration.zero;
+                  //               String twoDigits(int n) =>
+                  //                   n.toString().padLeft(2, '0');
+                  //               final twoDigitMinutes =
+                  //                   twoDigits(duration.inMinutes.remainder(60));
+                  //               final twoDigitSeconds =
+                  //                   twoDigits(duration.inSeconds.remainder(60));
+                  //
+                  //               return Text(
+                  //                 '$twoDigitMinutes:$twoDigitSeconds',
+                  //                 style: kHeadingTextStyle,
+                  //               );
+                  //             }),
+                  //         // ElevatedButton.icon(
+                  //         //   onPressed: () async {
+                  //         //     recorder.toggleRecording();
+                  //         //     setState(() {});
+                  //         //   },
+                  //         //   icon:
+                  //         //       isRecording ? Icon(Icons.stop) : Icon(Icons.mic),
+                  //         //   label: isRecording ? Text('Stop') : Text('Record'),
+                  //         // ),
+                  //         Row(
+                  //           mainAxisAlignment: MainAxisAlignment.center,
+                  //           children: [
+                  //             Container(
+                  //               decoration: BoxDecoration(
+                  //                 shape: BoxShape.circle,
+                  //                 color: kDeepBlueColor,
+                  //               ),
+                  //               child: IconButton(
+                  //                 tooltip: recorder.isRecording
+                  //                     ? 'Tap here to Stop'
+                  //                     : 'Tap here to record',
+                  //                 onPressed: () async {
+                  //                   if (recorder.isRecording) {
+                  //                     await stop();
+                  //                   } else {
+                  //                     await record();
+                  //                   }
+                  //                   setState(() {});
+                  //                 },
+                  //                 icon: Icon(
+                  //                   recorder.isRecording
+                  //                       ? Icons.stop
+                  //                       : Icons.mic,
+                  //                   color: kBrilliantWhite,
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //             const SizedBox(
+                  //               width: 10.0,
+                  //             ),
+                  //             // Container(
+                  //             //   decoration: BoxDecoration(
+                  //             //     shape: BoxShape.circle,
+                  //             //     color: kDeepBlueColor,
+                  //             //   ),
+                  //             //   child: IconButton(
+                  //             //     onPressed: () async {
+                  //             //       // await audioPlayer.play(UrlSource('https://file-examples.com/storage/feaade38c1651bd01984236/2017/11/file_example_MP3_700KB.mp3'));
+                  //             //       // setState(() {
+                  //             //       //
+                  //             //       // });
+                  //             //     },
+                  //             //     icon: Icon(
+                  //             //       isPlaying ? Icons.stop : Icons.play_arrow,
+                  //             //       color: kBrilliantWhite,
+                  //             //     ),
+                  //             //   ),
+                  //             // ),
+                  //           ],
+                  //         ),
+                  //         Padding(
+                  //           padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  //           child: Text(
+                  //               recorder.isRecording ? 'Recording...' : ''),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
                   DarkMainButton(
                     title: 'Post Job Now',
                     process: () {

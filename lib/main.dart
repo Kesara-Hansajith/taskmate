@@ -55,6 +55,7 @@ import 'package:taskmate/authentication/forget_password.dart';
 
 import 'package:taskmate/freelancer_home_page.dart';
 import 'pages/freelancer/proposals/active_jobs_pages/active_job_details.dart';
+import 'profile/freelancer/verify_identity.dart';
 //import 'package:taskmate/verify_identity.dart';
 
 void main() async {
@@ -85,7 +86,7 @@ class Taskmate extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: "Poppins"),
-      home: const SafeArea(
+      home:  const SafeArea(
         child: SplashScreen(),
       ),
     );

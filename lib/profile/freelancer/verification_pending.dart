@@ -10,7 +10,7 @@ import '../../freelancer_home_page.dart';
 
 class VerificationPending extends StatefulWidget {
   final UserModel user;
-  final String userUid; // Add this line
+  final String userUid;
 
   const VerificationPending({
     required this.user,
