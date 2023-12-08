@@ -27,7 +27,7 @@ class _ClientPendingJobsState extends State<ClientPendingJobs> {
           child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
             stream: FirebaseFirestore.instance
                 .collection('jobs')
-                .doc('2ayy7BwXAbNtWhilcMzwgUKnmQy2')
+                .doc('pDn1qSUVNLZLiAY9oTqFuV7dMzi2')
                 .collection('jobsnew')
                 .where('status', isEqualTo: 'new')
                 .snapshots(),
