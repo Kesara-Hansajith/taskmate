@@ -61,12 +61,14 @@ class JobCard extends StatelessWidget {
                     'Budget LKR.${subData['budget']}',
                     style: kJobCardDescriptionTextStyle,
                   ),
-                  const SizedBox(width: 30.0,),
+                  const SizedBox(
+                    width: 30.0,
+                  ),
                   StreamBuilder(
                     stream: FirebaseFirestore.instance
                         .collection('jobs') // Use your actual collection name
 
-                        .doc('b6BxxPQonXNOBYQRDSMtn2Rkqyc2')
+                        .doc('pDn1qSUVNLZLiAY9oTqFuV7dMzi2')
                         .collection('jobsnew')
                         .doc(mostjobDoc.id)
                         .collection('bidsjobs')
@@ -79,7 +81,7 @@ class JobCard extends StatelessWidget {
                           style: kJobCardDescriptionTextStyle,
                         );
                       } else {
-                        return Text(
+                        return const Text(
                           'Loading...',
                           style: kJobCardDescriptionTextStyle,
                         );
@@ -89,9 +91,14 @@ class JobCard extends StatelessWidget {
                 ],
               ),
             ),
-            Text(
-              subData['jobDescription'] ?? '',
-              style: kJobCardDescriptionTextStyle,
+            FadeTransition(
+              opacity: const AlwaysStoppedAnimation(.8),
+              child: Text(
+                subData['jobDescription'] ?? '',
+                style: kJobCardDescriptionTextStyle,
+                maxLines: 4,
+                overflow: TextOverflow.fade,
+              ),
             ),
           ],
         ),

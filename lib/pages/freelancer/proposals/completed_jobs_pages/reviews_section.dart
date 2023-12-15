@@ -49,7 +49,7 @@ class _ReviewsState extends State<Reviews> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: Text(
-                    'Review from @ClientName',
+                    'Review from Client',
                     style: kJobCardTitleTextStyle.copyWith(color: kJetBlack),
                   ),
                 ),

@@ -11,6 +11,7 @@ class BiddedFreelancerDetails extends StatefulWidget {
   final String bidAmount;
   final String delivery;
   final String jobTitle;
+  final String reviewdesfreelancer;
   final QueryDocumentSnapshot pendingJobDoc;
   final String freelancerName; // Include freelancerName in the parameters
   final String skills;
@@ -27,6 +28,7 @@ class BiddedFreelancerDetails extends StatefulWidget {
     required this.bidAmount,
     required this.delivery,
     required this.jobTitle,
+    required this.reviewdesfreelancer,
     required this.pendingJobDoc,
     required this.freelancerName, // Add freelancerName to the constructor
     required this.skills,
@@ -48,13 +50,17 @@ class _BiddedFreelancerDetailsState extends State<BiddedFreelancerDetails> {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => BiddedFreelancerProfile(
+            jobTitle: widget.jobTitle,
             freelancerName: widget.freelancerName,
             skills: widget.skills,
             profilePhotoUrl: widget.profilePhotoUrl,
             Level: widget.Level,
             professionalRole: widget.professionalRole,
             bio: widget.bio,
+            pendingJobDoc: widget.pendingJobDoc,
+            reviewdesfreelancer: widget.reviewdesfreelancer,
             hourlyRate: widget.hourlyRate,
+
         ),
       ),
     );

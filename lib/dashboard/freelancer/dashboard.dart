@@ -9,7 +9,7 @@ import 'package:taskmate/components/dashboard_item.dart';
 import 'package:taskmate/dashboard/freelancer/about_us.dart';
 import 'package:taskmate/dashboard/freelancer/balance.dart';
 import 'package:taskmate/dashboard/freelancer/help_support.dart';
-import 'package:taskmate/dashboard/freelancer/invite_friends.dart';
+import 'package:taskmate/dashboard/invite_friends.dart';
 import 'package:taskmate/dashboard/freelancer/profile.dart';
 import 'package:taskmate/dashboard/terms_conditions.dart';
 import 'package:taskmate/dashboard/freelancer/transaction_history.dart';

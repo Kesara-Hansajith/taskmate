@@ -20,8 +20,10 @@ import 'package:taskmate/profile/freelancer/verify_identity.dart';
 class ProfileFreelancerAddphoto extends StatefulWidget {
   final UserModel user;
 
-  const ProfileFreelancerAddphoto({Key? key, required this.user})
-      : super(key: key);
+  const ProfileFreelancerAddphoto({
+    Key? key,
+    required this.user,
+  }) : super(key: key);
 
   @override
   _ProfileFreelancerAddphotoState createState() =>
@@ -128,30 +130,30 @@ class _ProfileFreelancerAddphotoState extends State<ProfileFreelancerAddphoto> {
         final String userUid = firebaseUser.uid;
 
         // Create a Firestore document and save the data
-        await FirebaseFirestore.instance.collection('Users').doc(userUid).set(
-          {
-            'firstName': widget.user.firstName,
-            'lastName': widget.user.lastName,
-            'address': widget.user.address,
-            'zipcode': widget.user.zipcode,
-            'street': widget.user.street,
-            'birthday': widget.user.birthday,
-            'gender': widget.user.gender,
-            'province': widget.user.province,
-            'city': widget.user.city,
-            'phoneNo': widget.user.phoneNo,
-            'hourlyRate': widget.user.hourlyRate,
-            'skills': widget.user.skills,
-            'bio': widget.user.bio,
-            'services': widget.user.services,
-            'socialLink': widget.user.sociallink,
-            'email': widget.user.email,
-            'password': widget.user.password,
-            'professionalRole': widget.user.professionalRole,
-            'profilePhotoUrl': downloadUrl,
-            'verify': widget.user.verify,
-          },
-        );
+        // await FirebaseFirestore.instance.collection('Users').doc(userUid).set(
+        //   {
+        //     'firstName': widget.user.firstName,
+        //     'lastName': widget.user.lastName,
+        //     'address': widget.user.address,
+        //     'zipcode': widget.user.zipcode,
+        //     'street': widget.user.street,
+        //     'birthday': widget.user.birthday,
+        //     'gender': widget.user.gender,
+        //     'province': widget.user.province,
+        //     'city': widget.user.city,
+        //     'phoneNo': widget.user.phoneNo,
+        //     'hourlyRate': widget.user.hourlyRate,
+        //     'skills': widget.user.skills,
+        //     'bio': widget.user.bio,
+        //     'services': widget.user.services,
+        //     'socialLink': widget.user.sociallink,
+        //     'email': widget.user.email,
+        //     'password': widget.user.password,
+        //     'professionalRole': widget.user.professionalRole,
+        //     'profilePhotoUrl': downloadUrl,
+        //     'verify': widget.user.verify,
+        //   },
+        // );
 
         setState(() {
           isLoading = false;
@@ -160,10 +162,10 @@ class _ProfileFreelancerAddphotoState extends State<ProfileFreelancerAddphoto> {
         if (context.mounted) {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
-              builder: (context) => VerificationPending(
+              builder: (context) => VerifyIdentity(
+                userUid: userUid,
                 user: widget.user,
-                userUid: userUid, // Pass the userUid
-                // profileImageUrl: downloadUrl,
+                downloadUrl: downloadUrl,
               ),
               //builder: (context) =>  VerifyIdentity(),
             ),

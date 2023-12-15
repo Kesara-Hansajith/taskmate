@@ -62,6 +62,8 @@ class BiddedFreelancerCard extends StatelessWidget {
                   bidDescription: bidData['bidDescription'] ?? 'bidDescription',
                   bidAmount: bidData['bidAmount'] ?? 'bidAmount',
                   delivery: bidData['delivery'] ?? 'delivery',
+                  reviewdesfreelancer: bidData['reviewdesfreelancer'] ?? 'reviewdesfreelancer',
+
                   jobTitle: jobTitle,
                   pendingJobDoc: pendingjobDoc,
                   freelancerName: freelancerName, // Pass freelancerName

@@ -13,6 +13,7 @@ import 'package:taskmate/components/client/post_a_job.dart';
 import 'package:taskmate/dashboard/freelancer/dashboard.dart';
 import 'package:taskmate/dashboard/freelancer/edit_profile.dart';
 import 'package:taskmate/dashboard/freelancer/profile.dart';
+import 'package:taskmate/firebase_options.dart';
 
 import 'package:taskmate/pages/client/client_post_job.dart';
 import 'package:taskmate/pages/client/jobs/pending/bidded_freelancer_details.dart';
@@ -39,7 +40,7 @@ import 'package:taskmate/test_file.dart';
 // import 'package:taskmate/verify_identity.dart';
 // import 'FreelancerDashboard/Dashboard.dart';
 
-import 'firebase_options.dart';
+// import 'firebase_options.dart';
 //imported pages
 import 'package:taskmate/authentication/splash_screen.dart';
 import 'package:taskmate/authentication/log_in.dart';
@@ -54,6 +55,7 @@ import 'package:taskmate/authentication/forget_password.dart';
 
 import 'package:taskmate/freelancer_home_page.dart';
 import 'pages/freelancer/proposals/active_jobs_pages/active_job_details.dart';
+import 'profile/freelancer/verify_identity.dart';
 //import 'package:taskmate/verify_identity.dart';
 
 void main() async {
@@ -84,8 +86,7 @@ class Taskmate extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: "Poppins"),
-
-      home: const SafeArea(
+      home:  const SafeArea(
         child: SplashScreen(),
 
       ),

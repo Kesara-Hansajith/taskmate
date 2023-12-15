@@ -38,7 +38,7 @@ class ActiveJobs extends StatelessWidget {
                   return StreamBuilder<QuerySnapshot>(
                     stream: doc.reference
                         .collection('jobsnew')
-                        .where('status', isEqualTo: 'active') // Filter active jobs
+                        .where('status', isEqualTo: 'active')
                         .snapshots(),
                     builder: (context, subSnapshot) {
                       if (subSnapshot.connectionState ==
@@ -51,12 +51,11 @@ class ActiveJobs extends StatelessWidget {
                       if (!subSnapshot.hasData ||
                           subSnapshot.data!.docs.isEmpty) {
                         return const Center(
-                          child: Text('No active jobs found'),
+                          child: Text('Hmm! You\'ve no any pending Jobs!'),
                         );
                       }
 
                       final activeJobDocs = subSnapshot.data!.docs;
-                      final data = doc.data() as Map<String, dynamic>;
 
                       return Column(
                         children: activeJobDocs.map<Widget>((subDoc) {

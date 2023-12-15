@@ -25,7 +25,6 @@ class Files extends StatefulWidget {
 }
 
 class _FilesState extends State<Files> {
-
   File? _selectedImage3;
   File? _selectedImage4;
 
@@ -129,7 +128,6 @@ class _FilesState extends State<Files> {
             ),
             Row(
               children: <Widget>[
-
                 const SizedBox(
                   width: 15.0,
                 ),
@@ -144,8 +142,9 @@ class _FilesState extends State<Files> {
                           cardChild: _selectedImage3 == null
                               ? const Text('+ Add')
                               : Image(
-                            image: FileImage(_selectedImage3!), // Use FileImage
-                          ),
+                                  image: FileImage(
+                                      _selectedImage3!), // Use FileImage
+                                ),
                         ),
                       ),
                       TextButton(
@@ -183,8 +182,9 @@ class _FilesState extends State<Files> {
                           cardChild: _selectedImage4 == null
                               ? const Text('+ Add')
                               : Image(
-                            image: FileImage(_selectedImage4!), // Use FileImage
-                          ),
+                                  image: FileImage(
+                                      _selectedImage4!), // Use FileImage
+                                ),
                         ),
                       ),
                       TextButton(
@@ -208,7 +208,6 @@ class _FilesState extends State<Files> {
                     ],
                   ),
                 ),
-
               ],
             ),
             const SizedBox(
@@ -228,13 +227,6 @@ class _FilesState extends State<Files> {
               },
               screenWidth: screenWidth,
             ),
-            LightMainButton(
-              title: 'Message',
-              process: () {
-                //TODO Forward to messaging part
-              },
-              screenWidth: screenWidth,
-            )
           ],
         ),
       ),

@@ -360,7 +360,7 @@ class _JobDetailsState extends State<JobDetails> {
                         CollectionReference bidsJobsCollection = FirebaseFirestore
                             .instance
                             .collection('jobs') // Use your actual collection name
-                            .doc('b6BxxPQonXNOBYQRDSMtn2Rkqyc2')
+                            .doc('pDn1qSUVNLZLiAY9oTqFuV7dMzi2')
                             .collection('jobsnew')
                             .doc(widget.mostjobDoc.id)
                             .collection('bidsjobs');

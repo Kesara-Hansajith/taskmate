@@ -7,7 +7,7 @@ import 'package:taskmate/components/dashboard_item.dart';
 import 'package:taskmate/dashboard/client/about_us.dart';
 import 'package:taskmate/dashboard/client/balance.dart';
 import 'package:taskmate/dashboard/client/help_support.dart';
-import 'package:taskmate/dashboard/client/invite_friends.dart';
+import 'package:taskmate/dashboard/invite_friends.dart';
 import 'package:taskmate/dashboard/client/profile.dart';
 import 'package:taskmate/dashboard/terms_conditions.dart';
 import 'package:taskmate/dashboard/client/transaction_history.dart';

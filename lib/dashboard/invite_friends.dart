@@ -14,9 +14,9 @@ class InviteFriends extends StatefulWidget {
 
 class _InviteFriendsState extends State<InviteFriends> {
   void shareApp() async {
-    final result =
-        await Share.shareWithResult('check out my website https://example.com');
-
+    final result = await Share.shareWithResult(
+        'Be a proud member of TaskMate Family! https://tinyurl.com/5n6dapka',
+        subject: 'Download TaskMate Now!');
     if (result.status == ShareResultStatus.success) {}
   }
 
@@ -65,16 +65,26 @@ class _InviteFriendsState extends State<InviteFriends> {
             ),
           ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Column(
                 children: [
-                  const Text(
-                    'Discover a world of opportunities for Sri Lankan freelancers with our app! Join us to showcase your skills, find exciting gigs, and empower the freelance community in Sri Lanka. Download now and embark on a journey of creativity, flexibility, and endless possibilities!',
-                    textAlign: TextAlign.center,
-                    style: kTextStyle,
+                  const Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
+                    child: Text(
+                      'Discover a world of opportunities for Sri Lankan freelancers with our app! Download now and embark on a journey of creativity, flexibility, and endless possibilities!',
+                      textAlign: TextAlign.center,
+                      style: kJobCardTitleTextStyle,
+                    ),
                   ),
-                  Image.asset('images/playstore.png'),
+                  const SizedBox(
+                    height: 50.0,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Image.asset('images/playstore.png'),
+                  ),
                   SizedBox(
                     width: screenWidth,
                     child: DarkMainButton(
@@ -88,11 +98,14 @@ class _InviteFriendsState extends State<InviteFriends> {
                       },
                     ),
                   ),
-                  SizedBox(
-                    width: screenWidth,
-                    child: LightMainButton(
-                      title: 'Share',
-                      process: shareApp,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 30.0),
+                    child: SizedBox(
+                      width: screenWidth,
+                      child: LightMainButton(
+                        title: 'Share',
+                        process: shareApp,
+                      ),
                     ),
                   ),
                 ],
