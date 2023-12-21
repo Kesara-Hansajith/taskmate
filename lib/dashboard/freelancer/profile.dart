@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:taskmate/components/attachment_card.dart';
 import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/components/freelancer/user_data_gather_title.dart';
 import 'package:taskmate/components/review_card.dart';
@@ -94,7 +93,7 @@ class _ProfileState extends State<Profile> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
+                              children: const [
                                 Icon(
                                   Icons.navigate_before,
                                   size: 35.0,
@@ -254,7 +253,7 @@ class _ProfileState extends State<Profile> {
                             ),
                           ),
                         ),
-                        UserDataGatherTitle(
+                        const UserDataGatherTitle(
                           title: 'Portfolio',
                         ),
                         Padding(
@@ -264,7 +263,7 @@ class _ProfileState extends State<Profile> {
                             child: Row(
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.fromLTRB(
+                                  padding: const EdgeInsets.fromLTRB(
                                       35.0, 10.0, 10.0, 10.0),
                                   child: GestureDetector(
                                     onTap: () {
@@ -344,7 +343,7 @@ class _ProfileState extends State<Profile> {
                                                     Column(
                                                       children: [
                                                         images[j],
-                                                        SizedBox(height: 8.0),
+                                                        const SizedBox(height: 8.0),
                                                       ],
                                                     ),
                                                   );
@@ -353,7 +352,7 @@ class _ProfileState extends State<Profile> {
                                                       i + imagesPerRow - 1) {
                                                     // Add spacing between images in the same row
                                                     rowChildren.add(
-                                                      SizedBox(width: 16.0),
+                                                      const SizedBox(width: 16.0),
                                                     );
                                                   }
                                                 }
@@ -379,8 +378,8 @@ class _ProfileState extends State<Profile> {
                                                       width:
                                                           600, // Adjust the width as needed
                                                       padding:
-                                                          EdgeInsets.all(16.0),
-                                                      decoration: BoxDecoration(
+                                                          const EdgeInsets.all(16.0),
+                                                      decoration: const BoxDecoration(
                                                         image: DecorationImage(
                                                           image: AssetImage(
                                                               'images/noise_image.webp'), // Add your background image here
@@ -394,23 +393,23 @@ class _ProfileState extends State<Profile> {
                                                         children: [
                                                           Text(
                                                             title,
-                                                            style: TextStyle(
+                                                            style: const TextStyle(
                                                               fontSize: 18.0,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold,
                                                             ),
                                                           ),
-                                                          SizedBox(height: 8.0),
+                                                          const SizedBox(height: 8.0),
                                                           Text(
                                                               'Description: $itemDescription'),
-                                                          SizedBox(
+                                                          const SizedBox(
                                                               height: 16.0),
                                                           // Display the rows of images
                                                           Column(
                                                             children: imageRows,
                                                           ),
-                                                          SizedBox(
+                                                          const SizedBox(
                                                               height: 16.0),
                                                           ElevatedButton(
                                                             onPressed: () {
@@ -502,7 +501,7 @@ class _ProfileState extends State<Profile> {
                                             ),
                                           ),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                             height:
                                                 8.0), // Add spacing between the box and text
                                         Text(
@@ -597,7 +596,7 @@ class _ProfileState extends State<Profile> {
                                                     Column(
                                                       children: [
                                                         images[j],
-                                                        SizedBox(height: 8.0),
+                                                        const SizedBox(height: 8.0),
                                                       ],
                                                     ),
                                                   );
@@ -632,7 +631,7 @@ class _ProfileState extends State<Profile> {
                                                       width:
                                                           600, // Adjust the width as needed
                                                       padding:
-                                                          EdgeInsets.all(16.0),
+                                                          const EdgeInsets.all(16.0),
                                                       decoration: BoxDecoration(
                                                         image: DecorationImage(
                                                           image: AssetImage(
@@ -1306,7 +1305,7 @@ class _ProfileState extends State<Profile> {
                           title: 'Reviews',
                         ),
                         const ReviewCard(
-                          imagePath: 'images/woman.jpg',
+                          imagePath: 'images/client0.webp',
                           jobTitle: 'My face edited into a picture',
                           feedback:
                           'Great! Very creative and had great ideas! ',
