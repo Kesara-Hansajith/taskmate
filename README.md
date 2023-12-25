@@ -36,7 +36,7 @@ This initiative doesn’t just offer a platform; it aspires to become the corner
 [Click here](https://www.figma.com/file/hIewd85LHemb3zweeoxbQE/New-TaskMate-Ui-Designs?type=design&node-id=796%3A1209&mode=design&t=ilCDeu78UdLX6HXw-1)
 
 ## Screenshots 
-![Signin_Signup_screen](assets\2.webp)
+![Signin_Signup_screen](https://github.com/vinukavinnath/taskmate/blob/newbackend/assets/2.webp)
 ![Sreate_account_screen](assets\4.webp)
 ![job_screen_screen](assets\6.webp)
 ![Dashboard_screen](assets\10.webp)
