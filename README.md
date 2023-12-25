@@ -37,7 +37,7 @@ This initiative doesn’t just offer a platform; it aspires to become the corner
 
 ## Screenshots 
 ![Signin_Signup_screen](https://github.com/vinukavinnath/taskmate/blob/newbackend/assets/2.webp)
-![Sreate_account_screen](assets\4.webp)
-![job_screen_screen](assets\6.webp)
-![Dashboard_screen](assets\10.webp)
+![Create_account_screen](https://github.com/vinukavinnath/taskmate/blob/newbackend/assets/4.webp)
+![Job_screen_screen](https://github.com/vinukavinnath/taskmate/blob/newbackend/assets/6.webp)
+![Dashboard_screen](https://github.com/vinukavinnath/taskmate/blob/newbackend/assets/10.webp)
 
