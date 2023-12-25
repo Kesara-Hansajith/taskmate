@@ -20,7 +20,7 @@ This initiative doesn’t just offer a platform; it aspires to become the corner
 
 ## Authors
 
-- [APGBY Yasaruwan](https://www.linkedin.com/in/basuru-yasaruwan-805820235/)
+- [APGBY Yasaruwan](https://www.linkedin.com/in/basuru-yasaruwan-805820235/ "sdg")
 - [WLV Vinnath](www.linkedin.com/in/vinukavinnath)
 - [GO Kamburugamuwa](https://www.linkedin.com/in/govindu-oshada/)
 - [DTK De Zoysa](https://www.linkedin.com/in/thilina-de-zoysa-a6aa362a4/)
@@ -35,4 +35,5 @@ This initiative doesn’t just offer a platform; it aspires to become the corner
 
 [Click here](https://www.figma.com/file/hIewd85LHemb3zweeoxbQE/New-TaskMate-Ui-Designs?type=design&node-id=796%3A1209&mode=design&t=ilCDeu78UdLX6HXw-1)
 
-## Screenshots
+## Screenshots 
+
