@@ -2,14 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:taskmate/components/attachment_card.dart';
 import 'package:taskmate/components/dark_main_button.dart';
 import 'package:taskmate/components/freelancer/user_data_gather_title.dart';
 import 'package:taskmate/components/review_card.dart';
 import 'package:taskmate/constants.dart';
 import 'package:taskmate/dashboard/client/edit_profile.dart';
 
-import '../../profile/client/user_model1.dart';
 
 class Profile extends StatefulWidget {
 
@@ -84,7 +82,7 @@ class _ProfileState extends State<Profile> {
                       Container(
                         width: screenWidth,
                         height: screenHeight / 5,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           image: DecorationImage(
                             fit: BoxFit.cover,
                             image: AssetImage(
@@ -108,7 +106,7 @@ class _ProfileState extends State<Profile> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
+                              children: const [
                                 Icon(
                                   Icons.navigate_before,
                                   size: 35.0,
@@ -165,7 +163,7 @@ class _ProfileState extends State<Profile> {
                             style: kSubHeadingTextStyle,
                           );
                         } else {
-                          return SpinKitThreeBounce(
+                          return const SpinKitThreeBounce(
                             color: kDeepBlueColor,
                             size: 30.0,
                           );
@@ -193,16 +191,17 @@ class _ProfileState extends State<Profile> {
                             ),
                           ),
                         ),
-                        UserDataGatherTitle(
+                        const UserDataGatherTitle(
                           title: 'Reviews',
                         ),
-                        ReviewCard(
-                          imagePath: 'images/blank_profile.webp',
+                        const ReviewCard(
+                          imagePath: 'images/freelancer0.webp',
                           jobTitle: 'Graphic designer for family care product',
                           feedback:
                               'Great! Very creative and had great ideas! ',
-                          username: 'Nugera Gomez',
+                          username: 'Nalin Perera',
                         ),
+
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 12.0),
                           child: DarkMainButton(

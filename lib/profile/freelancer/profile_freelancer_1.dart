@@ -32,9 +32,9 @@ class _ProfileFreelancerState extends State<ProfileFreelancer> {
   final TextEditingController sociallinkController = TextEditingController();
   final TextEditingController streetController = TextEditingController();
   final TextEditingController birthdayController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController professionalroleController = TextEditingController();
+  final TextEditingController professionalroleController =
+      TextEditingController();
   final TextEditingController genderController = TextEditingController();
   final TextEditingController servicesController = TextEditingController();
   final TextEditingController hourlyrateController = TextEditingController();
@@ -52,6 +52,7 @@ class _ProfileFreelancerState extends State<ProfileFreelancer> {
   String? selectedSkills;
   bool dataSubmitted = false;
   bool _isPasswordVisible = false;
+  String useremail = '';
 
   get emailRegex => RegExp(
         r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
@@ -64,6 +65,14 @@ class _ProfileFreelancerState extends State<ProfileFreelancer> {
         multiLine: false,
       );
   final _city1Regex = RegExp(r'^[a-zA-Z]+$');
+
+  void getCurrentUserEmail() {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? user = auth.currentUser;
+    if (user != null) {
+      useremail = user.email!;
+    }
+  }
 
   void selectDate(
       BuildContext context, TextEditingController birthdayController) async {
@@ -224,7 +233,7 @@ class _ProfileFreelancerState extends State<ProfileFreelancer> {
         street: streetController.text.trim(),
         birthday: birthdayController.text.trim(),
         gender: genderController.text.trim(),
-        email: emailController.text.trim(),
+        email: useremail,
         password: passwordController.text.trim(),
         professionalRole: professionalroleController.text.trim(),
         province: provinceController.text.trim(),
@@ -260,6 +269,12 @@ class _ProfileFreelancerState extends State<ProfileFreelancer> {
         );
       }
     }
+  }
+
+  @override
+  void initState() {
+    getCurrentUserEmail();
+    super.initState();
   }
 
   @override
@@ -428,47 +443,6 @@ class _ProfileFreelancerState extends State<ProfileFreelancer> {
                   ),
                   const SizedBox(
                     height: 6.0,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const UserDataGatherTitle(title: 'Email*'),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: TextFormField(
-                          controller: emailController,
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.all(10.0),
-                            hintText: 'Email',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: const BorderSide(
-                                width: 1.0,
-                                color: kDarkGreyColor,
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: const BorderSide(
-                                width: 2.0,
-                                color: kDeepBlueColor,
-                              ),
-                            ),
-                            filled: true,
-                          ),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Please enter your Email';
-                            } else if (!RegExp(
-                                    r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$')
-                                .hasMatch(value)) {
-                              return 'Please enter a valid email address';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                    ],
                   ),
                   const UserDataGatherTitle(title: 'Address*'),
                   Padding(
